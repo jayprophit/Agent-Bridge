@@ -1,0 +1,32 @@
+{
+ "AI": {
+  "input": 150,
+  "mapped": 150,
+  "unmapped": 0,
+  "duplicates": 0,
+  "coverage": 100.0
+ },
+ "DEVICE": {
+  "input": 150,
+  "mapped": 150,
+  "unmapped": 0,
+  "duplicates": 0,
+  "coverage": 100.0
+ },
+ "PHYSICAL": {
+  "input": 150,
+  "mapped": 150,
+  "unmapped": 0,
+  "duplicates": 0,
+  "coverage": 100.0
+ },
+ "TOTAL": {
+  "input": 450,
+  "mapped": 450,
+  "unmapped": 0,
+  "duplicates": 0,
+  "coverage": 100.0
+ },
+ "unmapped_ids": [],
+ "duplicate_canonical_ids": []
+}

@@ -1,0 +1,19 @@
+{
+  "performance_profile": "BALANCED",
+  "model_size_preference": "medium",
+  "quantization_preference": "q8",
+  "context_length": 4096,
+  "batch_size": 1,
+  "max_parallel_workers": 2,
+  "tool_concurrency": 2,
+  "cache_size_mb": 1634,
+  "max_ram_mb": 0,
+  "max_vram_mb": 3276,
+  "default_timeout_s": 30,
+  "tool_timeout_s": 60,
+  "model_timeout_s": 120,
+  "battery_policy": "balanced",
+  "thermal_throttling": false,
+  "background_workload_allowed": true,
+  "background_priority": "normal"
+}

@@ -1,0 +1,13 @@
+{
+ "moves_total": 104,
+ "hash_mismatches": 0,
+ "root_before": 149,
+ "root_after": 45,
+ "references_updated": [
+  "scripts sys.path/outputs (11)",
+  "test_versions_cleanup config path",
+  "reproducible-setup commands"
+ ],
+ "no_txt_at_root": true,
+ "duplicates_removed": 0
+}

@@ -1,0 +1,103 @@
+{
+ "protocol": {
+  "name": "agent-bridge-node",
+  "version": "1.0",
+  "min_supported": "1.0",
+  "max_supported": "1.0"
+ },
+ "auth": "loopback bind + pairing trust; no bearer token. Plain HTTP refused off-loopback; HTTPS needs real certs.",
+ "limits": {
+  "json_body_bytes": 262144,
+  "sse_event_chars": 4000,
+  "result_summary_chars": 2000
+ },
+ "errors": [
+  "NODE_OFFLINE",
+  "NODE_UNTRUSTED",
+  "NODE_NOT_PAIRED",
+  "AUTHENTICATION_FAILED",
+  "PAIRING_REQUIRED",
+  "PAIRING_REJECTED",
+  "PAIRING_EXPIRED",
+  "PROTOCOL_VERSION_UNSUPPORTED",
+  "TLS_REQUIRED",
+  "REMOTE_PLAINTEXT_DENIED",
+  "REMOTE_OWNER_POLICY_DENIED",
+  "REMOTE_OWNER_APPROVAL_REQUIRED",
+  "PRIVACY_DENIED",
+  "CAPABILITY_UNAVAILABLE",
+  "TOOL_DENIED",
+  "DELEGATION_TIMEOUT",
+  "DELEGATION_CANCELLED",
+  "REMOTE_EXECUTION_FAILED",
+  "REPLAY_REJECTED",
+  "EMERGENCY_STOP_ACTIVE"
+ ],
+ "routes": [
+  {
+   "method": "GET",
+   "path": "/v1/node/health"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/node/descriptor"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/node/protocol"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/node/handshake",
+   "body": "{node_id*, protocol_name*, protocol_version*}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/node/pairing/request",
+   "body": "{source_node*}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/node/pairing/approve",
+   "body": "{attempt_id*, approved*, trust_level}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/node/pairing/challenge",
+   "body": "{attempt_id*, token*, response*}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/node/delegations",
+   "body": "{task envelope: delegation_id*, task_id*, source_node*, target_node*, nonce*, timestamp*, privacy_policy, required_tools, owner_scope_requested}"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/node/delegations/{id}"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/node/delegations/{id}/events",
+   "notes": "SSE text/event-stream"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/node/delegations/{id}/cancel"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/node/artifacts/{ref}",
+   "notes": "metadata only, never file bodies"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/node/heartbeat",
+   "body": "{node_id*, load}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/node/capabilities/refresh",
+   "body": "{concise capability advertisement}"
+  }
+ ]
+}

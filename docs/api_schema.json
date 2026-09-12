@@ -1,0 +1,161 @@
+{
+ "api": "v1",
+ "compat": {
+  "runtime": "0.6",
+  "api": "v1",
+  "protocol": "0.4",
+  "protocol_accepts": [
+   "0.1",
+   "0.2",
+   "0.3",
+   "0.4",
+   ""
+  ],
+  "config_schema": 2,
+  "prompts": 1,
+  "client_sdk": "0.6",
+  "notes": "API v1 stable since 0.4; protocol 0.4 wire-compatible; 0.1-0.3 action formats still accepted; config schema 2 migrates v0.3/v0.4/v0.5 files with warnings; v0.4/v0.5 client operations unchanged"
+ },
+ "auth": "optional Bearer token; 401 on mismatch",
+ "errors": {
+  "400": "malformed JSON / bad value",
+  "401": "invalid token",
+  "403": "workspace outside roots",
+  "404": "unknown route/id",
+  "405": "method not allowed",
+  "409": "conflict (active tasks)",
+  "413": "request too large",
+  "429": "rate limited",
+  "500": "internal error"
+ },
+ "routes": [
+  {
+   "method": "GET",
+   "path": "/health"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/capabilities"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/models"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/diagnostics"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/selfcheck"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/schema"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions?status=&workspace=&since="
+  },
+  {
+   "method": "POST",
+   "path": "/v1/sessions",
+   "body": "{workspace*, mode, approval, model, roles, profile, owner_authorized, network_policy}"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}/status"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/sessions/{id}/tasks",
+   "body": "{text*, idempotency_key, parent_task_id}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/sessions/{id}/revise",
+   "body": "{task_id*, instruction*}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/sessions/{id}/cancel",
+   "body": "{task_id*}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/sessions/{id}/final",
+   "body": "{task_id*, decision: accept|revise|rollback|cancel, note}"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}/events?since="
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}/events/stream",
+   "notes": "SSE, Last-Event-ID recovery, polling fallback"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/sessions/{id}/approvals/{aid}",
+   "body": "{decision: approve-once|approve-session|deny}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/sessions/{id}/rollback",
+   "body": "{label}"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}/diff?target=&path=&label="
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}/manifest"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}/scorecard"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}/timeline"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/sessions/{id}/export?format=json|markdown|jsonl"
+  },
+  {
+   "method": "DELETE",
+   "path": "/v1/sessions/{id}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/stop",
+   "body": "{reason}"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/caps"
+  }
+ ],
+ "transitions": [
+  "QUEUED",
+  "PLANNING",
+  "EXECUTING",
+  "WAITING_APPROVAL",
+  "TESTING",
+  "REVIEWING",
+  "REVISING",
+  "COMPLETED",
+  "FAILED",
+  "CANCELLED",
+  "ROLLED_BACK",
+  "INTERRUPTED",
+  "WAITING_FINAL_APPROVAL"
+ ]
+}

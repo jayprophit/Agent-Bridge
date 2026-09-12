@@ -1,0 +1,235 @@
+{
+ "results": [
+  {
+   "category": "device_profile",
+   "status": "PASS",
+   "duration_s": 30.05,
+   "detail": {
+    "device_class": "desktop",
+    "runtime_role": "CONSTRAINED_RUNTIME",
+    "cpu": "Intel(R) Core(TM) i7 CPU 870 @ 2.93GHz",
+    "ram_mb": 16343,
+    "gpu": "NVIDIA GeForce GTX 1050 Ti",
+    "camera": true,
+    "microphone": true,
+    "package_managers": [
+     "pip",
+     "npm",
+     "node",
+     "winget",
+     "choco",
+     "git"
+    ]
+   }
+  },
+  {
+   "category": "runtime_provider_discovery",
+   "status": "PASS",
+   "duration_s": 1.2,
+   "detail": {
+    "runtimes": [
+     [
+      "ollama",
+      "OLLAMA_COMPATIBLE",
+      7
+     ]
+    ]
+   }
+  },
+  {
+   "category": "model_discovery",
+   "status": "PASS",
+   "duration_s": 0.63,
+   "detail": {
+    "model_count": 7
+   }
+  },
+  {
+   "category": "benchmark_calibration",
+   "status": "PASS",
+   "duration_s": 27.54,
+   "detail": {
+    "models_with_history": 4,
+    "profile": "BALANCED",
+    "overrides": 5
+   }
+  },
+  {
+   "category": "ide_discovery",
+   "status": "PASS",
+   "duration_s": 0.0,
+   "detail": {
+    "ides": [
+     "VS Code",
+     "Cursor"
+    ]
+   }
+  },
+  {
+   "category": "agent_discovery",
+   "status": "PASS",
+   "duration_s": 0.08,
+   "detail": {
+    "default_agent": "runtime-owned",
+    "external_agents_registered": 0
+   }
+  },
+  {
+   "category": "browser",
+   "status": "PASS",
+   "duration_s": 0.0,
+   "detail": {
+    "browser": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+   }
+  },
+  {
+   "category": "tts",
+   "status": "SKIPPED_NOT_INSTALLED",
+   "duration_s": 0.0,
+   "detail": {
+    "reason": "no local TTS backend (win32com missing)"
+   }
+  },
+  {
+   "category": "stt_probe",
+   "status": "SKIPPED_NOT_INSTALLED",
+   "duration_s": 0.0,
+   "detail": {
+    "reason": "no local STT backend configured"
+   }
+  },
+  {
+   "category": "vision_probe",
+   "status": "SKIPPED_PROVIDER_REQUIRED",
+   "duration_s": 0.22,
+   "detail": {
+    "reason": "no vision-capable model verified (qwen3.5 vision advertised but empty on live probe); DOM tools work"
+   }
+  },
+  {
+   "category": "image_provider_probe",
+   "status": "SKIPPED_NOT_INSTALLED",
+   "duration_s": 4.46,
+   "detail": {
+    "reason": "no local image server on :7860/:8188"
+   }
+  },
+  {
+   "category": "ffmpeg_probe",
+   "status": "SKIPPED_NOT_INSTALLED",
+   "duration_s": 0.06,
+   "detail": {
+    "reason": "ffmpeg not on PATH"
+   }
+  },
+  {
+   "category": "audio_backend",
+   "status": "PASS",
+   "duration_s": 0.0,
+   "detail": {
+    "backend": "stdlib wave decode only; no record/play backend"
+   }
+  },
+  {
+   "category": "ocr_backend",
+   "status": "SKIPPED_NOT_INSTALLED",
+   "duration_s": 0.08,
+   "detail": {
+    "reason": "tesseract not on PATH"
+   }
+  },
+  {
+   "category": "package_policy",
+   "status": "PASS",
+   "duration_s": 0.32,
+   "detail": {
+    "list_search": "READ_ONLY",
+    "mutating": "INSTALL-gated",
+    "detected_managers": [
+     "pip",
+     "npm",
+     "node",
+     "winget",
+     "choco",
+     "git"
+    ]
+   }
+  },
+  {
+   "category": "gui_probe",
+   "status": "PASS",
+   "duration_s": 0.0,
+   "detail": {
+    "display": "1920x1080"
+   }
+  },
+  {
+   "category": "owner_full_access",
+   "status": "PASS",
+   "duration_s": 0.08,
+   "detail": {
+    "local_gate_present": true,
+    "remote_policy": "REMOTE_OWNER_DISABLED by default (nodes.NodeServerState)"
+   }
+  },
+  {
+   "category": "safe_profiles",
+   "status": "PASS",
+   "duration_s": 0.0,
+   "detail": {
+    "profile_gate": "enforced"
+   }
+  },
+  {
+   "category": "node_localhost_transport",
+   "status": "PASS",
+   "duration_s": 0.59,
+   "detail": {
+    "health": "ok",
+    "security_mode": "PLAINTEXT_LOOPBACK"
+   }
+  },
+  {
+   "category": "pairing",
+   "status": "PASS",
+   "duration_s": 0.0,
+   "detail": {
+    "pairing": "challenge-response ok"
+   }
+  },
+  {
+   "category": "privacy_routing",
+   "status": "PASS",
+   "duration_s": 0.0,
+   "detail": {
+    "route": "local"
+   }
+  },
+  {
+   "category": "tool_capability_audit",
+   "status": "PASS",
+   "duration_s": 0.31,
+   "detail": {
+    "total": 350,
+    "counts": {
+     "IMPLEMENTED_VERIFIED": 4,
+     "IMPLEMENTED_UNVERIFIED": 262,
+     "INTERFACE_ONLY": 0,
+     "PROVIDER_REQUIRED": 67,
+     "MODEL_REQUIRED": 0,
+     "NOT_INSTALLED": 13,
+     "DEVICE_REQUIRED": 0,
+     "ADMIN_REQUIRED": 0,
+     "UNSUPPORTED_PLATFORM": 0,
+     "DEGRADED": 0,
+     "DISABLED": 4
+    }
+   }
+  }
+ ],
+ "summary": {
+  "PASS": 16,
+  "SKIPPED_NOT_INSTALLED": 5,
+  "SKIPPED_PROVIDER_REQUIRED": 1
+ }
+}

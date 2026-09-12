@@ -1,0 +1,38 @@
+{
+ "baseline": "377/377 pre-convergence",
+ "tests": {
+  "discovered": 400,
+  "passed": 400,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_s": 455.273,
+  "test_files": 45
+ },
+ "acceptance": {
+  "PASS": 16,
+  "SKIPPED_NOT_INSTALLED": 5,
+  "SKIPPED_PROVIDER_REQUIRED": 1
+ },
+ "freeze_ready": true,
+ "real_network_localhost_verified": true,
+ "real_cross_device_verified": false,
+ "real_cross_device_status": "DEVICE_REQUIRED",
+ "versions": {
+  "runtime": "0.7.0",
+  "api": "v1",
+  "session_protocol": "0.4 (wire-compatible, unchanged from v0.6)",
+  "config_schema": 2,
+  "prompt_profile": 1,
+  "benchmark_schema": "1.0.0",
+  "benchmark_suite": "1.0.0",
+  "node_protocol": {
+   "name": "agent-bridge-node",
+   "version": "1.0",
+   "min_supported": "1.0",
+   "max_supported": "1.0"
+  },
+  "capabilities_schema": "1.0",
+  "note": "v0.6 core versions.py frozen (runtime 0.6 labels refer to migrated core); v0.7 layer uses 0.7.0 record versions"
+ }
+}

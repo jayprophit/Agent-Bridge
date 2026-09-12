@@ -1,0 +1,79 @@
+{
+ "release_version": "Agent Bridge v0.7.0",
+ "freeze_timestamp": "2026-09-11T12:32:32.867204+00:00",
+ "canonical_path": "C:\\Users\\jpowe\\Desktop\\OpenCode-Agent-Test\\agent_bridge_v07",
+ "tests": {
+  "discovered": 400,
+  "passed": 400,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_s": 394.454,
+  "test_files": 45
+ },
+ "tool_counts": {
+  "IMPLEMENTED_VERIFIED": 4,
+  "IMPLEMENTED_UNVERIFIED": 262,
+  "INTERFACE_ONLY": 0,
+  "PROVIDER_REQUIRED": 67,
+  "MODEL_REQUIRED": 0,
+  "NOT_INSTALLED": 13,
+  "DEVICE_REQUIRED": 0,
+  "ADMIN_REQUIRED": 0,
+  "UNSUPPORTED_PLATFORM": 0,
+  "DEGRADED": 0,
+  "DISABLED": 4
+ },
+ "total_registered_tools": 350,
+ "registry_counts": {
+  "ToolRegistry": 350,
+  "ModelRegistry": 7,
+  "ProviderRegistry": 1,
+  "AgentRegistry": 0,
+  "IDERegistry": 2,
+  "NodeRegistry": 1,
+  "WorkspaceRegistry": 0,
+  "ArtifactRegistry": 0
+ },
+ "versions": {
+  "runtime": "0.7.0",
+  "api": "v1",
+  "session_protocol": "0.4 (wire-compatible, unchanged from v0.6)",
+  "config_schema": 2,
+  "prompt_profile": 1,
+  "benchmark_schema": "1.0.0",
+  "benchmark_suite": "1.0.0",
+  "node_protocol": {
+   "name": "agent-bridge-node",
+   "version": "1.0",
+   "min_supported": "1.0",
+   "max_supported": "1.0"
+  },
+  "capabilities_schema": "1.0",
+  "note": "v0.6 core versions.py frozen (runtime 0.6 labels refer to migrated core); v0.7 layer uses 0.7.0 record versions"
+ },
+ "windows_acceptance": {
+  "PASS": 16,
+  "SKIPPED_NOT_INSTALLED": 5,
+  "SKIPPED_PROVIDER_REQUIRED": 1
+ },
+ "transports": {
+  "http_localhost": "IMPLEMENTED_VERIFIED",
+  "https_localhost": "IMPLEMENTED_VERIFIED_LOCALHOST",
+  "physical_cross_device": "DEVICE_REQUIRED"
+ },
+ "security": {
+  "regression_tests": "43 PASS (33 transport + 10 security)",
+  "bypass_found": false,
+  "audit": "redacted, no exfiltration route"
+ },
+ "protected_project_integrity": {
+  "agent_bridge_v01_v06": "untouched",
+  "mat_genesis_integrations": "untouched"
+ },
+ "known_limitations": "see V07_KNOWN_LIMITATIONS.md",
+ "source_manifest": "V07_SOURCE_HASHES.json",
+ "source_manifest_sha256": "ede12ab48ec7c880ea7f118e2c3ced59c8b610d9a3db76183dec35852bbdb545",
+ "source_file_count": 219,
+ "FREEZE_READY": true
+}

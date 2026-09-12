@@ -173,9 +173,51 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Cursor  
-#  Cursor is an AI-powered code editor.`.cursorignore` specifies files/directories to 
+# Cursor
+#  Cursor is an AI-powered code editor.`.cursorignore` specifies files/directories to
 #  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Agent Bridge runtime / session state (never commit live state)
+.bridge/
+*.log
+bridge_run.log
+bridge_events.jsonl
+audit.jsonl
+
+# Temporary TLS material
+*.pem
+*.key
+*.pfx
+*.p12
+
+# Temporary test workspaces
+sandbox_*/
+ab_*_test/
+ab_ui_shot_*/
+review_fix_e2e_ws/
+owner_full_access_test/
+test_output.txt
+full_run.txt
+
+# Regenerable hardware-probe output (never commit machine diagnostics)
+dxdiag_output.txt
+ab_dxdiag_output.txt
+
+# Generated raw camera captures / temporary microphone-audio capture
+*.wav
+*.mp3
+*.mp4
+*.mov
+*.avi
+*.pcm
+raw_front_*.bin
+raw_*_*.bin
+
+# Secrets / credentials (never commit; use env vars + AGENT_BRIDGE_ROOT)
+secrets/
+credentials/
+.env
+.env.*

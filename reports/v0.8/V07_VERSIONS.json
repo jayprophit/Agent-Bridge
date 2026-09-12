@@ -1,0 +1,17 @@
+{
+ "runtime": "0.7.0",
+ "api": "v1",
+ "session_protocol": "0.4 (wire-compatible, unchanged from v0.6)",
+ "config_schema": 2,
+ "prompt_profile": 1,
+ "benchmark_schema": "1.0.0",
+ "benchmark_suite": "1.0.0",
+ "node_protocol": {
+  "name": "agent-bridge-node",
+  "version": "1.0",
+  "min_supported": "1.0",
+  "max_supported": "1.0"
+ },
+ "capabilities_schema": "1.0",
+ "note": "v0.6 core versions.py frozen (runtime 0.6 labels refer to migrated core); v0.7 layer uses 0.7.0 record versions"
+}

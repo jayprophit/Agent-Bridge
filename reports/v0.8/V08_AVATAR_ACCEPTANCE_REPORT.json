@@ -1,0 +1,56 @@
+{
+  "browser_three_js": {
+    "suite": "tests.test_ui_acceptance (real headless Edge over loopback)",
+    "tests": 6,
+    "passed": 6,
+    "duration_s": 96.652,
+    "canvas_rendered": true,
+    "glb_loaded": true,
+    "glb_nodes": ["Head", "Jaw", "EyeL", "EyeR"],
+    "avatar_visible": true,
+    "animation_states": ["THINKING", "EMOTION", "SPEAKING", "VISEME", "SUCCESS", "TOOL_RUNNING"],
+    "screenshot_pixels": true,
+    "screenshot_min_bytes": 10240
+  },
+  "glb_asset": {
+    "path": "ui/assets/reference-avatar.glb",
+    "bytes": 12272,
+    "magic": "glTF",
+    "external_asset_required": false
+  },
+  "protocol": {
+    "events": 14,
+    "expressions": ["neutral", "happy", "concerned", "thinking", "surprised", "confident"],
+    "visemes": 15,
+    "presentation_profiles": ["MALE", "FEMALE", "NEUTRAL", "CUSTOM"]
+  },
+  "lip_sync": {
+    "mode": "AUDIO_AMPLITUDE_FALLBACK",
+    "detail": "System.Speech provides no per-phoneme timestamps here; 15-viseme jaw table drives the Jaw node. NOT claimed phoneme-perfect."
+  },
+  "expressions_gestures": "VERIFIED (protocol + reference renderer + browser demo)",
+  "character_creator": {
+    "modes": ["PRESET", "CUSTOMIZE_FROM_PRESET", "RANDOM_GENERATE", "IMAGE_REFERENCE", "GUIDED_CAMERA_CAPTURE", "IMPORT_GLTF", "IMPORT_GLB", "IMPORT_VRM"],
+    "simple_mode": true,
+    "advanced_mode": true,
+    "appearance_categories": 26,
+    "voice_independent": true,
+    "personality_separate": true,
+    "history": ["undo", "redo", "reset_section", "reset_all", "save", "duplicate", "versions"],
+    "geometry_morphs": "PROVIDER_REQUIRED (stored as profile, never faked as rendered)"
+  },
+  "guided_capture": {
+    "views": ["front", "head_left", "head_right", "head_up", "head_down", "left_profile", "right_profile"],
+    "permission_required": true,
+    "raw_kind": "EPHEMERAL_RAW_CAPTURE",
+    "default": "DELETE_AFTER_DERIVATION (proven: files gone)",
+    "reconstruction": "PROVIDER_REQUIRED"
+  },
+  "chat_work": {
+    "session_continuity": true,
+    "dock_left_right": true,
+    "shared_session": true,
+    "no_second_agent": true
+  },
+  "status": "PASS"
+}

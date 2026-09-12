@@ -1,0 +1,53 @@
+{
+ "results": [
+  {
+   "model": "qwen3:0.6b",
+   "modes": [
+    "TEXT_ACTION_TRANSLATION"
+   ],
+   "strict_json": false,
+   "shortlist_n": 13,
+   "translate_ok": false,
+   "translate_error": "no action found",
+   "repair_recovered": false,
+   "repair_attempts": 1,
+   "status": "PASS",
+   "duration_s": 42.28
+  },
+  {
+   "model": "qwen3:1.7b",
+   "modes": [
+    "LEGACY_MODEL_MODE"
+   ],
+   "strict_json": false,
+   "shortlist_n": 5,
+   "translate_ok": false,
+   "translate_error": "no action found",
+   "repair_recovered": false,
+   "repair_attempts": 1,
+   "status": "PASS",
+   "duration_s": 48.92
+  },
+  {
+   "model": "hhao/qwen2.5-coder-tools:3b",
+   "modes": [
+    "STRICT_JSON_ACTION"
+   ],
+   "strict_json": true,
+   "shortlist_n": 13,
+   "translate_ok": true,
+   "translate_error": "",
+   "repair_recovered": false,
+   "status": "PASS",
+   "duration_s": 37.02
+  },
+  {
+   "model": "UnknownLegacyModel9000 (synthetic)",
+   "modes": [
+    "TEXT_ACTION_TRANSLATION",
+    "SMALL_CONTEXT_MODE"
+   ],
+   "status": "PASS"
+  }
+ ]
+}

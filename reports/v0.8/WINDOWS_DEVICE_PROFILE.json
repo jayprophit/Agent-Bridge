@@ -1,0 +1,79 @@
+{
+  "device_id": "device-c23db39ae74e",
+  "device_class": "desktop",
+  "os": "windows",
+  "os_version": "10.0.19045",
+  "architecture": "amd64",
+  "cpu": {
+    "vendor": "Intel",
+    "model": "Intel(R) Core(TM) i7 CPU 870 @ 2.93GHz",
+    "architecture": "amd64",
+    "physical_cores": 4,
+    "logical_cores": 8,
+    "frequency_mhz": 2934
+  },
+  "gpu": {
+    "vendor": "NVIDIA",
+    "model": "NVIDIA GeForce GTX 1050 Ti",
+    "vram_mb": 4096,
+    "architecture": "",
+    "cuda_available": false,
+    "metal_available": false,
+    "vulkan_available": true,
+    "directml_available": true
+  },
+  "accelerators": [
+    {
+      "type": "npu",
+      "vendor": "",
+      "model": "",
+      "available": false
+    },
+    {
+      "type": "tpu",
+      "vendor": "",
+      "model": "",
+      "available": false
+    }
+  ],
+  "memory": {
+    "total_mb": 16343,
+    "available_mb": 4249,
+    "swap_total_mb": 18784,
+    "swap_available_mb": 16423
+  },
+  "storage": {
+    "total_mb": 1907138,
+    "free_mb": 1407643,
+    "drive_type": "hdd"
+  },
+  "battery": {
+    "present": false,
+    "charging": false,
+    "level_percent": 0,
+    "time_remaining_minutes": 0
+  },
+  "network": {
+    "connected": true,
+    "interface_type": "ethernet",
+    "bandwidth_mbps": 0
+  },
+  "display": {
+    "resolution": "1920x1080",
+    "scaling": 1.0,
+    "color_depth": 0
+  },
+  "local_inference": true,
+  "browser_available": true,
+  "filesystem_write": true,
+  "background_agent": true,
+  "admin_possible": false,
+  "performance_profile": "BALANCED",
+  "runtime_role": "CONSTRAINED_RUNTIME",
+  "capabilities": [
+    "gpu",
+    "network"
+  ],
+  "limitations": [],
+  "timestamp": 150802.7855803
+}

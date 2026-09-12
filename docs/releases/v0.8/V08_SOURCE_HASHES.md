@@ -1,0 +1,4 @@
+# v0.8 Source Hashes
+
+Files: 354, bytes: 5896926
+Manifest SHA-256: 865a07296873a3728a8854c04cbc6cd9550fdc378902994644e62366116d81fd

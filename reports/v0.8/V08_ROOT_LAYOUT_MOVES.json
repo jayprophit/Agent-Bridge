@@ -1,0 +1,837 @@
+{
+ "moves": [
+  {
+   "old_path": "ADAPTIVE_BALANCING.md",
+   "new_path": "docs/architecture/ADAPTIVE_BALANCING.md",
+   "hash_before": "fa4d735197fb5208f619f95de26c1773eb389adca53389a9914cbfd3815af680",
+   "hash_after": "fa4d735197fb5208f619f95de26c1773eb389adca53389a9914cbfd3815af680",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "AUDIO_ARCHITECTURE.md",
+   "new_path": "docs/architecture/AUDIO_ARCHITECTURE.md",
+   "hash_before": "21f6951452ee5db3040f7b0ca5d80b4f3ddd31cc94e61233a6902e0a19cbfaf1",
+   "hash_after": "21f6951452ee5db3040f7b0ca5d80b4f3ddd31cc94e61233a6902e0a19cbfaf1",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "AVATAR_ARCHITECTURE.md",
+   "new_path": "docs/architecture/AVATAR_ARCHITECTURE.md",
+   "hash_before": "844ee47407c3eb6438c47534f3fb7cea87fcfec27cdbef17645319977cad6653",
+   "hash_after": "844ee47407c3eb6438c47534f3fb7cea87fcfec27cdbef17645319977cad6653",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "AVATAR_EVENT_PROTOCOL.md",
+   "new_path": "docs/architecture/AVATAR_EVENT_PROTOCOL.md",
+   "hash_before": "d3c3fc45792e2da6a19500a25089634cb4dc5692fdd8169ed675fef5654f6e89",
+   "hash_after": "d3c3fc45792e2da6a19500a25089634cb4dc5692fdd8169ed675fef5654f6e89",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "CHAT_WORK_UI.md",
+   "new_path": "docs/architecture/CHAT_WORK_UI.md",
+   "hash_before": "4e811be1bdcdecd9723ef5e054f4708e670f1d3a295f65ac641a70535d3ac49e",
+   "hash_after": "4e811be1bdcdecd9723ef5e054f4708e670f1d3a295f65ac641a70535d3ac49e",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "COMMUNICATIONS_ARCHITECTURE.md",
+   "new_path": "docs/architecture/COMMUNICATIONS_ARCHITECTURE.md",
+   "hash_before": "3a7501a257dad11772791b2412a5fd3e45b860fd5594c685843dab5e90e072a3",
+   "hash_after": "3a7501a257dad11772791b2412a5fd3e45b860fd5594c685843dab5e90e072a3",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "CROSS_DEVICE_ARCHITECTURE.md",
+   "new_path": "docs/architecture/CROSS_DEVICE_ARCHITECTURE.md",
+   "hash_before": "58cec128c237c01c82942c64fb1ec2c8a1a7a2a10bb5bdaf361d44314c6ad789",
+   "hash_after": "58cec128c237c01c82942c64fb1ec2c8a1a7a2a10bb5bdaf361d44314c6ad789",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "DEVICE_IO_CAPABILITIES.md",
+   "new_path": "docs/architecture/DEVICE_IO_CAPABILITIES.md",
+   "hash_before": "4446e71cb59e5c41da2d499c33e6e73b9263ce1e9419f3bcdd96103e8d9d626d",
+   "hash_after": "4446e71cb59e5c41da2d499c33e6e73b9263ce1e9419f3bcdd96103e8d9d626d",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "EMAIL_TOOLS.md",
+   "new_path": "docs/architecture/EMAIL_TOOLS.md",
+   "hash_before": "a6e1ab67b0c7cf295338a4541b701d34a1266045fbd78bd0ffd346aa1348415e",
+   "hash_after": "a6e1ab67b0c7cf295338a4541b701d34a1266045fbd78bd0ffd346aa1348415e",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "IDE_EMBEDDING.md",
+   "new_path": "docs/architecture/IDE_EMBEDDING.md",
+   "hash_before": "6e0bd6a5d26c5ffab7829b312a0dd233207f87681ad4f17285edbfa87b902eb0",
+   "hash_after": "6e0bd6a5d26c5ffab7829b312a0dd233207f87681ad4f17285edbfa87b902eb0",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "IMAGE_PROVIDER_ARCHITECTURE.md",
+   "new_path": "docs/architecture/IMAGE_PROVIDER_ARCHITECTURE.md",
+   "hash_before": "2c34b82b3edd9aac38b3ba0a04373a56c2b5ae89a5ee1748ab68b4b572c724d1",
+   "hash_after": "2c34b82b3edd9aac38b3ba0a04373a56c2b5ae89a5ee1748ab68b4b572c724d1",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "LEGACY_MODEL_COMPATIBILITY.md",
+   "new_path": "docs/architecture/LEGACY_MODEL_COMPATIBILITY.md",
+   "hash_before": "45ac6c460a83325abbf51f8d784f2dd5dd5f3d4b0dc87a859e31f24ae0fb7209",
+   "hash_after": "45ac6c460a83325abbf51f8d784f2dd5dd5f3d4b0dc87a859e31f24ae0fb7209",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "LOCAL_NETWORK_TESTING.md",
+   "new_path": "docs/architecture/LOCAL_NETWORK_TESTING.md",
+   "hash_before": "9d374bb8184fd2c15865ed11729cb1bd0bf2b0ffc3741d494ce093867f93be86",
+   "hash_after": "9d374bb8184fd2c15865ed11729cb1bd0bf2b0ffc3741d494ce093867f93be86",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "MULTIMODAL_ARCHITECTURE.md",
+   "new_path": "docs/architecture/MULTIMODAL_ARCHITECTURE.md",
+   "hash_before": "ea2be0f7fa5fe7b3c58e0a38dc0ff105f22af1c40a67bdae7b85fc8d515284ad",
+   "hash_after": "ea2be0f7fa5fe7b3c58e0a38dc0ff105f22af1c40a67bdae7b85fc8d515284ad",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "NODE_PROTOCOL.md",
+   "new_path": "docs/architecture/NODE_PROTOCOL.md",
+   "hash_before": "b11cb94e34bed4bcd51331d2dee6664b7afd421537ef5d384ac695ca84aa9b7a",
+   "hash_after": "b11cb94e34bed4bcd51331d2dee6664b7afd421537ef5d384ac695ca84aa9b7a",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "NODE_REGISTRY.md",
+   "new_path": "docs/architecture/NODE_REGISTRY.md",
+   "hash_before": "9ce7f26a7fa38e429fb3143e51923a5f5cc3c473e9a2ce7ae55107f49237d576",
+   "hash_after": "9ce7f26a7fa38e429fb3143e51923a5f5cc3c473e9a2ce7ae55107f49237d576",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "NODE_TRANSPORT.md",
+   "new_path": "docs/architecture/NODE_TRANSPORT.md",
+   "hash_before": "bba794076aeae6e32b2dda98343d69e24fb1f20864f0988b8ad74f53664b39c7",
+   "hash_after": "bba794076aeae6e32b2dda98343d69e24fb1f20864f0988b8ad74f53664b39c7",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "PAIRING_AND_TRUST.md",
+   "new_path": "docs/architecture/PAIRING_AND_TRUST.md",
+   "hash_before": "d55354e34cea6c3490aa26a0c7689652913239f10352d5a6d0b1a82058ea1c7e",
+   "hash_after": "d55354e34cea6c3490aa26a0c7689652913239f10352d5a6d0b1a82058ea1c7e",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "PRIVACY_ROUTING.md",
+   "new_path": "docs/architecture/PRIVACY_ROUTING.md",
+   "hash_before": "afa8e2b2fc0fc34f1cd3ccf285bbd3ec2d00022ea2280fc9694ae245e876410e",
+   "hash_after": "afa8e2b2fc0fc34f1cd3ccf285bbd3ec2d00022ea2280fc9694ae245e876410e",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "REMOTE_SECURITY.md",
+   "new_path": "docs/architecture/REMOTE_SECURITY.md",
+   "hash_before": "7286f5e39ba2e46f09ad30ef404a782a77e8564d3f3d7f6058915e223899e941",
+   "hash_after": "7286f5e39ba2e46f09ad30ef404a782a77e8564d3f3d7f6058915e223899e941",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "RESOURCE_ORCHESTRATION.md",
+   "new_path": "docs/architecture/RESOURCE_ORCHESTRATION.md",
+   "hash_before": "15ba7e306769fe37732ab701c08747f859f1b5802977295cf938d15ca10075d5",
+   "hash_after": "15ba7e306769fe37732ab701c08747f859f1b5802977295cf938d15ca10075d5",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "SMALL_MODEL_RUNTIME.md",
+   "new_path": "docs/architecture/SMALL_MODEL_RUNTIME.md",
+   "hash_before": "e084f739647c110cdee3d41ab8f32bf133e77cb675c8a6521f2a98ff2bc51461",
+   "hash_after": "e084f739647c110cdee3d41ab8f32bf133e77cb675c8a6521f2a98ff2bc51461",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "TASK_DELEGATION.md",
+   "new_path": "docs/architecture/TASK_DELEGATION.md",
+   "hash_before": "ae6c337940a3479ead4fdd12bf914b3718c968307099a9b7706ceb887bdf3193",
+   "hash_after": "ae6c337940a3479ead4fdd12bf914b3718c968307099a9b7706ceb887bdf3193",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "TELEPHONY_AGENT.md",
+   "new_path": "docs/architecture/TELEPHONY_AGENT.md",
+   "hash_before": "dc1b4bf2b27d4e7d87099024d29430fead4dd1f6d432230c3c2af9499e6ef61a",
+   "hash_after": "dc1b4bf2b27d4e7d87099024d29430fead4dd1f6d432230c3c2af9499e6ef61a",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "THREEJS_REFERENCE_UI.md",
+   "new_path": "docs/architecture/THREEJS_REFERENCE_UI.md",
+   "hash_before": "b6c86e9a39bc857451fda929eb0e0d786fa45de35955a5360cd7e7d4bbc9c651",
+   "hash_after": "b6c86e9a39bc857451fda929eb0e0d786fa45de35955a5360cd7e7d4bbc9c651",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "VISION_AND_OCR.md",
+   "new_path": "docs/architecture/VISION_AND_OCR.md",
+   "hash_before": "de3efe901b6a1c31181bbb2c84f537e755d86097ad8546a9d94d5ee00c7f70a0",
+   "hash_after": "de3efe901b6a1c31181bbb2c84f537e755d86097ad8546a9d94d5ee00c7f70a0",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "VOICE_AGENT.md",
+   "new_path": "docs/architecture/VOICE_AGENT.md",
+   "hash_before": "a03ce38c9a11199e850a68cecd394d562d76e1d792c59b47e77574a606f2e2e0",
+   "hash_after": "a03ce38c9a11199e850a68cecd394d562d76e1d792c59b47e77574a606f2e2e0",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "WORKLOAD_PLACEMENT.md",
+   "new_path": "docs/architecture/WORKLOAD_PLACEMENT.md",
+   "hash_before": "17b7bdb6a29f300a73e186e4e9cf5cdb8b8afb055d96e1650f5408788a1d5cff",
+   "hash_after": "17b7bdb6a29f300a73e186e4e9cf5cdb8b8afb055d96e1650f5408788a1d5cff",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "LOCAL_V07_ACCEPTANCE_REPORT.md",
+   "new_path": "docs/releases/v0.8/LOCAL_V07_ACCEPTANCE_REPORT.md",
+   "hash_before": "412509aeddf28cf7e2a19f3563a393b3adb885934da17f8d7ca8707b66d45609",
+   "hash_after": "412509aeddf28cf7e2a19f3563a393b3adb885934da17f8d7ca8707b66d45609",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "MODEL_BENCHMARK_RESULTS.md",
+   "new_path": "docs/releases/v0.8/MODEL_BENCHMARK_RESULTS.md",
+   "hash_before": "b5b649a1ccc4d7fdec8d613fc0b9165e4d2e8878fde3e0c172ac907d00729895",
+   "hash_after": "b5b649a1ccc4d7fdec8d613fc0b9165e4d2e8878fde3e0c172ac907d00729895",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "RUNTIME_CALIBRATION.md",
+   "new_path": "docs/releases/v0.8/RUNTIME_CALIBRATION.md",
+   "hash_before": "dc35a2724df30cd88330a5b5e34fc30612fd1bfc087969b61f97d179162f8fd9",
+   "hash_after": "dc35a2724df30cd88330a5b5e34fc30612fd1bfc087969b61f97d179162f8fd9",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "TOOL_CAPABILITY_MATRIX.md",
+   "new_path": "docs/releases/v0.8/TOOL_CAPABILITY_MATRIX.md",
+   "hash_before": "4f6e95bb3598c28506e41d0249fedfb230a6c804c9140182c6973bab1213508c",
+   "hash_after": "4f6e95bb3598c28506e41d0249fedfb230a6c804c9140182c6973bab1213508c",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_CAPABILITY_SUMMARY.md",
+   "new_path": "docs/releases/v0.8/V07_CAPABILITY_SUMMARY.md",
+   "hash_before": "80b1ce1c22e5789ff8454448b47d4fd62a47639ef0783f7150c73b7aa14cebff",
+   "hash_after": "80b1ce1c22e5789ff8454448b47d4fd62a47639ef0783f7150c73b7aa14cebff",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_FINAL_ACCEPTANCE_REPORT.md",
+   "new_path": "docs/releases/v0.8/V07_FINAL_ACCEPTANCE_REPORT.md",
+   "hash_before": "938d14579cde4bcbd59f77253e5c3b6e28a4e8cb9e4763dfa1e6b07498b1481d",
+   "hash_after": "938d14579cde4bcbd59f77253e5c3b6e28a4e8cb9e4763dfa1e6b07498b1481d",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_KNOWN_LIMITATIONS.md",
+   "new_path": "docs/releases/v0.8/V07_KNOWN_LIMITATIONS.md",
+   "hash_before": "d24fe6e6cda3cf01279b02fee3ff405a635af89fb1be15907b516e02df13f8b7",
+   "hash_after": "d24fe6e6cda3cf01279b02fee3ff405a635af89fb1be15907b516e02df13f8b7",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_PROGRESS.md",
+   "new_path": "docs/releases/v0.8/V07_PROGRESS.md",
+   "hash_before": "72e73d783d8995fbcd1d9d4aa6d6474c3617b708d8796b7c698cf98ecafe0b15",
+   "hash_after": "72e73d783d8995fbcd1d9d4aa6d6474c3617b708d8796b7c698cf98ecafe0b15",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_RELEASE_MANIFEST.md",
+   "new_path": "docs/releases/v0.8/V07_RELEASE_MANIFEST.md",
+   "hash_before": "a85fa4fbcb1da583d888a7feff16c5e63f4d3ec2af98fa768524ba0a89037a33",
+   "hash_after": "a85fa4fbcb1da583d888a7feff16c5e63f4d3ec2af98fa768524ba0a89037a33",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_SECURITY_SUMMARY.md",
+   "new_path": "docs/releases/v0.8/V07_SECURITY_SUMMARY.md",
+   "hash_before": "c7f532d5585ce2823abb65872b7a18e2d70ee0cd0c3a2e44af4ec3d40e0b271c",
+   "hash_after": "c7f532d5585ce2823abb65872b7a18e2d70ee0cd0c3a2e44af4ec3d40e0b271c",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_TEST_SUMMARY.md",
+   "new_path": "docs/releases/v0.8/V07_TEST_SUMMARY.md",
+   "hash_before": "c4197bc147e24961d45c83003b3825e803c4cd02af489fba199fb307db40c031",
+   "hash_after": "c4197bc147e24961d45c83003b3825e803c4cd02af489fba199fb307db40c031",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_AVATAR_ACCEPTANCE_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_AVATAR_ACCEPTANCE_REPORT.md",
+   "hash_before": "b73278eceeb7b4273a339818e14abce307c91e4681d6857d06f2e5102d2dbb6a",
+   "hash_after": "b73278eceeb7b4273a339818e14abce307c91e4681d6857d06f2e5102d2dbb6a",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_DEPENDENCY_AUDIT.md",
+   "new_path": "docs/releases/v0.8/V08_DEPENDENCY_AUDIT.md",
+   "hash_before": "1ba3050b388c93d80f3a79c8a30d3f01135c5001836f73ecdfbf20d4a88af671",
+   "hash_after": "1ba3050b388c93d80f3a79c8a30d3f01135c5001836f73ecdfbf20d4a88af671",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FINAL_ACCEPTANCE_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_FINAL_ACCEPTANCE_REPORT.md",
+   "hash_before": "04d3603e71e39739815440d044ad56531857fb33d1f9d5837e1bd5a809375685",
+   "hash_after": "04d3603e71e39739815440d044ad56531857fb33d1f9d5837e1bd5a809375685",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FINAL_CONSOLIDATION_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_FINAL_CONSOLIDATION_REPORT.md",
+   "hash_before": "a58772ae774ca8991b7fdd5aa2ba178e69464eff976066df233e877567ace716",
+   "hash_after": "a58772ae774ca8991b7fdd5aa2ba178e69464eff976066df233e877567ace716",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FINAL_GAP_AUDIT.md",
+   "new_path": "docs/releases/v0.8/V08_FINAL_GAP_AUDIT.md",
+   "hash_before": "be33f450cfeee3a4c7da5bc1aa3047b5e3a19f3ba52f79874975921883ce59e7",
+   "hash_after": "be33f450cfeee3a4c7da5bc1aa3047b5e3a19f3ba52f79874975921883ce59e7",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FINAL_VERIFICATION_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_FINAL_VERIFICATION_REPORT.md",
+   "hash_before": "1209627b1ff925c38a8fa5d034c967bc37961ca612cf90b9a08ba254fb4e66e5",
+   "hash_after": "1209627b1ff925c38a8fa5d034c967bc37961ca612cf90b9a08ba254fb4e66e5",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FOLDER_RECONCILIATION.md",
+   "new_path": "docs/releases/v0.8/V08_FOLDER_RECONCILIATION.md",
+   "hash_before": "8f9a86dd2dd015e914221db88f027f39b9bb578159f3d99111cf8801dc8b20fa",
+   "hash_after": "8f9a86dd2dd015e914221db88f027f39b9bb578159f3d99111cf8801dc8b20fa",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_GAP_MATRIX.md",
+   "new_path": "docs/releases/v0.8/V08_GAP_MATRIX.md",
+   "hash_before": "caadff6d17439a4c6cc06b4f05072762ce62216e42eca70ace4b843e94f5be98",
+   "hash_after": "caadff6d17439a4c6cc06b4f05072762ce62216e42eca70ace4b843e94f5be98",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_LOCAL_ACCEPTANCE_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_LOCAL_ACCEPTANCE_REPORT.md",
+   "hash_before": "550f5716b88d8a866323d759a113960217fd864b17ba503039574140679a3c21",
+   "hash_after": "550f5716b88d8a866323d759a113960217fd864b17ba503039574140679a3c21",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_MODALITY_MATRIX.md",
+   "new_path": "docs/releases/v0.8/V08_MODALITY_MATRIX.md",
+   "hash_before": "6ca4661fd1dfcde37e970f95ad5891a38e4a6e414c66f45549978b748ea2a767",
+   "hash_after": "6ca4661fd1dfcde37e970f95ad5891a38e4a6e414c66f45549978b748ea2a767",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_OWNER_AUDIT_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_OWNER_AUDIT_REPORT.md",
+   "hash_before": "2b19eca2adf95fb95837268f9955a6471cce0652584702ba554b6c911fde33dc",
+   "hash_after": "2b19eca2adf95fb95837268f9955a6471cce0652584702ba554b6c911fde33dc",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_PRE_AUTONOMY_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_PRE_AUTONOMY_REPORT.md",
+   "hash_before": "6a27c5f0e61d8f1843973f7335fc96bad6b24ef404b5e70f77a43a8a6dc03405",
+   "hash_after": "6a27c5f0e61d8f1843973f7335fc96bad6b24ef404b5e70f77a43a8a6dc03405",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_PROGRESS.md",
+   "new_path": "docs/releases/v0.8/V08_PROGRESS.md",
+   "hash_before": "b0a7251d05466186293d1ba1500c1d1d2aa4634dae09b74c050e739c41763819",
+   "hash_after": "b0a7251d05466186293d1ba1500c1d1d2aa4634dae09b74c050e739c41763819",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_REALTIME_LATENCY_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_REALTIME_LATENCY_REPORT.md",
+   "hash_before": "a26721de5ffb4aa735f52646b2857a9084acb2f015443d106435f93edddc6b46",
+   "hash_after": "a26721de5ffb4aa735f52646b2857a9084acb2f015443d106435f93edddc6b46",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_RESOURCE_BALANCE_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_RESOURCE_BALANCE_REPORT.md",
+   "hash_before": "27bcaff4454e0a93229e59a503fd875daff2d86b974f648ed7ece126b96a8881",
+   "hash_after": "27bcaff4454e0a93229e59a503fd875daff2d86b974f648ed7ece126b96a8881",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_SECURITY_SUMMARY.md",
+   "new_path": "docs/releases/v0.8/V08_SECURITY_SUMMARY.md",
+   "hash_before": "7c4c7908378932799f8fe4c7ee923e75dec973e9ddd6a04e34d4d085766b714e",
+   "hash_after": "7c4c7908378932799f8fe4c7ee923e75dec973e9ddd6a04e34d4d085766b714e",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_STATE_INTEGRITY_REPORT.md",
+   "new_path": "docs/releases/v0.8/V08_STATE_INTEGRITY_REPORT.md",
+   "hash_before": "f488bf2acad6adaaae3e9d63bdb06d897176248c724ba73920a90aebf5c469bf",
+   "hash_after": "f488bf2acad6adaaae3e9d63bdb06d897176248c724ba73920a90aebf5c469bf",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_TOOL_CAPABILITY_MATRIX.md",
+   "new_path": "docs/releases/v0.8/V08_TOOL_CAPABILITY_MATRIX.md",
+   "hash_before": "2d7a53a8facbfbdbf3edbbff4b2c09f058d124351ab68ee3b359360ad95a0f6e",
+   "hash_after": "2d7a53a8facbfbdbf3edbbff4b2c09f058d124351ab68ee3b359360ad95a0f6e",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "DEPENDENCY_MANIFEST.json",
+   "new_path": "reports/v0.8/DEPENDENCY_MANIFEST.json",
+   "hash_before": "45faa14af0136705021f81b7f9b4c373a8737f3f08e2f6642ac01466369f7ea7",
+   "hash_after": "45faa14af0136705021f81b7f9b4c373a8737f3f08e2f6642ac01466369f7ea7",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "IDE_DISCOVERY_LOCAL.json",
+   "new_path": "reports/v0.8/IDE_DISCOVERY_LOCAL.json",
+   "hash_before": "dd98c1886a81c1e10f4c6b0c7aa477f8e95df715ffffe7bd95f6e483f0cd7be1",
+   "hash_after": "dd98c1886a81c1e10f4c6b0c7aa477f8e95df715ffffe7bd95f6e483f0cd7be1",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "integrity_baseline.json",
+   "new_path": "reports/v0.8/integrity_baseline.json",
+   "hash_before": "75d025304a6f79987fc51ad3860fa311b2d41bc35e7974ac8d0741bc7539717c",
+   "hash_after": "75d025304a6f79987fc51ad3860fa311b2d41bc35e7974ac8d0741bc7539717c",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "LOCAL_MODEL_INVENTORY.json",
+   "new_path": "reports/v0.8/LOCAL_MODEL_INVENTORY.json",
+   "hash_before": "3a6f05096d4a2af89ec74b8fb93595e209f96335bddc3dcd537435a99e1cba57",
+   "hash_after": "3a6f05096d4a2af89ec74b8fb93595e209f96335bddc3dcd537435a99e1cba57",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "LOCAL_PROVIDER_DISCOVERY.json",
+   "new_path": "reports/v0.8/LOCAL_PROVIDER_DISCOVERY.json",
+   "hash_before": "14b57197df4eb95056c46c4c365675c85affefcaf81ce4ccba7b0c0b1aa0c439",
+   "hash_after": "14b57197df4eb95056c46c4c365675c85affefcaf81ce4ccba7b0c0b1aa0c439",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "LOCAL_V07_ACCEPTANCE_REPORT.json",
+   "new_path": "reports/v0.8/LOCAL_V07_ACCEPTANCE_REPORT.json",
+   "hash_before": "73968132e4c60cabc0e7a261592f24a94318ea570333eff5c0350d37a6784040",
+   "hash_after": "73968132e4c60cabc0e7a261592f24a94318ea570333eff5c0350d37a6784040",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "MODEL_BENCHMARK_RESULTS.json",
+   "new_path": "reports/v0.8/MODEL_BENCHMARK_RESULTS.json",
+   "hash_before": "0c383ec6201f4316d67cfa6f9d0e6f0ad6df902370c1b973ff2bdb8faca789ef",
+   "hash_after": "0c383ec6201f4316d67cfa6f9d0e6f0ad6df902370c1b973ff2bdb8faca789ef",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "owner_e2e_result.json",
+   "new_path": "reports/v0.8/owner_e2e_result.json",
+   "hash_before": "73aec202de46784cbec95e478f414faed497fb4426f780f8f3bcac9b7674c43a",
+   "hash_after": "73aec202de46784cbec95e478f414faed497fb4426f780f8f3bcac9b7674c43a",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "RUNTIME_CALIBRATION.json",
+   "new_path": "reports/v0.8/RUNTIME_CALIBRATION.json",
+   "hash_before": "1b5add2093ad06a9bc886ddb137102d2ba581a6600d6ce5fc770bd02b4acd8b5",
+   "hash_after": "1b5add2093ad06a9bc886ddb137102d2ba581a6600d6ce5fc770bd02b4acd8b5",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "RUNTIME_TUNER_PROFILE.json",
+   "new_path": "reports/v0.8/RUNTIME_TUNER_PROFILE.json",
+   "hash_before": "6957b463ede737cc61328f9fc438d8601fb0426cd75a1193607e99b53477b67e",
+   "hash_after": "6957b463ede737cc61328f9fc438d8601fb0426cd75a1193607e99b53477b67e",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "TOOL_CAPABILITY_MATRIX.json",
+   "new_path": "reports/v0.8/TOOL_CAPABILITY_MATRIX.json",
+   "hash_before": "f1ac58f32a8fc7fec48056029597a3e9f0d873be35620ac18f0a904f2637d75d",
+   "hash_after": "f1ac58f32a8fc7fec48056029597a3e9f0d873be35620ac18f0a904f2637d75d",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_CAPABILITY_SUMMARY.json",
+   "new_path": "reports/v0.8/V07_CAPABILITY_SUMMARY.json",
+   "hash_before": "a90921aa14677852c8db982cbc688f92532a608508ee1d8c1d753d7789b6ef25",
+   "hash_after": "a90921aa14677852c8db982cbc688f92532a608508ee1d8c1d753d7789b6ef25",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_FINAL_ACCEPTANCE_REPORT.json",
+   "new_path": "reports/v0.8/V07_FINAL_ACCEPTANCE_REPORT.json",
+   "hash_before": "247f9f53e2671ffd30d74ad22a8264aac93d2deec7b6789131fbb6cf7f07e855",
+   "hash_after": "247f9f53e2671ffd30d74ad22a8264aac93d2deec7b6789131fbb6cf7f07e855",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_RELEASE_MANIFEST.json",
+   "new_path": "reports/v0.8/V07_RELEASE_MANIFEST.json",
+   "hash_before": "0f1c2993c5a2809af9852114475dc994ae337ba83457c406b1c08afb03114f6a",
+   "hash_after": "0f1c2993c5a2809af9852114475dc994ae337ba83457c406b1c08afb03114f6a",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_SOURCE_HASHES.json",
+   "new_path": "reports/v0.8/V07_SOURCE_HASHES.json",
+   "hash_before": "ede12ab48ec7c880ea7f118e2c3ced59c8b610d9a3db76183dec35852bbdb545",
+   "hash_after": "ede12ab48ec7c880ea7f118e2c3ced59c8b610d9a3db76183dec35852bbdb545",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V07_VERSIONS.json",
+   "new_path": "reports/v0.8/V07_VERSIONS.json",
+   "hash_before": "2f36ba333f731a8718782dd0f155987e4dcbda77396bd5123a22bebd8bef5ef5",
+   "hash_after": "2f36ba333f731a8718782dd0f155987e4dcbda77396bd5123a22bebd8bef5ef5",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_AVATAR_ACCEPTANCE_REPORT.json",
+   "new_path": "reports/v0.8/V08_AVATAR_ACCEPTANCE_REPORT.json",
+   "hash_before": "469f0c01d57cc8b35b7abc8e1cd624a796fe08232889f68abcb4551fa046f100",
+   "hash_after": "469f0c01d57cc8b35b7abc8e1cd624a796fe08232889f68abcb4551fa046f100",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_COMPAT_ACCEPTANCE.json",
+   "new_path": "reports/v0.8/V08_COMPAT_ACCEPTANCE.json",
+   "hash_before": "816dc04e37c65263f5c6af828487484937e52b955b4fe1481a875a701e2ef4c6",
+   "hash_after": "816dc04e37c65263f5c6af828487484937e52b955b4fe1481a875a701e2ef4c6",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_DEPENDENCY_AUDIT.json",
+   "new_path": "reports/v0.8/V08_DEPENDENCY_AUDIT.json",
+   "hash_before": "886904d95408502fe9f617699a500441a9eb55de946eda74b8fd9d88cbf52bd2",
+   "hash_after": "886904d95408502fe9f617699a500441a9eb55de946eda74b8fd9d88cbf52bd2",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FINAL_ACCEPTANCE_REPORT.json",
+   "new_path": "reports/v0.8/V08_FINAL_ACCEPTANCE_REPORT.json",
+   "hash_before": "d8d649a0235c826e9126da7f5aa432b17020ab9f00d9f217d772e76da98844bc",
+   "hash_after": "d8d649a0235c826e9126da7f5aa432b17020ab9f00d9f217d772e76da98844bc",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FINAL_GAP_AUDIT.json",
+   "new_path": "reports/v0.8/V08_FINAL_GAP_AUDIT.json",
+   "hash_before": "18db9ce1f9a8fc63d03c5cd97264b305ebddea2e9995c1004025a805bf950bf7",
+   "hash_after": "18db9ce1f9a8fc63d03c5cd97264b305ebddea2e9995c1004025a805bf950bf7",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FINAL_VERIFICATION_REPORT.json",
+   "new_path": "reports/v0.8/V08_FINAL_VERIFICATION_REPORT.json",
+   "hash_before": "c6d2220efeb5349332db0cb693d7b6fb4d2221dfde495eafdcd4fa1092ec4bef",
+   "hash_after": "c6d2220efeb5349332db0cb693d7b6fb4d2221dfde495eafdcd4fa1092ec4bef",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_FOLDER_RECONCILIATION.json",
+   "new_path": "reports/v0.8/V08_FOLDER_RECONCILIATION.json",
+   "hash_before": "bdec58bdc48a3636aae2b8ed0c589cee73cfd2cec54341b53bd1d8df9345f2e7",
+   "hash_after": "bdec58bdc48a3636aae2b8ed0c589cee73cfd2cec54341b53bd1d8df9345f2e7",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_GAP_MATRIX.json",
+   "new_path": "reports/v0.8/V08_GAP_MATRIX.json",
+   "hash_before": "8aa598e839e26bdd82b58cbd643f7dfc615eb943629acf653b2e04779ce590a9",
+   "hash_after": "8aa598e839e26bdd82b58cbd643f7dfc615eb943629acf653b2e04779ce590a9",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_LOCAL_ACCEPTANCE_REPORT.json",
+   "new_path": "reports/v0.8/V08_LOCAL_ACCEPTANCE_REPORT.json",
+   "hash_before": "801377182f2ba876780023e23695793e58ffdd1fefffd2b55a8d7743e0f518f5",
+   "hash_after": "801377182f2ba876780023e23695793e58ffdd1fefffd2b55a8d7743e0f518f5",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_MODALITY_MATRIX.json",
+   "new_path": "reports/v0.8/V08_MODALITY_MATRIX.json",
+   "hash_before": "ec324487ceb38deafeb13bb50458325340d63a1c136c9f1569da68e93c35b9ee",
+   "hash_after": "ec324487ceb38deafeb13bb50458325340d63a1c136c9f1569da68e93c35b9ee",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_OWNER_AUDIT_REPORT.json",
+   "new_path": "reports/v0.8/V08_OWNER_AUDIT_REPORT.json",
+   "hash_before": "143b03c1a99ee984e213c88c531e70a555927643f8b4bedb009a44b444d4ccb2",
+   "hash_after": "143b03c1a99ee984e213c88c531e70a555927643f8b4bedb009a44b444d4ccb2",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_PRE_AUTONOMY_REPORT.json",
+   "new_path": "reports/v0.8/V08_PRE_AUTONOMY_REPORT.json",
+   "hash_before": "df67afda9383c3bda9bf9512710954cfeb76c359ce61d95ffa373c73af0b173c",
+   "hash_after": "df67afda9383c3bda9bf9512710954cfeb76c359ce61d95ffa373c73af0b173c",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_REALTIME_LATENCY_REPORT.json",
+   "new_path": "reports/v0.8/V08_REALTIME_LATENCY_REPORT.json",
+   "hash_before": "376425b3b9876d7470923c605d51380bef2c8621cad40abb65777011b5ba3f5d",
+   "hash_after": "376425b3b9876d7470923c605d51380bef2c8621cad40abb65777011b5ba3f5d",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_RESOURCE_BALANCE_REPORT.json",
+   "new_path": "reports/v0.8/V08_RESOURCE_BALANCE_REPORT.json",
+   "hash_before": "f6627ce06f5fd1e50b5d688a86c271daff71615f1488eda1d1dc30a622a2152d",
+   "hash_after": "f6627ce06f5fd1e50b5d688a86c271daff71615f1488eda1d1dc30a622a2152d",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_STATE_INTEGRITY_REPORT.json",
+   "new_path": "reports/v0.8/V08_STATE_INTEGRITY_REPORT.json",
+   "hash_before": "f649e949bd48a1d34379664cf0a84cc12671959b2706489716c2f3b1022c460c",
+   "hash_after": "f649e949bd48a1d34379664cf0a84cc12671959b2706489716c2f3b1022c460c",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "V08_TOOL_CAPABILITY_MATRIX.json",
+   "new_path": "reports/v0.8/V08_TOOL_CAPABILITY_MATRIX.json",
+   "hash_before": "e2b45711adb782ea84955898ed25e8cbda66a132ef6a3cc8d77a130cf5d9ce04",
+   "hash_after": "e2b45711adb782ea84955898ed25e8cbda66a132ef6a3cc8d77a130cf5d9ce04",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "WINDOWS_DEVICE_PROFILE.json",
+   "new_path": "reports/v0.8/WINDOWS_DEVICE_PROFILE.json",
+   "hash_before": "98ffe5face10e712c3f8278f0b0e11f27c732a59ece3d092cedc5b849db607b2",
+   "hash_after": "98ffe5face10e712c3f8278f0b0e11f27c732a59ece3d092cedc5b849db607b2",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "bridge_config_v05.json",
+   "new_path": "config/bridge_config_v05.json",
+   "hash_before": "d14ed2f7d1b98a96fe546a32491c0873f5d379f9a657debb5b2fb7c63934a4c0",
+   "hash_after": "d14ed2f7d1b98a96fe546a32491c0873f5d379f9a657debb5b2fb7c63934a4c0",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "bridge_config_v06.json",
+   "new_path": "config/bridge_config_v06.json",
+   "hash_before": "89899c6aeae9b26293c341dec671a650cdebc13e15e7d92168c2c21d06e78b17",
+   "hash_after": "89899c6aeae9b26293c341dec671a650cdebc13e15e7d92168c2c21d06e78b17",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "api_schema_v05.json",
+   "new_path": "docs/api_schema_v05.json",
+   "hash_before": "568f3ae3b087364831cecc6ca3ece1abdbe0f73317b047182e3400096edd382c",
+   "hash_after": "568f3ae3b087364831cecc6ca3ece1abdbe0f73317b047182e3400096edd382c",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_compat_acceptance.py",
+   "new_path": "scripts/run_compat_acceptance.py",
+   "hash_before": "3cf92487d489c772cf8731d70f2f558c12031057ac8a675d48cbfb1cd04f44ae",
+   "hash_after": "3cf92487d489c772cf8731d70f2f558c12031057ac8a675d48cbfb1cd04f44ae",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_default_agent_autonomy.py",
+   "new_path": "scripts/run_default_agent_autonomy.py",
+   "hash_before": "c05e32f0d0b02714832f2a8b9a5f2c399d07b28ec45dac1145bc533920244b4c",
+   "hash_after": "c05e32f0d0b02714832f2a8b9a5f2c399d07b28ec45dac1145bc533920244b4c",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_gate_e2e.py",
+   "new_path": "scripts/run_gate_e2e.py",
+   "hash_before": "c2d3f218c0fe55497e1ee03f282910b4c52a7404f7f56bc819ad13e0b34d77ad",
+   "hash_after": "c2d3f218c0fe55497e1ee03f282910b4c52a7404f7f56bc819ad13e0b34d77ad",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_owner_e2e.py",
+   "new_path": "scripts/run_owner_e2e.py",
+   "hash_before": "0b2151ffc1ee5fd8a987e8fb188ad1fce892786d338241e2e9f02d5bd2e8e530",
+   "hash_after": "0b2151ffc1ee5fd8a987e8fb188ad1fce892786d338241e2e9f02d5bd2e8e530",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_real_resource_acceptance.py",
+   "new_path": "scripts/run_real_resource_acceptance.py",
+   "hash_before": "b2dd18241368486972dbae4079f660f457c836978be5dbf3188686ba23b5ab62",
+   "hash_after": "b2dd18241368486972dbae4079f660f457c836978be5dbf3188686ba23b5ab62",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_realtime_acceptance.py",
+   "new_path": "scripts/run_realtime_acceptance.py",
+   "hash_before": "e7805182e25298b496b2a5407bc320ddd4e0586c78f0279638f5bfb2a7000b9e",
+   "hash_after": "e7805182e25298b496b2a5407bc320ddd4e0586c78f0279638f5bfb2a7000b9e",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_resource_balance_acceptance.py",
+   "new_path": "scripts/run_resource_balance_acceptance.py",
+   "hash_before": "982c802c16ff7dd9bd3bc1a04c07d34137919f987890968f0ec44204deab140a",
+   "hash_after": "982c802c16ff7dd9bd3bc1a04c07d34137919f987890968f0ec44204deab140a",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_reviewer_fix_e2e.py",
+   "new_path": "scripts/run_reviewer_fix_e2e.py",
+   "hash_before": "7e9e2d794e9f340f825ed4bbf5537a83580d2a372ec071bf6ed592483db41d77",
+   "hash_after": "7e9e2d794e9f340f825ed4bbf5537a83580d2a372ec071bf6ed592483db41d77",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_v07_full_local_acceptance.py",
+   "new_path": "scripts/run_v07_full_local_acceptance.py",
+   "hash_before": "486283221793dbb70351d73bdd5bff131d5770aea62d6e88659bfe5db632d5f7",
+   "hash_after": "486283221793dbb70351d73bdd5bff131d5770aea62d6e88659bfe5db632d5f7",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_v08_acceptance.py",
+   "new_path": "scripts/run_v08_acceptance.py",
+   "hash_before": "aa3407c2d297629f2d33ed591e1dbc04bfa4f639d341b8aad08048fc72b427d1",
+   "hash_after": "aa3407c2d297629f2d33ed591e1dbc04bfa4f639d341b8aad08048fc72b427d1",
+   "hash_match": true,
+   "references_updated": true
+  },
+  {
+   "old_path": "run_windows_v07_acceptance.py",
+   "new_path": "scripts/run_windows_v07_acceptance.py",
+   "hash_before": "c687c1352970242fa8613c6b44952a9857e1f66bb7cb864181c1436e7c6080d3",
+   "hash_after": "c687c1352970242fa8613c6b44952a9857e1f66bb7cb864181c1436e7c6080d3",
+   "hash_match": true,
+   "references_updated": true
+  }
+ ],
+ "refs_note": "scripts sys.path/outputs, test_versions_cleanup config path, reproducible-setup commands"
+}

@@ -1,0 +1,314 @@
+{
+ "modalities": {
+  "TEXT": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "bridge-text",
+   "provider": "local",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "core text path",
+   "tools": [
+    "tools.list"
+   ]
+  },
+  "VISION": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "none",
+   "provider": "unconfigured",
+   "local_capability": false,
+   "remote_capability": false,
+   "verified": false,
+   "status": "PROVIDER_REQUIRED",
+   "limitation": "no backend registered",
+   "tools": []
+  },
+  "OCR": {
+   "interface": "multimodal.ocr",
+   "backend": "windows-ocr",
+   "provider": "os-native",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "WinRT engine en-GB; per-word confidence not supplied; tesseract NOT_INSTALLED (not needed)",
+   "tools": [
+    "ocr.recognize"
+   ]
+  },
+  "IMAGE_GENERATION": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "bridge-image-deterministic",
+   "provider": "local",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "PROVIDER_REQUIRED",
+   "limitation": "stdlib deterministic ops (not generative)",
+   "tools": [
+    "image.annotate",
+    "image.compose",
+    "image.convert",
+    "image.crop",
+    "image.diagram",
+    "image.resize"
+   ]
+  },
+  "IMAGE_EDITING": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "none",
+   "provider": "unconfigured",
+   "local_capability": false,
+   "remote_capability": false,
+   "verified": false,
+   "status": "PROVIDER_REQUIRED",
+   "limitation": "no backend registered",
+   "tools": []
+  },
+  "TTS": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "os-sapi-tts",
+   "provider": "unconfigured",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "System.Speech voices: Microsoft Hazel Desktop, Microsoft Zira Desktop",
+   "tools": [
+    "speech.tts"
+   ]
+  },
+  "STT": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "stt-slot",
+   "provider": "unconfigured",
+   "local_capability": false,
+   "remote_capability": false,
+   "verified": false,
+   "status": "NOT_INSTALLED",
+   "limitation": "no STT backend installed",
+   "tools": [
+    "speech.stt"
+   ]
+  },
+  "AUDIO_GENERATION": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "none",
+   "provider": "unconfigured",
+   "local_capability": false,
+   "remote_capability": false,
+   "verified": false,
+   "status": "PROVIDER_REQUIRED",
+   "limitation": "no backend registered",
+   "tools": []
+  },
+  "VOICE_AGENT": {
+   "interface": "voice.pipeline+voice.realtime",
+   "backend": "fixture-stt+System.Speech-tts",
+   "provider": "local-partial",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": false,
+   "status": "INTERFACE_ONLY",
+   "limitation": "pipeline+streaming+barge-in verified with fixtures; no live audio capture backend",
+   "tools": [
+    "speech.tts"
+   ]
+  },
+  "VIDEO_INPUT": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "none",
+   "provider": "unconfigured",
+   "local_capability": false,
+   "remote_capability": false,
+   "verified": false,
+   "status": "PROVIDER_REQUIRED",
+   "limitation": "no backend registered",
+   "tools": []
+  },
+  "VIDEO_OUTPUT": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "none",
+   "provider": "unconfigured",
+   "local_capability": false,
+   "remote_capability": false,
+   "verified": false,
+   "status": "PROVIDER_REQUIRED",
+   "limitation": "no backend registered",
+   "tools": []
+  },
+  "3D_ASSET": {
+   "interface": "multimodal.MultimodalRouter",
+   "backend": "none",
+   "provider": "unconfigured",
+   "local_capability": false,
+   "remote_capability": false,
+   "verified": false,
+   "status": "PROVIDER_REQUIRED",
+   "limitation": "no backend registered",
+   "tools": []
+  },
+  "AVATAR_3D": {
+   "interface": "avatar.protocol+ui/three.html",
+   "backend": "procedural-glb+three.js",
+   "provider": "local",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "reference renderer verified in headless Edge; photorealistic morphs PROVIDER_REQUIRED",
+   "tools": []
+  },
+  "CHARACTER_CREATOR": {
+   "interface": "avatar.creator",
+   "backend": "profile-store",
+   "provider": "local",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "8 modes, simple/advanced, versioning verified; geometry morphs PROVIDER_REQUIRED",
+   "tools": []
+  },
+  "GUIDED_CAMERA_CAPTURE": {
+   "interface": "avatar.capture",
+   "backend": "fixture-frames",
+   "provider": "local-partial",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "state machine + delete-after-derivation verified with fixtures; no camera hardware exercised",
+   "tools": []
+  },
+  "CHAT_UI": {
+   "interface": "ui/index.html",
+   "backend": "reference-ui",
+   "provider": "local",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "session continuity + docking verified in headless Edge",
+   "tools": []
+  },
+  "WORK_UI": {
+   "interface": "ui/index.html",
+   "backend": "reference-ui",
+   "provider": "local",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "agent panel + compact avatar verified in headless Edge",
+   "tools": []
+  },
+  "IDE_EMBEDDING": {
+   "interface": "ides.embedding",
+   "backend": "contract",
+   "provider": "unconfigured",
+   "local_capability": false,
+   "remote_capability": false,
+   "verified": false,
+   "status": "INTERFACE_ONLY",
+   "limitation": "HostContext/selection/diagnostics/diff-approval contract only",
+   "tools": []
+  },
+  "EMAIL": {
+   "interface": "tools.cat_comms.EmailAdapter",
+   "backend": "artifact-drafts",
+   "provider": "unconfigured",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "draft/compose local; send provider+authorization required",
+   "tools": [
+    "email.draft",
+    "email.compose"
+   ]
+  },
+  "TELEPHONY": {
+   "interface": "comms.telephone",
+   "backend": "loopback-mock",
+   "provider": "unconfigured",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "mock lifecycle verified; PSTN PROVIDER_REQUIRED",
+   "tools": [
+    "telephone.call"
+   ]
+  },
+  "RESOURCE_BALANCING": {
+   "interface": "resources.pool/scheduler/balancer/monitor",
+   "backend": "real-device-profile",
+   "provider": "local",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "real mixed workload PASS baseline 2.824s adaptive 2.334s; tensor placement BACKEND_CONTROL_UNAVAILABLE",
+   "tools": []
+  },
+  "REALTIME_PIPELINE": {
+   "interface": "voice.realtime",
+   "backend": "fixture-stt+ollama-stream+sapi-tts",
+   "provider": "local-partial",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "streaming+barge-in verified; STT fixture (no backend); cold TTFT 40.3s, warm streaming proven",
+   "tools": []
+  },
+  "LEGACY_MODEL": {
+   "interface": "compat.modes/translator/negotiation/probe",
+   "backend": "ollama-local",
+   "provider": "local",
+   "local_capability": true,
+   "remote_capability": false,
+   "verified": true,
+   "status": "AVAILABLE",
+   "limitation": "qwen3:0.6b TEXT_ACTION, qwen3:1.7b LEGACY, qwen2.5-coder-tools:3b STRICT_JSON verified",
+   "tools": []
+  }
+ },
+ "live_probes": {
+  "tesseract": {
+   "present": false,
+   "backend": "none",
+   "status": "NOT_INSTALLED"
+  },
+  "windows_ocr": {
+   "present": true,
+   "backend": "windows-ocr",
+   "language": "en-GB"
+  },
+  "image_endpoint": {
+   "present": false,
+   "backend": "none",
+   "status": "PROVIDER_REQUIRED"
+  },
+  "sapi_voices": {
+   "present": true,
+   "backend": "sapi",
+   "voices": [
+    "Microsoft Hazel Desktop",
+    "Microsoft Zira Desktop"
+   ]
+  },
+  "ollama": {
+   "present": true,
+   "backend": "ollama",
+   "models": [
+    "qwen3:0.6b",
+    "qwen3:1.7b",
+    "hhao/qwen2.5-coder-tools:3b"
+   ]
+  }
+ },
+ "note": "Statuses measured on this PC; OCR via OS backend (verified), tesseract absent (not needed); no availability faked."
+}

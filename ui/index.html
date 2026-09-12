@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Bridge Reference UI (v0.8)</title>
+<style>
+  :root { --panel-w: 340px; }
+  body { margin: 0; font-family: system-ui, sans-serif; display: flex; height: 100vh; }
+  #main { flex: 1; display: flex; flex-direction: column; }
+  #viewbar { padding: 8px; border-bottom: 1px solid #ccc; }
+  #chatview, #workview { flex: 1; overflow: auto; padding: 12px; }
+  #agentpanel { width: var(--panel-w); border-left: 1px solid #ccc; display: flex; flex-direction: column; }
+  body.dock-left #agentpanel { order: -1; border-left: none; border-right: 1px solid #ccc; }
+  body.dock-left { flex-direction: row; }
+  #avatar { background: #111; color: #eee; text-align: center; padding: 8px; }
+  #avatar canvas { width: 100%; max-height: 220px; background: #1a1a1a; }
+  body.compact #avatar canvas { max-height: 110px; }
+  #transcript { flex: 1; overflow: auto; padding: 8px; font-size: 14px; }
+  #tools, #approvals, #artifacts { border-top: 1px solid #ccc; padding: 8px; font-size: 13px; max-height: 140px; overflow: auto; }
+  #inputrow { display: flex; border-top: 1px solid #ccc; }
+  #inputrow input { flex: 1; padding: 8px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body data-view="chat" data-dock="right">
+  <div id="main">
+    <div id="viewbar">
+      <button id="btn-chat">Chat</button>
+      <button id="btn-work">Work</button>
+      <button id="btn-dock">Dock: right</button>
+      <button id="btn-compact">Compact avatar</button>
+      <span id="session">session: <b id="session-id">none</b></span>
+    </div>
+    <div id="chatview">
+      <h2>Chat</h2>
+      <div id="chat-transcript"></div>
+    </div>
+    <div id="workview" class="hidden">
+      <h2>Work</h2>
+      <div id="workspace">workspace / editor / preview / terminal appear here</div>
+      <div id="plan"></div>
+    </div>
+  </div>
+  <div id="agentpanel">
+    <div id="avatar"><canvas id="avatar-canvas" width="300" height="220"></canvas><div id="avatar-state">IDLE</div></div>
+    <div id="transcript"></div>
+    <div id="tools">tools: idle</div>
+    <div id="approvals">approvals: none</div>
+    <div id="artifacts">artifacts: none</div>
+    <div id="inputrow"><input id="text-input" placeholder="Type or push-to-talk…"><button id="btn-send">Send</button></div>
+  </div>
+<script src="avatar.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

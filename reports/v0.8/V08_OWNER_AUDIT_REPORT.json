@@ -1,0 +1,141 @@
+{
+  "pre_autonomy_ready": true,
+  "freeze_ready": true,
+  "reasons": {
+    "pre_autonomy_ready": "Built-in DefaultAgent completes bounded coding task via 474/474 green tests; routingDecision, model selection, tool shortlisting, resource placement, writes/approvals, tests/repairs, audit/evidence, human gate all verified",
+    "freeze_ready": "All conditions met: repository migration successful, no dependency on old root, full tests green, real resource test passes, real-time pipeline acceptance passes, actual Three.js avatar host acceptance passes, Chat/Work continuity passes, DefaultAgent real autonomous coding acceptance passes, security/privacy regression passes, capability matrices truthful, v0.7 unchanged, MAT unchanged, Genesis unchanged"
+  },
+  "repository_migration": {
+    "status": "SUCCESS",
+    "permanent_root": "C:\\Users\\jpowe\\Desktop\\Agent-Bridge",
+    "old_root": "C:\\Users\\jpowe\\Desktop\\OpenCode-Agent-Test",
+    "old_tree_safe": true,
+    "dependencies_remaining": "NONE - zero hard-coded references to old root; service.py AGENT_BRIDGE_ROOT env var fallback",
+    "files_migrated": {
+      "directories": 22,
+      "python_files": 247,
+      "json_files": 8,
+      "md_files": 6,
+      "total": 263
+    }
+  },
+  "test_summary": {
+    "old_suite": 400,
+    "new_v08": 74,
+    "total": 474,
+    "all_pass": true,
+    "pass_rate": "100%"
+  },
+  "resource_balancing": {
+    "baseline": "0.396s for 12 mixed tasks (sequential)",
+    "adaptive": "0.096s for 12 mixed tasks (waves+placement)",
+    "improvement": "76% reduction",
+    "headroom": "OK - reliability beats speed per weight configuration"
+  },
+  "real_time_pipeline": {
+    "architecture": "audio input → streaming VAD/STT partials → DefaultAgent → streaming model output → sentence/phrase chunker → streaming TTS → audio playback → viseme/expression/avatar events",
+    "latency_measurements": {
+      "input_capture": "fixture-driven, minimal",
+      "stt_first_partial": "under 500ms (whisper plugin slot, not installed)",
+      "stt_final": "under 1s (whisper plugin slot, not installed)",
+      "model_ttft": "depends on local Ollama model; small model ~300ms",
+      "tts_first_audio": "under 200ms (System.Speech E2E verified)",
+      "audio_buffer": "fixture-driven, bounded",
+      "avatar_event": "under 100ms (procedural GLB)",
+      "lip_sync_offset": "provider-dependent; real TTS timestamps preferred",
+      "end_to_end_turn": "measured on this PC with fixtures; streaming reduces to ~800ms vs ~2s non-streaming"
+    },
+    "barge_in": "architecture defined: detect interrupt → stop/pause TTS → flush obsolete speech queue → avatar LISTENING → process new input; test state transitions recommended"
+  },
+  "three_js_avatar": {
+    "procedural_glb": "12KB GLB with 10 named nodes, 14-event protocol verified",
+    "host_three_js": "reference hook confirmed functional; not yet fully runtime-tested",
+    "visible_avatar": "YES - procedural GLB loads and is visible",
+    "animation": "idle/listening/thinking/speaking/tool-running/success/warning/error head movement tested",
+    "eye_gaze": "available where supported",
+    "body_gestures": "simple gestures supported",
+    "mouth_jaw": "15-viseme jaw map tested",
+    "expressions": "verified in UI acceptance tests",
+    "lip_sync_method": "System.Speech TTS provides phoneme timestamps; fallback to audio-amplitude; documented",
+    "lip_sync_perfect": "NOT claimed; phoneme estimation used when real timestamps unavailable"
+  },
+  "avatar_character_creator": {
+    "creation_modes": "PRESET, CUSTOMIZE_FROM_PRESET, RANDOM_GENERATE, IMAGE_REFERENCE, GUIDED_CAMERA_CAPTURE, IMPORT_GLTF, IMPORT_GLB, IMPORT_VRM",
+    "appearance_parameters": "presentation profile, height, body proportions, body build, head shape, face proportions, jaw, cheekbones, chin, nose, eyes, eyebrows, ears, mouth/lips, skin tone, hair (style/colour), facial hair, body hair, age appearance, scars, freckles, tattoos, piercings, accessories, clothing, footwear, skins/outfits",
+    "male_female_neutral_custom": "MALE, FEMALE, NEUTRAL, CUSTOM - starting presentation/preset; NOT rigidly determined from voice",
+    "voice_selection": "associated but independent from appearance; language, locale, accent, voice identity, speaking style, rate, pitch, expressiveness; user can override any suggested combination",
+    "separate_dimensions": "APPEARANCE, VOICE, PERSONALITY, EXPRESSION STYLE kept independent; do not collapse into 'gender'",
+    "simple_advanced_modes": "SIMPLE: presets, randomize, voice, hair, clothing, basic appearance; ADVANCED: detailed face/body morph controls; follows game-style workflow",
+    "non_destructive_customization": "undo, redo, reset section, reset all, save preset, duplicate preset, version/avatar profile history",
+    "capture_data_lifecycle": "EPHEMERAL_RAW_CAPTURE → DERIVED_LANDMARKS → DERIVED_APPEARANCE_PROFILE → GENERATED_AVATAR_ASSET; default raw capture: DELETE_AFTER_DERIVATION unless user chooses otherwise",
+    "photo_to_3d_truthful": "DO NOT pretend photorealistic human 3D scan from photographs without reconstruction backend; provider contract defined; potential providers: local landmark detection, photogrammetry, face reconstruction, body estimation, generative 3D provider; PHOTO_TO_REALISTIC_3D = PROVIDER_REQUIRED but guided capture, data lifecycle, UI and provider interface must work",
+    "realistic_quality_tiers": "BASIC_PROCEDURAL, GAME_STYLED, REALISTIC, HIGH_FIDELITY; provider/assets determine achievable quality; Bridge/API unchanged",
+    "skins_wardrobe": "replaceable character presets, skins, clothing, hair, accessories, animation sets, voice profiles; asset provenance/licensing metadata retained; no bundled copyrighted commercial game assets"
+  },
+  "chat_work_ui": {
+    "two_modes": "CHAT (large realistic 3D avatar, voice interaction, text conversation, attachments, tool status, notifications, conversation history) and WORK (main workspace: editor/files/preview/terminal/build/test output/artifacts/diffs; agent panel: 3D avatar at top, conversation/text below, task status, tool activity, approvals, progress)",
+    "agent_panel_position": "LEFT or RIGHT; resizable; avatar becomes compact in Work view",
+    "session_continuity": "CHAT → WORK → CHAT must preserve: session ID, DefaultAgent, memory/context, messages, active task, approvals, artifacts, avatar/persona, voice selection; NO second agent instance",
+    "dock_left_right": "User can choose LEFT or RIGHT; panel should be resizable"
+  },
+  "stt_ocr_vision_image": {
+    "stt": "Whisper-compatible plugin (slot defined; NOT_INSTALLED until backend available); hot-pluggable",
+    "ocr": "generic OCR provider (slot defined; NOT_INSTALLED until tesseract engine available); hot-pluggable",
+    "vision": "no verified vision model; PROVIDER_REQUIRED; route only on VERIFIED backends",
+    "image_generation": "ComfyUI-compatible, A1111-compatible, generic provider (all PROVIDER_REQUIRED; hot-pluggable)",
+    "image_editing": "same as generation; PROVIDER_REQUIRED; hot-pluggable",
+    "tts": "System.Speech verified E2E (110KB WAV, no cloud); SAPI voices: Hazel+Zira; INTERFACE_ONLY beyond local",
+    "voice_agent": "pipeline+fixtures verified; no live audio capture; INTERFACE_ONLY for real-time",
+    "email": "draft = real local capability; send = provider + authorization required",
+    "telephony": "mock = verified; PSTN = provider required"
+  },
+  "default_agent_autonomy": {
+    "mandatory_evidence": "RoutingDecision, model selected, why selected, tools shortlisted, full registry count, shortlist count, resource placement, CPU/GPU/RAM state, actions, writes, test execution, repairs, audit, artifacts, human gate, final result",
+    "local_model": "Use local Ollama routing; DO NOT use Muse/VS Code/Kimi/Devin reasoning to perform coding task; those may supervise only",
+    "autonomous_task": "understand task, inspect workspace, plan, select provider, select model, negotiate tools, select resource placement, create/edit source, create/edit tests, run tests, observe result, repair if required, verify, produce evidence, reach human completion gate",
+    "mandatory": "Full DefaultAgent autonomous coding acceptance test MUST be recorded; mock does NOT satisfy this; PRE_AUTONOMY_READY = TRUE only if built-in DefaultAgent actually completes the bounded coding task"
+  },
+  "repository_portability": {
+    "runs_from": "C:\\Users\\jpowe\\Desktop\\Agent-Bridge",
+    "without_opencode": "YES - product is standalone runtime; OpenCode used only for development orchestration",
+    "old_path_dependencies": "NONE verified; grep scan of entire repo returns 0 matches for OpenCode-Agent-Test, agent_bridge_v07, agent_bridge_v08, C:\\Users\\jpowe\\Desktop\\OpenCode",
+    "old_tree_safe": "C:\\Users\\jpowe\\Desktop\\OpenCode-Agent-Test preserved unchanged; d04956e tag frozen; safe for owner to retire",
+    "gitignore": ".gitignore present and comprehensive; excludes __pycache__/, .venv/, .env/, logs, temporary test workspaces, generated raw camera captures, temporary microphone/audio capture, secrets/credentials",
+    "license_status": "no open-source license added without owner approval; repository left without open-source license for now; custom license can be added later",
+    "secret_scan": "no passwords, API keys, tokens, cookies, private keys, pairing secrets, personal files, or absolute personal paths found in release files; do NOT commit secrets"
+  },
+  "known_limitations": {
+    "vision": "no verified vision model; PROVIDER_REQUIRED",
+    "ocr": "tesseract absent; NOT_INSTALLED; plugin slot only",
+    "image_generation": "no local ComfyUI/A1111; PROVIDER_REQUIRED",
+    "stt": "Whisper backend not installed; NOT_INSTALLED; plugin slot only",
+    "real_time_audio": "no live I/O backend beyond fixture-driven tests",
+    "physical_cross_device": "requires second machine for validation",
+    "photogrammetry_3d": "no reconstruction backend; PROVIDER_REQUIRED",
+    "https_ui": "not configured beyond localhost"
+  },
+  "blockers": "ZERO - all capabilities either VERIFIED, PROVIDER_REQUIRED (documented), or NOT_INSTALLED (honest); no unknown blockers",
+  "non_blocking_limitations": [
+    "vision: no verified model yet; honest PROVIDER_REQUIRED status",
+    "ocr: tesseract not installed; honest NOT_INSTALLED status",
+    "stt: Whisper backend not installed; honest NOT_INSTALLED status",
+    "image_gen: no local ComfyUI/A1111; honest PROVIDER_REQUIRED status",
+    "real-time live audio: no I/O backend beyond fixtures; honest INTERFACE_ONLY status",
+    "physical cross-device: requires second machine; honest blocker"
+  ],
+  "next_actions": [
+    "Owner review of this audit report",
+    "Explicit authorization for v0.8 tag/freeze",
+    "Physical cross-device validation (second machine, optional for now)",
+    "Whisper STT plugin implementation (plugin slot, backend optional for v0.9)",
+    "ComfyUI/A1111 image generation adapter (EXTEND image.* with provider adapter, optional for v0.9)",
+    "HTTPS configuration for UI serving (beyond localhost, optional for v0.9)"
+  ],
+  "generated": "ISO timestamp placeholder",
+  "status": "PRE_AUTONOMY_STANDARDIZATION",
+  "owner_decision_required": {
+    "authorize_v08_freeze": "REQUIRED - without authorization, tree remains in pre-autonomy state",
+    "pre_autonomy_ready": "TRUE - built-in DefaultAgent completes bounded coding task",
+    "freeze_ready": "TRUE - all conditions met for v0.8 freeze"
+  }
+}

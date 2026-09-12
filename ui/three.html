@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agent Bridge 3D Avatar Host (v0.8 reference)</title>
+<script type="importmap">
+{"imports": {"three": "./vendor/three.module.js"}}
+</script>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; background: #111; color: #eee; }
+  #avatar-canvas { width: 480px; height: 360px; display: block; }
+  #avatar-state { padding: 8px; }
+  #probe { padding: 8px; font-size: 13px; }
+</style>
+</head>
+<body>
+<canvas id="avatar-canvas" width="480" height="360"></canvas>
+<div id="avatar-state">BOOT</div>
+<div id="probe">probe: pending</div>
+<script type="module">
+  import { createThreeRenderer } from './avatar-three.js';
+  const canvas = document.getElementById('avatar-canvas');
+  const probe = document.getElementById('probe');
+  try {
+    const api = await createThreeRenderer(canvas, 'assets/reference-avatar.glb');
+    window.__avatar = api;
+    probe.textContent = 'probe: ready nodes=' + api.nodeNames.join(',') +
+      ' meshes=' + api.meshCount;
+    // Demo driver (acceptance): ?demo=speak applies SPEAKING + visemes,
+    // ?demo=think applies THINKING + emotion, recording each applied event.
+    const demo = new URLSearchParams(location.search).get('demo') || '';
+    const applied = [];
+    const step = (ev) => { api.apply(ev); applied.push(ev.event); };
+    if (demo.includes('think')) {
+      step({ event: 'THINKING' });
+      step({ event: 'EMOTION', emotion: 'thinking' });
+    }
+    if (demo.includes('speak')) {
+      step({ event: 'SPEAKING' });
+      for (const v of ['aa', 'E', 'O', 'sil']) step({ event: 'VISEME', viseme: v });
+      step({ event: 'EMOTION', emotion: 'happy' });
+      step({ event: 'SUCCESS' });
+    }
+    if (demo.includes('tool')) step({ event: 'TOOL_RUNNING' });
+    if (applied.length) probe.textContent += ' demo=' + applied.join(',');
+  } catch (e) {
+    probe.textContent = 'probe: FAILED ' + (e && e.message ? e.message : e);
+  }
+</script>
+</body>
+</html>

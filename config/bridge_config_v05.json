@@ -1,0 +1,65 @@
+{
+  "_comment": "Genesis Local Agent Runtime v0.5 example config (schema 2). Precedence: defaults < file < env < CLI.",
+  "config_schema": 2,
+  "ollama_url": "http://127.0.0.1:11434",
+  "model": "hhao/qwen2.5-coder-tools:3b",
+  "roles": {
+    "planner": "",
+    "coder": "",
+    "reviewer": "",
+    "general": ""
+  },
+  "preset": "LOW_RESOURCE",
+  "fallback": {},
+  "workspace": "./sandbox_shell",
+  "mode": "build",
+  "approval": "AUTO_SAFE",
+  "collision": "REQUIRE_APPROVAL",
+  "prompt_profile": "standard",
+  "max_steps": 16,
+  "max_revision_cycles": 2,
+  "request_timeout_s": 120,
+  "shell_timeout_s": 60,
+  "shell_profile": "dev",
+  "non_interactive": true,
+  "dry_run": false,
+  "repeat_threshold": 3,
+  "large_write_bytes": 102400,
+  "enable_reviewer": true,
+  "git": {
+    "enabled": true,
+    "auto_commit": false,
+    "checkpoint_label_prefix": "bridge-v05"
+  },
+  "cache": {
+    "enabled": true,
+    "max_entries": 256
+  },
+  "logging": {
+    "human_log": "./bridge_run.log",
+    "jsonl_log": "./bridge_events.jsonl",
+    "redact_secrets": true
+  },
+  "test_profile": {
+    "profile": "python"
+  },
+  "context": {
+    "budget_chars": 12000,
+    "keep_recent_results": 6
+  },
+  "runtime": {
+    "allowed_workspace_roots": [],
+    "host": "127.0.0.1",
+    "port": 8471,
+    "token": "",
+    "network_policy": "LOCAL_MODEL_NETWORK",
+    "quotas": {
+      "max_active_sessions": 8,
+      "max_active_tasks": 16,
+      "max_actions_per_task": 64,
+      "max_events_retained": 2000,
+      "max_export_bytes": 2000000
+    },
+    "roots": {}
+  }
+}

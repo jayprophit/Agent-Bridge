@@ -1,0 +1,241 @@
+{
+ "task": "Create calc.py with add(a,b) and sub(a,b), create test_calc.py with 4 asserts, run the tests.",
+ "mat_touched": false,
+ "workdir": "disposable-temp",
+ "actions": [
+  {
+   "tool": "filesystem.write",
+   "path": "calc.py",
+   "ok": true,
+   "error": ""
+  },
+  {
+   "tool": "filesystem.write",
+   "path": "test_calc.py",
+   "ok": true,
+   "error": ""
+  }
+ ],
+ "repairs": [],
+ "full_registry_count": 370,
+ "ollama_installed": [
+  "granite3.3:2b",
+  "hhao/qwen2.5-coder-tools:3b",
+  "qwen2.5-coder:3b-instruct-q4_K_M",
+  "qwen3.5:2b-q4_K_M",
+  "qwen3:latest",
+  "qwen3:1.7b",
+  "qwen3:0.6b"
+ ],
+ "session_id": "session-ee5c72308b45",
+ "plan": {
+  "plan_id": "plan-606d8f8215",
+  "task": "Create calc.py with add(a,b) and sub(a,b), create test_calc.py with 4 asserts, run the tests.",
+  "steps": [
+   {
+    "step_id": "step-f63f6a55",
+    "step_type": "plan",
+    "description": "Understand task: Create calc.py with add(a,b) and sub(a,b), create test_calc.py with 4 asserts, run the tests.",
+    "tool_id": "",
+    "model_id": "",
+    "arguments": {},
+    "status": "pending",
+    "result": {},
+    "error": "",
+    "duration_s": 0.0,
+    "timestamp": 98844.7021451
+   },
+   {
+    "step_id": "step-0d9d939a",
+    "step_type": "execute",
+    "description": "Select model for general task",
+    "tool_id": "",
+    "model_id": "ollama:hhao/qwen2.5-coder-tools:3b",
+    "arguments": {},
+    "status": "pending",
+    "result": {
+     "routing_decision": {
+      "decision_id": "rd-b29dc4165d",
+      "task_type": "general",
+      "selected_model": "ollama:hhao/qwen2.5-coder-tools:3b",
+      "selected_provider": "ollama",
+      "reasoning": "Selected  (ollama:hhao/qwen2.5-coder-tools:3b) for general task from ollama provider (local model) (installed) under LOCAL_FIRST policy.",
+      "alternatives": [
+       "ollama:qwen3:1.7b",
+       "ollama:qwen3:0.6b"
+      ],
+      "fallback_used": false,
+      "fallback_from": "",
+      "fallback_reason": "",
+      "privacy_satisfied": true,
+      "latency_estimate_ms": 0,
+      "cost_estimate": {},
+      "timestamp": 98844.7022449
+     }
+    },
+    "error": "",
+    "duration_s": 0.0,
+    "timestamp": 98844.702326
+   },
+   {
+    "step_id": "step-f1546854",
+    "step_type": "execute",
+    "description": "Discover 10 relevant tools",
+    "tool_id": "",
+    "model_id": "",
+    "arguments": {},
+    "status": "pending",
+    "result": {
+     "tool_count": 10,
+     "tools": [
+      "shell.run",
+      "filesystem.patch",
+      "archive.create",
+      "citation.create",
+      "filesystem.mkdir"
+     ]
+    },
+    "error": "",
+    "duration_s": 0.0,
+    "timestamp": 98844.7051163
+   },
+   {
+    "step_id": "step-287a9d28",
+    "step_type": "execute",
+    "description": "Execute task with available tools",
+    "tool_id": "shell.run",
+    "model_id": "",
+    "arguments": {},
+    "status": "pending",
+    "result": {},
+    "error": "",
+    "duration_s": 0.0,
+    "timestamp": 98844.7051523
+   },
+   {
+    "step_id": "step-a40aefec",
+    "step_type": "verify",
+    "description": "Verify results and generate report",
+    "tool_id": "",
+    "model_id": "",
+    "arguments": {},
+    "status": "pending",
+    "result": {},
+    "error": "",
+    "duration_s": 0.0,
+    "timestamp": 98844.7051811
+   }
+  ],
+  "status": "ready",
+  "current_step_index": 0,
+  "total_steps": 5,
+  "metadata": {
+   "task_type": "general",
+   "created_at": 98844.7051888
+  }
+ },
+ "routing": {
+  "decision_id": "rd-4948d87705",
+  "task_type": "coding",
+  "selected_model": "ollama:hhao/qwen2.5-coder-tools:3b",
+  "selected_provider": "ollama",
+  "reasoning": "Selected  (ollama:hhao/qwen2.5-coder-tools:3b) for coding task from ollama provider (local model) (installed) under LOCAL_ONLY policy.",
+  "alternatives": [
+   "ollama:qwen3:1.7b",
+   "ollama:qwen3:0.6b"
+  ],
+  "fallback_used": false,
+  "fallback_from": "",
+  "fallback_reason": "",
+  "privacy_satisfied": true,
+  "latency_estimate_ms": 0,
+  "cost_estimate": {},
+  "timestamp": 98844.707048
+ },
+ "model_selected": "ollama:hhao/qwen2.5-coder-tools:3b",
+ "why_selected": "Selected  (ollama:hhao/qwen2.5-coder-tools:3b) for coding task from ollama provider (local model) (installed) under LOCAL_ONLY policy.",
+ "shortlist_count": 12,
+ "shortlisted_tools": [
+  "test.benchmark",
+  "test.build",
+  "test.coverage",
+  "test.detect",
+  "test.e2e",
+  "test.integration",
+  "test.lint",
+  "test.regression",
+  "test.run",
+  "test.typecheck",
+  "test.unit",
+  "tools.search"
+ ],
+ "resource_placement": {
+  "waves": 2,
+  "code": {
+   "workload_id": "auto-code",
+   "resource_id": "local:cpu",
+   "lane": "BALANCED",
+   "reasons": [
+    "compatible:CPU_COMPUTE"
+   ],
+   "score": 45.5,
+   "deferred": false,
+   "fallback_resource_ids": [
+    "local:ram"
+   ],
+   "benchmark_evidence_used": false
+  },
+  "test": {
+   "workload_id": "auto-test",
+   "resource_id": "local:cpu",
+   "lane": "BALANCED",
+   "reasons": [
+    "compatible:CPU_COMPUTE"
+   ],
+   "score": 44.5,
+   "deferred": false,
+   "fallback_resource_ids": [],
+   "benchmark_evidence_used": false
+  },
+  "cpu_count": 8
+ },
+ "model_generation_s": 21.63,
+ "model_eval_count": 140,
+ "model_raw_chars": 501,
+ "fenced_blocks": 2,
+ "test_command": "python -m unittest test_calc -v",
+ "test_result": {
+  "ok": true,
+  "output": "{'command': 'python -m unittest test_calc -v', 'exit_code': 0, 'stdout': '', 'stderr': 'test_add (test_calc.CalcTests.test_add) ... ok\\ntest_add_negative (test_calc.CalcTests.test_add_negative) ... ok\\ntest_sub (test_calc.CalcTests.test_sub) ... ok\\ntest_sub_negative (test_calc.CalcTests.test_sub_negative) ... ok\\n\\n----------------------------------------------------------------------\\nRan 4 tests in 0.001s\\n\\nOK\\n', 'duration_s': 0.761, 'passed': True, 'ok': True, 'verified': True, 'tool': 'test.unit', 'call_id': 'tc-3e286545d0', 'adapter': 'executor', 'attempted': ['test.unit']}"
+ },
+ "repair_attempts": 0,
+ "writes": {
+  "calc.py": true,
+  "test_calc.py": true
+ },
+ "direct_verify": {
+  "returncode": 0,
+  "tail": [
+   "----------------------------------------------------------------------",
+   "Ran 4 tests in 0.001s",
+   "",
+   "OK"
+  ]
+ },
+ "audit": {
+  "plan_id": "plan-606d8f8215",
+  "session_id": "session-ee5c72308b45",
+  "router_calls": 3
+ },
+ "artifacts": {
+  "calc_chars": 65,
+  "test_chars": 406
+ },
+ "human_gate": {
+  "status": "PENDING_OWNER_REVIEW",
+  "note": "task evidence complete; owner accepts or requests revision (nothing auto-approved)"
+ },
+ "final_result": "PASS",
+ "status": "PASS",
+ "pre_autonomy_ready": true
+}

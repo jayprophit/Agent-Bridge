@@ -1,0 +1,198 @@
+{
+ "session_id": "s-414b9523a6",
+ "task_id": "t-29170a1ee7",
+ "duration_s": 132.6,
+ "status": {
+  "session_id": "s-414b9523a6",
+  "status": "COMPLETED",
+  "mode": "build",
+  "tasks": {
+   "t-29170a1ee7": "COMPLETED"
+  },
+  "task_details": {
+   "t-29170a1ee7": {
+    "status": "COMPLETED",
+    "parent": ""
+   }
+  },
+  "step": 0,
+  "models": {
+   "planner": "hhao/qwen2.5-coder-tools:3b",
+   "coder": "hhao/qwen2.5-coder-tools:3b",
+   "reviewer": "hhao/qwen2.5-coder-tools:3b",
+   "general": "hhao/qwen2.5-coder-tools:3b"
+  },
+  "files_touched": [
+   "task_a\\owner_tool.py",
+   "report.txt"
+  ],
+  "tests": {
+   "ran": 1,
+   "passed": 1,
+   "all_passed": true,
+   "quality": "WEAK",
+   "quality_reasons": [
+    "no test files; verification via shell runs only"
+   ],
+   "verified": true
+  },
+  "review": "approve",
+  "approvals": [
+   {
+    "action": "capabilities",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "mkdir",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "write",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "shell",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "net",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "browser",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "browser",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "write",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "test",
+    "decision": "OWNER_AUTO_APPROVED"
+   },
+   {
+    "action": "status",
+    "decision": "OWNER_AUTO_APPROVED"
+   }
+  ],
+  "errors": [],
+  "duration_s": 128.62,
+  "competence": {
+   "valid_action_ratio": 1.0,
+   "malformed": 0,
+   "executed_ok": 10,
+   "executed_fail": 0,
+   "corrections": 0,
+   "syntax_error_runs": 0,
+   "loops": 0,
+   "reviewer_agreement": [
+    1,
+    0
+   ],
+   "hint": "nominal"
+  },
+  "pending_approvals": [],
+  "pending_final": false
+ },
+ "scorecard": {
+  "ok": true,
+  "scorecard": {
+   "categories": {
+    "FILES": {
+     "status": "PASS",
+     "detail": "2 file(s) changed with verification"
+    },
+    "COMMANDS": {
+     "status": "PASS",
+     "detail": "2 command(s), 0 non-zero exit"
+    },
+    "TESTS": {
+     "status": "PASS",
+     "detail": "all runs passed, verified"
+    },
+    "ORACLE": {
+     "status": "WEAK",
+     "detail": "no test files; verification via shell runs only"
+    },
+    "REVIEW": {
+     "status": "PASS",
+     "detail": "reviewer: approve"
+    },
+    "RUNTIME_OUTPUT": {
+     "status": "PASS",
+     "detail": "outputs match verified evidence"
+    },
+    "ROLLBACK_SAFETY": {
+     "status": "PASS",
+     "detail": "checkpoint manifest available"
+    },
+    "SECURITY": {
+     "status": "PASS",
+     "detail": "no violations; approvals enforced"
+    }
+   },
+   "overall_note": "categorical only; no universal numeric score"
+  }
+ },
+ "timeline": [
+  "2026-09-10T16:11:47 task accepted",
+  "2026-09-10T16:11:47 planner started",
+  "2026-09-10T16:13:56 plan completed",
+  "2026-09-10T16:13:56 completed"
+ ],
+ "manifest": {
+  "ok": true,
+  "session_id": "s-414b9523a6",
+  "changes": [
+   {
+    "path": "task_a",
+    "backup": false,
+    "existed": true
+   },
+   {
+    "path": "task_a\\owner_tool.py",
+    "backup": false,
+    "existed": false
+   },
+   {
+    "path": "report.txt",
+    "backup": false,
+    "existed": false
+   }
+  ]
+ },
+ "events_tail": [
+  {
+   "event": "session.created",
+   "timestamp": "2026-09-10T16:11:47",
+   "session_id": "s-414b9523a6",
+   "mode": "build"
+  },
+  {
+   "event": "task.started",
+   "timestamp": "2026-09-10T16:11:47",
+   "task_id": "t-29170a1ee7"
+  },
+  {
+   "event": "planning.started",
+   "timestamp": "2026-09-10T16:11:47",
+   "task_id": "t-29170a1ee7"
+  },
+  {
+   "event": "planning.completed",
+   "timestamp": "2026-09-10T16:13:56",
+   "task_id": "t-29170a1ee7"
+  },
+  {
+   "event": "task.completed",
+   "timestamp": "2026-09-10T16:13:56",
+   "task_id": "t-29170a1ee7",
+   "status": "COMPLETED",
+   "duration_s": 128.62
+  }
+ ]
+}

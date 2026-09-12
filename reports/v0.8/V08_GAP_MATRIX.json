@@ -1,0 +1,34 @@
+{
+  "source": "frozen v0.7.0 (350 tools, 40 families)",
+  "rule": "EXTEND existing tools; never duplicate without compatibility need",
+  "findings": {
+    "toolkit_negotiate": "EXISTS_AND_WORKS",
+    "capability_registry": "MISSING",
+    "event_bus": "EXISTS_PARTIAL",
+    "email_tools": "MISSING",
+    "telephony": "MISSING",
+    "avatar_ui": "MISSING",
+    "scheduler_balancer": "MISSING",
+    "legacy_translator": "MISSING",
+    "tts_backend": "EXISTS_AND_WORKS",
+    "stt_backend": "MISSING",
+    "ocr_backend": "MISSING",
+    "image_backend": "MISSING",
+    "voice_pipeline": "MISSING",
+    "ide_embedding_contract": "MISSING"
+  },
+  "dedupe_decisions": [
+    "no new vision-read tool; EXTEND vision.*",
+    "no new image tools; EXTEND image.* with provider adapters",
+    "no new TTS/STT tools; EXTEND speech.* (fix acceptance probe to System.Speech)",
+    "no new search/shortlist tool; EXTEND tools/toolkit.py negotiation",
+    "no new event system; EXTEND events.EventBus",
+    "no new pairing/transport; EXTEND nodes/ transports",
+    "email/telephone/avatar/scheduler/translator/OCR-engine/voice-pipeline: genuinely MISSING"
+  ],
+  "verified_local_facts": {
+    "sapi_voices": ["Microsoft Hazel Desktop", "Microsoft Zira Desktop"],
+    "tts_synthesis_e2e": "VERIFIED 110KB WAV via System.Speech, no cloud",
+    "v07_acceptance_tts_probe": "was wrong (probed win32com); corrected to System.Speech in v0.8"
+  }
+}

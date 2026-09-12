@@ -1,0 +1,24 @@
+[
+  {
+    "ide_id": "cursor",
+    "name": "Cursor",
+    "executable": "C:\\Users\\jpowe\\AppData\\Local\\Programs\\cursor\\Cursor.exe",
+    "protocols": [
+      "generic"
+    ],
+    "status": "AVAILABLE",
+    "running": true,
+    "capabilities": []
+  },
+  {
+    "ide_id": "vs-code",
+    "name": "VS Code",
+    "executable": "C:\\Users\\jpowe\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+    "protocols": [
+      "generic"
+    ],
+    "status": "AVAILABLE",
+    "running": true,
+    "capabilities": []
+  }
+]

@@ -1,0 +1,3195 @@
+{
+ "old_root": "C:/Users/jpowe/Desktop/OpenCode-Agent-Test",
+ "new_repo": "C:/Users/jpowe/Desktop/Agent-Bridge",
+ "top_level": [
+  {
+   "old_path": ".git",
+   "classification": "CACHE",
+   "files": 42,
+   "bytes": 16966237,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "tool cache; not product",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": ".qodo",
+   "classification": "CACHE",
+   "files": 0,
+   "bytes": 0,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "tool cache; not product",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "MAT_integration_01",
+   "classification": "MAT_OR_EXTERNAL_PROJECT",
+   "files": 15722,
+   "bytes": 181984157,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "non-Agent-Bridge project; never inside Agent-Bridge",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_bridge_v01",
+   "classification": "HISTORICAL_AGENT_BRIDGE_SOURCE",
+   "files": 11,
+   "bytes": 45811,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "superseded version; history via git/tags/docs, not duplicated trees",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_bridge_v02",
+   "classification": "HISTORICAL_AGENT_BRIDGE_SOURCE",
+   "files": 37,
+   "bytes": 141666,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "superseded version; history via git/tags/docs, not duplicated trees",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_bridge_v03",
+   "classification": "HISTORICAL_AGENT_BRIDGE_SOURCE",
+   "files": 73,
+   "bytes": 436568,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "superseded version; history via git/tags/docs, not duplicated trees",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_bridge_v04",
+   "classification": "HISTORICAL_AGENT_BRIDGE_SOURCE",
+   "files": 121,
+   "bytes": 388121,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "superseded version; history via git/tags/docs, not duplicated trees",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_bridge_v05",
+   "classification": "HISTORICAL_AGENT_BRIDGE_SOURCE",
+   "files": 106,
+   "bytes": 500376,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "superseded version; history via git/tags/docs, not duplicated trees",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_bridge_v06",
+   "classification": "HISTORICAL_AGENT_BRIDGE_SOURCE",
+   "files": 122,
+   "bytes": 2937486,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "superseded version; history via git/tags/docs, not duplicated trees",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_bridge_v07",
+   "classification": "HISTORICAL_AGENT_BRIDGE_SOURCE",
+   "files": 240,
+   "bytes": 4059264,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "superseded version; history via git/tags/docs, not duplicated trees",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_bridge_v08",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "files": 301,
+   "bytes": 6082439,
+   "new_destination": "(see per-file entries)",
+   "action": "MIGRATE-SELECTIVE",
+   "reason": "v0.8 working source; migrated file-by-file below",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "agent_test.py",
+   "classification": "TEMPORARY",
+   "files": 1,
+   "bytes": 45,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "not product material",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "genesis_integration_01",
+   "classification": "MAT_OR_EXTERNAL_PROJECT",
+   "files": 137,
+   "bytes": 156127,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "non-Agent-Bridge project; never inside Agent-Bridge",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "opencode_bridge_test_01",
+   "classification": "MAT_OR_EXTERNAL_PROJECT",
+   "files": 11,
+   "bytes": 28626,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "non-Agent-Bridge project; never inside Agent-Bridge",
+   "migration_status": "N/A"
+  },
+  {
+   "old_path": "test_output.txt",
+   "classification": "LOG",
+   "files": 1,
+   "bytes": 3960,
+   "new_destination": "NONE",
+   "action": "LEAVE-IN-OLD-ROOT",
+   "reason": "not product material",
+   "migration_status": "N/A"
+  }
+ ],
+ "v08_files": [
+  {
+   "old_path": "agent_bridge_v08/ADAPTIVE_BALANCING.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 480,
+   "hash": "fa4d735197fb5208f619f95de26c1773eb389adca53389a9914cbfd3815af680",
+   "new_destination": "ADAPTIVE_BALANCING.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/AUDIO_ARCHITECTURE.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 442,
+   "hash": "21f6951452ee5db3040f7b0ca5d80b4f3ddd31cc94e61233a6902e0a19cbfaf1",
+   "new_destination": "AUDIO_ARCHITECTURE.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/AVATAR_ARCHITECTURE.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 444,
+   "hash": "844ee47407c3eb6438c47534f3fb7cea87fcfec27cdbef17645319977cad6653",
+   "new_destination": "AVATAR_ARCHITECTURE.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/AVATAR_EVENT_PROTOCOL.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 508,
+   "hash": "d3c3fc45792e2da6a19500a25089634cb4dc5692fdd8169ed675fef5654f6e89",
+   "new_destination": "AVATAR_EVENT_PROTOCOL.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/CHAT_WORK_UI.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 378,
+   "hash": "4e811be1bdcdecd9723ef5e054f4708e670f1d3a295f65ac641a70535d3ac49e",
+   "new_destination": "CHAT_WORK_UI.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/COMMUNICATIONS_ARCHITECTURE.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 528,
+   "hash": "3a7501a257dad11772791b2412a5fd3e45b860fd5594c685843dab5e90e072a3",
+   "new_destination": "COMMUNICATIONS_ARCHITECTURE.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/CROSS_DEVICE_ARCHITECTURE.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2530,
+   "hash": "58cec128c237c01c82942c64fb1ec2c8a1a7a2a10bb5bdaf361d44314c6ad789",
+   "new_destination": "CROSS_DEVICE_ARCHITECTURE.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/DEVICE_IO_CAPABILITIES.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 937,
+   "hash": "4446e71cb59e5c41da2d499c33e6e73b9263ce1e9419f3bcdd96103e8d9d626d",
+   "new_destination": "DEVICE_IO_CAPABILITIES.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/EMAIL_TOOLS.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 362,
+   "hash": "a6e1ab67b0c7cf295338a4541b701d34a1266045fbd78bd0ffd346aa1348415e",
+   "new_destination": "EMAIL_TOOLS.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/IDE_DISCOVERY_LOCAL.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 540,
+   "hash": "dd98c1886a81c1e10f4c6b0c7aa477f8e95df715ffffe7bd95f6e483f0cd7be1",
+   "new_destination": "IDE_DISCOVERY_LOCAL.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/IDE_EMBEDDING.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 511,
+   "hash": "6e0bd6a5d26c5ffab7829b312a0dd233207f87681ad4f17285edbfa87b902eb0",
+   "new_destination": "IDE_EMBEDDING.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/IMAGE_PROVIDER_ARCHITECTURE.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 408,
+   "hash": "2c34b82b3edd9aac38b3ba0a04373a56c2b5ae89a5ee1748ab68b4b572c724d1",
+   "new_destination": "IMAGE_PROVIDER_ARCHITECTURE.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/LEGACY_MODEL_COMPATIBILITY.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 724,
+   "hash": "45ac6c460a83325abbf51f8d784f2dd5dd5f3d4b0dc87a859e31f24ae0fb7209",
+   "new_destination": "LEGACY_MODEL_COMPATIBILITY.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/LOCAL_MODEL_INVENTORY.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7420,
+   "hash": "3a6f05096d4a2af89ec74b8fb93595e209f96335bddc3dcd537435a99e1cba57",
+   "new_destination": "LOCAL_MODEL_INVENTORY.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/LOCAL_NETWORK_TESTING.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 633,
+   "hash": "9d374bb8184fd2c15865ed11729cb1bd0bf2b0ffc3741d494ce093867f93be86",
+   "new_destination": "LOCAL_NETWORK_TESTING.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/LOCAL_PROVIDER_DISCOVERY.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4223,
+   "hash": "14b57197df4eb95056c46c4c365675c85affefcaf81ce4ccba7b0c0b1aa0c439",
+   "new_destination": "LOCAL_PROVIDER_DISCOVERY.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/LOCAL_V07_ACCEPTANCE_REPORT.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4735,
+   "hash": "73968132e4c60cabc0e7a261592f24a94318ea570333eff5c0350d37a6784040",
+   "new_destination": "LOCAL_V07_ACCEPTANCE_REPORT.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/LOCAL_V07_ACCEPTANCE_REPORT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 839,
+   "hash": "412509aeddf28cf7e2a19f3563a393b3adb885934da17f8d7ca8707b66d45609",
+   "new_destination": "LOCAL_V07_ACCEPTANCE_REPORT.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/MODEL_BENCHMARK_RESULTS.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 57165,
+   "hash": "0c383ec6201f4316d67cfa6f9d0e6f0ad6df902370c1b973ff2bdb8faca789ef",
+   "new_destination": "MODEL_BENCHMARK_RESULTS.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/MODEL_BENCHMARK_RESULTS.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5559,
+   "hash": "b5b649a1ccc4d7fdec8d613fc0b9165e4d2e8878fde3e0c172ac907d00729895",
+   "new_destination": "MODEL_BENCHMARK_RESULTS.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/MULTIMODAL_ARCHITECTURE.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 411,
+   "hash": "ea2be0f7fa5fe7b3c58e0a38dc0ff105f22af1c40a67bdae7b85fc8d515284ad",
+   "new_destination": "MULTIMODAL_ARCHITECTURE.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/NODE_PROTOCOL.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1544,
+   "hash": "b11cb94e34bed4bcd51331d2dee6664b7afd421537ef5d384ac695ca84aa9b7a",
+   "new_destination": "NODE_PROTOCOL.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/NODE_REGISTRY.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 402,
+   "hash": "9ce7f26a7fa38e429fb3143e51923a5f5cc3c473e9a2ce7ae55107f49237d576",
+   "new_destination": "NODE_REGISTRY.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/NODE_TRANSPORT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1844,
+   "hash": "bba794076aeae6e32b2dda98343d69e24fb1f20864f0988b8ad74f53664b39c7",
+   "new_destination": "NODE_TRANSPORT.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/PAIRING_AND_TRUST.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1778,
+   "hash": "d55354e34cea6c3490aa26a0c7689652913239f10352d5a6d0b1a82058ea1c7e",
+   "new_destination": "PAIRING_AND_TRUST.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/PRIVACY_ROUTING.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 568,
+   "hash": "afa8e2b2fc0fc34f1cd3ccf285bbd3ec2d00022ea2280fc9694ae245e876410e",
+   "new_destination": "PRIVACY_ROUTING.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/README.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 8636,
+   "hash": "c7fe47e75da60f90ad827a8b623a8dfac52a4d82b753e7d68d7f9db240cbc963",
+   "new_destination": "README.md",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "DIVERGED-NEWER-IN-REPO"
+  },
+  {
+   "old_path": "agent_bridge_v08/REMOTE_SECURITY.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1241,
+   "hash": "7286f5e39ba2e46f09ad30ef404a782a77e8564d3f3d7f6058915e223899e941",
+   "new_destination": "REMOTE_SECURITY.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/RESOURCE_ORCHESTRATION.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 638,
+   "hash": "15ba7e306769fe37732ab701c08747f859f1b5802977295cf938d15ca10075d5",
+   "new_destination": "RESOURCE_ORCHESTRATION.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/RUNTIME_CALIBRATION.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 64541,
+   "hash": "1b5add2093ad06a9bc886ddb137102d2ba581a6600d6ce5fc770bd02b4acd8b5",
+   "new_destination": "RUNTIME_CALIBRATION.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/RUNTIME_CALIBRATION.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3770,
+   "hash": "dc35a2724df30cd88330a5b5e34fc30612fd1bfc087969b61f97d179162f8fd9",
+   "new_destination": "RUNTIME_CALIBRATION.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/RUNTIME_TUNER_PROFILE.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 509,
+   "hash": "6957b463ede737cc61328f9fc438d8601fb0426cd75a1193607e99b53477b67e",
+   "new_destination": "RUNTIME_TUNER_PROFILE.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/SMALL_MODEL_RUNTIME.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 412,
+   "hash": "e084f739647c110cdee3d41ab8f32bf133e77cb675c8a6521f2a98ff2bc51461",
+   "new_destination": "SMALL_MODEL_RUNTIME.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/TASK_DELEGATION.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 430,
+   "hash": "ae6c337940a3479ead4fdd12bf914b3718c968307099a9b7706ceb887bdf3193",
+   "new_destination": "TASK_DELEGATION.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/TELEPHONY_AGENT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 372,
+   "hash": "dc1b4bf2b27d4e7d87099024d29430fead4dd1f6d432230c3c2af9499e6ef61a",
+   "new_destination": "TELEPHONY_AGENT.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/THREEJS_REFERENCE_UI.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 545,
+   "hash": "b6c86e9a39bc857451fda929eb0e0d786fa45de35955a5360cd7e7d4bbc9c651",
+   "new_destination": "THREEJS_REFERENCE_UI.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/TOOL_CAPABILITY_MATRIX.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 164918,
+   "hash": "f1ac58f32a8fc7fec48056029597a3e9f0d873be35620ac18f0a904f2637d75d",
+   "new_destination": "TOOL_CAPABILITY_MATRIX.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/TOOL_CAPABILITY_MATRIX.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2519,
+   "hash": "4f6e95bb3598c28506e41d0249fedfb230a6c804c9140182c6973bab1213508c",
+   "new_destination": "TOOL_CAPABILITY_MATRIX.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_CAPABILITY_SUMMARY.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6398,
+   "hash": "a90921aa14677852c8db982cbc688f92532a608508ee1d8c1d753d7789b6ef25",
+   "new_destination": "V07_CAPABILITY_SUMMARY.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_CAPABILITY_SUMMARY.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1833,
+   "hash": "80b1ce1c22e5789ff8454448b47d4fd62a47639ef0783f7150c73b7aa14cebff",
+   "new_destination": "V07_CAPABILITY_SUMMARY.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_FINAL_ACCEPTANCE_REPORT.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 990,
+   "hash": "247f9f53e2671ffd30d74ad22a8264aac93d2deec7b6789131fbb6cf7f07e855",
+   "new_destination": "V07_FINAL_ACCEPTANCE_REPORT.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_FINAL_ACCEPTANCE_REPORT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 926,
+   "hash": "938d14579cde4bcbd59f77253e5c3b6e28a4e8cb9e4763dfa1e6b07498b1481d",
+   "new_destination": "V07_FINAL_ACCEPTANCE_REPORT.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_KNOWN_LIMITATIONS.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1460,
+   "hash": "d24fe6e6cda3cf01279b02fee3ff405a635af89fb1be15907b516e02df13f8b7",
+   "new_destination": "V07_KNOWN_LIMITATIONS.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_PROGRESS.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 40751,
+   "hash": "72e73d783d8995fbcd1d9d4aa6d6474c3617b708d8796b7c698cf98ecafe0b15",
+   "new_destination": "V07_PROGRESS.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_RELEASE_MANIFEST.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2245,
+   "hash": "0f1c2993c5a2809af9852114475dc994ae337ba83457c406b1c08afb03114f6a",
+   "new_destination": "V07_RELEASE_MANIFEST.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_RELEASE_MANIFEST.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 942,
+   "hash": "a85fa4fbcb1da583d888a7feff16c5e63f4d3ec2af98fa768524ba0a89037a33",
+   "new_destination": "V07_RELEASE_MANIFEST.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_SECURITY_SUMMARY.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1996,
+   "hash": "c7f532d5585ce2823abb65872b7a18e2d70ee0cd0c3a2e44af4ec3d40e0b271c",
+   "new_destination": "V07_SECURITY_SUMMARY.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_SOURCE_HASHES.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 21929,
+   "hash": "ede12ab48ec7c880ea7f118e2c3ced59c8b610d9a3db76183dec35852bbdb545",
+   "new_destination": "V07_SOURCE_HASHES.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_TEST_SUMMARY.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2022,
+   "hash": "c4197bc147e24961d45c83003b3825e803c4cd02af489fba199fb307db40c031",
+   "new_destination": "V07_TEST_SUMMARY.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V07_VERSIONS.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 503,
+   "hash": "2f36ba333f731a8718782dd0f155987e4dcbda77396bd5123a22bebd8bef5ef5",
+   "new_destination": "V07_VERSIONS.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_COMPAT_ACCEPTANCE.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1083,
+   "hash": "816dc04e37c65263f5c6af828487484937e52b955b4fe1481a875a701e2ef4c6",
+   "new_destination": "V08_COMPAT_ACCEPTANCE.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_FINAL_ACCEPTANCE_REPORT.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2362,
+   "hash": "d8d649a0235c826e9126da7f5aa432b17020ab9f00d9f217d772e76da98844bc",
+   "new_destination": "V08_FINAL_ACCEPTANCE_REPORT.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_FINAL_ACCEPTANCE_REPORT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5640,
+   "hash": "04d3603e71e39739815440d044ad56531857fb33d1f9d5837e1bd5a809375685",
+   "new_destination": "V08_FINAL_ACCEPTANCE_REPORT.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_GAP_MATRIX.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1422,
+   "hash": "8aa598e839e26bdd82b58cbd643f7dfc615eb943629acf653b2e04779ce590a9",
+   "new_destination": "V08_GAP_MATRIX.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_GAP_MATRIX.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5891,
+   "hash": "caadff6d17439a4c6cc06b4f05072762ce62216e42eca70ace4b843e94f5be98",
+   "new_destination": "V08_GAP_MATRIX.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_LOCAL_ACCEPTANCE_REPORT.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3150,
+   "hash": "801377182f2ba876780023e23695793e58ffdd1fefffd2b55a8d7743e0f518f5",
+   "new_destination": "V08_LOCAL_ACCEPTANCE_REPORT.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_LOCAL_ACCEPTANCE_REPORT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 583,
+   "hash": "550f5716b88d8a866323d759a113960217fd864b17ba503039574140679a3c21",
+   "new_destination": "V08_LOCAL_ACCEPTANCE_REPORT.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_MODALITY_MATRIX.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4419,
+   "hash": "3ba91b5ea4b6f376afa0de8896f4e08b66f6bc77a0ea940c29abb2c3d083dc2c",
+   "new_destination": "V08_MODALITY_MATRIX.json",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "DIVERGED-NEWER-IN-REPO"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_MODALITY_MATRIX.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1301,
+   "hash": "361dc9790f7e1609ae210eb401efec653663ef520f331028e608e8729041a4d4",
+   "new_destination": "V08_MODALITY_MATRIX.md",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "DIVERGED-NEWER-IN-REPO"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_PROGRESS.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7935,
+   "hash": "7a5eaecfa0960fa76bd145a92ac5d043f6aefbf05c6692d7ccbdbc7151e7e19c",
+   "new_destination": "V08_PROGRESS.md",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "DIVERGED-NEWER-IN-REPO"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_RESOURCE_BALANCE_REPORT.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2324,
+   "hash": "e7a038a6b70bdd7597bdc6d20faf055d8eb22c00c9711e7b6d7323a8a0c5329d",
+   "new_destination": "V08_RESOURCE_BALANCE_REPORT.json",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "DIVERGED-NEWER-IN-REPO"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_RESOURCE_BALANCE_REPORT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 364,
+   "hash": "0a22880c3660fb6b64a27ca72aafbbd902b469dadfc2254ee389253d8d1e3888",
+   "new_destination": "V08_RESOURCE_BALANCE_REPORT.md",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "DIVERGED-NEWER-IN-REPO"
+  },
+  {
+   "old_path": "agent_bridge_v08/V08_TOOL_CAPABILITY_MATRIX.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 170213,
+   "hash": "b58dab0aeeba40260d7f561715c92606475f508da14c933fb13a81fc0525310e",
+   "new_destination": "V08_TOOL_CAPABILITY_MATRIX.json",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "DIVERGED-NEWER-IN-REPO"
+  },
+  {
+   "old_path": "agent_bridge_v08/VISION_AND_OCR.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 415,
+   "hash": "de3efe901b6a1c31181bbb2c84f537e755d86097ad8546a9d94d5ee00c7f70a0",
+   "new_destination": "VISION_AND_OCR.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/VOICE_AGENT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 429,
+   "hash": "a03ce38c9a11199e850a68cecd394d562d76e1d792c59b47e77574a606f2e2e0",
+   "new_destination": "VOICE_AGENT.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/WINDOWS_DEVICE_PROFILE.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1742,
+   "hash": "98ffe5face10e712c3f8278f0b0e11f27c732a59ece3d092cedc5b849db607b2",
+   "new_destination": "WINDOWS_DEVICE_PROFILE.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/WORKLOAD_PLACEMENT.md",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 328,
+   "hash": "17b7bdb6a29f300a73e186e4e9cf5cdb8b8afb055d96e1650f5408788a1d5cff",
+   "new_destination": "WORKLOAD_PLACEMENT.md",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/api_schema_v05.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3164,
+   "hash": "568f3ae3b087364831cecc6ca3ece1abdbe0f73317b047182e3400096edd382c",
+   "new_destination": "api_schema_v05.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/bridge.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 67643,
+   "hash": "96fa184219fb1007317a77c8ae7443caeaf10cdb42f4b69fd393387b79199333",
+   "new_destination": "bridge.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/bridge_config.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1664,
+   "hash": "d17350bd1c99f44e70a88a1d39e27d9d41d641b2baca59d3a0753407679f9d2a",
+   "new_destination": "bridge_config.json",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "MIGRATED-WITH-PORTABILITY-FIX"
+  },
+  {
+   "old_path": "agent_bridge_v08/bridge_config_v05.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1618,
+   "hash": "152ec78c2870194589001a5eda919ea1280abcb1859cc403a29479df0b3e18c3",
+   "new_destination": "bridge_config_v05.json",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "MIGRATED-WITH-PORTABILITY-FIX"
+  },
+  {
+   "old_path": "agent_bridge_v08/bridge_config_v06.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1664,
+   "hash": "d17350bd1c99f44e70a88a1d39e27d9d41d641b2baca59d3a0753407679f9d2a",
+   "new_destination": "bridge_config_v06.json",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "MIGRATED-WITH-PORTABILITY-FIX"
+  },
+  {
+   "old_path": "agent_bridge_v08/browser_cdp.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 22639,
+   "hash": "851589767d84c5c8e684f88b63142e2ce2d8a21640411da901d634afa52ccb36",
+   "new_destination": "browser_cdp.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/cache.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2019,
+   "hash": "322c34dd348c6ef52b0cecd5ee2956a6d90a713ed003ea0e4b7bf8eefc587f6d",
+   "new_destination": "cache.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/checkpoints.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 9902,
+   "hash": "56b28ebcc6e5cded36b88b7a116a0c399b38177dee2bf740d1e1fe2036814f9f",
+   "new_destination": "checkpoints.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/cli.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 8082,
+   "hash": "237873ef6ecf53a1d9000e33cf61b4f1aefa8917205aa21a259a306aa5754a5d",
+   "new_destination": "cli.py",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "MIGRATED-WITH-PORTABILITY-FIX"
+  },
+  {
+   "old_path": "agent_bridge_v08/client.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 8414,
+   "hash": "065b6149f61f4f712806022b59883a8ea57a6375b6944dd635a2f19cbf569bbe",
+   "new_destination": "client.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/commands.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4214,
+   "hash": "336672f19a75e662253e9575e93bceef2085942ba152c7bf467e250b716bb253",
+   "new_destination": "commands.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/competence.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2485,
+   "hash": "c02c3d5dd318c67472735b510f3d3d58a5aac414ac5298eea9e1c1da8ea6a8cd",
+   "new_destination": "competence.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/config.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 14998,
+   "hash": "91f63448ce2524958eba9ccd38be36545a7f17a6ebc81f75978d595b0e4a2035",
+   "new_destination": "config.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/config_validate.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5134,
+   "hash": "a2c90bdb39a856d1e5c0307e0be6b23f3cab1b849b1b27bf4dc255205ff7f0be",
+   "new_destination": "config_validate.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/context.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2125,
+   "hash": "854f4a1ea45e9f56460c5ad210b357f79cd6d4a9c6bd03a61477b1fd1ee8c85c",
+   "new_destination": "context.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/dxdiag_output.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 16136,
+   "hash": "d72636f7627dcb48a5f8c3b5a9c855e675fc1e20700cacbdad19765db8c654f1",
+   "new_destination": "NONE",
+   "action": "EXCLUDED",
+   "reason": "",
+   "migration_status": "TEMPORARY"
+  },
+  {
+   "old_path": "agent_bridge_v08/e2e_plan_script.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 306,
+   "hash": "8c21f7eaa73d5af902b786e27b12c49d97a981849bc2727b9597fbe05f853042",
+   "new_destination": "NONE",
+   "action": "EXCLUDED",
+   "reason": "",
+   "migration_status": "TEMPORARY"
+  },
+  {
+   "old_path": "agent_bridge_v08/errors.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2283,
+   "hash": "7e109bd0ed514f8f45266ee9d10b40682f6949431f830223f767cd3010738a32",
+   "new_destination": "errors.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/eventlog.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 426,
+   "hash": "8ed3fcffb292cea9148322151214dd8f5effdc580325b09d90ce94c19b1ec3a0",
+   "new_destination": "eventlog.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/events.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3565,
+   "hash": "2b568900a2a0e365dce7ba38f07a5c2a6c8e5bb9d8a2305137cebf5370d697a4",
+   "new_destination": "events.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/executor.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 51486,
+   "hash": "7d9760218554645f0a37e37613bf6bb59e4cd2e6e2c97dd401b5675550466df5",
+   "new_destination": "executor.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/genesis_client_simulator.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3070,
+   "hash": "be91585037615f0186a9f059d3cb29a0f711350dc8a7ec148a77447cc8dc91f6",
+   "new_destination": "genesis_client_simulator.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/genesis_client_simulator_v2.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4567,
+   "hash": "a63902485297bca8e762004ca1ada765b993f9571822fd4bc878b338e54fbe43",
+   "new_destination": "genesis_client_simulator_v2.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/git_checkpoint.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 198,
+   "hash": "41e69d093f52c913a40ea0bcbd019f2a6c7a8c81936d9acfe1392fa5dbefc547",
+   "new_destination": "git_checkpoint.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/gitops.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2952,
+   "hash": "019b9d8f03c7dc9078fc9ffe09ae62b2a17840e6e5303f5efb709906a9757841",
+   "new_destination": "gitops.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/installs.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2233,
+   "hash": "1e18773b8c01f9a56884ff381fde047c55511282f9ef60b76c680a8dbabc43e8",
+   "new_destination": "installs.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/integrity_baseline.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 94,
+   "hash": "75d025304a6f79987fc51ad3860fa311b2d41bc35e7974ac8d0741bc7539717c",
+   "new_destination": "integrity_baseline.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/integrity_current.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2290309,
+   "hash": "1224131e379f2dac5137de9c048449c8d7c243cef398cd0337b6a28b7cb45c4a",
+   "new_destination": "NONE",
+   "action": "EXCLUDED",
+   "reason": "",
+   "migration_status": "TEMPORARY"
+  },
+  {
+   "old_path": "agent_bridge_v08/memory.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4571,
+   "hash": "0370701772b089f945adcfd29c54f057803834328e6755bd01a0cc98fff6cbf2",
+   "new_destination": "memory.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/milestones.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2230,
+   "hash": "237d2213015cd962a46d62f268c9d243ed1776179b54fee12071329ae2e02e11",
+   "new_destination": "milestones.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/net.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4010,
+   "hash": "5eb46af0641494bb1211007cd81a8d594ab5d42a6be07214359ea09c9df04b11",
+   "new_destination": "net.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/oracle.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6713,
+   "hash": "92f3e093642420a15f961cc18b327c201e307d7935ecc8bdda59aa14ace8b712",
+   "new_destination": "oracle.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/owner.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6556,
+   "hash": "fb290c63039099d934a9e4c1d42b37e9c5f20d0a0283dad4fe4e774964594d19",
+   "new_destination": "owner.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/owner_e2e_result.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4161,
+   "hash": "73aec202de46784cbec95e478f414faed497fb4426f780f8f3bcac9b7674c43a",
+   "new_destination": "owner_e2e_result.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/policy.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 9856,
+   "hash": "a1a4b1cf347c410ac011b9933aa765362f827fdd4a2922fc3d9b24ec5aa69f69",
+   "new_destination": "policy.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/proc.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4992,
+   "hash": "08c6ff1aafa2d15814fe6119622e283cb16b85ebecd9ddae9c6a14df6d37cbc1",
+   "new_destination": "proc.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/progress.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5608,
+   "hash": "c56c2d8f93bce257ac3781068500666976c94884c97c8b2aa382d0487ef244f5",
+   "new_destination": "progress.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/prompts_lib.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1811,
+   "hash": "20cf24141a5523d6a413b17a67fcb3d0d451de6f7a06abf81a57c351b9656ac2",
+   "new_destination": "prompts_lib.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/protocol.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 19015,
+   "hash": "46b702870b6300ef203be3abbdeeae012215f3f4347283dc466bd1efebd07c5d",
+   "new_destination": "protocol.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/providers.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3388,
+   "hash": "e32a454234697b01ba3e393944080de362f03d544c110c62da83b09aa11f60ff",
+   "new_destination": "providers.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/replay.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4729,
+   "hash": "d3f27e6eb9c20fbd45e0cea5dcb91416cd3719233db215d6688b13d85543ce08",
+   "new_destination": "replay.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/resultkit.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7857,
+   "hash": "49ac9e64440cd36d2de51d7626883e7d6d9658f843291280ee511fb1fb9e4141",
+   "new_destination": "resultkit.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/reviewer.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5327,
+   "hash": "79e1f8ae824b9810922a8d9d97a707ae78cb63032d4b0360be89d162a33462f6",
+   "new_destination": "reviewer.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/routing.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2451,
+   "hash": "98d92ae779a69977aa191d67b5fa259ad6a7c68b48b96373334e7bca8d5c23f7",
+   "new_destination": "routing.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/run_compat_acceptance.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3857,
+   "hash": "3cf92487d489c772cf8731d70f2f558c12031057ac8a675d48cbfb1cd04f44ae",
+   "new_destination": "run_compat_acceptance.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/run_gate_e2e.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1656,
+   "hash": "728650d65978eb0180a9c3312c902d3a1d07e6ab59b9aee8ff47aaf4a6ca51f5",
+   "new_destination": "run_gate_e2e.py",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "MIGRATED-WITH-PORTABILITY-FIX"
+  },
+  {
+   "old_path": "agent_bridge_v08/run_owner_e2e.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3069,
+   "hash": "61c31e6853c980cb862ca2c63b03e50135029fdec142ce2929946bf10165ebba",
+   "new_destination": "run_owner_e2e.py",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "MIGRATED-WITH-PORTABILITY-FIX"
+  },
+  {
+   "old_path": "agent_bridge_v08/run_resource_balance_acceptance.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5379,
+   "hash": "982c802c16ff7dd9bd3bc1a04c07d34137919f987890968f0ec44204deab140a",
+   "new_destination": "run_resource_balance_acceptance.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/run_reviewer_fix_e2e.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3038,
+   "hash": "7e9e2d794e9f340f825ed4bbf5537a83580d2a372ec071bf6ed592483db41d77",
+   "new_destination": "run_reviewer_fix_e2e.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/run_v07_full_local_acceptance.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3149,
+   "hash": "486283221793dbb70351d73bdd5bff131d5770aea62d6e88659bfe5db632d5f7",
+   "new_destination": "run_v07_full_local_acceptance.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/run_v08_acceptance.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 11364,
+   "hash": "aa3407c2d297629f2d33ed591e1dbc04bfa4f639d341b8aad08048fc72b427d1",
+   "new_destination": "run_v08_acceptance.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/run_windows_v07_acceptance.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 11596,
+   "hash": "c687c1352970242fa8613c6b44952a9857e1f66bb7cb864181c1436e7c6080d3",
+   "new_destination": "run_windows_v07_acceptance.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/runtime.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 47623,
+   "hash": "60f9ff11cc0a058a1e7955945456ed796b109d94ba896f77d19a0f9dddcee0cf",
+   "new_destination": "runtime.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/service.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 21793,
+   "hash": "a817ea481327dfba0b9c2934b1384001f48797a75682305cdeb30f0637f43e08",
+   "new_destination": "service.py",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "MIGRATED-WITH-PORTABILITY-FIX"
+  },
+  {
+   "old_path": "agent_bridge_v08/state.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3273,
+   "hash": "a76f3a6426d1d5f57d1c3956430de30694899928cbf407b392b03b5b43a018b1",
+   "new_destination": "state.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/sysinfo.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2754,
+   "hash": "cbba098c8582e8ff1e825f05fa57634c42fa684403ad712e28c86dd038590adf",
+   "new_destination": "sysinfo.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/test_output.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 212868,
+   "hash": "29d2a1947369f0e62a8eaa32a29c3bd8413ec4c0924da8d717fcbea56da06042",
+   "new_destination": "NONE",
+   "action": "EXCLUDED",
+   "reason": "",
+   "migration_status": "TEMPORARY"
+  },
+  {
+   "old_path": "agent_bridge_v08/testmap.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2071,
+   "hash": "656f6c300668dbfa0f6fbb7e7e5dcb1871d4ec053ce312de4e0327d995a57c0c",
+   "new_destination": "testmap.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/versions.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1090,
+   "hash": "d0d72023b8a9ca112220fe0b36f543546d475ca939bbc1e9ee367dd87f259004",
+   "new_destination": "versions.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agent/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 800,
+   "hash": "140495bb120726cfb6314ca305a109e40bcf76f1a46c471aada932b5ab5ef7b2",
+   "new_destination": "agent/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agent/agent_core.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 13446,
+   "hash": "a31cb1946541b661b57e840e0cbe3dbbeb30f54e5c2cc8b7a85882d5e0001b7c",
+   "new_destination": "agent/agent_core.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agent/agent_loop.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3508,
+   "hash": "82864d6deeebc8d0fc9ab3c615e2c4657619f388c75eeef82a3ac485ffcf0b7c",
+   "new_destination": "agent/agent_loop.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agent/agent_session.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 8696,
+   "hash": "12a51f8b66f13c2d989448a244e592486b6ec9a11dbc7db96be65e4758edc621",
+   "new_destination": "agent/agent_session.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agent/default_agent.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 8899,
+   "hash": "364ba861b1f4e7c7051a4031e95ad72d0fcdd5163a20c7ef1691476bbf03bab4",
+   "new_destination": "agent/default_agent.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agents/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 567,
+   "hash": "5804f314830e2c211542079a7469af5461e1a66d914fc1d155919a8d1233dadf",
+   "new_destination": "agents/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agents/descriptor.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1839,
+   "hash": "46c2c2e4f045fc0e957a198a28865f95625a50f004aaf7643f0620cbdf65a056",
+   "new_destination": "agents/descriptor.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agents/discovery.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3208,
+   "hash": "c1d8002c8a04fc73525cec3d424de05f8d28829f1e79ac76d196016b26c5994f",
+   "new_destination": "agents/discovery.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agents/protocol.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1256,
+   "hash": "ce395e39761b7c8571acd02dbcdb0abe77777f93aa40479a9131f11751d54e08",
+   "new_destination": "agents/protocol.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agents/registry.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2616,
+   "hash": "b967a1adf2c39b5451d7e0f11ddb5cda503013370794915df22152dd49b4f051",
+   "new_destination": "agents/registry.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/agents/router.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 911,
+   "hash": "137c4c73b29e9a45f8150a5194083cba09dc6291786f69a8503236e5a7733848",
+   "new_destination": "agents/router.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/avatar/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 832,
+   "hash": "3b5b233ea7b63988cec6c15fc9c33c03cf0de159fd0a3d5b2c140a8e772dd513",
+   "new_destination": "avatar/__init__.py",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "DIVERGED-NEWER-IN-REPO"
+  },
+  {
+   "old_path": "agent_bridge_v08/avatar/protocol.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3496,
+   "hash": "147ef846103969d7b569fb69a4c580b061a97c5566f4d42c7f1f9f3bbb76bb0d",
+   "new_destination": "avatar/protocol.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/benchmarks/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1890,
+   "hash": "ae36e75b331de0da9de033e6c065d0ec6f97f6dc9964e7bfd7ba3b6cf5053137",
+   "new_destination": "benchmarks/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/benchmarks/benchmark_history.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 16678,
+   "hash": "c4a7137de8e36bb197346f38469f33fe4139b3679fac1890fc322dde0570bff4",
+   "new_destination": "benchmarks/benchmark_history.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/benchmarks/benchmark_runner.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 24201,
+   "hash": "1c9775fb99aa7be57ca904c603c505707fd969ebf386b1abdb73d54f95146dc2",
+   "new_destination": "benchmarks/benchmark_runner.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/benchmarks/benchmark_schema.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 8849,
+   "hash": "f1d895b36520dd5b4d06bbe4f8641f1fbb08cf4b10f109bb8c4d771fab3af570",
+   "new_destination": "benchmarks/benchmark_schema.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/benchmarks/calibration_engine.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 18097,
+   "hash": "8df65e2278d842ae30f49811a4782b741da6e05654f2b90e7b66e0b67c3e04ff",
+   "new_destination": "benchmarks/calibration_engine.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/comms/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 618,
+   "hash": "2ba2821060cb3e921b8d1eb624062e9e825126b0f1e0745c80cf75c00bf7a3e1",
+   "new_destination": "comms/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/comms/telephone.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7256,
+   "hash": "497cea2e6952e2295d21a5b77e5e1eef0984977cd5b34a57f6897f5b7249be88",
+   "new_destination": "comms/telephone.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/compat/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 984,
+   "hash": "0e126a59113a9e9808080b6d8bff18618e2034a14ff3b0de9745933dc31bbec3",
+   "new_destination": "compat/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/compat/modes.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2015,
+   "hash": "9bc9a62087df9cd9e690bb4f56f42cb3bdc5a8768142438c253203fba9bf6014",
+   "new_destination": "compat/modes.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/compat/negotiation.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2779,
+   "hash": "cd453c4e9928c14afaa08bf6cec634cfa63d2f7a804725c9aec08a76167a24a7",
+   "new_destination": "compat/negotiation.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/compat/probe.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2649,
+   "hash": "fb1db4d6128225f69f1020ab0853e80ebf28ec3b5cd235bf275df4ec9b1105e0",
+   "new_destination": "compat/probe.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/compat/translator.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4869,
+   "hash": "a8bde43bb4347c3a49824469c41cfb284a519474998b758c242ade5503b38e6a",
+   "new_destination": "compat/translator.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/device/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 775,
+   "hash": "3992ba058cab0ada0c6d6171934e53065e17e16f49ee7123113e192a6df78861",
+   "new_destination": "device/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/device/device_profile.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 10160,
+   "hash": "1a25e299260dd1ce27304162422cb576ac5239a9eef7cb3c79d11ba40a631bf2",
+   "new_destination": "device/device_profile.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/device/device_profiler.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 17275,
+   "hash": "b701246621d3dfaef04749ac46167556090fc513bdaeb342915cfcb66a031a1a",
+   "new_destination": "device/device_profiler.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/device/hardware_profiler.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 25349,
+   "hash": "f426f7e50dba067777d499b1959d245f6e808b845cdd4ffb38ae8e827a4e37ea",
+   "new_destination": "device/hardware_profiler.py",
+   "action": "RETAIN-NEW",
+   "reason": "",
+   "migration_status": "MIGRATED-WITH-PORTABILITY-FIX"
+  },
+  {
+   "old_path": "agent_bridge_v08/device/runtime_tuner.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 18019,
+   "hash": "1cc8ae39367e06240a1156d2950caa3aef41be837d579dea9fbbcc4e01562dc3",
+   "new_destination": "device/runtime_tuner.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/docs/api_schema.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3352,
+   "hash": "42066c6f42a34940a9c5c5118225f1d2dca051a0c39c4b79ce5c6f22287bc7f2",
+   "new_destination": "docs/api_schema.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/docs/node_api_schema.json",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2415,
+   "hash": "31a117e027747f8fc658cdd24d46262f0d687e661294ec85e6548a4772f44364",
+   "new_destination": "docs/node_api_schema.json",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ides/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 538,
+   "hash": "25a751c33613109d74d0d8d4a8207482413b446b916d1ec546a9ab847c8f5218",
+   "new_destination": "ides/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ides/descriptor.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2772,
+   "hash": "cce1f10ead7db01102d8e994b36803099685c5aa3772f6968df680f8bb39bfb8",
+   "new_destination": "ides/descriptor.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ides/discovery.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3404,
+   "hash": "012567eb10d02d79f5e43e9c9c27d637dacd27bd825d2fe7679a2f98d82bc07a",
+   "new_destination": "ides/discovery.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ides/embedding.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2801,
+   "hash": "085a1a245f77151df53c5cc8699bb35f41ad26a3f0cd56ee5e7096635507b919",
+   "new_destination": "ides/embedding.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ides/registry.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3890,
+   "hash": "3ff565c835ad7d5a5f5d95aecbe3ab175b869fbb27ec1f54272b216f1fc78103",
+   "new_destination": "ides/registry.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ides/router.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1418,
+   "hash": "3c6a85cb93ec8b434772f0dd7bdb6eefc4c51d0c915e9e6cf1015766919fac4f",
+   "new_destination": "ides/router.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 964,
+   "hash": "4a33af271dd7a3454ad48da4aa301d68cba4cbde95df495942bb8842de54caf4",
+   "new_destination": "models/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/model_registry.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 10105,
+   "hash": "b1399b3d131612f336e0f9191f1813dc8f4f1216b07fa057c6f3da1b436c7873",
+   "new_destination": "models/model_registry.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/model_router.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 12260,
+   "hash": "c485f1f9d6c7aca4beb1a794cb68a83e73510904f677f1393c9b5e1914ddcd9f",
+   "new_destination": "models/model_router.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/provider_adapter.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4706,
+   "hash": "e144eb4bcea4933a70724d7952412b068bf3361bfed14dde1796ce4b714379a0",
+   "new_destination": "models/provider_adapter.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/provider_registry.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6375,
+   "hash": "93367791e0f8e7ffc6221eb76985845f23404fd0c97674966e39f1586d3b167a",
+   "new_destination": "models/provider_registry.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1570,
+   "hash": "2235cc5eb2cb71211cb2272922f4d89b46c8fd039f86109ff3f05e5756642804",
+   "new_destination": "models/providers/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/anthropic_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 15406,
+   "hash": "236632f6ef1d87b74bcf7a9d763559699a803cf98da749d6cca8ca72c0206863",
+   "new_destination": "models/providers/anthropic_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/copilot_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5383,
+   "hash": "8f94fe3e2e084aab0d0ba3cf4dbef54d149432daf0b18829a257bb12bc4f9361",
+   "new_destination": "models/providers/copilot_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/deepseek_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1522,
+   "hash": "148e92410bd3c26239c9898c42f4cc46640b49615d73046be7ec2f92b3defdb2",
+   "new_destination": "models/providers/deepseek_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/gemini_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 14733,
+   "hash": "35fac0f684aba0f986bff3ba3d8041ed35fba4d4e120f00335b0e01f3ba1f74a",
+   "new_destination": "models/providers/gemini_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/kimi_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1458,
+   "hash": "3de5e4192aa4646513028bc17c0c17990f0d65fc3d5e74d2d165b81f4f1d4f6f",
+   "new_destination": "models/providers/kimi_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/llama_cpp_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1500,
+   "hash": "909a8dc52bbc346bf119addf1a3c5ba76e03c2fe1c9f3435b8ecd1ca41ee5e0d",
+   "new_destination": "models/providers/llama_cpp_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/lm_studio_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1486,
+   "hash": "e7da55fda4876ff3c81a6c8ca79a95fc93a8183d60fe722640231b486287acd2",
+   "new_destination": "models/providers/lm_studio_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/ollama_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 11459,
+   "hash": "dab4aa71c640df7732877d9f9e208b930c692c7732a8e3bedf87a9fe6d9f9a19",
+   "new_destination": "models/providers/ollama_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/openai_compatible_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 12892,
+   "hash": "cafb86860c32a7b6399731c931c65d77da1ff40872114ad707cdc280c0243d32",
+   "new_destination": "models/providers/openai_compatible_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/models/providers/openai_provider.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 12305,
+   "hash": "2d48a9c0861b48fe6ea5e063a197dc7d4453778e571907ae6204a6f066166dd2",
+   "new_destination": "models/providers/openai_provider.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/multimodal/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1014,
+   "hash": "442193258181071ce9a0f64840969af3cab62ee60fa2762d37bb071e9be2df40",
+   "new_destination": "multimodal/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/multimodal/image_providers.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2623,
+   "hash": "af6a455007732020aa34dc5713cd9eb739a218a619d1e770ee2c84af5bb77eed",
+   "new_destination": "multimodal/image_providers.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/multimodal/ocr.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6866,
+   "hash": "2fbf9848988c8c68f1d8cef01b281250b69d36c6144acdcae4f39bff68cdbd28",
+   "new_destination": "multimodal/ocr.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/multimodal/probes.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1720,
+   "hash": "35de3beb7937f60db2f482011d7300759613af1214dc3f77c3beed5a3fb4ba1f",
+   "new_destination": "multimodal/probes.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/multimodal/router.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5854,
+   "hash": "6cb27e66420c23d12619b9e47c058ebfbb33375beb567ba66c0cac63cf4940f8",
+   "new_destination": "multimodal/router.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/multimodal/stt.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5321,
+   "hash": "dca3ec88a5609cd467f162d7276d675eaa172649527f4702468c576815abdb0d",
+   "new_destination": "multimodal/stt.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3106,
+   "hash": "e4475ee6654b5db2e100acee3e9ec63eee852d066576df5220ff73c1df1e6865",
+   "new_destination": "nodes/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/node_descriptor.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5448,
+   "hash": "5ee9ee7d4178a3b7dee4c2b7277bdbceb3ff1ae432b9af5973ae9635f77851bc",
+   "new_destination": "nodes/node_descriptor.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/node_factory.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3886,
+   "hash": "c1a6db81c25f5c71628e93b0afb7f32bdf344b5f2541a97fbe56973932253219",
+   "new_destination": "nodes/node_factory.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/node_registry.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5527,
+   "hash": "ef03ba36b824ce96ff2a04a1760d823555455c46df9925baee2cda630f5c9de2",
+   "new_destination": "nodes/node_registry.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/node_router.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 17936,
+   "hash": "29d2373e9761d3b5a63224278fbf3559f912ce608337807eed7b4ef16358434b",
+   "new_destination": "nodes/node_router.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/node_server.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 22937,
+   "hash": "7aec5d0bc76cf7be3004fe952c84c86a794b32c74bb92e7913dd99c9f9a0f785",
+   "new_destination": "nodes/node_server.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/node_transport.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 23087,
+   "hash": "3321aa28e5d0d78dde797415374993a75c6e8ab7820211c49648ad6d6784d4a0",
+   "new_destination": "nodes/node_transport.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/task_delegator.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 14767,
+   "hash": "cad10797e0b495f19a4abdbacdb1b94fd6d5b5372fd11575ac488c6a7788bbcf",
+   "new_destination": "nodes/task_delegator.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/nodes/trust_registry.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5963,
+   "hash": "92228ad0c761d873c3e0ba28a1572b08e32aab91c24ec09334e6e0b6b01bf4c5",
+   "new_destination": "nodes/trust_registry.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/owner_full_access_test/task_a/owner_tool.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 65,
+   "hash": "5fb8a63dceb9367982dc5814d8de45247bd803d321d1929753e7f57abb94366a",
+   "new_destination": "NONE",
+   "action": "EXCLUDED",
+   "reason": "",
+   "migration_status": "AGENT_BRIDGE_FIXTURE"
+  },
+  {
+   "old_path": "agent_bridge_v08/prompts/coder_v1.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 948,
+   "hash": "e5f01d419b270b8d59a5c3b72f010e32c058ba47cd7dcc2ede74062d7f0214b5",
+   "new_destination": "prompts/coder_v1.txt",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/prompts/general_v1.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 502,
+   "hash": "091418d523273ae2e182356423d40a507c4fd174dd1fa859f8a49066d5a1e675",
+   "new_destination": "prompts/general_v1.txt",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/prompts/planner_v1.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 887,
+   "hash": "a298ca06c9ef9b6cd13d3aa4e7d3e63bfccf682b332128cd838a227a9475c5c6",
+   "new_destination": "prompts/planner_v1.txt",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/prompts/reviewer_v1.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 707,
+   "hash": "031086519406fe66dba2411b1918c2ec39eef5278853ba38e01a90baa8a10a2c",
+   "new_destination": "prompts/reviewer_v1.txt",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/prompts/small_v1.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 822,
+   "hash": "37c8037f12bcaa127a3764f5ab5a03d9019d636b8bce8f3779831cb62859fae3",
+   "new_destination": "prompts/small_v1.txt",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/prompts/strong_v1.txt",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1034,
+   "hash": "a1c65480def92ec436fe21963b89cdb306a967f45a7173b81cc5d5b1ccb6add5",
+   "new_destination": "prompts/strong_v1.txt",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/reference_agent_shell/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 0,
+   "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "new_destination": "reference_agent_shell/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/reference_agent_shell/mock_runtime.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1885,
+   "hash": "2686f253dc75927420467298b05c93dfe79742963c331dd08a73a8b548158665",
+   "new_destination": "reference_agent_shell/mock_runtime.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/reference_agent_shell/prefs.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1599,
+   "hash": "4a1779e9a19836e54f17dca9a20441db1544900034a0d48e10a6a74f635fc6a3",
+   "new_destination": "reference_agent_shell/prefs.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/reference_agent_shell/shell.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 19553,
+   "hash": "5934baba6259368535dfb86d2640fd31435af629397b0a77c7eb027d7db52b9c",
+   "new_destination": "reference_agent_shell/shell.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/reference_agent_shell/views.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3451,
+   "hash": "8b5928194a6f681cc949b7079cfeca162183a7dca627a9f4828c567dfcfa2d96",
+   "new_destination": "reference_agent_shell/views.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/resources/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2280,
+   "hash": "e1ffdd722ceb8c5d96c9e133eb76b2c97995f7b74e9809ad1a402218f3a9064d",
+   "new_destination": "resources/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/resources/balancer.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6057,
+   "hash": "76ea7d6603b1cdd492893578081e6bbfd1cea541a7733b7aec5a28b6148bd206",
+   "new_destination": "resources/balancer.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/resources/classifier.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3985,
+   "hash": "a02d66dc251f0c48b61a36479ee12671816bbc126a92cce8c08706e0443e65b9",
+   "new_destination": "resources/classifier.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/resources/descriptors.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4366,
+   "hash": "e03c63546966677e9e9f250f0cb512bdc4367b1eedb254b8c6bc43a0ff8f1af3",
+   "new_destination": "resources/descriptors.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/resources/monitor.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4761,
+   "hash": "7611574b1cca6f7f1fabc1380ff0da4830d7e14fd5b7bf07f9592a1fb0759a0b",
+   "new_destination": "resources/monitor.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/resources/pool.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7750,
+   "hash": "000c55b0f469bc0e3f8439016e22e5e9fab51142d93c08f6cc8a943afe5338e2",
+   "new_destination": "resources/pool.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/resources/scheduler.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1849,
+   "hash": "ec9f824eb6dd1188cff49c0e33e6b069b209f48a0168413b548c3747b4b1a7fe",
+   "new_destination": "resources/scheduler.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/review_fix_e2e_ws/app.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 21,
+   "hash": "6832223a9ac46ad9dff8af4cc20d87ddb5b655b0ec614ca8bd9be6b93cae5377",
+   "new_destination": "NONE",
+   "action": "EXCLUDED",
+   "reason": "",
+   "migration_status": "AGENT_BRIDGE_FIXTURE"
+  },
+  {
+   "old_path": "agent_bridge_v08/review_fix_e2e_ws/test_app.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 127,
+   "hash": "57cb016db1a9f316785620a06a4c823e0a1de60df2d35455c9802b3416c01d18",
+   "new_destination": "NONE",
+   "action": "EXCLUDED",
+   "reason": "",
+   "migration_status": "AGENT_BRIDGE_FIXTURE"
+  },
+  {
+   "old_path": "agent_bridge_v08/runtimes/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 176,
+   "hash": "fba0c08d3200039dc57a8095337843cbd57650370fe30ab8386d8b917c45158d",
+   "new_destination": "runtimes/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/runtimes/discovery.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6360,
+   "hash": "a9976af209550ce33777b9cf62e1012cf6e2eff90593c10ba6ba6408419f9d12",
+   "new_destination": "runtimes/discovery.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 0,
+   "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "new_destination": "tests/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/helpers.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1072,
+   "hash": "53b32f50958b5609ea4c08190b291969c65dd4746187754050c737b513806c21",
+   "new_destination": "tests/helpers.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/node_test_server.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4913,
+   "hash": "7e209ba0a58632c547746cab55624cc09f8fa65ed9fea20e1e198870f2817b08",
+   "new_destination": "tests/node_test_server.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_agent_discovery.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1745,
+   "hash": "4bcd0e2f2d4583b42b3d4c07df6d0f13d956689ab5c74ffae2c9d46d25380932",
+   "new_destination": "tests/test_agent_discovery.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_alternating.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2913,
+   "hash": "771a38b5dfc5abff0ad08eadf61528a1759b1d2cb2e37b833a1a27e0005b7e80",
+   "new_destination": "tests/test_alternating.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_avatar_ui.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5699,
+   "hash": "3b9963bfd996aaed531338e9a20a719302dea55b2905aae6f84bf25e9f1ffd5c",
+   "new_destination": "tests/test_avatar_ui.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_benchmark.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 17577,
+   "hash": "749e5704a9e4bd433996aab618a7b3dced744b4034a4f15255de73be74f78b04",
+   "new_destination": "tests/test_benchmark.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_browser.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4897,
+   "hash": "68c0d9e839e7131dc3189f2708d50f63677b1ee76bd1e8bba246af36bfa82490",
+   "new_destination": "tests/test_browser.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_collision_oracle.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5652,
+   "hash": "107ec1c5c28cd3965c59e7b82c07697ff693b9fd8e2e32e7a4c65ea3a2ddac5d",
+   "new_destination": "tests/test_collision_oracle.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_commands_policy.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3354,
+   "hash": "e1c9ef3aa8b009896fdb04b51a3835de45e33d8538e6e8176dfdf54aa4c293a9",
+   "new_destination": "tests/test_commands_policy.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_comms.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5706,
+   "hash": "4a6a753daaf1919129a4f3e0d9c64be25957758acad60f8ce928cb47bd535719",
+   "new_destination": "tests/test_comms.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_compat.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7521,
+   "hash": "cdab05ca685fa191bd08d9593a2ba87450d3525182818a728cbb29d445235d48",
+   "new_destination": "tests/test_compat.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_config_git.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3914,
+   "hash": "2064514f5f40ffa905ea45c93242c1411798f8d19c4c26a0ccf595ae37845c6b",
+   "new_destination": "tests/test_config_git.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_device_runtime.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7695,
+   "hash": "b13283608a8897b7142f78e77e7c5c48b5c8291beca920e97a9dc20739490a2a",
+   "new_destination": "tests/test_device_runtime.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_dryrun_replay.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3640,
+   "hash": "a4637815727ba7ef33c924c12518651636eb71e179a458729fd960c5e2e17a16",
+   "new_destination": "tests/test_dryrun_replay.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_events_approval.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4787,
+   "hash": "e4d45f03cd2e97395e61957cdef892cfe32021a2e93a1528c8e654ac8d0a17ab",
+   "new_destination": "tests/test_events_approval.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_executor_v01.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3818,
+   "hash": "946b475650bf5e412e4ddf46d399914709dc0ece6d9d49ed7fa8a7113eeac28a",
+   "new_destination": "tests/test_executor_v01.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_executor_v02.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3334,
+   "hash": "1b17111bfacfc26f222e1e3a7f7087a1e6ced3723836959dfc35d7fa0e39830a",
+   "new_destination": "tests/test_executor_v02.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_failure_loops.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2597,
+   "hash": "21e3c980d912f1754197dcc58629bbdef358c56ee2eb45c5ab3f16f29e144a2d",
+   "new_destination": "tests/test_failure_loops.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_ide_discovery.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2856,
+   "hash": "07621c8bc1e0e4854e2ad74e6681c63258343eda3d905e4f3f637e1523ffb961",
+   "new_destination": "tests/test_ide_discovery.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_memory_cache_log.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3321,
+   "hash": "7b0f75c7d1cc3f18ed84dee6bf75244ecaeadc176fb6da7ed858063cc7d4014f",
+   "new_destination": "tests/test_memory_cache_log.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_memory_context.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2520,
+   "hash": "91e0d690d4f4b19b049c559689a17bee957678666b972c69d957d4dd0832436e",
+   "new_destination": "tests/test_memory_context.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_milestones.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3098,
+   "hash": "442d7b33c0647858ee2c3be99b83d90f913cb5af7b1519629520a99c5799b317",
+   "new_destination": "tests/test_milestones.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_modes_approval.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4165,
+   "hash": "6df90ecb321668232d447dc959db7feff2b6f6c49daa57539597286cb1658722",
+   "new_destination": "tests/test_modes_approval.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_multimodal_voice.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4241,
+   "hash": "a44407ad3f2ad4e261f601b633f173e4571753a51e191c4f371f1c547d1e02ef",
+   "new_destination": "tests/test_multimodal_voice.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_node_routing.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 12279,
+   "hash": "121bb6209fc76ee70d84ec8552ea59b21f8aba0688f0619c35e42417ee84e447",
+   "new_destination": "tests/test_node_routing.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_node_transport.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 25956,
+   "hash": "ebc6f420bb649ef032c45e47c7dab815f86bc824fa619a31aac47d4cdc073190",
+   "new_destination": "tests/test_node_transport.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_ocr_stt_image.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5110,
+   "hash": "0ab86a8cce4092b4df3bf27ce4ae72b6eb12145e81612a547c8e9a6c957d531e",
+   "new_destination": "tests/test_ocr_stt_image.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_oracle_conflict.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6170,
+   "hash": "440c9dea8db32d36ce0ac83857040d51140d304237c6328cf8cf3b24a14181e1",
+   "new_destination": "tests/test_oracle_conflict.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_owner_activation.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7223,
+   "hash": "d2844e74931489783c91390a63ad3c3224c5f73d2ad2804423b89df7673be68a",
+   "new_destination": "tests/test_owner_activation.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_owner_tools.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 8773,
+   "hash": "3225a07a8215fa46a28eb66babc97f4cc5d687aeced0cfa846861571d67978d7",
+   "new_destination": "tests/test_owner_tools.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_progress_mapping.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3453,
+   "hash": "1d3b74b66e04aa4d5b2150f2225cdbb0f7e45bf626b9a76cf3917511ec2598c4",
+   "new_destination": "tests/test_progress_mapping.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_progress_semantic.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3063,
+   "hash": "aec5f2f0a9d02ac759c165d48e53065730fd6f555a02158c84b540cc0aac0641",
+   "new_destination": "tests/test_progress_semantic.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_prompts_presets.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5258,
+   "hash": "ddc382bd8e27489279aab7e09fff5df96b21a1a9dc01997ce65d3351adf29aa3",
+   "new_destination": "tests/test_prompts_presets.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_protocol_v01.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3110,
+   "hash": "5b035a9d5b62def03a1c9f9da26d5d91c82e7b7142f07896008eb3a219629202",
+   "new_destination": "tests/test_protocol_v01.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_protocol_v02.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2094,
+   "hash": "0dc9348214ba29c2b97a9e71709dbc26cfff0b36740c7a90920ee46153601bd4",
+   "new_destination": "tests/test_protocol_v02.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_recycle_patch_diff.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5490,
+   "hash": "4f85ee0bdab3940244375fe140fd4b9a85eab6ffa8f80ca6b7eb8fc0d866644a",
+   "new_destination": "tests/test_recycle_patch_diff.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_registry_counts.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2988,
+   "hash": "e5287d3a3eae0ef4adc683ed2b9e61a3511632aa74ffeee4f929c72daa3cff59",
+   "new_destination": "tests/test_registry_counts.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_rerun_gui_genesis.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5204,
+   "hash": "b531aa5d603ffe457626cd59011073057bb48ebdfd37dc07a2fe5a8bc657fd8e",
+   "new_destination": "tests/test_rerun_gui_genesis.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_resources.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6507,
+   "hash": "38d45fe3ac670849e27bc9976b6b9dc93e448b18836ba5b81679d87d58824aa5",
+   "new_destination": "tests/test_resources.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_routing_review.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7283,
+   "hash": "d09edf119a77a510f8d3b662839389c32151d1da42d3d35d9a5e5865f0dbddc8",
+   "new_destination": "tests/test_routing_review.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_runtime_api.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5786,
+   "hash": "2b1a0871a3bb51184a6ad0bf7d93fd5301cadd68504089a42b2e04ab4ec839eb",
+   "new_destination": "tests/test_runtime_api.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_runtime_owner.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5720,
+   "hash": "df0023ffe8853ea5507ba3a80fcfd20cf1780c2e6733e39f9e0822bed28f36f2",
+   "new_destination": "tests/test_runtime_owner.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_runtime_v05.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 13183,
+   "hash": "c9d4ce0d00bc3dc727d9b4dd42e64e691e11ccb0fb6c08861b7671cda3fdb34a",
+   "new_destination": "tests/test_runtime_v05.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_sandbox_adversarial.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2565,
+   "hash": "fad200c242a2ebb5fa370c80cc0b8eff224769c9d4b70c5e01a9db03849a3a50",
+   "new_destination": "tests/test_sandbox_adversarial.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_scorecard_export.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3534,
+   "hash": "a8464e0346deea2f9aa0db407aab70a8576c4b970ab70d538672a1896c92a198",
+   "new_destination": "tests/test_scorecard_export.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_security_regression.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5697,
+   "hash": "cbe3516e02eee7bfabe6d40cf318883d1afb0da5ab5389bd0cca7d39fbe2dbb7",
+   "new_destination": "tests/test_security_regression.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_security_v03.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6766,
+   "hash": "2252c1d4052103428ed9020e6702d8fdf19a3bb0c940e7b356c57f2ba0d86c72",
+   "new_destination": "tests/test_security_v03.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_service_sdk.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 7971,
+   "hash": "29380445ed4679f48564261618ba78b262c73d6108124bb38f5a08bb772aa935",
+   "new_destination": "tests/test_service_sdk.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_service_v05.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6953,
+   "hash": "34b91ca048545071262cd80ad16aac2d5844124991556338f102bb4863a3cd16",
+   "new_destination": "tests/test_service_v05.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_shell_contract.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4429,
+   "hash": "b2657c0bcc2dd6eade91a8d63d0d3e1fb3dcaacf0eb5f4a5d81cf0df4583ff78",
+   "new_destination": "tests/test_shell_contract.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_shell_e2e.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5396,
+   "hash": "6a1bf3c174aed59505dba5abcd6a82bf2796f4b8f498fe1a501c450e4f96b551",
+   "new_destination": "tests/test_shell_e2e.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_ui_acceptance.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4736,
+   "hash": "ea47561ff5bf3d3032d2d62df553bdc9a12eb11da7cd3e1b82a8de95392710f5",
+   "new_destination": "tests/test_ui_acceptance.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_verification_e2e.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4616,
+   "hash": "c9f739a3bbc03eaaac19c85f089b3894576ce30e3f79caceb91679ca3af2e3a7",
+   "new_destination": "tests/test_verification_e2e.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tests/test_versions_cleanup.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4182,
+   "hash": "7aa59aa1a30ebc9692fb6ddb16a39600656ad2f4a61fd8588e8746f69e8988dd",
+   "new_destination": "tests/test_versions_cleanup.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 0,
+   "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "new_destination": "tools/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/adapter.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1724,
+   "hash": "7c327cc2a32320b78f36562dba844f72cf9d7a94a2d09c737c43c5f2297b3b39",
+   "new_destination": "tools/adapter.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/artifacts.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2533,
+   "hash": "168acd772bda5731f0200e53442eb615a6dd4087ed1bb6af209abfaa94702c80",
+   "new_destination": "tools/artifacts.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/cat_comms.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 9249,
+   "hash": "d86c572dd9507df3d99798a0daa4261bd028246d2d09a79aa980cdaa0f5efcbc",
+   "new_destination": "tools/cat_comms.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/cat_core.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 18548,
+   "hash": "430749a260c6cb247887b502c25d436f4f35ce7c72003ca20dd25d40de3f77e7",
+   "new_destination": "tools/cat_core.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/cat_data.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 16396,
+   "hash": "aa3f516da09e6258dcf725cc5fa846e7366fb9998274abb51264a2ef6e5479f3",
+   "new_destination": "tools/cat_data.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/cat_knowledge.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 31739,
+   "hash": "99215a5794db668714d2b98c287159066f55699f7bbf6c5cc5b5ba50bdd0fdf8",
+   "new_destination": "tools/cat_knowledge.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/cat_media.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 43604,
+   "hash": "9a8cef16b8d792fbe1c720f709b47acf2e00cfdb425b3bc440ab0f17594229e9",
+   "new_destination": "tools/cat_media.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/cat_nodes.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3819,
+   "hash": "ede7123aaeb909ee38e960907647f22cf26d7d036892e33ff4279a74dc4a1450",
+   "new_destination": "tools/cat_nodes.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/cat_science.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 23680,
+   "hash": "220a05164877df9c44bb37aa834e93a82f6618c1da3394fad5066de86bfede87",
+   "new_destination": "tools/cat_science.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/cat_sys.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 18504,
+   "hash": "935b4032a88e2c23b66c45d8b29e06de0d6c239df7390a1ffd40dac939545235",
+   "new_destination": "tools/cat_sys.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/metrics.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1692,
+   "hash": "3e8e936f48ba4868cc83d4fc7a260fdd80ad08e9a74b313d8557f76dd84d9d10",
+   "new_destination": "tools/metrics.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/registry.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5802,
+   "hash": "71f6b70d8124e295a087353ad9d32feb150076c82102df74f91a131fa8960a6d",
+   "new_destination": "tools/registry.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/router.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 6592,
+   "hash": "853e50cc7fb41730bad94932cae5258a1d5c8b743e6aa8c37cbe5466bcdae31d",
+   "new_destination": "tools/router.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/tool_audit.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 5444,
+   "hash": "8569c7b085bf42881870372a2a5276c2d6144ce3c9b26b4aee49fc1948d70029",
+   "new_destination": "tools/tool_audit.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/tools/toolkit.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 3333,
+   "hash": "a25aa5e7c359fc617fda0f8c8bab804f159b385b56f19ef5bb4d9a11bf192959",
+   "new_destination": "tools/toolkit.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/app.js",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2786,
+   "hash": "0cf75db964c49cda7d18898a4a4f3760c216046961665f4d1067ea59f55fa376",
+   "new_destination": "ui/app.js",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/avatar-three.js",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2325,
+   "hash": "3a754ededcee93a36c6fdbc95ce0422f6c5a2b2d11bb0238af272bc893ded858",
+   "new_destination": "ui/avatar-three.js",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/avatar.js",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2634,
+   "hash": "c3e9454b471eead03b90e678144667ddbcd4f34ebba309591d985b5411a9b4af",
+   "new_destination": "ui/avatar.js",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/index.html",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 2469,
+   "hash": "441c22cca3b292166ab3333c9673d97a597c643e1b4457c314656d870a6b260a",
+   "new_destination": "ui/index.html",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/three.html",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1978,
+   "hash": "1736861aeec5bb83449ef371ef3a95d996d76c678d5242281fad5e36c2b627a7",
+   "new_destination": "ui/three.html",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/assets/make_reference_avatar.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4536,
+   "hash": "8389102063554fd19cc527603241811d7abe75c4358ba24edeaee625828c7fef",
+   "new_destination": "ui/assets/make_reference_avatar.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/assets/reference-avatar.glb",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 12272,
+   "hash": "82cbbee96d2fc633e40364e1e76f032c34a0aa21f1984df65e69599b3be8f466",
+   "new_destination": "ui/assets/reference-avatar.glb",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/utils/BufferGeometryUtils.js",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 31906,
+   "hash": "9be041e96308775d00e2695cc607645b9a9b64fd7c0e759dd8f7c00a8d92becb",
+   "new_destination": "ui/utils/BufferGeometryUtils.js",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/vendor/GLTFLoader.js",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 108522,
+   "hash": "d073b438e6a07e1359741dd5d6c76c953420cc0d4fd84eb1bdde94315540e6a3",
+   "new_destination": "ui/vendor/GLTFLoader.js",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/ui/vendor/three.module.js",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 1272972,
+   "hash": "76dea8151bc9352aef3528b4262e249b2604f62543828328db978d060d61a495",
+   "new_destination": "ui/vendor/three.module.js",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/voice/__init__.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 486,
+   "hash": "841edf7d605f9719fd29d2c544dac878a04567c70bd5d9803f0590e8c91c50b2",
+   "new_destination": "voice/__init__.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  },
+  {
+   "old_path": "agent_bridge_v08/voice/pipeline.py",
+   "classification": "ACTIVE_AGENT_BRIDGE_SOURCE",
+   "bytes": 4588,
+   "hash": "ca532eb563feac6c72f4944576a30c740bf9bf14c7142c9716b9f74be3327b66",
+   "new_destination": "voice/pipeline.py",
+   "action": "KEEP-NEW-COPY",
+   "reason": "",
+   "migration_status": "DUPLICATE_ALREADY_MIGRATED"
+  }
+ ],
+ "new_repo_only": [
+  "V08_AVATAR_ACCEPTANCE_REPORT.json",
+  "V08_AVATAR_ACCEPTANCE_REPORT.md",
+  "V08_FINAL_GAP_AUDIT.json",
+  "V08_FINAL_GAP_AUDIT.md",
+  "V08_FINAL_VERIFICATION_REPORT.json",
+  "V08_FINAL_VERIFICATION_REPORT.md",
+  "V08_OWNER_AUDIT_REPORT.json",
+  "V08_OWNER_AUDIT_REPORT.md",
+  "V08_PRE_AUTONOMY_REPORT.json",
+  "V08_PRE_AUTONOMY_REPORT.md",
+  "V08_REALTIME_LATENCY_REPORT.json",
+  "V08_REALTIME_LATENCY_REPORT.md",
+  "V08_SECURITY_SUMMARY.md",
+  "V08_TOOL_CAPABILITY_MATRIX.md",
+  "avatar/capture.py",
+  "avatar/creator.py",
+  "run_default_agent_autonomy.py",
+  "run_real_resource_acceptance.py",
+  "run_realtime_acceptance.py",
+  "tests/test_avatar_capture.py",
+  "tests/test_avatar_creator.py",
+  "tests/test_realtime.py",
+  "tests/test_repo_portability.py",
+  "tests/test_secret_hygiene.py",
+  "voice/realtime.py"
+ ]
+}

@@ -1,0 +1,66 @@
+{
+  "source": "frozen v0.7.0 tag (d04956e), verified 219/219 SHA-256 hashes",
+  "v07_frozen_hash": "d04956e5fba7d5c5e3e7c1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+  "test_summary": {
+    "total": 474,
+    "passed": 474,
+    "failed": 0,
+    "skipped": 0
+  },
+  "categories": {
+    "resource_orchestration": "PASS",
+    "small_model_compat": "PASS",
+    "text": "PASS",
+    "vision": "PROVIDER_REQUIRED",
+    "ocr": "NOT_INSTALLED",
+    "image_generation_editing": "PROVIDER_REQUIRED",
+    "tts": "PASS",
+    "stt": "NOT_INSTALLED",
+    "voice_agent": "PASS",
+    "email": "PASS",
+    "telephony": "PASS",
+    "avatar": "PASS",
+    "chat_view": "PASS",
+    "work_view": "PASS",
+    "ide_embedding": "PASS",
+    "v07_regression": "PASS",
+    "security": "PASS",
+    "performance": "PASS"
+  },
+  "summary_counts": {
+    "PASS": 14,
+    "PROVIDER_REQUIRED": 3,
+    "NOT_INSTALLED": 2
+  },
+  "new_tests_v08": 74,
+  "migrated_tests_v07": 400,
+  "verified_local_facts": {
+    "sapi_voices": ["Microsoft Hazel Desktop", "Microsoft Zira Desktop"],
+    "tts_synthesis_e2e": "VERIFIED 110KB WAV via System.Speech, no cloud",
+    "v07_acceptance_tts_probe": "was wrong (probed win32com); corrected to System.Speech in v0.8"
+  },
+  "dedupe_decisions_summary": [
+    "No new vision-read tool: EXTEND vision.*",
+    "No new image tools: EXTEND image.* with provider adapters",
+    "No new TTS/STT tools: EXTEND speech.* (fix acceptance probe to System.Speech)",
+    "No new search/shortlist tool: EXTEND tools/toolkit.py negotiation",
+    "No new event system: EXTEND events.EventBus",
+    "No new pairing/transport: EXTEND nodes/ transports",
+    "Email/telephone/avatar/scheduler/translator/OCR-engine/voice-pipeline: genuinely MISSING"
+  ],
+  "matrix_files": {
+    "modality_matrix": "V08_MODALITY_MATRIX.json",
+    "tool_capability_matrix": "V08_TOOL_CAPABILITY_MATRIX.json",
+    "local_acceptance": "V08_LOCAL_ACCEPTANCE_REPORT.json",
+    "final_acceptance": "V08_FINAL_ACCEPTANCE_REPORT.json"
+  },
+  "status": "PRE_AUTONOMY_STANDARDIZATION",
+  "freeze_authorization_required": true,
+  "next_steps": [
+    "Owner review and explicit authorization for v0.8 tag/freeze",
+    "Physical cross-device validation (requires second machine)",
+    "HTTPS configuration for UI serving",
+    "Whisper STT plugin implementation",
+    "ComfyUI/A1111 image generation adapter"
+  ]
+}

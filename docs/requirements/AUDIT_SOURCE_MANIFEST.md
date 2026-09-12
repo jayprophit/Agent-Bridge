@@ -1,0 +1,459 @@
+# Canonical Audit Source Manifest (450 rows in JSON)
+
+Sources are OWNER_REQUIREMENT_SOURCE: the canonical 150+150+150 numbered audits communicated in the owner correction prompt (no persistent audit files exist on disk). Each row maps source ordinal to permanent registry ID. Full rows: AUDIT_SOURCE_MANIFEST.json.
+
+## AI (150)
+- AI-audit #1: Confident hallucinations -> AI-001
+- AI-audit #2: Almost-right but incorrect answers -> AI-002
+- AI-audit #3: Hallucinated code, APIs, packages or functions -> AI-003
+- AI-audit #4: Fake-success claims -> AI-004
+- AI-audit #5: Fabricated citations and sources -> AI-005
+- AI-audit #6: Weak uncertainty reporting -> AI-006
+- AI-audit #7: Inconsistent results for equivalent requests -> AI-007
+- AI-audit #8: Weak numerical/logical verification -> AI-008
+- AI-audit #9: Malformed structured output / JSON -> AI-009
+- AI-audit #10: Weak self-verification -> AI-010
+- AI-audit #11: Forgetting earlier conversation information -> AI-011
+- AI-audit #12: Long-chat detail degradation -> AI-012
+- AI-audit #13: Context compaction discarding important information -> AI-013
+- AI-audit #14: Irrelevant memory retrieval -> AI-014
+- AI-audit #15: Memory pollution / contamination -> AI-015
+- AI-audit #16: Poor user control of memory -> AI-016
+- AI-audit #17: Missing memory provenance -> AI-017
+- AI-audit #18: Project state disappearing between sessions -> AI-018
+- AI-audit #19: Cross-device/session context discontinuity -> AI-019
+- AI-audit #20: Inefficient large-context usage -> AI-020
+- AI-audit #21: Wrong tool selection -> AI-021
+- AI-audit #22: Correct tool with wrong parameters -> AI-022
+- AI-audit #23: Tool execution loops -> AI-023
+- AI-audit #24: Successful-tool loops with no progress -> AI-024
+- AI-audit #25: Poor recovery after tool failure/disappearance -> AI-025
+- AI-audit #26: Failure to find alternative tool routes -> AI-026
+- AI-audit #27: Too many tools overwhelming the model -> AI-027
+- AI-audit #28: Excessive tool permissions -> AI-028
+- AI-audit #29: Excessive approval friction / insufficient permissions -> AI-029
+- AI-audit #30: Tool-state versus real-world-state drift -> AI-030
+- AI-audit #31: Poor long-horizon planning -> AI-031
+- AI-audit #32: Original objective forgotten during task -> AI-032
+- AI-audit #33: Local steps succeed but overall goal fails -> AI-033
+- AI-audit #34: Failure probability compounds across long tasks -> AI-034
+- AI-audit #35: Agent fails to notice it is off-course -> AI-035
+- AI-audit #36: Weak replanning -> AI-036
+- AI-audit #37: Multi-agent duplicate work -> AI-037
+- AI-audit #38: Multi-agent contradictions -> AI-038
+- AI-audit #39: Weak subtask ownership -> AI-039
+- AI-audit #40: Excessive human babysitting -> AI-040
+- AI-audit #41: AI code breaks unrelated code -> AI-041
+- AI-audit #42: Unnecessarily large refactors -> AI-042
+- AI-audit #43: Manual changes overwritten -> AI-043
+- AI-audit #44: Weak repository-wide understanding -> AI-044
+- AI-audit #45: Weak understanding of architectural rationale -> AI-045
+- AI-audit #46: AI debugging burden exceeds benefit -> AI-046
+- AI-audit #47: Tests reproduce the AI's own mistakes -> AI-047
+- AI-audit #48: Insufficient independent verification -> AI-048
+- AI-audit #49: Weak checkpoint / rollback discipline -> AI-049
+- AI-audit #50: Difficult project resume after time away -> AI-050
+- AI-audit #51: Wrong model selected for available hardware -> AI-051
+- AI-audit #52: CPU saturated while compatible GPU is idle -> AI-052
+- AI-audit #53: Inconsistent GPU/offload behavior -> AI-053
+- AI-audit #54: Confusing VRAM requirements -> AI-054
+- AI-audit #55: Unexpected KV-cache/context memory growth -> AI-055
+- AI-audit #56: Model fits VRAM until realistic context is used -> AI-056
+- AI-audit #57: RAM spill/offload destroys performance -> AI-057
+- AI-audit #58: Swap / memory pressure poorly explained -> AI-058
+- AI-audit #59: Quantization selection is confusing -> AI-059
+- AI-audit #60: No adaptive whole-machine resource balancing -> AI-060
+- AI-audit #61: Slow time-to-first-token -> AI-061
+- AI-audit #62: Slow generation/decode -> AI-062
+- AI-audit #63: UI freezes during inference -> AI-063
+- AI-audit #64: Audio/video/avatar compete with inference -> AI-064
+- AI-audit #65: No end-to-end latency budget -> AI-065
+- AI-audit #66: Voice playback jitter/stutter -> AI-066
+- AI-audit #67: False user-interruption detection -> AI-067
+- AI-audit #68: Voice agent hears/interferes with its own output -> AI-068
+- AI-audit #69: Poor barge-in -> AI-069
+- AI-audit #70: Fast voice becomes shallow/unhelpful -> AI-070
+- AI-audit #71: Speech-recognition errors -> AI-071
+- AI-audit #72: Robotic/disconnected TTS -> AI-072
+- AI-audit #73: Text/audio/avatar synchronization failure -> AI-073
+- AI-audit #74: Persona/voice/avatar identity discontinuity -> AI-074
+- AI-audit #75: Generated-character visual inconsistency -> AI-075
+- AI-audit #76: Image edits change unrequested areas -> AI-076
+- AI-audit #77: Slow image generation / weak progress reporting -> AI-077
+- AI-audit #78: Multimodal state inconsistency -> AI-078
+- AI-audit #79: Difficult modality-provider replacement -> AI-079
+- AI-audit #80: False-positive safety filtering -> AI-080
+- AI-audit #81: Opaque usage limits -> AI-081
+- AI-audit #82: Unknown request cost before execution -> AI-082
+- AI-audit #83: Small prompts consume large quotas through context -> AI-083
+- AI-audit #84: Agent loops consume runaway tokens/compute -> AI-084
+- AI-audit #85: Prompt/context/reasoning/tool cost not separable -> AI-085
+- AI-audit #86: Confusing daily/weekly/window limits -> AI-086
+- AI-audit #87: Usage dashboards don't explain consumption -> AI-087
+- AI-audit #88: No automatic economical model selection -> AI-088
+- AI-audit #89: Model switching unpredictably changes economics -> AI-089
+- AI-audit #90: Weak per-task compute budget control -> AI-090
+- AI-audit #91: Direct prompt injection -> AI-091
+- AI-audit #92: Indirect prompt injection -> AI-092
+- AI-audit #93: Privilege escalation / excessive agency -> AI-093
+- AI-audit #94: Sensitive-data leakage -> AI-094
+- AI-audit #95: Memory poisoning -> AI-095
+- AI-audit #96: Insecure plugins/MCP/tool servers -> AI-096
+- AI-audit #97: Irreversible actions without sufficient verification -> AI-097
+- AI-audit #98: Denial-of-wallet / unbounded-consumption loops -> AI-098
+- AI-audit #99: Cloud-only privacy/ownership/offline limitations -> AI-099
+- AI-audit #100: Weak ability to inspect/export/move/own AI state -> AI-100
+- AI-audit #101: Silent model/version changes -> AI-101
+- AI-audit #102: Poor reproducibility -> AI-102
+- AI-audit #103: Model/provider deprecation -> AI-103
+- AI-audit #104: Vendor lock-in -> AI-104
+- AI-audit #105: Protocol fragmentation -> AI-105
+- AI-audit #106: Weak version pinning -> AI-106
+- AI-audit #107: Stale knowledge / poor freshness awareness -> AI-107
+- AI-audit #108: Weak temporal/date/timezone reasoning -> AI-108
+- AI-audit #109: Poor conflicting-source resolution -> AI-109
+- AI-audit #110: Weak causal reasoning -> AI-110
+- AI-audit #111: Weak physical/world reasoning -> AI-111
+- AI-audit #112: Uneven multilingual performance -> AI-112
+- AI-audit #113: Dialect/accent bias -> AI-113
+- AI-audit #114: Accessibility gaps -> AI-114
+- AI-audit #115: Opaque routing decisions -> AI-115
+- AI-audit #116: Weak AI incident disclosure -> AI-116
+- AI-audit #117: Weak containment / kill mechanisms -> AI-117
+- AI-audit #118: Agent/model/tool identity spoofing -> AI-118
+- AI-audit #119: Weak artifact authenticity -> AI-119
+- AI-audit #120: Copyright/license provenance gaps -> AI-120
+- AI-audit #121: Data-residency uncertainty -> AI-121
+- AI-audit #122: Weak retention/deletion guarantees -> AI-122
+- AI-audit #123: Weak multi-user collaboration controls -> AI-123
+- AI-audit #124: Concurrent-write race conditions -> AI-124
+- AI-audit #125: Ecosystem/API drift -> AI-125
+- AI-audit #126: Sycophancy -> AI-126
+- AI-audit #127: Correction loops -> AI-127
+- AI-audit #128: Constraint drop-off -> AI-128
+- AI-audit #129: Excessive apologies/filler -> AI-129
+- AI-audit #130: Over-hedging -> AI-130
+- AI-audit #131: Excessive verbosity -> AI-131
+- AI-audit #132: Under-explaining -> AI-132
+- AI-audit #133: Restating the user's question unnecessarily -> AI-133
+- AI-audit #134: Unnecessary clarification questions -> AI-134
+- AI-audit #135: Formatting drift -> AI-135
+- AI-audit #136: Broken Markdown/code fences -> AI-136
+- AI-audit #137: Terminology drift -> AI-137
+- AI-audit #138: Code-style drift -> AI-138
+- AI-audit #139: Unwanted formatting/refactoring -> AI-139
+- AI-audit #140: Poor diff readability -> AI-140
+- AI-audit #141: Weak dry-run/preview mode -> AI-141
+- AI-audit #142: Poor progress visibility -> AI-142
+- AI-audit #143: Weak pause/resume -> AI-143
+- AI-audit #144: Slow/unreliable cancellation -> AI-144
+- AI-audit #145: Notification/status spam -> AI-145
+- AI-audit #146: Repeated retrieval/search results -> AI-146
+- AI-audit #147: Large-file truncation -> AI-147
+- AI-audit #148: Attachment-state ambiguity -> AI-148
+- AI-audit #149: Poor error messages -> AI-149
+- AI-audit #150: Personality/tone drift -> AI-150
+
+## DEVICE (150)
+- DEVICE-audit #1: Cannot reliably determine real device capability -> DEV-001
+- DEVICE-audit #2: Device type mistaken for capability -> DEV-002
+- DEVICE-audit #3: No common CPU/GPU/NPU capability description -> DEV-003
+- DEVICE-audit #4: Hardware acceleration exposed differently per platform -> DEV-004
+- DEVICE-audit #5: Capability inferred from product name rather than probing -> DEV-005
+- DEVICE-audit #6: New hardware generations require compatibility patches -> DEV-006
+- DEVICE-audit #7: Runtime peripheral capability changes handled poorly -> DEV-007
+- DEVICE-audit #8: Hot-plug detection unreliable -> DEV-008
+- DEVICE-audit #9: Hardware-present confused with permission-granted -> DEV-009
+- DEVICE-audit #10: Present/usable/busy/unavailable states poorly distinguished -> DEV-010
+- DEVICE-audit #11: Windows software does not automatically port elsewhere -> DEV-011
+- DEVICE-audit #12: Desktop code does not map cleanly to mobile -> DEV-012
+- DEVICE-audit #13: Android/iOS background policies differ -> DEV-013
+- DEVICE-audit #14: Tablet apps often behave like stretched phone apps -> DEV-014
+- DEVICE-audit #15: OS security models differ -> DEV-015
+- DEVICE-audit #16: Filesystem capabilities differ -> DEV-016
+- DEVICE-audit #17: Desktop subprocess assumptions fail on mobile -> DEV-017
+- DEVICE-audit #18: Plugin architectures differ across platforms -> DEV-018
+- DEVICE-audit #19: Mobile sandboxing restricts desktop-style agents -> DEV-019
+- DEVICE-audit #20: Universal products become multiple separate applications -> DEV-020
+- DEVICE-audit #21: Single-screen-size assumptions -> DEV-021
+- DEVICE-audit #22: Portrait/landscape adaptation failure -> DEV-022
+- DEVICE-audit #23: Poor use of tablet screen space -> DEV-023
+- DEVICE-audit #24: Foldable dimensions change at runtime -> DEV-024
+- DEVICE-audit #25: Foldable hinge/posture handling -> DEV-025
+- DEVICE-audit #26: Arbitrarily resizable desktop windows -> DEV-026
+- DEVICE-audit #27: Dynamic DPI/external-monitor changes -> DEV-027
+- DEVICE-audit #28: Spatial/XR interfaces aren't rectangular -> DEV-028
+- DEVICE-audit #29: Watch displays unsuitable for normal app UI -> DEV-029
+- DEVICE-audit #30: Smart rings have no traditional screen -> DEV-030
+- DEVICE-audit #31: CPU architecture fragmentation -> DEV-031
+- DEVICE-audit #32: GPU API fragmentation -> DEV-032
+- DEVICE-audit #33: NPU API fragmentation -> DEV-033
+- DEVICE-audit #34: Model incompatible across NPUs -> DEV-034
+- DEVICE-audit #35: Device-specific model conversion -> DEV-035
+- DEVICE-audit #36: Quantization support varies by accelerator -> DEV-036
+- DEVICE-audit #37: Unsupported accelerator operators fall back to CPU -> DEV-037
+- DEVICE-audit #38: CPU fallback can destroy performance -> DEV-038
+- DEVICE-audit #39: Users can't tell where inference actually ran -> DEV-039
+- DEVICE-audit #40: No universal measured CPU/GPU/NPU scheduler -> DEV-040
+- DEVICE-audit #41: Extreme RAM variation -> DEV-041
+- DEVICE-audit #42: Installed RAM differs from usable RAM -> DEV-042
+- DEVICE-audit #43: Unified memory and VRAM behave differently -> DEV-043
+- DEVICE-audit #44: Abrupt VRAM exhaustion -> DEV-044
+- DEVICE-audit #45: Storage-performance variation -> DEV-045
+- DEVICE-audit #46: Mobile OS terminates apps under memory pressure -> DEV-046
+- DEVICE-audit #47: Temporary caches/models fill storage -> DEV-047
+- DEVICE-audit #48: Large models overwhelm small-device storage -> DEV-048
+- DEVICE-audit #49: Cache sizing does not adapt to device -> DEV-049
+- DEVICE-audit #50: Poor visibility into AI storage usage -> DEV-050
+- DEVICE-audit #51: Desktop workloads don't suit batteries -> DEV-051
+- DEVICE-audit #52: AI rapidly drains phone battery -> DEV-052
+- DEVICE-audit #53: Watch battery constraints -> DEV-053
+- DEVICE-audit #54: Smart-glasses power/weight limits -> DEV-054
+- DEVICE-audit #55: Smart-ring power/thermal limits -> DEV-055
+- DEVICE-audit #56: Compute triggers thermal throttling -> DEV-056
+- DEVICE-audit #57: Thermal throttling creates latency variability -> DEV-057
+- DEVICE-audit #58: Power-saving mode disables/throttles features -> DEV-058
+- DEVICE-audit #59: Background processing stops at low battery -> DEV-059
+- DEVICE-audit #60: Workload quality fails to adapt to energy -> DEV-060
+- DEVICE-audit #61: Wi-Fi disappears during tasks -> DEV-061
+- DEVICE-audit #62: Wi-Fi/cellular handoff -> DEV-062
+- DEVICE-audit #63: IP changes break sessions -> DEV-063
+- DEVICE-audit #64: Bluetooth instability -> DEV-064
+- DEVICE-audit #65: Devices move in/out of range -> DEV-065
+- DEVICE-audit #66: Cloud-only assistants fail offline -> DEV-066
+- DEVICE-audit #67: Poor local/cloud/local compute handoff -> DEV-067
+- DEVICE-audit #68: Session state lost during device handoff -> DEV-068
+- DEVICE-audit #69: Large artifacts transferred unnecessarily -> DEV-069
+- DEVICE-audit #70: No universal compute-location strategy -> DEV-070
+- DEVICE-audit #71: Poor cross-device continuation -> DEV-071
+- DEVICE-audit #72: Conversation duplicated instead of handed off -> DEV-072
+- DEVICE-audit #73: Agent tasks restart instead of migrate -> DEV-073
+- DEVICE-audit #74: Attachments available only on original device -> DEV-074
+- DEVICE-audit #75: Tool availability differs per device -> DEV-075
+- DEVICE-audit #76: Users don't know which device executes task -> DEV-076
+- DEVICE-audit #77: Notifications sent to wrong/all devices -> DEV-077
+- DEVICE-audit #78: Approvals appear on wrong device -> DEV-078
+- DEVICE-audit #79: Multiple devices conflict over same task -> DEV-079
+- DEVICE-audit #80: No single AI identity across devices -> DEV-080
+- DEVICE-audit #81: Keyboard/mouse not universally available -> DEV-081
+- DEVICE-audit #82: Touch differs from mouse -> DEV-082
+- DEVICE-audit #83: Stylus treated as ordinary touch -> DEV-083
+- DEVICE-audit #84: Watch crown/gesture input -> DEV-084
+- DEVICE-audit #85: Ring sensor/gesture/haptic interaction -> DEV-085
+- DEVICE-audit #86: Glasses voice/gaze/gesture interaction -> DEV-086
+- DEVICE-audit #87: Vehicle interfaces require low-distraction interaction -> DEV-087
+- DEVICE-audit #88: Game controllers ignored as general AI input -> DEV-088
+- DEVICE-audit #89: Camera/mic/sensor format fragmentation -> DEV-089
+- DEVICE-audit #90: Interaction mode does not adapt to inputs -> DEV-090
+- DEVICE-audit #91: Users can't tell when microphones are active -> DEV-091
+- DEVICE-audit #92: Camera bystander privacy -> DEV-092
+- DEVICE-audit #93: Smart-glasses recording visibility/privacy -> DEV-093
+- DEVICE-audit #94: Wearable biometric privacy -> DEV-094
+- DEVICE-audit #95: Sensors reveal location/behavior/health/routines -> DEV-095
+- DEVICE-audit #96: Raw data sent to cloud unnecessarily -> DEV-096
+- DEVICE-audit #97: Permissions too broad instead of task-scoped -> DEV-097
+- DEVICE-audit #98: Users can't see where sensor data was processed -> DEV-098
+- DEVICE-audit #99: Derived data remains after raw deletion -> DEV-099
+- DEVICE-audit #100: Privacy policy differs across same user's devices -> DEV-100
+- DEVICE-audit #101: No universal device trust model -> DEV-101
+- DEVICE-audit #102: Weak device identity -> DEV-102
+- DEVICE-audit #103: Replacement breaks identity/session continuity -> DEV-103
+- DEVICE-audit #104: Lost/stolen devices retain agent access -> DEV-104
+- DEVICE-audit #105: Weak remote wipe/revocation -> DEV-105
+- DEVICE-audit #106: OS updates remove APIs/permissions -> DEV-106
+- DEVICE-audit #107: Manufacturer update support ends -> DEV-107
+- DEVICE-audit #108: Functional hardware loses software support -> DEV-108
+- DEVICE-audit #109: App-store policy blocks hardware capability -> DEV-109
+- DEVICE-audit #110: Sideloading differs across platforms -> DEV-110
+- DEVICE-audit #111: Manufacturer ecosystem lock-in -> DEV-111
+- DEVICE-audit #112: Purchases/settings don't transfer across ecosystems -> DEV-112
+- DEVICE-audit #113: Vendor cloud shutdown cripples hardware -> DEV-113
+- DEVICE-audit #114: Proprietary accessory protocols -> DEV-114
+- DEVICE-audit #115: No common local-first AI protocol -> DEV-115
+- DEVICE-audit #116: Health-sensor accuracy variation -> DEV-116
+- DEVICE-audit #117: Wearable fit changes measurements -> DEV-117
+- DEVICE-audit #118: Health estimates appear overly certain -> DEV-118
+- DEVICE-audit #119: Ring sizing affects sensor reliability -> DEV-119
+- DEVICE-audit #120: Health data fragmented across ecosystems -> DEV-120
+- DEVICE-audit #121: Smart-glasses battery/compute limitations -> DEV-121
+- DEVICE-audit #122: Smart-glasses heat/discomfort -> DEV-122
+- DEVICE-audit #123: XR eye strain/motion sickness -> DEV-123
+- DEVICE-audit #124: Vehicle safety-control separation -> DEV-124
+- DEVICE-audit #125: No authoritative-device policy -> DEV-125
+- DEVICE-audit #126: Bluetooth pairing becomes stale -> DEV-126
+- DEVICE-audit #127: Duplicate device entries -> DEV-127
+- DEVICE-audit #128: Human-readable names used as identity -> DEV-128
+- DEVICE-audit #129: Time-zone disagreement -> DEV-129
+- DEVICE-audit #130: Clock drift -> DEV-130
+- DEVICE-audit #131: Inaccurate/slow battery state -> DEV-131
+- DEVICE-audit #132: Charging-state inconsistency -> DEV-132
+- DEVICE-audit #133: Audio routes to wrong output -> DEV-133
+- DEVICE-audit #134: Microphone switches unexpectedly -> DEV-134
+- DEVICE-audit #135: Bluetooth headset quality/mic profile conflict -> DEV-135
+- DEVICE-audit #136: Camera rotation/mirroring problems -> DEV-136
+- DEVICE-audit #137: External-display coordinate changes -> DEV-137
+- DEVICE-audit #138: Keyboard/shortcut layout differences -> DEV-138
+- DEVICE-audit #139: Accessibility scaling breaks layouts -> DEV-139
+- DEVICE-audit #140: Notches/safe areas cover UI -> DEV-140
+- DEVICE-audit #141: TV remote-focus failure -> DEV-141
+- DEVICE-audit #142: Poor TV text entry -> DEV-142
+- DEVICE-audit #143: TV DRM/codec fragmentation -> DEV-143
+- DEVICE-audit #144: Low-performance older smart TVs -> DEV-144
+- DEVICE-audit #145: TV app updates lag -> DEV-145
+- DEVICE-audit #146: Wearable background throttling -> DEV-146
+- DEVICE-audit #147: Screen burn-in / always-on requirements -> DEV-147
+- DEVICE-audit #148: Wake-word false activation -> DEV-148
+- DEVICE-audit #149: Wrong nearby device answers assistant -> DEV-149
+- DEVICE-audit #150: Assistant behavior changes between devices -> DEV-150
+
+## PHYSICAL (150)
+- PHYSICAL-audit #1: No guaranteed safe state after failure -> PHY-001
+- PHYSICAL-audit #2: Emergency-stop inconsistency -> PHY-002
+- PHYSICAL-audit #3: Software stop differs from physical stop -> PHY-003
+- PHYSICAL-audit #4: Human danger-zone detection failure -> PHY-004
+- PHYSICAL-audit #5: Collision avoidance under sensor uncertainty -> PHY-005
+- PHYSICAL-audit #6: Speed/force not reduced near vulnerable humans -> PHY-006
+- PHYSICAL-audit #7: Safety logic depends on non-safety-rated software -> PHY-007
+- PHYSICAL-audit #8: Single sensor failure creates dangerous assumptions -> PHY-008
+- PHYSICAL-audit #9: Poor graceful degradation -> PHY-009
+- PHYSICAL-audit #10: Inadequate real-world safety edge-case testing -> PHY-010
+- PHYSICAL-audit #11: Control-loop deadline misses -> PHY-011
+- PHYSICAL-audit #12: OS scheduling jitter -> PHY-012
+- PHYSICAL-audit #13: Variable sensor-to-actuator latency -> PHY-013
+- PHYSICAL-audit #14: Network traffic interferes with control -> PHY-014
+- PHYSICAL-audit #15: AI inference blocks control -> PHY-015
+- PHYSICAL-audit #16: Logging/debugging alters realtime behavior -> PHY-016
+- PHYSICAL-audit #17: Garbage collection latency spikes -> PHY-017
+- PHYSICAL-audit #18: Process/node scheduling overhead -> PHY-018
+- PHYSICAL-audit #19: Missing sensor-to-actuator latency budget -> PHY-019
+- PHYSICAL-audit #20: Fast confused with deterministic -> PHY-020
+- PHYSICAL-audit #21: Sensor calibration drift -> PHY-021
+- PHYSICAL-audit #22: Sensor disagreement -> PHY-022
+- PHYSICAL-audit #23: Poor sensor-fusion confidence handling -> PHY-023
+- PHYSICAL-audit #24: Camera degradation from environment -> PHY-024
+- PHYSICAL-audit #25: LiDAR/depth surface limitations -> PHY-025
+- PHYSICAL-audit #26: Ultrasonic interference/reflection -> PHY-026
+- PHYSICAL-audit #27: IMU drift -> PHY-027
+- PHYSICAL-audit #28: GNSS/GPS environmental failure -> PHY-028
+- PHYSICAL-audit #29: Replacement/movement lacks recalibration -> PHY-029
+- PHYSICAL-audit #30: Nothing-detected confused with sensor failure -> PHY-030
+- PHYSICAL-audit #31: Localization jumps -> PHY-031
+- PHYSICAL-audit #32: SLAM drift -> PHY-032
+- PHYSICAL-audit #33: Dynamic environment invalidates maps -> PHY-033
+- PHYSICAL-audit #34: Environment changes break navigation -> PHY-034
+- PHYSICAL-audit #35: Multi-robot map conflicts -> PHY-035
+- PHYSICAL-audit #36: Poor map version control -> PHY-036
+- PHYSICAL-audit #37: Indoor/outdoor localization transition -> PHY-037
+- PHYSICAL-audit #38: Weak lost-localization recovery -> PHY-038
+- PHYSICAL-audit #39: Sensitive mapping data retained -> PHY-039
+- PHYSICAL-audit #40: Weak semantic map understanding -> PHY-040
+- PHYSICAL-audit #41: Motion-planning failure in clutter -> PHY-041
+- PHYSICAL-audit #42: Planning too slow for dynamic environments -> PHY-042
+- PHYSICAL-audit #43: Valid trajectory mechanically poor -> PHY-043
+- PHYSICAL-audit #44: Unfamiliar-object grasping unreliable -> PHY-044
+- PHYSICAL-audit #45: Deformable/slipping/breakable object handling -> PHY-045
+- PHYSICAL-audit #46: Poor gripping-force estimation -> PHY-046
+- PHYSICAL-audit #47: Gripper integration fragmentation -> PHY-047
+- PHYSICAL-audit #48: Terrain-handling weakness -> PHY-048
+- PHYSICAL-audit #49: Weak stumble/slip recovery -> PHY-049
+- PHYSICAL-audit #50: Poor payload awareness -> PHY-050
+- PHYSICAL-audit #51: Manufacturer-specific hardware APIs -> PHY-051
+- PHYSICAL-audit #52: Missing/abandoned drivers -> PHY-052
+- PHYSICAL-audit #53: Driver/middleware version mismatch -> PHY-053
+- PHYSICAL-audit #54: Component replacement requires application changes -> PHY-054
+- PHYSICAL-audit #55: Device discovery unreliability -> PHY-055
+- PHYSICAL-audit #56: USB/serial enumeration changes -> PHY-056
+- PHYSICAL-audit #57: Hardware identity tied to fragile port names -> PHY-057
+- PHYSICAL-audit #58: Firmware/protocol version poorly advertised -> PHY-058
+- PHYSICAL-audit #59: No universal physical capability description -> PHY-059
+- PHYSICAL-audit #60: Hardware replacement requires manual recalibration -> PHY-060
+- PHYSICAL-audit #61: UART/SPI/I2C/CAN/etc handled separately -> PHY-061
+- PHYSICAL-audit #62: CAN configuration difficulty -> PHY-062
+- PHYSICAL-audit #63: Industrial bus interoperability -> PHY-063
+- PHYSICAL-audit #64: ROS/DDS configuration/tuning difficulty -> PHY-064
+- PHYSICAL-audit #65: MQTT schema fragmentation -> PHY-065
+- PHYSICAL-audit #66: Matter/Thread commissioning reliability -> PHY-066
+- PHYSICAL-audit #67: Bluetooth provisioning inconsistency -> PHY-067
+- PHYSICAL-audit #68: Wi-Fi credential change strands device -> PHY-068
+- PHYSICAL-audit #69: Device roaming/network migration -> PHY-069
+- PHYSICAL-audit #70: No universal physical protocol translation -> PHY-070
+- PHYSICAL-audit #71: Inaccurate battery percentage -> PHY-071
+- PHYSICAL-audit #72: Poor runtime prediction -> PHY-072
+- PHYSICAL-audit #73: Battery degradation excluded from planning -> PHY-073
+- PHYSICAL-audit #74: Task starts without enough return energy -> PHY-074
+- PHYSICAL-audit #75: Charging-dock alignment failure -> PHY-075
+- PHYSICAL-audit #76: Charging-contact degradation -> PHY-076
+- PHYSICAL-audit #77: Compute thermal throttling -> PHY-077
+- PHYSICAL-audit #78: Motor and compute power competition -> PHY-078
+- PHYSICAL-audit #79: Weak energy-aware task scheduling -> PHY-079
+- PHYSICAL-audit #80: Poor coordinated sleep/wake -> PHY-080
+- PHYSICAL-audit #81: Difficult IoT onboarding -> PHY-081
+- PHYSICAL-audit #82: Weak identity/bootstrap credential management -> PHY-082
+- PHYSICAL-audit #83: Firmware update can brick device -> PHY-083
+- PHYSICAL-audit #84: Update breaks integrations -> PHY-084
+- PHYSICAL-audit #85: Missing rollback -> PHY-085
+- PHYSICAL-audit #86: Fleet configuration complexity -> PHY-086
+- PHYSICAL-audit #87: Firmware inventory uncertainty -> PHY-087
+- PHYSICAL-audit #88: Unsupported devices remain deployed -> PHY-088
+- PHYSICAL-audit #89: EOL devices become security liabilities -> PHY-089
+- PHYSICAL-audit #90: Ecosystem migration difficulty -> PHY-090
+- PHYSICAL-audit #91: Default/shared passwords -> PHY-091
+- PHYSICAL-audit #92: Weak device identity / impersonation -> PHY-092
+- PHYSICAL-audit #93: Weak command-channel authentication/encryption -> PHY-093
+- PHYSICAL-audit #94: Cloud compromise controls physical device -> PHY-094
+- PHYSICAL-audit #95: Remote commands insufficiently constrained locally -> PHY-095
+- PHYSICAL-audit #96: Firmware supply-chain compromise -> PHY-096
+- PHYSICAL-audit #97: Sensor exploitation -> PHY-097
+- PHYSICAL-audit #98: IT security tooling disrupts OT realtime systems -> PHY-098
+- PHYSICAL-audit #99: Cyberattack becomes physical-safety incident -> PHY-099
+- PHYSICAL-audit #100: Difficult cyber-physical recovery -> PHY-100
+- PHYSICAL-audit #101: Missing universal physical capability registry -> PHY-101
+- PHYSICAL-audit #102: Weak hardware abstraction -> PHY-102
+- PHYSICAL-audit #103: No embodiment abstraction -> PHY-103
+- PHYSICAL-audit #104: Poor hot-plug support -> PHY-104
+- PHYSICAL-audit #105: Weak component health scoring -> PHY-105
+- PHYSICAL-audit #106: Fragmented predictive maintenance -> PHY-106
+- PHYSICAL-audit #107: Wear/backlash/vibration degradation monitoring -> PHY-107
+- PHYSICAL-audit #108: Replacement lacks automatic self-test/recalibration -> PHY-108
+- PHYSICAL-audit #109: Weak self-diagnostics -> PHY-109
+- PHYSICAL-audit #110: Missing degraded/limp-home mode -> PHY-110
+- PHYSICAL-audit #111: Poor simulation-to-reality transfer -> PHY-111
+- PHYSICAL-audit #112: Digital twin becomes stale -> PHY-112
+- PHYSICAL-audit #113: Simulation lacks real wear/friction/tolerance behavior -> PHY-113
+- PHYSICAL-audit #114: Simulation tests pass but hardware fails -> PHY-114
+- PHYSICAL-audit #115: No continuous twin-to-physical reconciliation -> PHY-115
+- PHYSICAL-audit #116: Weak multi-robot shared-space negotiation -> PHY-116
+- PHYSICAL-audit #117: Robot deadlock/blocking -> PHY-117
+- PHYSICAL-audit #118: Fleet allocation fails poorly when robot fails -> PHY-118
+- PHYSICAL-audit #119: Multi-robot communication state inconsistency -> PHY-119
+- PHYSICAL-audit #120: No universal robot-to-robot capability negotiation -> PHY-120
+- PHYSICAL-audit #121: Weak human-intent estimation -> PHY-121
+- PHYSICAL-audit #122: Robot intent poorly communicated to humans -> PHY-122
+- PHYSICAL-audit #123: Humans can't predict robot's next action -> PHY-123
+- PHYSICAL-audit #124: Weak physical status/explanation interface -> PHY-124
+- PHYSICAL-audit #125: No perception-confidence gating of physical actions -> PHY-125
+- PHYSICAL-audit #126: Cable-management failures -> PHY-126
+- PHYSICAL-audit #127: Connectors loosen under vibration -> PHY-127
+- PHYSICAL-audit #128: Sensors get dirty without detection -> PHY-128
+- PHYSICAL-audit #129: Camera obstruction -> PHY-129
+- PHYSICAL-audit #130: Wheel/mechanical debris accumulation -> PHY-130
+- PHYSICAL-audit #131: Tedious physical calibration -> PHY-131
+- PHYSICAL-audit #132: Motor polarity/direction mistakes -> PHY-132
+- PHYSICAL-audit #133: Unit mismatch -> PHY-133
+- PHYSICAL-audit #134: Coordinate-frame confusion -> PHY-134
+- PHYSICAL-audit #135: Sensor-clock synchronization -> PHY-135
+- PHYSICAL-audit #136: Timestamp drift corrupts fusion -> PHY-136
+- PHYSICAL-audit #137: Firmware logs unreadable to users -> PHY-137
+- PHYSICAL-audit #138: Excessive robotics configuration complexity -> PHY-138
+- PHYSICAL-audit #139: Diagnostic message flooding -> PHY-139
+- PHYSICAL-audit #140: One component crash cascades -> PHY-140
+- PHYSICAL-audit #141: Restarting subsystem requires full restart -> PHY-141
+- PHYSICAL-audit #142: Factory reset destroys useful calibration -> PHY-142
+- PHYSICAL-audit #143: Commissioning requires too many apps/accounts -> PHY-143
+- PHYSICAL-audit #144: Unnecessary permanent Internet dependency -> PHY-144
+- PHYSICAL-audit #145: Vendor cloud shutdown disables hardware -> PHY-145
+- PHYSICAL-audit #146: Missing local-control APIs -> PHY-146
+- PHYSICAL-audit #147: Automation/device configuration cannot be exported -> PHY-147
+- PHYSICAL-audit #148: Replacement hardware doesn't inherit configuration -> PHY-148
+- PHYSICAL-audit #149: Poor physical update/calibration progress feedback -> PHY-149
+- PHYSICAL-audit #150: No unified physical-system health dashboard -> PHY-150

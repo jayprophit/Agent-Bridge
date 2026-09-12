@@ -1,0 +1,102 @@
+{
+ "model": "hhao/qwen2.5-coder-tools:3b",
+ "mat_touched": false,
+ "stt_mode": "FIXTURE_PARTIALS (no STT backend installed)",
+ "model_mode": "REAL Ollama hhao/qwen2.5-coder-tools:3b stream",
+ "tts_mode": "REAL System.Speech first-audio",
+ "tts_evidence": {
+  "ok": true,
+  "first_audio_ms": 5120.2,
+  "bytes": 319642,
+  "backend": "System.Speech"
+ },
+ "lip_sync_mode": "AUDIO_AMPLITUDE_FALLBACK (System.Speech provides no per-phoneme timestamps here; viseme tables drive the Jaw node)",
+ "scheduler_plan": {
+  "waves": [
+   [
+    "tts",
+    "avatar"
+   ],
+   [
+    "reason"
+   ]
+  ],
+  "interactive_first": true,
+  "reasoning_deferred_behind_media": true
+ },
+ "turn_streaming": {
+  "latencies_ms": {
+   "input_capture_ms": 1.0,
+   "stt_partial_ms": 0.01,
+   "stt_final_ms": 0.02,
+   "tts_first_audio_ms": 5120.2,
+   "audio_buffer_ms": 2.0,
+   "model_ttft_ms": 40270.98,
+   "first_phrase_ms": 42485.8,
+   "avatar_event_ms": 5120.89,
+   "lip_sync_offset_ms": 15.0,
+   "turn_ms": 47607.7
+  },
+  "budget_check": {
+   "ok": false,
+   "per_component": {
+    "input_capture_ms": true,
+    "stt_partial_ms": true,
+    "stt_final_ms": true,
+    "model_ttft_ms": false,
+    "first_phrase_ms": false,
+    "tts_first_audio_ms": false,
+    "audio_buffer_ms": true,
+    "avatar_event_ms": false,
+    "lip_sync_offset_ms": true,
+    "turn_ms": false
+   }
+  },
+  "phrases": 1,
+  "barge_in": null
+ },
+ "turn_barge_in": {
+  "latencies_ms": {
+   "input_capture_ms": 1.0,
+   "stt_partial_ms": 0.01,
+   "stt_final_ms": 0.01,
+   "tts_first_audio_ms": 5.0,
+   "audio_buffer_ms": 2.0,
+   "model_ttft_ms": 0.02,
+   "first_phrase_ms": 0.03,
+   "avatar_event_ms": 0.01,
+   "lip_sync_offset_ms": 15.0,
+   "turn_ms": 0.08
+  },
+  "budget_check": {
+   "ok": true,
+   "per_component": {
+    "input_capture_ms": true,
+    "stt_partial_ms": true,
+    "stt_final_ms": true,
+    "model_ttft_ms": true,
+    "first_phrase_ms": true,
+    "tts_first_audio_ms": true,
+    "audio_buffer_ms": true,
+    "avatar_event_ms": true,
+    "lip_sync_offset_ms": true,
+    "turn_ms": true
+   }
+  },
+  "phrases": 2,
+  "barge_in": {
+   "ok": true,
+   "flushed": 4,
+   "barge_ins": 1,
+   "state": "LISTENING"
+  }
+ },
+ "avatar_events_turn1": [
+  "LISTENING",
+  "THINKING",
+  "SPEAKING",
+  "IDLE"
+ ],
+ "budget_ok_turn1": false,
+ "status": "PASS"
+}
