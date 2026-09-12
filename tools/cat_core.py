@@ -336,6 +336,46 @@ def code_records() -> list[ToolRecord]:
     return out
 
 
+def detect_test_runner(workspace) -> dict[str, Any]:
+    """Detect project test configuration (v0.8.1).
+
+    Order: explicit project config first, then installed runners, then
+    stdlib unittest discovery. Never installs anything; a configured-but-
+    missing pytest is reported as a dependency requirement.
+    """
+    import shutil
+    from pathlib import Path
+    ws = Path(str(workspace or "."))
+    has_pytest_cfg = (ws / "pytest.ini").exists() or (
+        (ws / "pyproject.toml").exists() and "[tool.pytest" in
+        (ws / "pyproject.toml").read_text(
+            encoding="utf-8", errors="replace")[:4000]) or (
+        (ws / "setup.cfg").exists() and "[tool:pytest]" in
+        (ws / "setup.cfg").read_text(
+            encoding="utf-8", errors="replace")[:2000])
+    has_unittest = any(ws.glob("test_*.py")) or any(ws.glob("tests/test_*.py"))
+    pytest = shutil.which("pytest")
+    package_json = ws / "package.json"
+    if has_pytest_cfg:
+        if pytest:
+            return {"runner": "pytest", "command": "python -m pytest",
+                    "reason": "project configures pytest and it is installed"}
+        return {"runner": "pytest", "command": "",
+                "reason": "project configures pytest but it is not installed",
+                "dependency": "pytest"}
+    if package_json.exists():
+        return {"runner": "npm", "command": "npm test",
+                "reason": "package.json present (node runner; not auto-installed)"}
+    if has_unittest:
+        return {"runner": "unittest", "command": "python -m unittest",
+                "reason": "unittest-style tests found; stdlib runner"}
+    if pytest:
+        return {"runner": "pytest", "command": "python -m pytest",
+                "reason": "pytest installed, no contrary config"}
+    return {"runner": "unittest", "command": "python -m unittest",
+            "reason": "stdlib fallback"}
+
+
 class TestAdapter(_ExecAdapter):
     def __init__(self, ctx, tool_id):
         super().__init__(ctx)
@@ -366,15 +406,28 @@ class TestAdapter(_ExecAdapter):
             return {"ok": True, "tests": found[:100]}
         cmd = str(arguments.get("command", ""))
         if not cmd:
-            defaults = {"run": "python -m pytest", "unit": "python -m unittest",
-                        "integration": "python -m pytest -m integration",
-                        "e2e": "python -m pytest -m e2e",
-                        "regression": "python -m pytest -m regression",
-                        "lint": "ruff check .", "typecheck": "mypy .",
-                        "build": "python -m build",
-                        "benchmark": "python -m pytest --benchmark-only",
-                        "coverage": "python -m pytest --cov=."}
-            cmd = defaults[sub]
+            if sub in ("run", "unit", "integration", "e2e", "regression"):
+                detected = detect_test_runner(self.ex.workspace)
+                if detected.get("dependency") and not detected.get("command"):
+                    return {"ok": False, "status": NOT_INSTALLED,
+                            "error": f"test runner required but missing: "
+                                     f"{detected['dependency']} "
+                                     f"({detected['reason']})",
+                            "detected": detected}
+                cmd = {"run": detected["command"],
+                       "unit": detected["command"],
+                       "integration": detected["command"] + " -m integration"
+                       if detected["runner"] == "pytest" else detected["command"],
+                       "e2e": detected["command"] + " -m e2e"
+                       if detected["runner"] == "pytest" else detected["command"],
+                       "regression": detected["command"] + " -m regression"
+                       if detected["runner"] == "pytest" else detected["command"]}[sub]
+            else:
+                defaults = {"lint": "ruff check .", "typecheck": "mypy .",
+                            "build": "python -m build",
+                            "benchmark": "python -m pytest --benchmark-only",
+                            "coverage": "python -m pytest --cov=."}
+                cmd = defaults[sub]
         kind = mapping[sub]
         res = self._run_action({"action": kind, "command": cmd})
         if kind == "shell" and "not installed" in str(res.get("error", "")):

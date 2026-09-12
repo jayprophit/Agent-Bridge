@@ -324,7 +324,21 @@ class Executor:
                       "existed": existed, "backup": original, "bytes": len(content)})
         return {"ok": True, "path": rel, "bytes": target.stat().st_size, "verified": True}
 
-    def do_edit(self, path: str, old: str, new: str, action_id: str = "") -> dict[str, Any]:
+    @staticmethod
+    def _content_hash(content: str) -> str:
+        import hashlib
+        return hashlib.sha256(content.encode("utf-8")).hexdigest()[:16]
+
+    def do_edit(self, path: str, old: str, new: str, action_id: str = "",
+                expected_hash: str = "") -> dict[str, Any]:
+        """Safe edit with re-read/reconcile support (v0.8.1).
+
+        Preferred repair flow: READ (note current_hash) -> VERIFY
+        expected_hash -> PRECISE PATCH -> on mismatch RE-READ the
+        returned preview -> RECONCILE -> retry with fresh expected_hash
+        -> VALIDATE -> atomic WRITE -> VERIFY. expected_hash mismatches
+        never mutate: the caller gets current_hash + preview instead.
+        """
         if old == new:
             return {"ok": False,
                     "error": "edit refused: old and new are identical (no-op)"}
@@ -338,8 +352,19 @@ class Executor:
             content = target.read_text(encoding="utf-8")
         except OSError as e:
             return {"ok": False, "error": f"read failed: {e}"}
+        current_hash = self._content_hash(content)
+        preview = content[:600]
+        if expected_hash and expected_hash != current_hash:
+            return {"ok": False, "kind": "EDIT_CONFLICT",
+                    "error": "edit refused: file changed since read "
+                             "(expected_hash mismatch; no changes made)",
+                    "current_hash": current_hash,
+                    "expected_hash": expected_hash,
+                    "preview": preview}
         if old not in content:
-            return {"ok": False, "error": "edit failed: target text not found (no changes made)"}
+            return {"ok": False, "kind": "EDIT_MISS",
+                    "error": "edit failed: target text not found (no changes made)",
+                    "current_hash": current_hash, "preview": preview}
         original = content.encode("utf-8")
         try:
             self._atomic_write_text(target, content.replace(old, new, 1))
@@ -351,7 +376,9 @@ class Executor:
         rel = self._rel(target)
         self._record({"action": "edit", "action_id": action_id, "path": rel,
                       "existed": True, "backup": original})
-        return {"ok": True, "path": rel, "replaced": True, "verified": True}
+        new_hash = self._content_hash(target.read_text(encoding="utf-8"))
+        return {"ok": True, "path": rel, "replaced": True, "verified": True,
+                "current_hash": new_hash}
 
     # -- multi-hunk patch engine ---------------------------------------------
     @staticmethod
@@ -893,7 +920,8 @@ class Executor:
         if act == "write":
             return self.do_write(action["path"], action["content"], action_id)
         if act == "edit":
-            return self.do_edit(action["path"], action["old"], action["new"], action_id)
+            return self.do_edit(action["path"], action["old"], action["new"], action_id,
+                                expected_hash=str(action.get("expected_hash", "") or ""))
         if act == "patch":
             return self.do_patch(action["path"], edits=action.get("edits"),
                                  old=action.get("old"), new=action.get("new"),

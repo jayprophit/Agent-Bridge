@@ -1,0 +1,12 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  fast:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install "psutil==7.2.2"
+      - run: python -m unittest tests.test_resources tests.test_compat tests.test_realtime tests.test_avatar_creator tests.test_avatar_capture tests.test_repo_portability tests.test_secret_hygiene tests.test_state_integrity tests.test_maintenance_v081

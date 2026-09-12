@@ -473,6 +473,49 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
         tr["status"] = status  # terminal state, not mid-flight snapshot
         return tr
 
+    def _verify_completion() -> tuple[str, dict[str, Any]]:
+        """Evidence-aware completion (v0.8.1).
+
+        No expectations configured -> ("VERIFIED_COMPLETE", {}) preserves
+        historical behavior exactly. Otherwise every expected artifact
+        must exist (and parse when verify_json covers .json), and
+        verify_command (if set) must exit 0 via the executor test action.
+        Anything short -> MODEL_CLAIMED_COMPLETE (never falsified).
+        """
+        wants = list(getattr(cfg, "expected_artifacts", []) or [])
+        cmd = str(getattr(cfg, "verify_command", "") or "")
+        if not wants and not cmd:
+            return "VERIFIED_COMPLETE", {}
+        missing: list[str] = []
+        checked: list[str] = []
+        for rel in wants:
+            res = executor.dispatch({"action": "exists", "path": rel})
+            if not res.get("ok") or not res.get("exists"):
+                missing.append(f"{rel}: absent")
+                continue
+            if rel.lower().endswith(".json") and cfg.verify_json:
+                rd = executor.dispatch({"action": "read", "path": rel})
+                if not rd.get("ok"):
+                    missing.append(f"{rel}: unreadable")
+                    continue
+                try:
+                    json.loads(rd.get("content", ""))
+                except (ValueError, TypeError):
+                    missing.append(f"{rel}: invalid JSON")
+                    continue
+            checked.append(rel)
+        test_out: dict[str, Any] = {}
+        if cmd and not missing:
+            test_out = executor.dispatch({"action": "test", "command": cmd})
+            if not test_out.get("ok"):
+                missing.append(f"verify_command failed: {cmd[:160]}")
+        detail = {"checked": checked, "missing": missing,
+                  "verify_command": cmd,
+                  "test_ok": bool(test_out.get("ok")) if cmd else None}
+        if missing:
+            return "MODEL_CLAIMED_COMPLETE", detail
+        return "VERIFIED_COMPLETE", detail
+
     def _persist(terminal: bool = False) -> None:
         if dry:
             if terminal:
@@ -854,7 +897,9 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                                  "Continue as coder with your next JSON action.")}]
                 logger.human(f"STEP {step} REVIEW revise -> revision round {revision_rounds}")
                 continue
-            result = {"ok": True, "finished": True, "message": action.get("message", "")}
+            completion, verification = _verify_completion()
+            result = {"ok": True, "finished": True, "message": action.get("message", ""),
+                      "completion": completion, "verification": verification}
             history.append({"step": step, "action": action, "action_id": action_id,
                             "validation_ok": True, "approved": True, "executed": False,
                             "result": result, "role": role})
@@ -863,9 +908,10 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
             _sync_live()
             _refresh_oracle()
             tr = _tr(COMPLETED, "finished", True)
-            logger.human(f"STEP {step} FINISH message={action.get('message','')!r}")
+            logger.human(f"STEP {step} FINISH message={action.get('message','')!r} completion={completion}")
             logger.event(event="step", step=step, action=action, action_id=action_id,
-                         validation="ok", executed=False, finished=True, role=role)
+                         validation="ok", executed=False, finished=True, role=role,
+                         completion=completion)
             logger.event(event="end", finished=True, steps=step,
                          duration_s=round(time.monotonic() - t0, 2),
                          memory=memory.summary(), review=review_record,
@@ -874,6 +920,7 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
             _restore_sigint()
             return {"ok": True, "finished": True, "steps": step,
                     "message": action.get("message", ""),
+                    "completion": completion, "verification": verification,
                     "session_id": session.session_id, "status": COMPLETED,
                     "task_result": tr,
                     "review": review_record, "history": history}

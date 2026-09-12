@@ -106,6 +106,7 @@ class OllamaProvider(ProviderAdapter):
             "supports_audio_input": False,
             "supports_audio_output": False,
             "supports_structured_output": True,  # Depends on model
+            "supports_think_control": True,  # think True/False/None(omit)
             "local_or_remote": "local",
             "requires_network": False,  # Local HTTP
             "requires_auth": False
@@ -127,28 +128,39 @@ class OllamaProvider(ProviderAdapter):
         return 0
     
     def generate(self, model_id: str, messages: list[dict[str, Any]],
-                **kwargs) -> dict[str, Any]:
-        """Generate a completion using Ollama."""
+                 **kwargs) -> dict[str, Any]:
+        """Generate a completion using Ollama.
+
+        think=True/False is forwarded ONLY when explicitly passed (never
+        blindly: older models reject unknown fields). think=False keeps
+        reasoning models (e.g. qwen3) answering in content for tool use.
+        """
         try:
+            think = kwargs.pop("think", None)
             payload = {
                 "model": model_id,
                 "messages": messages,
                 "stream": False,
                 **kwargs
             }
+            if think is not None:
+                payload["think"] = bool(think)
             response = self._ollama_request("POST", "/api/chat", payload)
-            
+
             if response and "message" in response:
                 return {
                     "ok": True,
                     "content": response["message"].get("content", ""),
                     "model": model_id,
                     "done": response.get("done", False),
+                    "think_requested": think,
                     "metadata": {
                         "total_duration": response.get("total_duration"),
                         "load_duration": response.get("load_duration"),
                         "prompt_eval_count": response.get("prompt_eval_count"),
-                        "eval_count": response.get("eval_count")
+                        "eval_count": response.get("eval_count"),
+                        "thinking_chars": len(
+                            response["message"].get("thinking") or ""),
                     }
                 }
             return {
@@ -163,15 +175,19 @@ class OllamaProvider(ProviderAdapter):
             }
     
     def stream(self, model_id: str, messages: list[dict[str, Any]],
-               **kwargs):
-        """Stream a completion from Ollama (generator)."""
+                **kwargs):
+        """Stream a completion from Ollama (generator). think= is
+        forwarded only when explicitly passed (see generate)."""
         try:
+            think = kwargs.pop("think", None)
             payload = {
                 "model": model_id,
                 "messages": messages,
                 "stream": True,
                 **kwargs
             }
+            if think is not None:
+                payload["think"] = bool(think)
             
             # For streaming, we'd need to handle streaming HTTP
             # This is a simplified version
@@ -189,6 +205,7 @@ class OllamaProvider(ProviderAdapter):
         """Generate a tool-calling completion using Ollama."""
         # Ollama supports tool calling through the 'tools' parameter
         try:
+            think = kwargs.pop("think", None)
             payload = {
                 "model": model_id,
                 "messages": messages,
@@ -196,6 +213,8 @@ class OllamaProvider(ProviderAdapter):
                 "stream": False,
                 **kwargs
             }
+            if think is not None:
+                payload["think"] = bool(think)
             response = self._ollama_request("POST", "/api/chat", payload)
             
             if response and "message" in response:

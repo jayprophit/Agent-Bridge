@@ -27,10 +27,12 @@ HISTORICAL_DOC_RE = re.compile(
 
 
 def _iter_source_files():
+    # local/ holds ignored non-product archives (history/harness/acceptance
+    # evidence); it is not product source and is excluded from publication.
     for base, dirs, files in os.walk(REPO_ROOT):
         dirs[:] = [d for d in dirs
                    if d not in (".git", "__pycache__", ".bridge", ".venv",
-                                "venv", "node_modules")]
+                                "venv", "node_modules", "local")]
         for name in files:
             if name.endswith((".pyc", ".pyo", ".log")):
                 continue

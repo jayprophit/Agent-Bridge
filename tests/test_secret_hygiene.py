@@ -32,9 +32,10 @@ REQUIRED_GITIGNORE = (
 
 class HygieneTests(unittest.TestCase):
     def _source_files(self):
+        # local/ holds ignored non-product archives; hygiene guards product.
         for base, dirs, files in os.walk(REPO_ROOT):
             dirs[:] = [d for d in dirs
-                       if d not in (".git", "__pycache__", ".bridge")]
+                       if d not in (".git", "__pycache__", ".bridge", "local")]
             for name in files:
                 if name.endswith((".pyc", ".pyo")):
                     continue
@@ -70,6 +71,16 @@ class HygieneTests(unittest.TestCase):
     def test_no_bridge_runtime_state(self):
         self.assertFalse(os.path.exists(os.path.join(REPO_ROOT, ".bridge")),
                          ".bridge runtime state must not be committed")
+
+    def test_local_tree_is_git_ignored(self):
+        import subprocess
+        for area in ("history", "sessions", "captures", "logs", "cache",
+                     "workspaces", "acceptance", "harness"):
+            p = subprocess.run(
+                ["git", "check-ignore", "-q", os.path.join("local", area)],
+                capture_output=True, cwd=REPO_ROOT)
+            self.assertEqual(p.returncode, 0,
+                             f"local/{area} must be git-ignored")
 
     def test_gitignore_covers_private_data(self):
         with open(os.path.join(REPO_ROOT, ".gitignore"), encoding="utf-8") as f:

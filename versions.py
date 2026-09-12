@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 RUNTIME_VERSION = "0.6"
+# Product release line (v0.8.x maintenance). Runtime/protocol versions
+# above stay independent: product v0.8.1 ships runtime 0.6 / API v1.
+PRODUCT_VERSION = "0.8.1"
 API_VERSION = "v1"
 PROTOCOL_VERSION = "0.4"
 PROTOCOL_ACCEPTED = ("0.1", "0.2", "0.3", "0.4", "")

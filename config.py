@@ -114,6 +114,15 @@ class BridgeConfig:
     context: ContextSettings = field(default_factory=ContextSettings)
     session_id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
     task_id: str = field(default_factory=lambda: uuid.uuid4().hex[:12])
+    # v0.8.1 evidence-aware completion: when non-empty, a finish action is
+    # VERIFIED_COMPLETE only if every listed workspace-relative artifact
+    # exists (and parses when verify_json=True for .json); otherwise the
+    # run ends MODEL_CLAIMED_COMPLETE (never falsified success).
+    # verify_command (e.g. "python -m unittest") runs through the executor
+    # test action and must exit 0 for VERIFIED_COMPLETE.
+    expected_artifacts: list = field(default_factory=list)
+    verify_json: bool = True
+    verify_command: str = ""
 
     def __post_init__(self) -> None:
         self.ollama_url = self.ollama_url.rstrip("/")

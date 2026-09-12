@@ -182,6 +182,9 @@ cython_debug/
 
 # Agent Bridge runtime / session state (never commit live state)
 .bridge/
+# Local non-product storage: ONE known home, never published.
+# (Nothing under local/ is tracked; release evidence lives in docs//reports/.)
+local/
 *.log
 bridge_run.log
 bridge_events.jsonl
