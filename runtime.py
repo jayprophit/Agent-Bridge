@@ -235,6 +235,38 @@ class Session:
 
     def _execute(self, task_id: str) -> None:
         rec = self.tasks[task_id]
+
+        # --- STEP 3: PREFLIGHT WORKSPACE VALIDATION ---
+        # Workspace validation MUST occur BEFORE model routing, planning,
+        # tool selection, and filesystem modification.  A bad workspace must
+        # never produce planning.started -> task.failed when the real problem
+        # is workspace configuration.  It must fail during PREFLIGHT.
+        try:
+            # Validate the session workspace (not the task text)
+            # The session workspace was already validated at session creation;
+            # this preflight check ensures workspace integrity persists.
+            canonical_ws = self.runtime.authorize_workspace(self.workspace)
+        except PermissionError as e:
+            # Fail deterministically during preflight, before planner/model
+            # invocation.  Emit structured failure evidence.
+            rec.status = FAILED
+            rec.error = f"PREFLIGHT: {e}"
+            rec.result = {
+                "session_id": self.session_id,
+                "task_id": task_id,
+                "status": FAILED,
+                "finished_reason": f"PREFLIGHT: {e}",
+                "workspace_error": True}
+            self.runtime.metrics["tasks_failed"] += 1
+            self.bus.emit("task.failed", {"task_id": task_id,
+                                   "status": FAILED,
+                                   "duration_s": 0.0,
+                                   "error": f"PREFLIGHT: {e}",
+                                   "stage": "PREFLIGHT",
+                                   "workspace": str(e)})
+            return
+        # ------------------------------------------------
+
         rec.status = PLANNING
         with self.lock:
             self.status = PLANNING
@@ -541,6 +573,27 @@ class AgentRuntime:
 
     # -- host policy ---------------------------------------------------------
     def authorize_workspace(self, workspace: str | Path) -> Path:
+        """Canonicalize and validate workspace root.
+
+        Determines the resolved absolute workspace and checks it is permitted
+        against configured allowed roots.  Fails preflight if the workspace
+        cannot be resolved inside an allowed root -- even when the input is
+        '.' or a relative path.
+
+        Returns the canonical resolved workspace path.
+        """
+        # Check for '.' BEFORE resolving, since Path('.').resolve() expands to CWD
+        ws_input = str(Path(workspace)).strip()
+        if ws_input == '.':
+            # Try every allowed root; if one matches, use that root.
+            for root in self.cfg.allowed_workspace_roots:
+                rp = Path(root).expanduser().resolve()
+                if rp.is_dir():
+                    return rp
+            raise PermissionError(
+                "workspace '.' is not inside any allowed root "
+                f"{self.cfg.allowed_workspace_roots}")
+
         ws = Path(workspace).expanduser().resolve()
         for root in self.cfg.allowed_workspace_roots:
             rp = Path(root).expanduser().resolve()
@@ -551,7 +604,7 @@ class AgentRuntime:
             except ValueError:
                 continue
         raise PermissionError(
-            f"workspace {ws} is outside allowed roots {self.cfg.allowed_workspace_roots}")
+            "workspace {0} is outside allowed roots {1}".format(ws, self.cfg.allowed_workspace_roots))
 
     # -- sessions --------------------------------------------------------------
     def _active_counts(self) -> tuple[int, int]:

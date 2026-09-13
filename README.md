@@ -26,6 +26,23 @@ tool-using agents: bridge loop (`bridge.py`) → policy/approvals →
 workspace-scoped executor → verification. It is NOT a model, NOT an IDE,
 NOT a cloud service, and NOT a robot controller.
 
+## Architectural Principles
+
+Agent Bridge is designed as a **language-neutral**, **toolchain-neutral**,
+**frontend-neutral**, **backend-neutral**, **IDE-neutral**, and **project-neutral**
+execution runtime. Its intended reusable execution architecture supports
+full-stack and mixed-language projects.
+
+Examples of supported language/toolchain families (architectural intent):
+- C, C++, Rust, Python, JavaScript, TypeScript, Java, C#, Go, Swift, Kotlin, Dart
+- SQL, Shell, PowerShell, assembly, shader languages, embedded C/C++
+- and future adapters
+
+**Important distinction**: ARCHITECTURAL INTENT ≠ CURRENTLY VERIFIED TOOL SUPPORT.
+Not all listed languages are currently operational; support depends on
+available local/connected toolchains. The runtime provides the orchestration
+scaffolding; adapters must be implemented and verified per language/toolchain.
+
 ## Architecture
 
 Flat top-level runtime modules (`bridge`, `runtime`, `executor`,
