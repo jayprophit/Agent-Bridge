@@ -240,9 +240,12 @@ class ModelCapabilityProfiler:
     def quick_ping(self, model: str) -> BenchmarkResult:
         res = self._generate(model, "Reply with exactly: OK",
                              {"num_predict": 8, "temperature": 0})
-        ok = bool(res.get("ok")) and "OK" in res.get("text", "")
+        # Health = the model executed (evals ran), even if a thinking
+        # model spent the tiny budget reasoning. Content match is separate.
+        executed = bool(res.get("ok")) and (res.get("eval_count", 0) > 0
+                                            or bool(res.get("text", "")))
         tps = self._tps(res)
-        return BenchmarkResult(kind="ping", ok=ok, tokens_per_sec=tps,
+        return BenchmarkResult(kind="ping", ok=executed, tokens_per_sec=tps,
                                output=res.get("text", "")[:200],
                                error=res.get("error", ""))
 
@@ -361,6 +364,29 @@ class ModelRouter:
                  placement: ModelPlacementEngine | None = None):
         self.registry = registry or ModelRegistry()
         self.placement = placement or ModelPlacementEngine()
+
+    def route_with_fallback(
+            self, task: dict[str, Any], device: dict[str, Any],
+            healthy: Callable[[str], bool] | None = None) -> dict[str, Any]:
+        """Ranked candidates, first healthy wins. Fallback is explicit."""
+        scored = []
+        for rec in self.registry.list():
+            if rec.status in (ModelStatus.BROKEN, ModelStatus.INCOMPATIBLE,
+                              ModelStatus.RETIRE_CANDIDATE):
+                continue
+            score, _ = self.placement.score(rec, task, device)
+            scored.append((score, rec))
+        scored.sort(key=lambda t: (t[0], t[1].model_id))
+        tried = []
+        for _, rec in scored:
+            tried.append(rec.model_id)
+            ok = True if healthy is None else bool(healthy(rec.model_id))
+            if ok:
+                return {"model": rec.model_id, "override": False,
+                        "placement": self.placement.place(rec, task, device),
+                        "tried": tried}
+        return {"model": "", "error": "no healthy candidate",
+                "tried": tried}
 
     def route(self, task: dict[str, Any], device: dict[str, Any],
               override: str = "") -> dict[str, Any]:
