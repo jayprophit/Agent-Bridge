@@ -16,6 +16,7 @@ import shlex
 import shutil
 import subprocess
 import tempfile
+import threading
 import time
 import urllib.parse
 import uuid
@@ -134,6 +135,11 @@ class Executor:
         self.journal: list[dict[str, Any]] = []  # mutation evidence for diff/rollback
         self.context: dict[str, Any] = {}  # set by bridge (capabilities/status)
         self.completed: dict[str, dict[str, Any]] = {}  # action_id -> result
+        # Per-path write serialization: concurrent same-file writers take
+        # turns (write+verify+record), so every writer's self-verification
+        # reads back its own content and the file is never torn.
+        self._write_locks: dict[str, threading.Lock] = {}
+        self._write_locks_guard = threading.Lock()
         if setup_dirs:
             self._ensure_bridge_dirs()
 
@@ -309,20 +315,31 @@ class Executor:
             return gated
         existed = target.is_file()
         original = target.read_bytes() if existed else None
-        try:
-            self._atomic_write_text(target, content)
-        except OSError as e:
-            return {"ok": False, "error": f"EXECUTION_ERROR: write failed: {e}"}
-        try:
-            actual = target.read_text(encoding="utf-8")
-        except OSError as e:
-            return {"ok": False, "error": f"EXECUTION_ERROR: verify failed: {e}"}
-        if actual != content:
-            return {"ok": False, "error": "EXECUTION_ERROR: content mismatch after write"}
-        self._cache_invalidate(path)
-        self._record({"action": "write", "action_id": action_id, "path": rel,
-                      "existed": existed, "backup": original, "bytes": len(content)})
+        with self._write_lock_for(target):
+            try:
+                self._atomic_write_text(target, content)
+            except OSError as e:
+                return {"ok": False, "error": f"EXECUTION_ERROR: write failed: {e}"}
+            try:
+                actual = target.read_text(encoding="utf-8")
+            except OSError as e:
+                return {"ok": False, "error": f"EXECUTION_ERROR: verify failed: {e}"}
+            if actual != content:
+                return {"ok": False, "error": "EXECUTION_ERROR: content mismatch after write"}
+            self._cache_invalidate(path)
+            self._record({"action": "write", "action_id": action_id, "path": rel,
+                          "existed": existed, "backup": original, "bytes": len(content)})
         return {"ok": True, "path": rel, "bytes": target.stat().st_size, "verified": True}
+
+    def _write_lock_for(self, target: Path) -> threading.Lock:
+        """Return (creating if needed) the serialization lock for a path."""
+        key = str(target)
+        with self._write_locks_guard:
+            lock = self._write_locks.get(key)
+            if lock is None:
+                lock = threading.Lock()
+                self._write_locks[key] = lock
+            return lock
 
     @staticmethod
     def _content_hash(content: str) -> str:
