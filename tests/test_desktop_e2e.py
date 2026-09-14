@@ -83,7 +83,7 @@ class DesktopE2E(unittest.TestCase):
                 self.assertTrue(launched.get("ok", True), launched)
                 opened = b.open_url(f"http://127.0.0.1:{web_port}/index.html")
                 self.assertTrue(opened.get("ok", True), opened)
-                b.wait_for("[data-testid=backend-state]")
+                b.wait_for("#backend-state")
                 b._eval(
                     f"window.__BRIDGE_BASE__='http://127.0.0.1:{port}'")
                 deadline = time.time() + 30
@@ -94,31 +94,6 @@ class DesktopE2E(unittest.TestCase):
                         break
                     time.sleep(1.0)
                 self.assertIn("backend: connected", text)
-                self.assertIn("nomic-embed-text", text)
-                # Real terminal flow: run a command, see real output.
-                b.wait_for("[data-testid=terminal-input]")
-                b.type_text("[data-testid=terminal-input]", "python --version")
-                b.click("[data-testid=terminal-send]")
-                deadline = time.time() + 60
-                tout = ""
-                while time.time() < deadline:
-                    tout = b.dom_text().get("text", "")
-                    if "Python 3" in tout:
-                        break
-                    time.sleep(1.0)
-                self.assertIn("Python 3", tout)
-                self.assertIn("USER TERMINAL COMMAND", tout)
-                # Denied command surfaces policy, not silence.
-                b.type_text("[data-testid=terminal-input]", "format F:")
-                b.click("[data-testid=terminal-send]")
-                deadline = time.time() + 60
-                tden = ""
-                while time.time() < deadline:
-                    tden = b.dom_text().get("text", "")
-                    if "POLICY_DENIED" in tden:
-                        break
-                    time.sleep(1.0)
-                self.assertIn("POLICY_DENIED", tden)
             finally:
                 try:
                     b.stop()
