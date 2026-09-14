@@ -43,6 +43,10 @@
   },
   {
    "method": "GET",
+   "path": "/v1/runtime"
+  },
+  {
+   "method": "GET",
    "path": "/v1/diagnostics"
   },
   {
