@@ -29,6 +29,19 @@ class _State:
         self.cfg = cfg
         self.hits: dict[str, list[float]] = {}
         self.lock = threading.Lock()
+        self.terminals: dict[str, Any] = {}  # workspace -> TerminalManager
+
+    def terminal_manager(self) -> Any:
+        """Policy-gated terminal sessions rooted at the first allowed root."""
+        from terminal import TerminalManager
+        roots = list(getattr(self.cfg, "allowed_workspace_roots", []) or [])
+        key = roots[0] if roots else "."
+        with self.lock:
+            mgr = self.terminals.get(key)
+            if mgr is None:
+                mgr = TerminalManager(key)
+                self.terminals[key] = mgr
+            return mgr
 
 
 def _rate_ok(state: _State, ip: str) -> bool:
@@ -116,6 +129,15 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, rt.capabilities())
             if parts == [API_VERSION, "caps"]:
                 return self._send(200, rt.machine_inventory())
+            if parts == [API_VERSION, "terminal", "sessions"]:
+                return self._send(200, {"sessions": self.state.terminal_manager().list()})
+            if len(parts) == 4 and parts[:2] == [API_VERSION, "terminal"] \
+                    and parts[2] == "sessions":
+                try:
+                    return self._send(200, self.state.terminal_manager().get(
+                        parts[3]).to_dict())
+                except KeyError as e:
+                    return self._send(404, {"ok": False, "error": str(e)})
             if parts == [API_VERSION, "models"]:
                 return self._send(200, rt.model_inventory())
             if parts == [API_VERSION, "runtime"]:
@@ -321,6 +343,37 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, rt.emergency_stop(reason))
             if parts == [API_VERSION, "caps"]:
                 return self._send(200, rt.machine_inventory())
+            if parts == [API_VERSION, "terminal", "sessions"]:
+                mgr = self.state.terminal_manager()
+                try:
+                    s = mgr.create(body.get("cwd", ""))
+                except (PermissionError, FileNotFoundError) as e:
+                    return self._send(400, {"ok": False, "error": str(e)})
+                return self._send(201, s.to_dict())
+            if len(parts) == 5 and parts[:2] == [API_VERSION, "terminal"] \
+                    and parts[2] == "sessions" and parts[4] == "exec":
+                mgr = self.state.terminal_manager()
+                command = body.get("command", "")
+                if not command:
+                    return self._send(400, {"ok": False, "error": "command required"})
+                try:
+                    timeout_s = float(body.get("timeout_s", 60) or 60)
+                except (TypeError, ValueError):
+                    return self._send(400, {"ok": False, "error": "bad timeout_s"})
+                try:
+                    res = mgr.exec(parts[3], command,
+                                   timeout_s=min(timeout_s, 300),
+                                   origin=body.get("origin", "user"))
+                except KeyError as e:
+                    return self._send(404, {"ok": False, "error": str(e)})
+                return self._send(200, res)
+            if len(parts) == 5 and parts[:2] == [API_VERSION, "terminal"] \
+                    and parts[2] == "sessions" and parts[4] == "cancel":
+                mgr = self.state.terminal_manager()
+                try:
+                    return self._send(200, mgr.cancel(parts[3]))
+                except KeyError as e:
+                    return self._send(404, {"ok": False, "error": str(e)})
             return self._send(404, {"ok": False, "error": "unknown route"})
         except PermissionError as e:
             return self._send(403, {"ok": False, "error": str(e)})
@@ -397,6 +450,13 @@ def api_schema() -> dict[str, Any]:
             {"method": "POST", "path": "/v1/stop",
              "body": "{reason}"},
             {"method": "GET", "path": "/v1/caps"},
+            {"method": "GET", "path": "/v1/terminal/sessions"},
+            {"method": "GET", "path": "/v1/terminal/sessions/{id}"},
+            {"method": "POST", "path": "/v1/terminal/sessions",
+             "body": "{cwd}"},
+            {"method": "POST", "path": "/v1/terminal/sessions/{id}/exec",
+             "body": "{command*, timeout_s, origin}"},
+            {"method": "POST", "path": "/v1/terminal/sessions/{id}/cancel"},
         ],
         "transitions": ["QUEUED", "PLANNING", "EXECUTING", "WAITING_APPROVAL",
                         "TESTING", "REVIEWING", "REVISING", "COMPLETED",

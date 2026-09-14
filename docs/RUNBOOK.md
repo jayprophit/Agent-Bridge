@@ -22,6 +22,28 @@ The app polls the bridge at `http://127.0.0.1:8471` every 5s
 (override for tests: `window.__BRIDGE_BASE__`). With no backend it
 shows honest `backend: disconnected` labels — never fake live data.
 
+## Terminal (policy-gated)
+
+```http
+POST /v1/terminal/sessions {"cwd"} -> {session_id, cwd}
+POST /v1/terminal/sessions/{id}/exec {"command"*, "timeout_s", "origin"}
+POST /v1/terminal/sessions/{id}/cancel
+GET  /v1/terminal/sessions/{id}
+```
+
+Same dev-profile policy as the executor (allowlisted binaries, blocked
+tokens, workspace cwd, no shell bypass). Denials return readable
+`POLICY_DENIED` text. IDE panel distinguishes USER TERMINAL COMMAND
+from AGENT BRIDGE EXECUTION via the `origin` field.
+
+## Genesis runtime
+
+`genesis_runtime.LocalGenesisRuntime(store_path, bridge_factory)`:
+identify → rotate_model (ping-then-switch) → submit_objective →
+delegate → observe → integrate, with JSON persistence and event log.
+Identity survives model rotation; dead models are refused, never
+silent-swapped.
+
 ## Health checks / diagnostics
 
 - Service: `/health`, `/v1/selfcheck`, `/v1/diagnostics`.
