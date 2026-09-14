@@ -312,22 +312,6 @@ class WorkQueue:
         return len(self._queued)
 
 
-class QueueDecisionEngine:
-    """Immediate vs queued: decides from task traits, never queues trivia."""
-
-    def decide(self, task: TaskRecord) -> str:
-        if task.status in (TaskStatus.BLOCKED,):
-            return "QUEUE_AFTER_DEPENDENCY"
-        if task.dependencies:
-            return "QUEUE_AFTER_DEPENDENCY"
-        budget = task.budget
-        if budget.time_s and budget.time_s > 300:
-            return "QUEUE_BACKGROUND"
-        if "long-running" in task.requirements or "batch" in task.requirements:
-            return "QUEUE_BACKGROUND"
-        return "EXECUTE_NOW"
-
-
 def make_handoff(task: TaskRecord) -> dict[str, Any]:
     """Structured worker request contract."""
     return {"task_id": task.task_id, "parent_task": task.parent_task,
