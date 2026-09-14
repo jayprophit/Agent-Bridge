@@ -118,6 +118,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, rt.machine_inventory())
             if parts == [API_VERSION, "models"]:
                 return self._send(200, rt.model_inventory())
+            if parts == [API_VERSION, "runtime"]:
+                from ide_bridge import build_runtime_snapshot
+                return self._send(200, build_runtime_snapshot(rt))
             if parts == [API_VERSION, "diagnostics"]:
                 return self._send(200, rt.diagnostics())
             if parts == [API_VERSION, "selfcheck"]:
@@ -360,6 +363,7 @@ def api_schema() -> dict[str, Any]:
             {"method": "GET", "path": "/health"},
             {"method": "GET", "path": "/v1/capabilities"},
             {"method": "GET", "path": "/v1/models"},
+            {"method": "GET", "path": "/v1/runtime"},
             {"method": "GET", "path": "/v1/diagnostics"},
             {"method": "GET", "path": "/v1/selfcheck"},
             {"method": "GET", "path": "/v1/schema"},

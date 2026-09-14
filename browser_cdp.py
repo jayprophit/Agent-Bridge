@@ -159,10 +159,14 @@ class BrowserSession:
     """One headed/headless browser + one page, driven over CDP."""
 
     def __init__(self, headless: bool = True, width: int = 1280,
-                 height: int = 900):
+                 height: int = 900,
+                 extra_chrome_args: list[str] | None = None):
         self.exe = find_browser()
         self.headless = headless
         self.width, self.height = width, height
+        # Optional extra Chromium flags (e.g. test-only --disable-web-security
+        # for loopback cross-origin checks). Empty by default: no behavior change.
+        self.extra_chrome_args = list(extra_chrome_args or [])
         self.profile = Path(tempfile.mkdtemp(prefix="v06_prof_"))
         self.downloads = Path(tempfile.mkdtemp(prefix="v06_dl_"))
         self.proc: subprocess.Popen | None = None
@@ -185,6 +189,7 @@ class BrowserSession:
         args = [self.exe, f"--remote-debugging-port={self.port}",
                 f"--user-data-dir={self.profile}",
                 f"--window-size={self.width},{self.height}",
+                *self.extra_chrome_args,
                 "--no-first-run", "--no-default-browser-check",
                 "--disable-gpu", "--disable-dev-shm-usage",
                 "--disable-features=Translate", "about:blank"]
