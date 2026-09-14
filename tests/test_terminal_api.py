@@ -39,6 +39,7 @@ class TerminalRouteTests(unittest.TestCase):
     def tearDownClass(cls):
         try:
             cls.srv.shutdown()
+            cls.srv.server_close()
         except Exception:
             pass
         import shutil

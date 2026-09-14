@@ -118,6 +118,7 @@ class TestLiveRoute(unittest.TestCase):
                 self.assertIn("/v1/runtime", paths)
             finally:
                 srv.shutdown()
+                srv.server_close()
         finally:
             import shutil
             shutil.rmtree(tmp, ignore_errors=True)
