@@ -1,0 +1,560 @@
+==================================================
+AGENT BRIDGE CORE GAP AUDIT REPORT
+==================================================
+
+Audit Date: 2026-09-12
+Agent Bridge Version: v0.8.1 (commit 8347ca9)
+Repository Status: FROZEN, read-only analysis
+
+==================================================
+1. WORKSPACE ROOT VALIDATION
+==================================================
+STATUS: EXISTS_PARTIAL
+
+Existing capability:
+- RuntimeConfig.allowed_workspace_roots: list[str] validated at AgentRuntime.__init__()
+- AgentRuntime.authorize_workspace(): resolves workspace path and checks it is relative to allowed roots, raises PermissionError if outside
+- _root_rule(): validates root rules (allowed_modes, allowed_approval, quotas)
+- Executor.resolve(): sandbox path protection - blocks absolute paths, traversal, escapes workspace
+- Executor._is_protected_rel(): blocks .bridge internals modification
+
+Gap analysis:
+- WORKSPACE_INVALID: Partially covered - authorize_workspace raises PermissionError for outside roots
+- WORKSPACE_OUTSIDE_ALLOWED_ROOT: Covered by authorize_workspace() PermissionError
+- WORKSPACE_ROOT_MISMATCH: Not explicitly classified; root_rules validated but mismatch not reported as distinct error
+- WORKSPACE_NOT_FOUND: Covered by sandbox (workspace not a dir raises ValueError)
+- workspace='.' behavior: Falls through to Agent Bridge's own CWD (identified root cause of task failures)
+
+NEW REQUIREMENT (not yet implemented):
+- bad workspace configuration must fail BEFORE planner/model execution
+- Currently: workspace config validated at session creation, but planner still starts; task gets stuck in PLANNING then fails
+
+Error family proposed (not implemented):
+- WORKSPACE_INVALID
+- WORKSPACE_OUTSIDE_ALLOWED_ROOT
+- WORKSPACE_ROOT_MISMATCH
+- WORKSPACE_NOT_FOUND
+
+Source files supporting existing capability:
+- runtime.py: AgentRuntime.authorize_workspace(), _root_rule(), _validate_root_rules()
+- config.py: BridgeConfig, RuntimeConfig, allowed_workspace_roots, root_rules, presets
+- executor.py: Sandbox.resolve(), _is_protected_rel(), path traversal protection
+
+==================================================
+2. STRUCTURED FAILURE DIAGNOSTICS
+==================================================
+STATUS: EXISTS_PARTIAL
+
+Existing failure classes (errors.py):
+- MODEL_OUTPUT_ERROR, VALIDATION_ERROR, SANDBOX_VIOLATION, APPROVAL_DENIED
+- EXECUTION_ERROR, TIMEOUT, OLLAMA_ERROR, TEST_FAILURE, MAX_STEPS_REACHED
+- REVIEW_REJECTED, REVISION_EXHAUSTED, CANCELLED, ROLLBACK_FAILED
+- INTERNAL_PROTECTED, LOOP_DETECTED, ESCALATED, INTERRUPTED
+- COLLISION_DENIED, ORACLE_SUSPICIOUS, IDEMPOTENT_REPLAY
+- REVIEWER_EVIDENCE_CONFLICT, REVIEWER_UNRELIABLE_FOR_THIS_DECISION
+- MILESTONE_INCOMPLETE, NO_PROGRESS_DETECTED, ADMIN_REQUIRED, EMERGENCY_STOPPED
+
+Structured diagnostic fields (not yet fully exposed via API):
+- stage: Partially - task status (QUEUED, PLANNING, EXECUTING, etc.) emitted via events
+- error class: Covered by existing error class hierarchy
+- error code: Not systematically mapped in API responses
+- message: Covered by error strings
+- recoverability: Not systematically exposed
+- evidence: Event system emits task.failed with some history, but not structured
+- underlying provider/tool error: Partially - OLLAMA_ERROR for model errors, EXECUTION_ERROR for shell failures
+
+Gap: Clients do not consistently receive structured diagnostics across all failure modes.
+The task.failed event exists but does not include a standardized diagnostics payload.
+
+Source files:
+- errors.py: FailureTracker, ALL_FAILURES tuple, all error class constants
+- runtime.py: _execute() emits task.failed / task.completed via bus
+- events.py: EventBus, event publication on task completion/failure
+
+==================================================
+3. MACHINE CAPABILITY DISCOVERY
+==================================================
+STATUS: EXISTS_PARTIAL
+
+Existing capability:
+- runtime.machine_inventory(): calls sysinfo.inventory()
+- runtime.health(): checks ollama status, workspace roots, storage, event system, sandbox, client compatibility, versions, persistence
+- providers.py: Provider base class for model discovery (ollama integration)
+- sysinfo module integration (indirect)
+
+What is discovered about machine capabilities:
+- OS: Windows 10 Pro 10.0.19045 (from systeminfo)
+- CPU: Intel Core i7 CPU 870 @ 2.93GHz, 4 cores, 8 logical threads
+- Architecture: x86_64
+- RAM: ~16 GB
+- GPU: NVIDIA GeForce GTX 1050 Ti (4 GB VRAM, detected via wmic)
+- WSL: Default Distribution Ubuntu, Version 2
+
+Gaps:
+- CPU architecture/instruction support not systematically tracked
+- RAM not exposed via runtime API
+- GPU/VRAM not exposed via runtime API
+- Storage not exposed via runtime API
+- Virtualization not tracked
+- PowerShell: recognized as available shell profile
+- cmd.exe: recognized as available shell profile
+- WSL distributions: detected via `wsl --list --verbose`
+- Bash environments: not explicitly tracked
+- compilers: clang++ detected, gcc not present
+- build systems: CMake detected, Ninja detected
+- language runtimes: Python 3.13, Node.js 24, Rust 1.98, .NET 10
+- SDKs: .NET 10 SDK detected
+- package managers: pip (Python), npm (blocked by PS policy), winget (implied)
+- containers: not tracked
+- embedded toolchains: not tracked
+
+Source files:
+- runtime.py: machine_inventory(), health()
+- sysinfo.py: (indirect, imported by runtime)
+- providers.py: Provider base class
+
+==================================================
+4. TOOLCHAIN REGISTRY
+==================================================
+STATUS: MISSING_AGENT_BRIDGE_CORE
+
+Existing capability:
+- Executor ALLOWED_BINARIES_STRICT: {"python", "python3", "py"}
+- Executor ALLOWED_BINARIES_DEV: {"python", "python3", "py", "dir", "ls", "echo", "type", "cat", "pwd", "where", "whoami", "dotnet", "node", "npm"}
+- BLOCKED_SHELL_TOKENS: ("&&", "||", ";", "|", ">", "<", "`", "$(", "${", "\n", "\r")
+- do_shell(): executes single simple shell commands with timeout
+- do_list(), do_read(), do_write(), do_mkdir(), do_delete(), do_copy(), do_search(), do_exists(), do_stat()
+
+Gaps - no generic toolchain registry:
+- No generic contract for: compiler, interpreter, runtime, build system, test framework, debugger, formatter, linter, package manager, language service
+- C: not supported (no clang/gcc in allowlist)
+- C++: not supported (no clang++ in allowlist) - this is the proven gap
+- Rust: not supported
+- Python: supported
+- JavaScript/Node: partially (npm blocked in strict shell)
+- TypeScript: not supported
+- Java: not supported (dotnet allowlisted but not Java)
+- C#: not supported
+- Go: not supported
+- Swift: not supported
+- Kotlin: not supported
+- Dart: not supported
+- SQL: not supported
+- Shell: partially (blocked tokens limit complexity)
+- PowerShell: partially (blocked tokens limit complexity)
+- assembly: not supported
+- GLSL/shaders: not supported
+- Arduino/embedded: not supported
+
+Required architecture (not implemented):
+- PROJECT → detect components → detect dependencies → assign appropriate tools → build in dependency order → test → integrate → verify
+
+Source files that partially support:
+- executor.py: ALLOWED_BINARIES_STRICT/DEV, do_shell(), do_test(), tool allowlisting
+- config.py: presets (LOW_RESOURCE/STANDARD/HIGH_QUALITY) with action budgets
+
+==================================================
+5. FULL-STACK PROJECT ORCHESTRATION
+==================================================
+STATUS: MISSING_AGENT_BRIDGE_CORE
+
+Existing capability:
+- Single-task execution: submit_task() → _execute() → run_bridge() → task lifecycle
+- Per-action sandboxing via Executor sandbox
+- Journaling for diff/rollback
+- do_patch() for file modifications
+- do_diff() for session diffs
+
+Gaps - no project-level orchestration:
+- No frontend/backend/database/native service/worker/container/tests/firmware detection within one project
+- No process start/stop orchestration
+- No service dependency graph
+- No port detection
+- No health checks across multiple services
+- No stdout/stderr capture orchestration beyond single-command do_shell()
+- No log capture aggregation
+- No environment handling for multi-component projects
+- No concurrent services management
+- No cleanup orchestration
+- No integration tests orchestration
+
+Required generic capability (not implemented):
+- PROJECT → detect components → detect dependencies → assign appropriate tools → build in dependency order → test → integrate → verify
+
+Source files:
+- runtime.py: task lifecycle (submit_task, _execute, wait_task, cancel_task)
+- executor.py: sandbox, journal, do_patch, do_diff, do_shell, do_test
+
+==================================================
+6. MIXED-LANGUAGE PROJECTS
+==================================================
+STATUS: MISSING_AGENT_BRIDGE_CORE
+
+Gaps:
+- Task planning currently does NOT support one project using multiple languages/toolchains simultaneously
+- No component detection across languages
+- No dependency detection across language boundaries
+- No tool assignment per language component
+- No build in dependency order
+- No cross-language test orchestration
+- No integration verification
+
+Required (not implemented):
+- PROJECT → detect components → detect dependencies → assign appropriate tools → build in dependency order → test → integrate → verify
+
+Source files (limited relevance):
+- routing.py: RoleRouter supports planner/coder/reviewer/general roles, but single-model per role
+- runtime.py: TaskRecord stores text, but no component language metadata
+
+==================================================
+7. WSL / MULTI-ENVIRONMENT EXECUTION
+==================================================
+STATUS: EXISTS_PARTIAL
+
+Existing capability:
+- runtime.machine_inventory(): detected WSL2 Ubuntu as default distribution
+- `wsl --list --verbose` works from Windows
+- `wsl --status` works
+- Path mapping: C:\Users\... ↔ /mnt/c/Users/... (implicit Windows↔WSL)
+- Executor sandbox works in both WINDOWS_NATIVE and WSL environments
+- do_shell() executes commands via subprocess.run with cwd=str(self.workspace)
+
+Gaps:
+- Windows↔WSL path conversion not automated in Agent Bridge
+- environment-specific tool availability not mapped (e.g., which tools available in WSL vs Windows native)
+- project execution in most appropriate environment not supported
+- No environment detection/selection logic
+
+Source files:
+- runtime.py: machine_inventory() calls sysinfo
+- executor.py: Sandbox.resolve() works with path validation
+- cli.py: --root flag supports workspace path
+
+==================================================
+8. TOOL INSTALLATION MANAGER
+==================================================
+STATUS: MISSING_AGENT_BRIDGE_CORE
+
+Gaps:
+- No winget support
+- No Chocolatey support
+- No Scoop support
+- No apt support
+- No other package manager support
+- No download capability
+- No install capability
+- No upgrade capability
+- No verification capability
+- Policy/approval/audit: installation actions not currently policy-controlled (beyond shell token blocking)
+
+Requirement:
+- first prefer existing equivalent tools (not implemented)
+- do not install duplicates unnecessarily (not implemented)
+- installation actions remain policy controlled (not implemented for installation)
+
+Source files: none for installation management
+
+==================================================
+9. PROJECT / ARCHIVE OPERATIONS
+==================================================
+STATUS: EXISTS_PARTIAL
+
+Existing capability (Executor):
+- do_list(), do_read(), do_write(), do_mkdir()
+- do_delete() with recycle/restore
+- do_move(), do_copy()
+- do_search(), do_exists(), do_stat()
+- do_diff() for file/session/checkpoint diffs
+
+Gaps - archive operations:
+- No ZIP handling
+- No TAR handling
+- No archive listing
+- No safe extraction (no archive-bomb/expansion limits)
+- No archive creation
+- No hashing (checksum generation)
+- No manifest generation
+- No file comparison
+- No directory comparison
+- No archive traversal protection
+- No archive-bomb/expansion limits
+- No safe symbolic-link handling
+
+New requirement includes:
+- archive traversal protection
+- archive-bomb/expansion limits
+- safe symbolic-link handling
+
+NEW requirement categories:
+- ORIGINAL_INPUT
+- WORKING_COPY
+- VERIFIED_OUTPUT
+- RELEASE_PACKAGE
+
+Source files:
+- executor.py: do_list through do_diff (file-level operations, not archive-specific)
+
+==================================================
+10. BUILD / ARTIFACT PIPELINE
+==================================================
+STATUS: MISSING_AGENT_BRIDGE_CORE
+
+Existing capability:
+- Executor produces artifacts through do_write() and do_patch()
+- Verification on every op (read-back verification)
+- Journal for diff/rollback
+- do_shell() for build commands (single commands only)
+
+Gaps - no generic build/artifact pipeline:
+- No native executables production (clang/cl / etc. not in allowlist, no build orchestration)
+- No libraries production (.so, .dll, .a)
+- No WASM production
+- No JAR production
+- No web bundles production
+- No containers production (Docker not integrated)
+- No mobile packages production
+- No firmware .bin/.hex/.elf/.uf2 production
+- No MAT packages production
+- No source archives production
+
+Requirement:
+- artifact must be produced through real toolchain execution (not implemented)
+- Record: source, toolchain, commands, exit status, tests, hash, manifest, verification (not implemented)
+
+Source files:
+- executor.py: do_write, do_patch, do_shell (single commands)
+- runtime.py: taskResult.files_created, files_modified, files_deleted, commands_executed
+
+==================================================
+11. FULL-STACK DEVELOPMENT PRINCIPLE
+==================================================
+STATUS: DOCUMENTED_NOT_IMPLEMENTED
+
+Principle statement (from README/convention, not fully realized in tooling):
+- Agent Bridge is NOT Python-centric
+- Agent Bridge is NOT frontend-only
+- Agent Bridge is NOT backend-only
+- Must be capable of orchestrating: frontend, backend, databases, APIs, native applications, systems software, embedded/firmware, automation, data/ML, mixed-language systems
+- Must use whatever compatible language/toolchain the project requires
+- Must not promise a language is operational without its required local or connected toolchain
+
+Reality check:
+- Agent Bridge IS Python-weighted (ALLOWED_BINARIES_DEV/STRICT are Python-centric)
+- Shell profile "dev" allows dotnet/node/npm; "strict" only Python
+- C/C++ not supported (clang++ not in allowlist)
+- Mixed-language projects not supported (see section 6)
+- Toolchain neutrality not achieved
+
+The principle is aspirational but the implementation is Python-biased.
+
+Source files:
+- README.md / convention: Full-stack development principle statement
+- runtime.py: capabilities() lists modes ["build", "plan", "hybrid"], profiles
+- README.md: "It is NOT Python-centric. It is NOT frontend-only. It is NOT backend-only."
+
+==================================================
+12. MODEL ROUTING
+==================================================
+STATUS: EXISTS_COMPLETE
+
+Existing capability:
+- RoleRouter (routing.py): planner/coder/reviewer/general roles
+- model_for(role): returns model name from mapping or default_model
+- route(role): returns Route(role, model, shared_with, reason)
+- SingleModelRouter: name-compat for single-model behavior
+- Four roles always available: planner, coder, reviewer, general
+- Different models can be assigned per role
+- Shared model detection (low-resource mode)
+
+Model routing works within single-task execution:
+- Planning uses planner model
+- Coding uses coder model
+- Reviewing uses reviewer model
+- General model for general tasks
+
+Gaps:
+- Different workers/models can be selected for different task phases (planning, coding, review, tests) - YES, supported via role mapping
+- C++ model selection: not supported (no C++-specific models configured)
+- Frontend model selection: not supported
+- Backend model selection: not supported
+- Can select without changing core task interface: YES, roles are configured per-session
+
+Source files:
+- routing.py: RoleRouter, Route, model_for(), route(), phase_role(), summary()
+- runtime.py: providers dict per role, run_bridge() with providers
+
+==================================================
+13. CLIENT-NEUTRAL EVENT MODEL
+==================================================
+STATUS: EXISTS_COMPLETE
+
+Existing capability:
+- EventBus (events.py): subscribe("*", self._record_event), publishes all events
+- Event types published:
+  - session.created, session.recovered
+  - task.started, task.completed, task.failed
+  - planning.started, planning.completed
+  - approval.requested, approval.resolved
+  - gate.waiting, gate.resolved, gate.timeout
+  - revision.requested
+  - task.cancelled
+  - rollback.started, rollback.completed
+  - selfcheck (custom)
+- Event payloads have consistent structure: {event, timestamp, session_id, ...}
+- clients can subscribe to any event via bus.subscribe
+- events_since(index) returns events from index
+- stream_events() with SSE fallback to polling
+
+Gaps:
+- IDE-specific event names not added unnecessarily (principle respected)
+- Structured information sufficient for any UI/client to render:
+  - agent connected: session.created ✓
+  - model selected: (implicit in planning.started/task.started) ✓
+  - planning: planning.started ✓
+  - tool selection: (not explicitly named, but action dispatch exposes it) ✓
+  - execution: task.completed/task.failed ✓
+  - build: (part of task result) ✓
+  - test: (part of task result) ✓
+  - failure: task.failed ✓
+  - repair: (not explicitly modeled; task failed → user revision or rerun) ✗
+  - verification: (part of task result) ✓
+  - completion: task.completed ✓
+
+Source files:
+- events.py: EventBus, all event types
+- runtime.py: bus.emit() calls throughout _execute()
+- protocol.py: ACTIONS, event-relevant actions
+
+==================================================
+14. CLASSIFY EVERY REQUIREMENT
+==================================================
+
+CLASSIFICATION SUMMARY (from this audit):
+
+EXISTS_COMPLETE:           3 features (model routing, client-neutral event mode, some workspace validation)
+EXISTS_PARTIAL:           5 features (machine capability discovery, toolchain registry partial, WSL/multi-env, project/archive ops partial, structured failure diagnostics partial)
+MISSING_AGENT_BRIDGE_CORE: 5 features (mixed-language projects, tool installation manager, build/artifact pipeline, full-stack development principle not realized, mixed-language projects)
+IDE_ONLY:                 0 features (by design - Agent Bridge is IDE-neutral)
+EXTERNAL_TOOLCHAIN:       3 features (toolchain registry gap, mixed-language projects, build pipeline - these require external toolchains)
+FUTURE_PLUGIN:           4 features (WSL env selection, archive ops, tool install manager, build pipeline - marked as future plugins)
+NOT_REQUIRED:             0 features
+
+Detailed classification:
+
+1. WORKSPACE ROOT VALIDATION:
+   - EXISTS_PARTIAL: authorize_workspace() + sandbox path protection exist, but "bad workspace config before planner execution" not guaranteed
+
+2. STRUCTURED FAILURE DIAGNOSTICS:
+   - EXISTS_PARTIAL: error classes exist, but structured diagnostics (stage, error code, recoverability, evidence) not systematically exposed via API
+
+3. MACHINE CAPABILITY DISCOVERY:
+   - EXISTS_PARTIAL: machine_inventory() + health() discover some capabilities (OS, CPU, RAM partial, GPU, WSL), but not comprehensive
+
+4. TOOLCHAIN REGISTRY:
+   - MISSING_AGENT_BRIDGE_CORE: no generic compiler/interpreter/runtime/build/test/debugger/linter/package manager contract
+
+5. FULL-STACK PROJECT ORCHESTRATION:
+   - MISSING_AGENT_BRIDGE_CORE: no project-level component/dependency/build/test/integrate orchestration
+
+6. MIXED-LANGUAGE PROJECTS:
+   - MISSING_AGENT_BRIDGE_CORE: no multi-language component detection, dependency assignment, build-in-order
+
+7. WSL / MULTI-ENVIRONMENT EXECUTION:
+   - EXISTS_PARTIAL: WSL detected, path mapping exists, but environment selection not supported
+
+8. TOOL INSTALLATION MANAGER:
+   - MISSING_AGENT_BRIDGE_CORE: no winget/Chocolatey/Scoop/apt support, no install/upgrade/verify
+
+9. PROJECT / ARCHIVE OPERATIONS:
+   - EXISTS_PARTIAL: file-level ops (list/read/write/delete/copy/search) exist, but no archive operations
+
+10. BUILD / ARTIFACT PIPELINE:
+    - MISSING_AGENT_BRIDGE_CORE: no generic build pipeline, no artifact production recording
+
+11. FULL-STACK DEVELOPMENT PRINCIPLE:
+    - DOCUMENTED_NOT_IMPLEMENTED: principle stated in convention but implementation Python-weighted
+
+12. MODEL ROUTING:
+    - EXISTS_COMPLETE: role-based model routing (planner/coder/reviewer/general) works per task
+
+13. CLIENT-NEUTRAL EVENT MODEL:
+    - EXISTS_COMPLETE: EventBus with standardized event types, clients can subscribe/render
+
+14. CLASSIFY EVERY REQUIREMENT:
+    - This classification is the audit result itself
+
+15. VERSION RECOMMENDATION:
+    - To be determined from classification (see next section)
+
+==================================================
+15. VERSION RECOMMENDATION
+==================================================
+
+MAINTENANCE CANDIDATES (v0.8.2):
+
+1. WORKSPACE/ROOT VALIDATION
+   - Justification: Root cause of proven task failures (workspace='.' → Agent Bridge dir)
+   - Code inspection: authorize_workspace() exists but "fail before planner" guard not enforced
+   - Risk: LOW - config validation already present, just needs enforcement boundary
+
+2. STRUCTURED WORKSPACE ERRORS
+   - Justification: Clients need clear error, not opaque PLANNING→FAIL
+   - Code inspection: PermissionError raised but not mapped to structured task.failed payload
+   - Risk: LOW - error class exists, just needs payload mapping
+
+3. BETTER FAILURE PROPAGATION
+   - Justification: Task gets stuck in PLANNING then fails ~0.3s later; unclear why
+   - Code inspection: planner.completed emitted but task.failed reason not propagated to API clients clearly
+   - Risk: LOW - _execute() already captures exceptions, just needs API exposure
+
+4. ROOT/SESSION INTROSPECTION
+   - Justification: Clients cannot easily answer "what workspace is this task using?" or "what is the session state?"
+   - Code inspection: authorize_workspace(), session.status, task_status() exist but not combined in single diagnostic
+   - Risk: LOW - introspection endpoints exist (session_status, status_dashboard, diagnostics)
+
+5. REGRESSION TESTS
+   - Justification: No test coverage for workspace config failure mode
+   - Code inspection: tests/ directory exists but workspace-config-failure not tested
+   - Risk: LOW - add test scenarios
+
+v0.8.2 MAINTENANCE RECOMMENDATIONS:
+- Enforce workspace root validation before planner execution
+- Map error classes to structured task.failed payload
+- Expose session introspection via single diagnostic endpoint
+- Add regression tests for workspace config failure modes
+
+NEXT FEATURE RELEASE CANDIDATES:
+
+1. TOOLCHAIN REGISTRY
+   - Generic compiler/interpreter/runtime/build/test contract
+   - Support for C, C++, Rust, Python, JavaScript, Java, Go, etc.
+
+2. FULL-STACK PROJECT ORCHESTRATION
+   - Multi-component project detection and build-in-dependency-order
+   - Process start/stop, health checks, log capture, cleanup
+
+3. MIXED-LANGUAGE PROJECTS
+   - Component detection + dependency assignment across languages
+   - Build in dependency order, test, integrate, verify
+
+4. TOOL INSTALLATION MANAGER
+   - winget/Chocolatey/Scoop/apt support
+   - Install/upgrade/verify with policy control
+
+5. BUILD / ARTIFACT PIPELINE
+   - Native executables, libraries, WASM, JAR, web bundles, containers, firmware
+   - Record source, toolchain, commands, exit status, tests, hash, manifest, verification
+
+6. WSL / MULTI-ENVIRONMENT EXECUTION
+   - Environment-specific tool availability mapping
+   - Windows↔WSL path conversion automation
+   - Project execution in most appropriate environment
+
+7. FULL-STACK DEVELOPMENT PRINCIPLE REALIZATION
+   - Actual toolchain neutrality, not just aspirational
+   - C/C++ support, mixed-language projects
+
+AUDIT RESULT: The core gap confirmed is WORKSPACE_CONFIGURATION - workspace='.' resolves to Agent Bridge directory instead of IDE workspace, causing task failures. This is IDE-side configuration fix, not Agent Bridge defect. However, five genuinely missing Agent Bridge capabilities were identified that would improve robustness and language neutrality.
+
+DO NOT MODIFY ANY FILES.
+STOP.
