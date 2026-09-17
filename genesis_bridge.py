@@ -16,6 +16,16 @@ from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+# Import avatar interface from genesis_avatar
+from genesis_avatar import (
+    AvatarUIMode,
+    AvatarState,
+    AvatarCapabilities,
+    AvatarConfig,
+    AvatarBinding,
+    AvatarInterface,
+)
+
 
 @dataclass
 class GenesisIdentity:
@@ -75,16 +85,16 @@ class GenesisBridge(ABC):
     def integrate(self, task_id: str) -> dict[str, Any]: ...
 
 
-@dataclass
-class AvatarBinding:
-    """IDE avatar/UI integration point (state projection, not logic)."""
-    genesis_id: str = ""
-    surface: str = "ide-avatar"
-    state: str = "idle"
-    last_utterance: str = ""
-
-    def project(self, status: dict[str, Any]) -> dict[str, Any]:
-        state = str(status.get("state", self.state))
-        return {"genesis_id": self.genesis_id, "surface": self.surface,
-                "state": state,
-                "summary": str(status.get("summary", self.last_utterance))[:200]}
+# Re-export avatar types for consumers
+__all__ = [
+    "GenesisIdentity",
+    "GenesisSession",
+    "GenesisMemory",
+    "GenesisBridge",
+    "AvatarUIMode",
+    "AvatarState",
+    "AvatarCapabilities",
+    "AvatarConfig",
+    "AvatarBinding",
+    "AvatarInterface",
+]

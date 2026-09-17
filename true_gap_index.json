@@ -1,0 +1,4889 @@
+{
+ "total_distinct": 960,
+ "id_min": 1,
+ "id_max": 1040,
+ "missing": [
+  801,
+  802,
+  803,
+  804,
+  805,
+  806,
+  807,
+  808,
+  809,
+  810,
+  811,
+  812,
+  813,
+  814,
+  815,
+  816,
+  817,
+  818,
+  819,
+  820,
+  821,
+  822,
+  823,
+  824,
+  825,
+  826,
+  827,
+  828,
+  829,
+  830,
+  831,
+  832,
+  833,
+  834,
+  835,
+  836,
+  837,
+  838,
+  839,
+  840,
+  841,
+  842,
+  843,
+  844,
+  845,
+  846,
+  847,
+  848,
+  849,
+  850,
+  851,
+  852,
+  853,
+  854,
+  855,
+  856,
+  857,
+  858,
+  859,
+  860,
+  861,
+  862,
+  863,
+  864,
+  865,
+  866,
+  867,
+  868,
+  869,
+  870,
+  871,
+  872,
+  873,
+  874,
+  875,
+  876,
+  877,
+  878,
+  879,
+  880
+ ],
+ "gaps": {
+  "1": {
+   "title": "Aetherius kernel / AI-native operating system \u2014 P0",
+   "first_line": 9,
+   "occurrences": 1
+  },
+  "2": {
+   "title": "Low-level desktop/graphics stack \u2014 major Aetherius gap",
+   "first_line": 36,
+   "occurrences": 1
+  },
+  "3": {
+   "title": "Boot, firmware and hardware abstraction",
+   "first_line": 59,
+   "occurrences": 1
+  },
+  "4": {
+   "title": "Networking foundations for Aetherius",
+   "first_line": 80,
+   "occurrences": 1
+  },
+  "5": {
+   "title": "AI-agent protocol layer \u2014 P0",
+   "first_line": 101,
+   "occurrences": 1
+  },
+  "6": {
+   "title": "Agent identity, delegation and permissions \u2014 P0",
+   "first_line": 125,
+   "occurrences": 1
+  },
+  "7": {
+   "title": "Agent security / adversarial testing \u2014 P0",
+   "first_line": 153,
+   "occurrences": 1
+  },
+  "8": {
+   "title": "Computer-use / autonomous desktop agents \u2014 P0",
+   "first_line": 174,
+   "occurrences": 1
+  },
+  "9": {
+   "title": "AI coding agents / IDE references",
+   "first_line": 197,
+   "occurrences": 1
+  },
+  "10": {
+   "title": "Agent orchestration / swarm architecture",
+   "first_line": 221,
+   "occurrences": 1
+  },
+  "11": {
+   "title": "AI evaluation / benchmarking \u2014 significant gap",
+   "first_line": 242,
+   "occurrences": 1
+  },
+  "12": {
+   "title": "AI/agent observability \u2014 P0",
+   "first_line": 265,
+   "occurrences": 1
+  },
+  "13": {
+   "title": "Local/on-device AI",
+   "first_line": 288,
+   "occurrences": 1
+  },
+  "14": {
+   "title": "Inference/runtime stack",
+   "first_line": 313,
+   "occurrences": 1
+  },
+  "15": {
+   "title": "Universal browser AI / Web compute",
+   "first_line": 337,
+   "occurrences": 1
+  },
+  "16": {
+   "title": "Model routing / AI operating fabric",
+   "first_line": 363,
+   "occurrences": 1
+  },
+  "17": {
+   "title": "Memory / RAG / knowledge systems",
+   "first_line": 383,
+   "occurrences": 1
+  },
+  "18": {
+   "title": "Research/document ingestion \u2014 important for your chat archive work",
+   "first_line": 409,
+   "occurrences": 1
+  },
+  "19": {
+   "title": "Automated research systems",
+   "first_line": 430,
+   "occurrences": 1
+  },
+  "20": {
+   "title": "Robotics foundation",
+   "first_line": 449,
+   "occurrences": 1
+  },
+  "21": {
+   "title": "Embodied AI / VLA robotics",
+   "first_line": 467,
+   "occurrences": 1
+  },
+  "22": {
+   "title": "Humanoid / Shell / teleoperation",
+   "first_line": 485,
+   "occurrences": 1
+  },
+  "23": {
+   "title": "Control theory / optimal control",
+   "first_line": 509,
+   "occurrences": 1
+  },
+  "24": {
+   "title": "BCI / EMG / neural interface",
+   "first_line": 525,
+   "occurrences": 1
+  },
+  "25": {
+   "title": "Whole-brain emulation / computational neuroscience",
+   "first_line": 543,
+   "occurrences": 1
+  },
+  "26": {
+   "title": "Neuromorphic computing",
+   "first_line": 563,
+   "occurrences": 1
+  },
+  "27": {
+   "title": "Ternary / low-bit computing",
+   "first_line": 578,
+   "occurrences": 1
+  },
+  "28": {
+   "title": "FPGA / open silicon",
+   "first_line": 593,
+   "occurrences": 1
+  },
+  "29": {
+   "title": "GPU/NPU compute portability",
+   "first_line": 612,
+   "occurrences": 1
+  },
+  "30": {
+   "title": "Memristive / analogue compute",
+   "first_line": 629,
+   "occurrences": 1
+  },
+  "31": {
+   "title": "Photonic computing",
+   "first_line": 644,
+   "occurrences": 1
+  },
+  "32": {
+   "title": "Quantum computing",
+   "first_line": 658,
+   "occurrences": 1
+  },
+  "33": {
+   "title": "Post-quantum cryptography",
+   "first_line": 674,
+   "occurrences": 1
+  },
+  "34": {
+   "title": "Confidential/private AI",
+   "first_line": 686,
+   "occurrences": 1
+  },
+  "35": {
+   "title": "Software/model supply-chain security \u2014 P0",
+   "first_line": 701,
+   "occurrences": 1
+  },
+  "36": {
+   "title": "Formal methods / safety-critical development",
+   "first_line": 724,
+   "occurrences": 1
+  },
+  "37": {
+   "title": "Materials science / MAT interoperability \u2014 P0",
+   "first_line": 745,
+   "occurrences": 1
+  },
+  "38": {
+   "title": "MAT ontology / units / evidence",
+   "first_line": 765,
+   "occurrences": 1
+  },
+  "39": {
+   "title": "Inverse materials design",
+   "first_line": 782,
+   "occurrences": 1
+  },
+  "40": {
+   "title": "Chemistry / molecular design",
+   "first_line": 797,
+   "occurrences": 1
+  },
+  "41": {
+   "title": "Laboratory automation",
+   "first_line": 814,
+   "occurrences": 1
+  },
+  "42": {
+   "title": "CAD / generative engineering",
+   "first_line": 832,
+   "occurrences": 1
+  },
+  "43": {
+   "title": "CAE / multiphysics",
+   "first_line": 849,
+   "occurrences": 1
+  },
+  "44": {
+   "title": "Electromagnetic / plasma research",
+   "first_line": 867,
+   "occurrences": 1
+  },
+  "45": {
+   "title": "Manufacturing",
+   "first_line": 883,
+   "occurrences": 1
+  },
+  "46": {
+   "title": "Digital twins / Industry 4.0 \u2014 substantial gap",
+   "first_line": 901,
+   "occurrences": 1
+  },
+  "47": {
+   "title": "Supply-chain / product lifecycle",
+   "first_line": 915,
+   "occurrences": 1
+  },
+  "48": {
+   "title": "IoT / smart habitat",
+   "first_line": 931,
+   "occurrences": 1
+  },
+  "49": {
+   "title": "Energy / habitat simulation",
+   "first_line": 951,
+   "occurrences": 1
+  },
+  "50": {
+   "title": "Real-time communication",
+   "first_line": 969,
+   "occurrences": 1
+  },
+  "51": {
+   "title": "Federated social/community platform",
+   "first_line": 986,
+   "occurrences": 1
+  },
+  "52": {
+   "title": "Identity / credentials / wallet",
+   "first_line": 1000,
+   "occurrences": 1
+  },
+  "53": {
+   "title": "Cryptographic application infrastructure",
+   "first_line": 1017,
+   "occurrences": 1
+  },
+  "54": {
+   "title": "Universal application frameworks",
+   "first_line": 1033,
+   "occurrences": 1
+  },
+  "55": {
+   "title": "Browser/renderer engine research",
+   "first_line": 1049,
+   "occurrences": 1
+  },
+  "56": {
+   "title": "Packaging / software distribution",
+   "first_line": 1062,
+   "occurrences": 1
+  },
+  "57": {
+   "title": "IDE infrastructure",
+   "first_line": 1078,
+   "occurrences": 1
+  },
+  "58": {
+   "title": "Data / distributed systems",
+   "first_line": 1094,
+   "occurrences": 1
+  },
+  "59": {
+   "title": "Distributed messaging / event fabric",
+   "first_line": 1111,
+   "occurrences": 1
+  },
+  "60": {
+   "title": "Clock/time synchronization",
+   "first_line": 1125,
+   "occurrences": 1
+  },
+  "61": {
+   "title": "Cloud/edge orchestration",
+   "first_line": 1138,
+   "occurrences": 1
+  },
+  "62": {
+   "title": "Remote device / desktop access",
+   "first_line": 1153,
+   "occurrences": 1
+  },
+  "63": {
+   "title": "Audio/music technology gaps",
+   "first_line": 1165,
+   "occurrences": 1
+  },
+  "64": {
+   "title": "Speech/audio AI",
+   "first_line": 1188,
+   "occurrences": 1
+  },
+  "65": {
+   "title": "Video/media",
+   "first_line": 1205,
+   "occurrences": 1
+  },
+  "66": {
+   "title": "3D content / digital worlds",
+   "first_line": 1221,
+   "occurrences": 1
+  },
+  "67": {
+   "title": "XR / spiritual-avatar interface",
+   "first_line": 1238,
+   "occurrences": 1
+  },
+  "68": {
+   "title": "Computer vision / perception",
+   "first_line": 1256,
+   "occurrences": 1
+  },
+  "69": {
+   "title": "Geospatial / world model",
+   "first_line": 1272,
+   "occurrences": 1
+  },
+  "70": {
+   "title": "Space systems",
+   "first_line": 1289,
+   "occurrences": 1
+  },
+  "71": {
+   "title": "Bioinformatics / synthetic biology",
+   "first_line": 1303,
+   "occurrences": 1
+  },
+  "72": {
+   "title": "Medical/health interoperability",
+   "first_line": 1318,
+   "occurrences": 1
+  },
+  "73": {
+   "title": "Fitness / Atheena technology",
+   "first_line": 1333,
+   "occurrences": 1
+  },
+  "74": {
+   "title": "Commerce / Money Leak Engine",
+   "first_line": 1349,
+   "occurrences": 1
+  },
+  "75": {
+   "title": "Rights / licensing / content provenance",
+   "first_line": 1368,
+   "occurrences": 1
+  },
+  "76": {
+   "title": "Research authenticity / claim verification",
+   "first_line": 1383,
+   "occurrences": 1
+  },
+  "77": {
+   "title": "Self-improvement / safe self-modification \u2014 one of the biggest programme gaps",
+   "first_line": 1398,
+   "occurrences": 1
+  },
+  "78": {
+   "title": "Resilience / disaster recovery",
+   "first_line": 1415,
+   "occurrences": 1
+  },
+  "79": {
+   "title": "Scientific/engineering optimisation",
+   "first_line": 1431,
+   "occurrences": 1
+  },
+  "80": {
+   "title": "The YouTube-intelligence system itself",
+   "first_line": 1444,
+   "occurrences": 1
+  },
+  "81": {
+   "title": "World models / learned simulators",
+   "first_line": 1478,
+   "occurrences": 1
+  },
+  "82": {
+   "title": "Synthetic environments and synthetic data",
+   "first_line": 1495,
+   "occurrences": 1
+  },
+  "83": {
+   "title": "Causal AI",
+   "first_line": 1509,
+   "occurrences": 1
+  },
+  "84": {
+   "title": "Neuro-symbolic AI",
+   "first_line": 1522,
+   "occurrences": 1
+  },
+  "85": {
+   "title": "Formal mathematical reasoning",
+   "first_line": 1536,
+   "occurrences": 1
+  },
+  "86": {
+   "title": "Autonomous science / AI scientist systems",
+   "first_line": 1551,
+   "occurrences": 1
+  },
+  "87": {
+   "title": "AI-controlled scientific instruments",
+   "first_line": 1568,
+   "occurrences": 1
+  },
+  "88": {
+   "title": "Federated autonomous laboratories",
+   "first_line": 1585,
+   "occurrences": 1
+  },
+  "89": {
+   "title": "Agent identity manifests",
+   "first_line": 1601,
+   "occurrences": 1
+  },
+  "90": {
+   "title": "Agent Network Protocol / Agentic Web",
+   "first_line": 1618,
+   "occurrences": 1
+  },
+  "91": {
+   "title": "Alternative agent communication protocols",
+   "first_line": 1635,
+   "occurrences": 1
+  },
+  "92": {
+   "title": "Agent control/security standards",
+   "first_line": 1652,
+   "occurrences": 1
+  },
+  "93": {
+   "title": "AI-specific SBOM / AI-BOM",
+   "first_line": 1668,
+   "occurrences": 1
+  },
+  "94": {
+   "title": "Data lineage / metadata governance",
+   "first_line": 1689,
+   "occurrences": 1
+  },
+  "95": {
+   "title": "Data contracts",
+   "first_line": 1706,
+   "occurrences": 1
+  },
+  "96": {
+   "title": "Continual / lifelong learning",
+   "first_line": 1719,
+   "occurrences": 1
+  },
+  "97": {
+   "title": "Safe model self-improvement",
+   "first_line": 1734,
+   "occurrences": 1
+  },
+  "98": {
+   "title": "Meta-learning",
+   "first_line": 1749,
+   "occurrences": 1
+  },
+  "99": {
+   "title": "Active learning",
+   "first_line": 1761,
+   "occurrences": 1
+  },
+  "100": {
+   "title": "Distributed / federated AI",
+   "first_line": 1773,
+   "occurrences": 1
+  },
+  "101": {
+   "title": "Peer-to-peer compute",
+   "first_line": 1787,
+   "occurrences": 1
+  },
+  "102": {
+   "title": "Compute fabric / memory interconnect",
+   "first_line": 1800,
+   "occurrences": 1
+  },
+  "103": {
+   "title": "Near-memory / processing-in-memory",
+   "first_line": 1816,
+   "occurrences": 1
+  },
+  "104": {
+   "title": "Unconventional computing",
+   "first_line": 1828,
+   "occurrences": 1
+  },
+  "105": {
+   "title": "Superconducting and cryogenic systems",
+   "first_line": 1845,
+   "occurrences": 1
+  },
+  "106": {
+   "title": "Spintronics / magnetic computing",
+   "first_line": 1856,
+   "occurrences": 1
+  },
+  "107": {
+   "title": "Next-generation storage",
+   "first_line": 1868,
+   "occurrences": 1
+  },
+  "108": {
+   "title": "Semantic filesystem",
+   "first_line": 1885,
+   "occurrences": 1
+  },
+  "109": {
+   "title": "Sensor fusion",
+   "first_line": 1899,
+   "occurrences": 1
+  },
+  "110": {
+   "title": "Radar / RF perception",
+   "first_line": 1919,
+   "occurrences": 1
+  },
+  "111": {
+   "title": "Tactile robotics",
+   "first_line": 1933,
+   "occurrences": 1
+  },
+  "112": {
+   "title": "Soft robotics",
+   "first_line": 1946,
+   "occurrences": 1
+  },
+  "113": {
+   "title": "Artificial muscles",
+   "first_line": 1959,
+   "occurrences": 1
+  },
+  "114": {
+   "title": "Robot safety / assurance",
+   "first_line": 1971,
+   "occurrences": 1
+  },
+  "115": {
+   "title": "Human-robot shared control",
+   "first_line": 1987,
+   "occurrences": 1
+  },
+  "116": {
+   "title": "Biohybrid robotics",
+   "first_line": 2000,
+   "occurrences": 1
+  },
+  "117": {
+   "title": "Autonomous ground vehicles",
+   "first_line": 2013,
+   "occurrences": 1
+  },
+  "118": {
+   "title": "Drone autonomy",
+   "first_line": 2027,
+   "occurrences": 1
+  },
+  "119": {
+   "title": "Underwater robotics",
+   "first_line": 2041,
+   "occurrences": 1
+  },
+  "120": {
+   "title": "Underground / GPS-denied robotics",
+   "first_line": 2055,
+   "occurrences": 1
+  },
+  "121": {
+   "title": "Space robotics",
+   "first_line": 2067,
+   "occurrences": 1
+  },
+  "122": {
+   "title": "Delay/Disruption Tolerant Networking",
+   "first_line": 2080,
+   "occurrences": 1
+  },
+  "123": {
+   "title": "Satellite software-defined systems",
+   "first_line": 2091,
+   "occurrences": 1
+  },
+  "124": {
+   "title": "Quantum networking",
+   "first_line": 2102,
+   "occurrences": 1
+  },
+  "125": {
+   "title": "Time/frequency metrology",
+   "first_line": 2114,
+   "occurrences": 1
+  },
+  "126": {
+   "title": "Scientific metrology",
+   "first_line": 2127,
+   "occurrences": 1
+  },
+  "127": {
+   "title": "Knowledge uncertainty",
+   "first_line": 2140,
+   "occurrences": 1
+  },
+  "128": {
+   "title": "Scientific falsification engine",
+   "first_line": 2152,
+   "occurrences": 1
+  },
+  "129": {
+   "title": "Explainable scientific AI",
+   "first_line": 2165,
+   "occurrences": 1
+  },
+  "130": {
+   "title": "Agentic commerce and machine payments",
+   "first_line": 2177,
+   "occurrences": 1
+  },
+  "131": {
+   "title": "Machine-readable law/policy/compliance",
+   "first_line": 2194,
+   "occurrences": 1
+  },
+  "132": {
+   "title": "Safety cases / assurance cases",
+   "first_line": 2209,
+   "occurrences": 1
+  },
+  "133": {
+   "title": "Reliability engineering",
+   "first_line": 2223,
+   "occurrences": 1
+  },
+  "134": {
+   "title": "Digital-twin verification",
+   "first_line": 2237,
+   "occurrences": 1
+  },
+  "135": {
+   "title": "Cross-domain ontology",
+   "first_line": 2249,
+   "occurrences": 1
+  },
+  "136": {
+   "title": "Temporal reasoning",
+   "first_line": 2268,
+   "occurrences": 1
+  },
+  "137": {
+   "title": "Spatial reasoning",
+   "first_line": 2281,
+   "occurrences": 1
+  },
+  "138": {
+   "title": "Simulation orchestration",
+   "first_line": 2294,
+   "occurrences": 1
+  },
+  "139": {
+   "title": "Digital engineering / MBSE",
+   "first_line": 2308,
+   "occurrences": 1
+  },
+  "140": {
+   "title": "Hardware description / electronic design automation",
+   "first_line": 2320,
+   "occurrences": 1
+  },
+  "141": {
+   "title": "Embedded-AI deployment",
+   "first_line": 2336,
+   "occurrences": 1
+  },
+  "142": {
+   "title": "Device firmware architecture",
+   "first_line": 2349,
+   "occurrences": 1
+  },
+  "143": {
+   "title": "Robot/device fleet management",
+   "first_line": 2363,
+   "occurrences": 1
+  },
+  "144": {
+   "title": "Energy-aware computing",
+   "first_line": 2379,
+   "occurrences": 1
+  },
+  "145": {
+   "title": "Thermal-aware computing",
+   "first_line": 2392,
+   "occurrences": 1
+  },
+  "146": {
+   "title": "Battery management",
+   "first_line": 2403,
+   "occurrences": 1
+  },
+  "147": {
+   "title": "Energy harvesting",
+   "first_line": 2415,
+   "occurrences": 1
+  },
+  "148": {
+   "title": "Advanced materials for computation",
+   "first_line": 2428,
+   "occurrences": 1
+  },
+  "149": {
+   "title": "Metamaterials",
+   "first_line": 2442,
+   "occurrences": 1
+  },
+  "150": {
+   "title": "Topology / generative material structures",
+   "first_line": 2455,
+   "occurrences": 1
+  },
+  "151": {
+   "title": "Synthetic biology automation",
+   "first_line": 2468,
+   "occurrences": 1
+  },
+  "152": {
+   "title": "Biological foundation models",
+   "first_line": 2481,
+   "occurrences": 1
+  },
+  "153": {
+   "title": "Cell / tissue simulation",
+   "first_line": 2493,
+   "occurrences": 1
+  },
+  "154": {
+   "title": "Biomechanics / human digital twin",
+   "first_line": 2505,
+   "occurrences": 1
+  },
+  "155": {
+   "title": "Human digital avatar",
+   "first_line": 2517,
+   "occurrences": 1
+  },
+  "156": {
+   "title": "Emotion / affective computing",
+   "first_line": 2531,
+   "occurrences": 1
+  },
+  "157": {
+   "title": "Dialogue / social intelligence",
+   "first_line": 2545,
+   "occurrences": 1
+  },
+  "158": {
+   "title": "Multi-device continuity",
+   "first_line": 2558,
+   "occurrences": 1
+  },
+  "159": {
+   "title": "Physical presence / ambient AI",
+   "first_line": 2570,
+   "occurrences": 1
+  },
+  "160": {
+   "title": "Aetherius technology-intelligence engine",
+   "first_line": 2583,
+   "occurrences": 1
+  },
+  "161": {
+   "title": "Agentic commerce protocol stack \u2014 deeper gap",
+   "first_line": 2633,
+   "occurrences": 1
+  },
+  "162": {
+   "title": "Agentic authentication \u2014 major new gap",
+   "first_line": 2654,
+   "occurrences": 1
+  },
+  "163": {
+   "title": "Agent payment identity / trust",
+   "first_line": 2671,
+   "occurrences": 1
+  },
+  "164": {
+   "title": "Contract / agreement protocols between agents",
+   "first_line": 2688,
+   "occurrences": 1
+  },
+  "165": {
+   "title": "Machine-readable intent",
+   "first_line": 2704,
+   "occurrences": 1
+  },
+  "166": {
+   "title": "Agent protocol gateway",
+   "first_line": 2719,
+   "occurrences": 1
+  },
+  "167": {
+   "title": "Protocol conformance test laboratory",
+   "first_line": 2733,
+   "occurrences": 1
+  },
+  "168": {
+   "title": "Semantic interoperability",
+   "first_line": 2748,
+   "occurrences": 1
+  },
+  "169": {
+   "title": "Interface-description systems",
+   "first_line": 2761,
+   "occurrences": 1
+  },
+  "170": {
+   "title": "API discovery / capability discovery",
+   "first_line": 2776,
+   "occurrences": 1
+  },
+  "171": {
+   "title": "Durable workflow engines",
+   "first_line": 2789,
+   "occurrences": 1
+  },
+  "172": {
+   "title": "AI workflow state machines",
+   "first_line": 2805,
+   "occurrences": 1
+  },
+  "173": {
+   "title": "Distributed job scheduling",
+   "first_line": 2819,
+   "occurrences": 1
+  },
+  "174": {
+   "title": "Aetherius heterogeneous scheduler",
+   "first_line": 2835,
+   "occurrences": 1
+  },
+  "175": {
+   "title": "Compute capability benchmarking",
+   "first_line": 2853,
+   "occurrences": 1
+  },
+  "176": {
+   "title": "Universal accelerator abstraction",
+   "first_line": 2869,
+   "occurrences": 1
+  },
+  "177": {
+   "title": "Browser neural-compute backend",
+   "first_line": 2882,
+   "occurrences": 1
+  },
+  "178": {
+   "title": "ML compiler infrastructure \u2014 deeper gap",
+   "first_line": 2897,
+   "occurrences": 1
+  },
+  "179": {
+   "title": "Automatic kernel generation",
+   "first_line": 2913,
+   "occurrences": 1
+  },
+  "180": {
+   "title": "Binary/ternary compiler path",
+   "first_line": 2926,
+   "occurrences": 1
+  },
+  "181": {
+   "title": "Model interchange",
+   "first_line": 2940,
+   "occurrences": 1
+  },
+  "182": {
+   "title": "Model packaging standard",
+   "first_line": 2955,
+   "occurrences": 1
+  },
+  "183": {
+   "title": "Neural model compression",
+   "first_line": 2970,
+   "occurrences": 1
+  },
+  "184": {
+   "title": "Sparse AI",
+   "first_line": 2983,
+   "occurrences": 1
+  },
+  "185": {
+   "title": "Dynamic neural networks",
+   "first_line": 2995,
+   "occurrences": 1
+  },
+  "186": {
+   "title": "Neural architecture search",
+   "first_line": 3006,
+   "occurrences": 1
+  },
+  "187": {
+   "title": "Differentiable programming",
+   "first_line": 3016,
+   "occurrences": 1
+  },
+  "188": {
+   "title": "Probabilistic programming",
+   "first_line": 3026,
+   "occurrences": 1
+  },
+  "189": {
+   "title": "Constraint solving",
+   "first_line": 3038,
+   "occurrences": 1
+  },
+  "190": {
+   "title": "Symbolic computation",
+   "first_line": 3051,
+   "occurrences": 1
+  },
+  "191": {
+   "title": "Graph computing",
+   "first_line": 3063,
+   "occurrences": 1
+  },
+  "192": {
+   "title": "High-performance dataframes",
+   "first_line": 3075,
+   "occurrences": 1
+  },
+  "193": {
+   "title": "Streaming-data processing",
+   "first_line": 3087,
+   "occurrences": 1
+  },
+  "194": {
+   "title": "Time-series infrastructure",
+   "first_line": 3099,
+   "occurrences": 1
+  },
+  "195": {
+   "title": "Search infrastructure",
+   "first_line": 3112,
+   "occurrences": 1
+  },
+  "196": {
+   "title": "Web/archive preservation",
+   "first_line": 3125,
+   "occurrences": 1
+  },
+  "197": {
+   "title": "Evidence snapshotting",
+   "first_line": 3138,
+   "occurrences": 1
+  },
+  "198": {
+   "title": "Reproducible AI environments",
+   "first_line": 3150,
+   "occurrences": 1
+  },
+  "199": {
+   "title": "Experiment management",
+   "first_line": 3163,
+   "occurrences": 1
+  },
+  "200": {
+   "title": "Autonomous benchmark laboratory",
+   "first_line": 3175,
+   "occurrences": 1
+  },
+  "201": {
+   "title": "AI red-team automation",
+   "first_line": 3189,
+   "occurrences": 1
+  },
+  "202": {
+   "title": "Model/data poisoning detection",
+   "first_line": 3202,
+   "occurrences": 1
+  },
+  "203": {
+   "title": "Secure model loading",
+   "first_line": 3214,
+   "occurrences": 1
+  },
+  "204": {
+   "title": "Trusted execution / hardware attestation",
+   "first_line": 3225,
+   "occurrences": 1
+  },
+  "205": {
+   "title": "Zero-trust service mesh",
+   "first_line": 3237,
+   "occurrences": 1
+  },
+  "206": {
+   "title": "Secrets isolation",
+   "first_line": 3250,
+   "occurrences": 1
+  },
+  "207": {
+   "title": "Data-loss prevention",
+   "first_line": 3262,
+   "occurrences": 1
+  },
+  "208": {
+   "title": "Privacy-preserving analytics",
+   "first_line": 3275,
+   "occurrences": 1
+  },
+  "209": {
+   "title": "Secure deletion / lifecycle",
+   "first_line": 3286,
+   "occurrences": 1
+  },
+  "210": {
+   "title": "Autonomous SRE / system management",
+   "first_line": 3296,
+   "occurrences": 1
+  },
+  "211": {
+   "title": "Unified observability",
+   "first_line": 3308,
+   "occurrences": 1
+  },
+  "212": {
+   "title": "eBPF observability",
+   "first_line": 3321,
+   "occurrences": 1
+  },
+  "213": {
+   "title": "Deterministic / real-time Linux references",
+   "first_line": 3332,
+   "occurrences": 1
+  },
+  "214": {
+   "title": "Time-Sensitive Networking",
+   "first_line": 3343,
+   "occurrences": 1
+  },
+  "215": {
+   "title": "Industrial field buses",
+   "first_line": 3354,
+   "occurrences": 1
+  },
+  "216": {
+   "title": "Embedded hardware buses",
+   "first_line": 3365,
+   "occurrences": 1
+  },
+  "217": {
+   "title": "Vehicle network architecture",
+   "first_line": 3380,
+   "occurrences": 1
+  },
+  "218": {
+   "title": "Software-defined vehicle architecture",
+   "first_line": 3392,
+   "occurrences": 1
+  },
+  "219": {
+   "title": "Edge perception devices",
+   "first_line": 3404,
+   "occurrences": 1
+  },
+  "220": {
+   "title": "Event-based vision",
+   "first_line": 3415,
+   "occurrences": 1
+  },
+  "221": {
+   "title": "LiDAR ecosystem",
+   "first_line": 3426,
+   "occurrences": 1
+  },
+  "222": {
+   "title": "Sonar / acoustic perception",
+   "first_line": 3438,
+   "occurrences": 1
+  },
+  "223": {
+   "title": "Computational acoustics",
+   "first_line": 3449,
+   "occurrences": 1
+  },
+  "224": {
+   "title": "Bioacoustic AI \u2014 important Genesis gap",
+   "first_line": 3460,
+   "occurrences": 1
+  },
+  "225": {
+   "title": "Animal communication / cross-species AI",
+   "first_line": 3472,
+   "occurrences": 1
+  },
+  "226": {
+   "title": "Biodiversity monitoring",
+   "first_line": 3485,
+   "occurrences": 1
+  },
+  "227": {
+   "title": "Environmental sensor network",
+   "first_line": 3497,
+   "occurrences": 1
+  },
+  "228": {
+   "title": "Weather modelling",
+   "first_line": 3511,
+   "occurrences": 1
+  },
+  "229": {
+   "title": "Climate / Earth-system modelling",
+   "first_line": 3523,
+   "occurrences": 1
+  },
+  "230": {
+   "title": "Ocean modelling",
+   "first_line": 3535,
+   "occurrences": 1
+  },
+  "231": {
+   "title": "Hydrology / water systems",
+   "first_line": 3547,
+   "occurrences": 1
+  },
+  "232": {
+   "title": "Geology / geophysics",
+   "first_line": 3559,
+   "occurrences": 1
+  },
+  "233": {
+   "title": "Remote sensing / Earth observation",
+   "first_line": 3571,
+   "occurrences": 1
+  },
+  "234": {
+   "title": "Hyperspectral sensing",
+   "first_line": 3583,
+   "occurrences": 1
+  },
+  "235": {
+   "title": "Precision agriculture",
+   "first_line": 3594,
+   "occurrences": 1
+  },
+  "236": {
+   "title": "Food science / food systems",
+   "first_line": 3606,
+   "occurrences": 1
+  },
+  "237": {
+   "title": "Smart-grid integration",
+   "first_line": 3617,
+   "occurrences": 1
+  },
+  "238": {
+   "title": "Power electronics",
+   "first_line": 3630,
+   "occurrences": 1
+  },
+  "239": {
+   "title": "Motor / actuator simulation",
+   "first_line": 3643,
+   "occurrences": 1
+  },
+  "240": {
+   "title": "Advanced energy-material research",
+   "first_line": 3656,
+   "occurrences": 1
+  },
+  "241": {
+   "title": "Fusion-energy research stack",
+   "first_line": 3685,
+   "occurrences": 1
+  },
+  "242": {
+   "title": "Plasma simulation \u2014 deeper layer",
+   "first_line": 3706,
+   "occurrences": 1
+  },
+  "243": {
+   "title": "Nuclear engineering",
+   "first_line": 3723,
+   "occurrences": 1
+  },
+  "244": {
+   "title": "Radiation / particle transport",
+   "first_line": 3739,
+   "occurrences": 1
+  },
+  "245": {
+   "title": "Fusion/nuclear materials \u2014 MAT link",
+   "first_line": 3753,
+   "occurrences": 1
+  },
+  "246": {
+   "title": "Electric and plasma propulsion",
+   "first_line": 3769,
+   "occurrences": 1
+  },
+  "247": {
+   "title": "Experimental-propulsion verification framework",
+   "first_line": 3784,
+   "occurrences": 1
+  },
+  "248": {
+   "title": "Space-environment simulation",
+   "first_line": 3803,
+   "occurrences": 1
+  },
+  "249": {
+   "title": "Open semiconductor EDA \u2014 P0",
+   "first_line": 3818,
+   "occurrences": 1
+  },
+  "250": {
+   "title": "Semiconductor process/device simulation",
+   "first_line": 3834,
+   "occurrences": 1
+  },
+  "251": {
+   "title": "Chip verification",
+   "first_line": 3849,
+   "occurrences": 1
+  },
+  "252": {
+   "title": "Chiplets / advanced packaging",
+   "first_line": 3863,
+   "occurrences": 1
+  },
+  "253": {
+   "title": "Photonic integrated circuits",
+   "first_line": 3878,
+   "occurrences": 1
+  },
+  "254": {
+   "title": "RF / microwave design",
+   "first_line": 3893,
+   "occurrences": 1
+  },
+  "255": {
+   "title": "Antenna engineering",
+   "first_line": 3908,
+   "occurrences": 1
+  },
+  "256": {
+   "title": "AI-assisted electronics design",
+   "first_line": 3922,
+   "occurrences": 1
+  },
+  "257": {
+   "title": "Electronics laboratory automation",
+   "first_line": 3937,
+   "occurrences": 1
+  },
+  "258": {
+   "title": "Nanotechnology",
+   "first_line": 3953,
+   "occurrences": 1
+  },
+  "259": {
+   "title": "Nanofabrication",
+   "first_line": 3968,
+   "occurrences": 1
+  },
+  "260": {
+   "title": "Microscopy intelligence",
+   "first_line": 3982,
+   "occurrences": 1
+  },
+  "261": {
+   "title": "Spectroscopy intelligence",
+   "first_line": 3997,
+   "occurrences": 1
+  },
+  "262": {
+   "title": "Analytical chemistry automation",
+   "first_line": 4012,
+   "occurrences": 1
+  },
+  "263": {
+   "title": "Chemical process engineering",
+   "first_line": 4026,
+   "occurrences": 1
+  },
+  "264": {
+   "title": "Electrochemistry",
+   "first_line": 4041,
+   "occurrences": 1
+  },
+  "265": {
+   "title": "Catalysis",
+   "first_line": 4054,
+   "occurrences": 1
+  },
+  "266": {
+   "title": "Corrosion/degradation",
+   "first_line": 4066,
+   "occurrences": 1
+  },
+  "267": {
+   "title": "Polymer/composite engineering",
+   "first_line": 4080,
+   "occurrences": 1
+  },
+  "268": {
+   "title": "Ceramic/glass engineering",
+   "first_line": 4095,
+   "occurrences": 1
+  },
+  "269": {
+   "title": "Metallurgy / alloy design",
+   "first_line": 4108,
+   "occurrences": 1
+  },
+  "270": {
+   "title": "Advanced additive manufacturing",
+   "first_line": 4123,
+   "occurrences": 1
+  },
+  "271": {
+   "title": "Recycling / circular manufacturing",
+   "first_line": 4138,
+   "occurrences": 1
+  },
+  "272": {
+   "title": "Design for repair/disassembly",
+   "first_line": 4151,
+   "occurrences": 1
+  },
+  "273": {
+   "title": "Automated waste/material sorting",
+   "first_line": 4164,
+   "occurrences": 1
+  },
+  "274": {
+   "title": "Critical-material intelligence",
+   "first_line": 4175,
+   "occurrences": 1
+  },
+  "275": {
+   "title": "Laser / optical systems",
+   "first_line": 4191,
+   "occurrences": 1
+  },
+  "276": {
+   "title": "Holography / light-field display",
+   "first_line": 4205,
+   "occurrences": 1
+  },
+  "277": {
+   "title": "Computational imaging",
+   "first_line": 4216,
+   "occurrences": 1
+  },
+  "278": {
+   "title": "Spatial computing / XR \u2014 P0 for the avatar/IDE",
+   "first_line": 4229,
+   "occurrences": 1
+  },
+  "279": {
+   "title": "Haptics",
+   "first_line": 4247,
+   "occurrences": 1
+  },
+  "280": {
+   "title": "Accessibility / assistive technology \u2014 significant gap",
+   "first_line": 4260,
+   "occurrences": 1
+  },
+  "281": {
+   "title": "Human-computer interaction",
+   "first_line": 4277,
+   "occurrences": 1
+  },
+  "282": {
+   "title": "Eye/gaze interaction",
+   "first_line": 4293,
+   "occurrences": 1
+  },
+  "283": {
+   "title": "Gesture / sign-language interfaces",
+   "first_line": 4305,
+   "occurrences": 1
+  },
+  "284": {
+   "title": "Neural interface safety layer",
+   "first_line": 4317,
+   "occurrences": 1
+  },
+  "285": {
+   "title": "Privacy-preserving ambient computing",
+   "first_line": 4333,
+   "occurrences": 1
+  },
+  "286": {
+   "title": "Game-engine references",
+   "first_line": 4346,
+   "occurrences": 1
+  },
+  "287": {
+   "title": "Physics engines",
+   "first_line": 4362,
+   "occurrences": 1
+  },
+  "288": {
+   "title": "Digital-human technology",
+   "first_line": 4378,
+   "occurrences": 1
+  },
+  "289": {
+   "title": "Procedural/world generation",
+   "first_line": 4393,
+   "occurrences": 1
+  },
+  "290": {
+   "title": "Education/e-learning interoperability",
+   "first_line": 4407,
+   "occurrences": 1
+  },
+  "291": {
+   "title": "AI tutoring",
+   "first_line": 4421,
+   "occurrences": 1
+  },
+  "292": {
+   "title": "Learning-science engine",
+   "first_line": 4434,
+   "occurrences": 1
+  },
+  "293": {
+   "title": "Credentials / skills records",
+   "first_line": 4447,
+   "occurrences": 1
+  },
+  "294": {
+   "title": "Office/document interoperability",
+   "first_line": 4458,
+   "occurrences": 1
+  },
+  "295": {
+   "title": "Personal-information interoperability",
+   "first_line": 4474,
+   "occurrences": 1
+  },
+  "296": {
+   "title": "Collaborative productivity",
+   "first_line": 4490,
+   "occurrences": 1
+  },
+  "297": {
+   "title": "Universal automation/desktop workflows",
+   "first_line": 4504,
+   "occurrences": 1
+  },
+  "298": {
+   "title": "Open Banking / financial-data layer",
+   "first_line": 4518,
+   "occurrences": 1
+  },
+  "299": {
+   "title": "Payment infrastructure",
+   "first_line": 4530,
+   "occurrences": 1
+  },
+  "300": {
+   "title": "Market-data infrastructure",
+   "first_line": 4543,
+   "occurrences": 1
+  },
+  "301": {
+   "title": "Accounting / bookkeeping",
+   "first_line": 4559,
+   "occurrences": 1
+  },
+  "302": {
+   "title": "Blockchain infrastructure",
+   "first_line": 4573,
+   "occurrences": 1
+  },
+  "303": {
+   "title": "Smart-contract engineering",
+   "first_line": 4587,
+   "occurrences": 1
+  },
+  "304": {
+   "title": "Decentralized identity \u2014 deeper layer",
+   "first_line": 4602,
+   "occurrences": 1
+  },
+  "305": {
+   "title": "Distributed consensus",
+   "first_line": 4615,
+   "occurrences": 1
+  },
+  "306": {
+   "title": "Zero-knowledge systems",
+   "first_line": 4628,
+   "occurrences": 1
+  },
+  "307": {
+   "title": "Decentralized / verifiable compute",
+   "first_line": 4643,
+   "occurrences": 1
+  },
+  "308": {
+   "title": "Advanced networking",
+   "first_line": 4654,
+   "occurrences": 1
+  },
+  "309": {
+   "title": "Wi-Fi/RF sensing",
+   "first_line": 4668,
+   "occurrences": 1
+  },
+  "310": {
+   "title": "5G/6G/private cellular",
+   "first_line": 4681,
+   "occurrences": 1
+  },
+  "311": {
+   "title": "Mesh networking",
+   "first_line": 4694,
+   "occurrences": 1
+  },
+  "312": {
+   "title": "Software-defined radio \u2014 deeper",
+   "first_line": 4707,
+   "occurrences": 1
+  },
+  "313": {
+   "title": "Long-range low-power networking",
+   "first_line": 4721,
+   "occurrences": 1
+  },
+  "314": {
+   "title": "Satellite communications",
+   "first_line": 4732,
+   "occurrences": 1
+  },
+  "315": {
+   "title": "Optical/free-space communications",
+   "first_line": 4745,
+   "occurrences": 1
+  },
+  "316": {
+   "title": "Resilient emergency communications",
+   "first_line": 4756,
+   "occurrences": 1
+  },
+  "317": {
+   "title": "Universal-Bridge clean-room protocol discovery",
+   "first_line": 4768,
+   "occurrences": 1
+  },
+  "318": {
+   "title": "Poietek/session interchange \u2014 P0",
+   "first_line": 4783,
+   "occurrences": 1
+  },
+  "319": {
+   "title": "Plug-in/preset interoperability",
+   "first_line": 4799,
+   "occurrences": 1
+  },
+  "320": {
+   "title": "Spatial/immersive audio",
+   "first_line": 4814,
+   "occurrences": 1
+  },
+  "321": {
+   "title": "Professional broadcast-over-IP stack",
+   "first_line": 4837,
+   "occurrences": 1
+  },
+  "322": {
+   "title": "Broadcast discovery/control",
+   "first_line": 4853,
+   "occurrences": 1
+  },
+  "323": {
+   "title": "Live-streaming protocol stack",
+   "first_line": 4866,
+   "occurrences": 1
+  },
+  "324": {
+   "title": "Open podcasting infrastructure \u2014 important Poietek gap",
+   "first_line": 4884,
+   "occurrences": 1
+  },
+  "325": {
+   "title": "Subtitles/captions/timed text",
+   "first_line": 4903,
+   "occurrences": 1
+  },
+  "326": {
+   "title": "Audio description / dubbing standards",
+   "first_line": 4922,
+   "occurrences": 1
+  },
+  "327": {
+   "title": "Media quality-control engine",
+   "first_line": 4936,
+   "occurrences": 1
+  },
+  "328": {
+   "title": "Professional audio synchronization",
+   "first_line": 4954,
+   "occurrences": 1
+  },
+  "329": {
+   "title": "Codec ecosystem",
+   "first_line": 4970,
+   "occurrences": 1
+  },
+  "330": {
+   "title": "Media container/interchange formats",
+   "first_line": 4988,
+   "occurrences": 1
+  },
+  "331": {
+   "title": "Colour-management pipeline",
+   "first_line": 5005,
+   "occurrences": 1
+  },
+  "332": {
+   "title": "Image-processing infrastructure",
+   "first_line": 5022,
+   "occurrences": 1
+  },
+  "333": {
+   "title": "Video effects/compositing",
+   "first_line": 5037,
+   "occurrences": 1
+  },
+  "334": {
+   "title": "Live-production software",
+   "first_line": 5052,
+   "occurrences": 1
+  },
+  "335": {
+   "title": "Non-linear editing architecture",
+   "first_line": 5067,
+   "occurrences": 1
+  },
+  "336": {
+   "title": "Poietek DAW engine \u2014 deeper",
+   "first_line": 5082,
+   "occurrences": 1
+  },
+  "337": {
+   "title": "Real-time audio DSP",
+   "first_line": 5099,
+   "occurrences": 1
+  },
+  "338": {
+   "title": "Modular audio DSP frameworks",
+   "first_line": 5118,
+   "occurrences": 1
+  },
+  "339": {
+   "title": "Synthesizer architecture",
+   "first_line": 5132,
+   "occurrences": 1
+  },
+  "340": {
+   "title": "Sampler architecture \u2014 Universal-Bridge relevance",
+   "first_line": 5149,
+   "occurrences": 1
+  },
+  "341": {
+   "title": "MIDI 2.0",
+   "first_line": 5167,
+   "occurrences": 1
+  },
+  "342": {
+   "title": "Expressive musical control",
+   "first_line": 5181,
+   "occurrences": 1
+  },
+  "343": {
+   "title": "Music timing/groove engine",
+   "first_line": 5194,
+   "occurrences": 1
+  },
+  "344": {
+   "title": "Musical score/notation interoperability",
+   "first_line": 5209,
+   "occurrences": 1
+  },
+  "345": {
+   "title": "Microtonal music",
+   "first_line": 5224,
+   "occurrences": 1
+  },
+  "346": {
+   "title": "Audio source separation",
+   "first_line": 5236,
+   "occurrences": 1
+  },
+  "347": {
+   "title": "Music-information retrieval",
+   "first_line": 5251,
+   "occurrences": 1
+  },
+  "348": {
+   "title": "Automatic transcription",
+   "first_line": 5268,
+   "occurrences": 1
+  },
+  "349": {
+   "title": "Music generation/recomposition research",
+   "first_line": 5281,
+   "occurrences": 1
+  },
+  "350": {
+   "title": "Musical rights/metadata",
+   "first_line": 5296,
+   "occurrences": 1
+  },
+  "351": {
+   "title": "Game-engine architecture",
+   "first_line": 5312,
+   "occurrences": 1
+  },
+  "352": {
+   "title": "Multiplayer/game networking",
+   "first_line": 5329,
+   "occurrences": 1
+  },
+  "353": {
+   "title": "Traditional game AI",
+   "first_line": 5343,
+   "occurrences": 1
+  },
+  "354": {
+   "title": "Procedural-content generation",
+   "first_line": 5357,
+   "occurrences": 1
+  },
+  "355": {
+   "title": "Large-scale simulation engine",
+   "first_line": 5372,
+   "occurrences": 1
+  },
+  "356": {
+   "title": "Plug-in/mod architecture",
+   "first_line": 5385,
+   "occurrences": 1
+  },
+  "357": {
+   "title": "Windows/Linux compatibility layer",
+   "first_line": 5398,
+   "occurrences": 1
+  },
+  "358": {
+   "title": "Graphics/API translation",
+   "first_line": 5411,
+   "occurrences": 1
+  },
+  "359": {
+   "title": "Legacy platform emulation",
+   "first_line": 5423,
+   "occurrences": 1
+  },
+  "360": {
+   "title": "Clean-room reverse engineering",
+   "first_line": 5437,
+   "occurrences": 1
+  },
+  "361": {
+   "title": "ABI compatibility",
+   "first_line": 5451,
+   "occurrences": 1
+  },
+  "362": {
+   "title": "File-format identification",
+   "first_line": 5464,
+   "occurrences": 1
+  },
+  "363": {
+   "title": "Digital preservation",
+   "first_line": 5476,
+   "occurrences": 1
+  },
+  "364": {
+   "title": "Compression library",
+   "first_line": 5489,
+   "occurrences": 1
+  },
+  "365": {
+   "title": "Deduplication/content-defined chunking",
+   "first_line": 5503,
+   "occurrences": 1
+  },
+  "366": {
+   "title": "Filesystem reference layer",
+   "first_line": 5514,
+   "occurrences": 1
+  },
+  "367": {
+   "title": "Userspace filesystems",
+   "first_line": 5530,
+   "occurrences": 1
+  },
+  "368": {
+   "title": "Object/block storage",
+   "first_line": 5542,
+   "occurrences": 1
+  },
+  "369": {
+   "title": "Distributed-database replication",
+   "first_line": 5555,
+   "occurrences": 1
+  },
+  "370": {
+   "title": "Local-first synchronization",
+   "first_line": 5567,
+   "occurrences": 1
+  },
+  "371": {
+   "title": "Backup/recovery stack",
+   "first_line": 5581,
+   "occurrences": 1
+  },
+  "372": {
+   "title": "Archival/cold storage",
+   "first_line": 5595,
+   "occurrences": 1
+  },
+  "373": {
+   "title": "Content-addressed Aetherius store",
+   "first_line": 5607,
+   "occurrences": 1
+  },
+  "374": {
+   "title": "Memory allocators/runtime memory",
+   "first_line": 5620,
+   "occurrences": 1
+  },
+  "375": {
+   "title": "Async I/O runtimes",
+   "first_line": 5634,
+   "occurrences": 1
+  },
+  "376": {
+   "title": "IPC/RPC fabric",
+   "first_line": 5647,
+   "occurrences": 1
+  },
+  "377": {
+   "title": "Service discovery",
+   "first_line": 5661,
+   "occurrences": 1
+  },
+  "378": {
+   "title": "Logging architecture",
+   "first_line": 5674,
+   "occurrences": 1
+  },
+  "379": {
+   "title": "Crash diagnostics",
+   "first_line": 5687,
+   "occurrences": 1
+  },
+  "380": {
+   "title": "Fuzz-testing ecosystem",
+   "first_line": 5699,
+   "occurrences": 1
+  },
+  "381": {
+   "title": "Test architecture",
+   "first_line": 5713,
+   "occurrences": 1
+  },
+  "382": {
+   "title": "CI/CD ecosystem",
+   "first_line": 5728,
+   "occurrences": 1
+  },
+  "383": {
+   "title": "Hermetic/reproducible builds",
+   "first_line": 5742,
+   "occurrences": 1
+  },
+  "384": {
+   "title": "Artifact/package registry",
+   "first_line": 5754,
+   "occurrences": 1
+  },
+  "385": {
+   "title": "Automated licence compliance",
+   "first_line": 5768,
+   "occurrences": 1
+  },
+  "386": {
+   "title": "Patent intelligence",
+   "first_line": 5782,
+   "occurrences": 1
+  },
+  "387": {
+   "title": "Standards-intelligence engine",
+   "first_line": 5796,
+   "occurrences": 1
+  },
+  "388": {
+   "title": "Vulnerability intelligence",
+   "first_line": 5814,
+   "occurrences": 1
+  },
+  "389": {
+   "title": "Dependency maintenance automation",
+   "first_line": 5828,
+   "occurrences": 1
+  },
+  "390": {
+   "title": "Static/dynamic security analysis",
+   "first_line": 5840,
+   "occurrences": 1
+  },
+  "391": {
+   "title": "Software provenance registry",
+   "first_line": 5854,
+   "occurrences": 1
+  },
+  "392": {
+   "title": "Enterprise IAM",
+   "first_line": 5868,
+   "occurrences": 1
+  },
+  "393": {
+   "title": "Enterprise workflow/BPM",
+   "first_line": 5883,
+   "occurrences": 1
+  },
+  "394": {
+   "title": "CRM/ERP interoperability",
+   "first_line": 5897,
+   "occurrences": 1
+  },
+  "395": {
+   "title": "Logistics/supply-chain software",
+   "first_line": 5912,
+   "occurrences": 1
+  },
+  "396": {
+   "title": "Route/fleet optimisation",
+   "first_line": 5927,
+   "occurrences": 1
+  },
+  "397": {
+   "title": "Construction/BIM stack",
+   "first_line": 5941,
+   "occurrences": 1
+  },
+  "398": {
+   "title": "Smart-city/digital-city systems",
+   "first_line": 5956,
+   "occurrences": 1
+  },
+  "399": {
+   "title": "Autonomous construction",
+   "first_line": 5971,
+   "occurrences": 1
+  },
+  "400": {
+   "title": "Universal Aetherius capability matrix",
+   "first_line": 5985,
+   "occurrences": 1
+  },
+  "401": {
+   "title": "Aviation software architecture",
+   "first_line": 6027,
+   "occurrences": 2
+  },
+  "402": {
+   "title": "Open flight simulation",
+   "first_line": 6042,
+   "occurrences": 2
+  },
+  "403": {
+   "title": "Autonomous aircraft",
+   "first_line": 6056,
+   "occurrences": 2
+  },
+  "404": {
+   "title": "Air-traffic / U-space systems",
+   "first_line": 6069,
+   "occurrences": 2
+  },
+  "405": {
+   "title": "Maritime software stack",
+   "first_line": 6082,
+   "occurrences": 2
+  },
+  "406": {
+   "title": "Autonomous marine vehicles",
+   "first_line": 6096,
+   "occurrences": 2
+  },
+  "407": {
+   "title": "Rail systems",
+   "first_line": 6110,
+   "occurrences": 2
+  },
+  "408": {
+   "title": "Autonomous rail/metro",
+   "first_line": 6123,
+   "occurrences": 2
+  },
+  "409": {
+   "title": "Public-transport interoperability",
+   "first_line": 6134,
+   "occurrences": 2
+  },
+  "410": {
+   "title": "Traffic simulation",
+   "first_line": 6147,
+   "occurrences": 2
+  },
+  "411": {
+   "title": "Logistics robotics",
+   "first_line": 6160,
+   "occurrences": 2
+  },
+  "412": {
+   "title": "Warehouse automation",
+   "first_line": 6174,
+   "occurrences": 2
+  },
+  "413": {
+   "title": "Robotic manipulation",
+   "first_line": 6187,
+   "occurrences": 2
+  },
+  "414": {
+   "title": "Factory orchestration",
+   "first_line": 6200,
+   "occurrences": 2
+  },
+  "415": {
+   "title": "PLC/industrial control research",
+   "first_line": 6214,
+   "occurrences": 2
+  },
+  "416": {
+   "title": "Industrial robotics",
+   "first_line": 6226,
+   "occurrences": 2
+  },
+  "417": {
+   "title": "Machine vision for manufacturing",
+   "first_line": 6240,
+   "occurrences": 2
+  },
+  "418": {
+   "title": "Semiconductor manufacturing",
+   "first_line": 6252,
+   "occurrences": 2
+  },
+  "419": {
+   "title": "Semiconductor process control",
+   "first_line": 6266,
+   "occurrences": 2
+  },
+  "420": {
+   "title": "Semiconductor metrology",
+   "first_line": 6278,
+   "occurrences": 2
+  },
+  "421": {
+   "title": "Dimensional metrology",
+   "first_line": 6291,
+   "occurrences": 2
+  },
+  "422": {
+   "title": "Machine calibration",
+   "first_line": 6303,
+   "occurrences": 2
+  },
+  "423": {
+   "title": "Precision engineering",
+   "first_line": 6315,
+   "occurrences": 2
+  },
+  "424": {
+   "title": "Quantum sensing",
+   "first_line": 6327,
+   "occurrences": 2
+  },
+  "425": {
+   "title": "High-precision navigation",
+   "first_line": 6338,
+   "occurrences": 2
+  },
+  "426": {
+   "title": "GPS-denied navigation",
+   "first_line": 6351,
+   "occurrences": 2
+  },
+  "427": {
+   "title": "Indoor positioning",
+   "first_line": 6363,
+   "occurrences": 2
+  },
+  "428": {
+   "title": "Cooperative localization",
+   "first_line": 6375,
+   "occurrences": 2
+  },
+  "429": {
+   "title": "Secure hardware modules",
+   "first_line": 6385,
+   "occurrences": 2
+  },
+  "430": {
+   "title": "Physical unclonable functions",
+   "first_line": 6398,
+   "occurrences": 2
+  },
+  "431": {
+   "title": "Hardware security testing",
+   "first_line": 6409,
+   "occurrences": 2
+  },
+  "432": {
+   "title": "Trusted device mesh",
+   "first_line": 6421,
+   "occurrences": 2
+  },
+  "433": {
+   "title": "Wearable computing",
+   "first_line": 6432,
+   "occurrences": 2
+  },
+  "434": {
+   "title": "Smart textiles",
+   "first_line": 6445,
+   "occurrences": 2
+  },
+  "435": {
+   "title": "Flexible/stretchable electronics",
+   "first_line": 6458,
+   "occurrences": 2
+  },
+  "436": {
+   "title": "E-textile body interface",
+   "first_line": 6469,
+   "occurrences": 2
+  },
+  "437": {
+   "title": "Smart-glasses stack",
+   "first_line": 6482,
+   "occurrences": 2
+  },
+  "438": {
+   "title": "Contact-lens display research",
+   "first_line": 6496,
+   "occurrences": 2
+  },
+  "439": {
+   "title": "Electronic skin",
+   "first_line": 6508,
+   "occurrences": 2
+  },
+  "440": {
+   "title": "Medical-device interoperability",
+   "first_line": 6521,
+   "occurrences": 2
+  },
+  "441": {
+   "title": "Medical imaging",
+   "first_line": 6534,
+   "occurrences": 2
+  },
+  "442": {
+   "title": "Ultrasound systems",
+   "first_line": 6548,
+   "occurrences": 2
+  },
+  "443": {
+   "title": "Biosignal analysis",
+   "first_line": 6560,
+   "occurrences": 2
+  },
+  "444": {
+   "title": "Biomechanical sensing",
+   "first_line": 6574,
+   "occurrences": 2
+  },
+  "445": {
+   "title": "Digital pathology",
+   "first_line": 6587,
+   "occurrences": 2
+  },
+  "446": {
+   "title": "Genomics infrastructure",
+   "first_line": 6598,
+   "occurrences": 2
+  },
+  "447": {
+   "title": "Single-cell biology",
+   "first_line": 6611,
+   "occurrences": 2
+  },
+  "448": {
+   "title": "Spatial biology",
+   "first_line": 6623,
+   "occurrences": 2
+  },
+  "449": {
+   "title": "Protein engineering",
+   "first_line": 6633,
+   "occurrences": 2
+  },
+  "450": {
+   "title": "Molecular docking / drug discovery",
+   "first_line": 6645,
+   "occurrences": 2
+  },
+  "451": {
+   "title": "Systems biology",
+   "first_line": 6657,
+   "occurrences": 2
+  },
+  "452": {
+   "title": "Organ / physiological modelling",
+   "first_line": 6669,
+   "occurrences": 2
+  },
+  "453": {
+   "title": "Artificial-life research",
+   "first_line": 6680,
+   "occurrences": 2
+  },
+  "454": {
+   "title": "Evolutionary computation",
+   "first_line": 6692,
+   "occurrences": 2
+  },
+  "455": {
+   "title": "Morphogenetic computation",
+   "first_line": 6705,
+   "occurrences": 2
+  },
+  "456": {
+   "title": "Homeostatic AI",
+   "first_line": 6716,
+   "occurrences": 2
+  },
+  "457": {
+   "title": "Artificial immune systems",
+   "first_line": 6729,
+   "occurrences": 2
+  },
+  "458": {
+   "title": "Cognitive architectures",
+   "first_line": 6741,
+   "occurrences": 2
+  },
+  "459": {
+   "title": "Attention architecture",
+   "first_line": 6755,
+   "occurrences": 2
+  },
+  "460": {
+   "title": "Executive-control architecture",
+   "first_line": 6767,
+   "occurrences": 2
+  },
+  "461": {
+   "title": "Genesis memory architecture",
+   "first_line": 6779,
+   "occurrences": 2
+  },
+  "462": {
+   "title": "Memory provenance",
+   "first_line": 6794,
+   "occurrences": 2
+  },
+  "463": {
+   "title": "Memory contamination defenses",
+   "first_line": 6807,
+   "occurrences": 2
+  },
+  "464": {
+   "title": "Identity continuity",
+   "first_line": 6819,
+   "occurrences": 2
+  },
+  "465": {
+   "title": "Personality architecture",
+   "first_line": 6832,
+   "occurrences": 2
+  },
+  "466": {
+   "title": "Value/policy architecture",
+   "first_line": 6845,
+   "occurrences": 2
+  },
+  "467": {
+   "title": "Goal architecture",
+   "first_line": 6858,
+   "occurrences": 2
+  },
+  "468": {
+   "title": "Motivation/reward architecture",
+   "first_line": 6872,
+   "occurrences": 2
+  },
+  "469": {
+   "title": "Self-model",
+   "first_line": 6884,
+   "occurrences": 2
+  },
+  "470": {
+   "title": "Theory-of-mind research",
+   "first_line": 6898,
+   "occurrences": 2
+  },
+  "471": {
+   "title": "Metacognition",
+   "first_line": 6908,
+   "occurrences": 2
+  },
+  "472": {
+   "title": "Curiosity-driven research agent",
+   "first_line": 6920,
+   "occurrences": 2
+  },
+  "473": {
+   "title": "Recommendation systems",
+   "first_line": 6931,
+   "occurrences": 2
+  },
+  "474": {
+   "title": "Search/ranking system",
+   "first_line": 6944,
+   "occurrences": 2
+  },
+  "475": {
+   "title": "Ecommerce platform layer",
+   "first_line": 6959,
+   "occurrences": 2
+  },
+  "476": {
+   "title": "Job platform",
+   "first_line": 6975,
+   "occurrences": 2
+  },
+  "477": {
+   "title": "Social/community platform",
+   "first_line": 6990,
+   "occurrences": 2
+  },
+  "478": {
+   "title": "Trust/reputation systems",
+   "first_line": 7006,
+   "occurrences": 2
+  },
+  "479": {
+   "title": "Business-intelligence stack",
+   "first_line": 7019,
+   "occurrences": 2
+  },
+  "480": {
+   "title": "Cross-programme evidence matrix",
+   "first_line": 7033,
+   "occurrences": 2
+  },
+  "481": {
+   "title": "Cybersecurity architecture for Aetherius",
+   "first_line": 8107,
+   "occurrences": 2
+  },
+  "482": {
+   "title": "Endpoint Detection and Response",
+   "first_line": 8122,
+   "occurrences": 2
+  },
+  "483": {
+   "title": "Host intrusion detection",
+   "first_line": 8137,
+   "occurrences": 2
+  },
+  "484": {
+   "title": "Network intrusion detection",
+   "first_line": 8150,
+   "occurrences": 2
+  },
+  "485": {
+   "title": "Security information/event management",
+   "first_line": 8163,
+   "occurrences": 2
+  },
+  "486": {
+   "title": "Extended detection/response",
+   "first_line": 8175,
+   "occurrences": 2
+  },
+  "487": {
+   "title": "Malware analysis",
+   "first_line": 8187,
+   "occurrences": 2
+  },
+  "488": {
+   "title": "Sandboxing infrastructure",
+   "first_line": 8201,
+   "occurrences": 2
+  },
+  "489": {
+   "title": "Deception systems",
+   "first_line": 8216,
+   "occurrences": 2
+  },
+  "490": {
+   "title": "Security graph",
+   "first_line": 8229,
+   "occurrences": 2
+  },
+  "491": {
+   "title": "Attack-path analysis",
+   "first_line": 8244,
+   "occurrences": 2
+  },
+  "492": {
+   "title": "Threat-intelligence stack",
+   "first_line": 8256,
+   "occurrences": 2
+  },
+  "493": {
+   "title": "Behavioral security analytics",
+   "first_line": 8270,
+   "occurrences": 2
+  },
+  "494": {
+   "title": "Identity threat detection",
+   "first_line": 8282,
+   "occurrences": 2
+  },
+  "495": {
+   "title": "Security policy engines",
+   "first_line": 8294,
+   "occurrences": 2
+  },
+  "496": {
+   "title": "Capability-based security",
+   "first_line": 8308,
+   "occurrences": 2
+  },
+  "497": {
+   "title": "Mandatory access controls",
+   "first_line": 8320,
+   "occurrences": 2
+  },
+  "498": {
+   "title": "Secure update infrastructure",
+   "first_line": 8332,
+   "occurrences": 2
+  },
+  "499": {
+   "title": "Firmware security",
+   "first_line": 8345,
+   "occurrences": 2
+  },
+  "500": {
+   "title": "Hardware-rooted trust",
+   "first_line": 8357,
+   "occurrences": 2
+  },
+  "501": {
+   "title": "Language/runtime safety",
+   "first_line": 8369,
+   "occurrences": 2
+  },
+  "502": {
+   "title": "C/C++ hardening",
+   "first_line": 8381,
+   "occurrences": 2
+  },
+  "503": {
+   "title": "Rust ecosystem for systems",
+   "first_line": 8394,
+   "occurrences": 2
+  },
+  "504": {
+   "title": "Zig ecosystem",
+   "first_line": 8408,
+   "occurrences": 2
+  },
+  "505": {
+   "title": "Go systems/services layer",
+   "first_line": 8419,
+   "occurrences": 2
+  },
+  "506": {
+   "title": "Swift ecosystem",
+   "first_line": 8431,
+   "occurrences": 2
+  },
+  "507": {
+   "title": "Kotlin ecosystem",
+   "first_line": 8442,
+   "occurrences": 2
+  },
+  "508": {
+   "title": "Dart/Flutter runtime",
+   "first_line": 8452,
+   "occurrences": 2
+  },
+  "509": {
+   "title": "Python execution layer",
+   "first_line": 8463,
+   "occurrences": 2
+  },
+  "510": {
+   "title": "Java/JVM layer",
+   "first_line": 8476,
+   "occurrences": 2
+  },
+  "511": {
+   "title": "WebAssembly runtime architecture",
+   "first_line": 8488,
+   "occurrences": 2
+  },
+  "512": {
+   "title": "Multi-language runtime host",
+   "first_line": 8501,
+   "occurrences": 2
+  },
+  "513": {
+   "title": "Scripting subsystem",
+   "first_line": 8516,
+   "occurrences": 2
+  },
+  "514": {
+   "title": "Compiler toolchain",
+   "first_line": 8529,
+   "occurrences": 2
+  },
+  "515": {
+   "title": "JIT compilation",
+   "first_line": 8543,
+   "occurrences": 2
+  },
+  "516": {
+   "title": "Static compilation",
+   "first_line": 8555,
+   "occurrences": 2
+  },
+  "517": {
+   "title": "Binary instrumentation",
+   "first_line": 8566,
+   "occurrences": 2
+  },
+  "518": {
+   "title": "Debugging ecosystem",
+   "first_line": 8578,
+   "occurrences": 2
+  },
+  "519": {
+   "title": "Profiling/performance analysis",
+   "first_line": 8590,
+   "occurrences": 2
+  },
+  "520": {
+   "title": "Performance auto-tuning",
+   "first_line": 8604,
+   "occurrences": 2
+  },
+  "521": {
+   "title": "Database engine internals",
+   "first_line": 8617,
+   "occurrences": 2
+  },
+  "522": {
+   "title": "Embedded database layer",
+   "first_line": 8631,
+   "occurrences": 2
+  },
+  "523": {
+   "title": "Graph database internals",
+   "first_line": 8643,
+   "occurrences": 2
+  },
+  "524": {
+   "title": "Vector database internals",
+   "first_line": 8655,
+   "occurrences": 2
+  },
+  "525": {
+   "title": "Event-store architecture",
+   "first_line": 8666,
+   "occurrences": 2
+  },
+  "526": {
+   "title": "Temporal databases",
+   "first_line": 8678,
+   "occurrences": 2
+  },
+  "527": {
+   "title": "Spatial databases",
+   "first_line": 8689,
+   "occurrences": 2
+  },
+  "528": {
+   "title": "Multi-model database layer",
+   "first_line": 8700,
+   "occurrences": 2
+  },
+  "529": {
+   "title": "Query federation",
+   "first_line": 8712,
+   "occurrences": 2
+  },
+  "530": {
+   "title": "Data virtualization",
+   "first_line": 8723,
+   "occurrences": 2
+  },
+  "531": {
+   "title": "Distributed compute engines",
+   "first_line": 8734,
+   "occurrences": 2
+  },
+  "532": {
+   "title": "HPC infrastructure",
+   "first_line": 8747,
+   "occurrences": 2
+  },
+  "533": {
+   "title": "Distributed shared-memory research",
+   "first_line": 8759,
+   "occurrences": 2
+  },
+  "534": {
+   "title": "RDMA networking",
+   "first_line": 8770,
+   "occurrences": 2
+  },
+  "535": {
+   "title": "GPU cluster orchestration",
+   "first_line": 8782,
+   "occurrences": 2
+  },
+  "536": {
+   "title": "Distributed training",
+   "first_line": 8795,
+   "occurrences": 2
+  },
+  "537": {
+   "title": "Model-serving architecture",
+   "first_line": 8807,
+   "occurrences": 2
+  },
+  "538": {
+   "title": "Edge-serving architecture",
+   "first_line": 8820,
+   "occurrences": 2
+  },
+  "539": {
+   "title": "Digital-twin lifecycle management",
+   "first_line": 8832,
+   "occurrences": 2
+  },
+  "540": {
+   "title": "Simulation credibility",
+   "first_line": 8845,
+   "occurrences": 2
+  },
+  "541": {
+   "title": "Uncertainty quantification",
+   "first_line": 8858,
+   "occurrences": 2
+  },
+  "542": {
+   "title": "Model calibration",
+   "first_line": 8870,
+   "occurrences": 2
+  },
+  "543": {
+   "title": "Surrogate modelling",
+   "first_line": 8881,
+   "occurrences": 2
+  },
+  "544": {
+   "title": "Physics-informed ML",
+   "first_line": 8891,
+   "occurrences": 2
+  },
+  "545": {
+   "title": "Scientific datasets registry",
+   "first_line": 8902,
+   "occurrences": 2
+  },
+  "546": {
+   "title": "Dataset quality engine",
+   "first_line": 8916,
+   "occurrences": 2
+  },
+  "547": {
+   "title": "Benchmark contamination detection",
+   "first_line": 8930,
+   "occurrences": 2
+  },
+  "548": {
+   "title": "Publication-intelligence system",
+   "first_line": 8941,
+   "occurrences": 2
+  },
+  "549": {
+   "title": "Patent/publication linkage",
+   "first_line": 8955,
+   "occurrences": 2
+  },
+  "550": {
+   "title": "Standards conformance laboratory",
+   "first_line": 8967,
+   "occurrences": 2
+  },
+  "551": {
+   "title": "UI design system",
+   "first_line": 8979,
+   "occurrences": 2
+  },
+  "552": {
+   "title": "Universal input framework",
+   "first_line": 8993,
+   "occurrences": 2
+  },
+  "553": {
+   "title": "Universal output framework",
+   "first_line": 9008,
+   "occurrences": 2
+  },
+  "554": {
+   "title": "Localization/internationalization",
+   "first_line": 9022,
+   "occurrences": 2
+  },
+  "555": {
+   "title": "Real-time translation",
+   "first_line": 9036,
+   "occurrences": 2
+  },
+  "556": {
+   "title": "Accessibility standards",
+   "first_line": 9049,
+   "occurrences": 2
+  },
+  "557": {
+   "title": "Browser engine internals",
+   "first_line": 9062,
+   "occurrences": 2
+  },
+  "558": {
+   "title": "JavaScript engines",
+   "first_line": 9077,
+   "occurrences": 2
+  },
+  "559": {
+   "title": "Graphics rendering engine",
+   "first_line": 9090,
+   "occurrences": 2
+  },
+  "560": {
+   "title": "Aetherius OS/device-driver gap matrix",
+   "first_line": 9105,
+   "occurrences": 2
+  },
+  "561": {
+   "title": "Kernel scheduler architecture",
+   "first_line": 10178,
+   "occurrences": 2
+  },
+  "562": {
+   "title": "AI-aware operating-system scheduler",
+   "first_line": 10195,
+   "occurrences": 2
+  },
+  "563": {
+   "title": "Kernel memory management",
+   "first_line": 10211,
+   "occurrences": 2
+  },
+  "564": {
+   "title": "AI-aware memory manager",
+   "first_line": 10227,
+   "occurrences": 2
+  },
+  "565": {
+   "title": "Persistent memory architecture",
+   "first_line": 10242,
+   "occurrences": 2
+  },
+  "566": {
+   "title": "Kernel IPC",
+   "first_line": 10254,
+   "occurrences": 2
+  },
+  "567": {
+   "title": "Capability-oriented IPC",
+   "first_line": 10269,
+   "occurrences": 2
+  },
+  "568": {
+   "title": "Kernel object model",
+   "first_line": 10281,
+   "occurrences": 2
+  },
+  "569": {
+   "title": "Process model",
+   "first_line": 10296,
+   "occurrences": 2
+  },
+  "570": {
+   "title": "Resource-control system",
+   "first_line": 10310,
+   "occurrences": 2
+  },
+  "571": {
+   "title": "Kernel timers/timekeeping",
+   "first_line": 10324,
+   "occurrences": 2
+  },
+  "572": {
+   "title": "System time service",
+   "first_line": 10337,
+   "occurrences": 2
+  },
+  "573": {
+   "title": "Kernel synchronization primitives",
+   "first_line": 10349,
+   "occurrences": 2
+  },
+  "574": {
+   "title": "Concurrency correctness",
+   "first_line": 10362,
+   "occurrences": 2
+  },
+  "575": {
+   "title": "Interrupt architecture",
+   "first_line": 10373,
+   "occurrences": 2
+  },
+  "576": {
+   "title": "DMA/IOMMU architecture",
+   "first_line": 10384,
+   "occurrences": 2
+  },
+  "577": {
+   "title": "Kernel driver framework",
+   "first_line": 10396,
+   "occurrences": 2
+  },
+  "578": {
+   "title": "Userspace driver architecture",
+   "first_line": 10411,
+   "occurrences": 2
+  },
+  "579": {
+   "title": "Device-tree / hardware-description layer",
+   "first_line": 10423,
+   "occurrences": 2
+  },
+  "580": {
+   "title": "Hardware discovery service",
+   "first_line": 10435,
+   "occurrences": 2
+  },
+  "581": {
+   "title": "Filesystem VFS layer",
+   "first_line": 10453,
+   "occurrences": 2
+  },
+  "582": {
+   "title": "Aetherius semantic filesystem",
+   "first_line": 10467,
+   "occurrences": 2
+  },
+  "583": {
+   "title": "Transactional filesystem",
+   "first_line": 10482,
+   "occurrences": 2
+  },
+  "584": {
+   "title": "Filesystem integrity",
+   "first_line": 10495,
+   "occurrences": 2
+  },
+  "585": {
+   "title": "Storage virtualization",
+   "first_line": 10507,
+   "occurrences": 2
+  },
+  "586": {
+   "title": "Universal storage broker",
+   "first_line": 10521,
+   "occurrences": 2
+  },
+  "587": {
+   "title": "Storage placement intelligence",
+   "first_line": 10536,
+   "occurrences": 2
+  },
+  "588": {
+   "title": "Block-device layer",
+   "first_line": 10550,
+   "occurrences": 2
+  },
+  "589": {
+   "title": "NVMe architecture",
+   "first_line": 10563,
+   "occurrences": 2
+  },
+  "590": {
+   "title": "Graphics kernel/display layer",
+   "first_line": 10576,
+   "occurrences": 2
+  },
+  "591": {
+   "title": "Aetherius compositor",
+   "first_line": 10590,
+   "occurrences": 2
+  },
+  "592": {
+   "title": "Window-management architecture",
+   "first_line": 10605,
+   "occurrences": 2
+  },
+  "593": {
+   "title": "GPU resource manager",
+   "first_line": 10619,
+   "occurrences": 2
+  },
+  "594": {
+   "title": "Graphics API abstraction",
+   "first_line": 10634,
+   "occurrences": 2
+  },
+  "595": {
+   "title": "Shader toolchain",
+   "first_line": 10647,
+   "occurrences": 2
+  },
+  "596": {
+   "title": "Software renderer fallback",
+   "first_line": 10660,
+   "occurrences": 2
+  },
+  "597": {
+   "title": "Display colour pipeline",
+   "first_line": 10670,
+   "occurrences": 2
+  },
+  "598": {
+   "title": "Remote graphics",
+   "first_line": 10683,
+   "occurrences": 2
+  },
+  "599": {
+   "title": "Audio-kernel subsystem",
+   "first_line": 10696,
+   "occurrences": 2
+  },
+  "600": {
+   "title": "Universal audio graph",
+   "first_line": 10710,
+   "occurrences": 2
+  },
+  "601": {
+   "title": "Low-latency professional audio",
+   "first_line": 10724,
+   "occurrences": 2
+  },
+  "602": {
+   "title": "Audio device aggregation",
+   "first_line": 10737,
+   "occurrences": 2
+  },
+  "603": {
+   "title": "Spatial audio engine",
+   "first_line": 10748,
+   "occurrences": 2
+  },
+  "604": {
+   "title": "Microphone-array processing",
+   "first_line": 10761,
+   "occurrences": 2
+  },
+  "605": {
+   "title": "Bluetooth stack",
+   "first_line": 10773,
+   "occurrences": 2
+  },
+  "606": {
+   "title": "Bluetooth LE Audio",
+   "first_line": 10789,
+   "occurrences": 2
+  },
+  "607": {
+   "title": "Wi-Fi stack",
+   "first_line": 10800,
+   "occurrences": 2
+  },
+  "608": {
+   "title": "Network-manager subsystem",
+   "first_line": 10814,
+   "occurrences": 2
+  },
+  "609": {
+   "title": "Cellular modem stack",
+   "first_line": 10829,
+   "occurrences": 2
+  },
+  "610": {
+   "title": "USB architecture",
+   "first_line": 10842,
+   "occurrences": 2
+  },
+  "611": {
+   "title": "USB-C / Power Delivery",
+   "first_line": 10858,
+   "occurrences": 2
+  },
+  "612": {
+   "title": "HID/input-device stack",
+   "first_line": 10870,
+   "occurrences": 2
+  },
+  "613": {
+   "title": "Camera subsystem",
+   "first_line": 10884,
+   "occurrences": 2
+  },
+  "614": {
+   "title": "Sensor framework",
+   "first_line": 10899,
+   "occurrences": 2
+  },
+  "615": {
+   "title": "Power-management subsystem",
+   "first_line": 10914,
+   "occurrences": 2
+  },
+  "616": {
+   "title": "AI-aware power management",
+   "first_line": 10929,
+   "occurrences": 2
+  },
+  "617": {
+   "title": "Thermal-management subsystem",
+   "first_line": 10942,
+   "occurrences": 2
+  },
+  "618": {
+   "title": "Sleep/hibernate architecture",
+   "first_line": 10955,
+   "occurrences": 2
+  },
+  "619": {
+   "title": "Mobile OS architecture",
+   "first_line": 10967,
+   "occurrences": 2
+  },
+  "620": {
+   "title": "Android compatibility",
+   "first_line": 10981,
+   "occurrences": 2
+  },
+  "621": {
+   "title": "Linux application compatibility",
+   "first_line": 10994,
+   "occurrences": 2
+  },
+  "622": {
+   "title": "Windows application compatibility",
+   "first_line": 11007,
+   "occurrences": 2
+  },
+  "623": {
+   "title": "macOS application compatibility research",
+   "first_line": 11021,
+   "occurrences": 2
+  },
+  "624": {
+   "title": "Hypervisor architecture",
+   "first_line": 11032,
+   "occurrences": 2
+  },
+  "625": {
+   "title": "Nested virtualization",
+   "first_line": 11046,
+   "occurrences": 2
+  },
+  "626": {
+   "title": "MicroVM architecture",
+   "first_line": 11057,
+   "occurrences": 2
+  },
+  "627": {
+   "title": "Confidential virtualization",
+   "first_line": 11069,
+   "occurrences": 2
+  },
+  "628": {
+   "title": "VM checkpoint/migration",
+   "first_line": 11078,
+   "occurrences": 2
+  },
+  "629": {
+   "title": "Distributed operating-system research",
+   "first_line": 11089,
+   "occurrences": 2
+  },
+  "630": {
+   "title": "Single-system-image cluster concepts",
+   "first_line": 11100,
+   "occurrences": 2
+  },
+  "631": {
+   "title": "Edge/fog OS",
+   "first_line": 11111,
+   "occurrences": 2
+  },
+  "632": {
+   "title": "Application sandbox",
+   "first_line": 11123,
+   "occurrences": 2
+  },
+  "633": {
+   "title": "Capability manifest for applications",
+   "first_line": 11138,
+   "occurrences": 2
+  },
+  "634": {
+   "title": "Application package format",
+   "first_line": 11151,
+   "occurrences": 2
+  },
+  "635": {
+   "title": "Aetherius app store/repository",
+   "first_line": 11166,
+   "occurrences": 2
+  },
+  "636": {
+   "title": "AI/agent marketplace",
+   "first_line": 11182,
+   "occurrences": 2
+  },
+  "637": {
+   "title": "Developer SDK",
+   "first_line": 11198,
+   "occurrences": 2
+  },
+  "638": {
+   "title": "Device/driver SDK",
+   "first_line": 11215,
+   "occurrences": 2
+  },
+  "639": {
+   "title": "Agent SDK",
+   "first_line": 11229,
+   "occurrences": 2
+  },
+  "640": {
+   "title": "Aetherius OS verification matrix",
+   "first_line": 11245,
+   "occurrences": 2
+  },
+  "641": {
+   "title": "Package/dependency manager",
+   "first_line": 12372,
+   "occurrences": 1
+  },
+  "642": {
+   "title": "Cross-ecosystem dependency management",
+   "first_line": 12388,
+   "occurrences": 1
+  },
+  "643": {
+   "title": "Dependency graph intelligence",
+   "first_line": 12403,
+   "occurrences": 1
+  },
+  "644": {
+   "title": "System configuration architecture",
+   "first_line": 12416,
+   "occurrences": 1
+  },
+  "645": {
+   "title": "Configuration-as-code",
+   "first_line": 12431,
+   "occurrences": 1
+  },
+  "646": {
+   "title": "Configuration drift detection",
+   "first_line": 12443,
+   "occurrences": 1
+  },
+  "647": {
+   "title": "System installer",
+   "first_line": 12455,
+   "occurrences": 1
+  },
+  "648": {
+   "title": "Live/recovery environment",
+   "first_line": 12470,
+   "occurrences": 1
+  },
+  "649": {
+   "title": "Atomic system upgrades",
+   "first_line": 12484,
+   "occurrences": 1
+  },
+  "650": {
+   "title": "Boot architecture",
+   "first_line": 12496,
+   "occurrences": 1
+  },
+  "651": {
+   "title": "Boot-performance intelligence",
+   "first_line": 12510,
+   "occurrences": 1
+  },
+  "652": {
+   "title": "Service manager",
+   "first_line": 12521,
+   "occurrences": 1
+  },
+  "653": {
+   "title": "Background-task framework",
+   "first_line": 12535,
+   "occurrences": 1
+  },
+  "654": {
+   "title": "Notification subsystem",
+   "first_line": 12549,
+   "occurrences": 1
+  },
+  "655": {
+   "title": "Unified event bus",
+   "first_line": 12564,
+   "occurrences": 1
+  },
+  "656": {
+   "title": "Policy-driven event routing",
+   "first_line": 12579,
+   "occurrences": 1
+  },
+  "657": {
+   "title": "Aetherius notification/attention broker",
+   "first_line": 12591,
+   "occurrences": 1
+  },
+  "658": {
+   "title": "DNS resolver architecture",
+   "first_line": 12604,
+   "occurrences": 1
+  },
+  "659": {
+   "title": "Privacy-preserving DNS",
+   "first_line": 12618,
+   "occurrences": 1
+  },
+  "660": {
+   "title": "Firewall architecture",
+   "first_line": 12630,
+   "occurrences": 1
+  },
+  "661": {
+   "title": "eBPF firewall/security",
+   "first_line": 12644,
+   "occurrences": 1
+  },
+  "662": {
+   "title": "Application network sandbox",
+   "first_line": 12655,
+   "occurrences": 1
+  },
+  "663": {
+   "title": "Agent network permissions",
+   "first_line": 12668,
+   "occurrences": 1
+  },
+  "664": {
+   "title": "VPN architecture",
+   "first_line": 12680,
+   "occurrences": 1
+  },
+  "665": {
+   "title": "Overlay networks",
+   "first_line": 12693,
+   "occurrences": 1
+  },
+  "666": {
+   "title": "Network namespace/isolation",
+   "first_line": 12704,
+   "occurrences": 1
+  },
+  "667": {
+   "title": "Network diagnostics",
+   "first_line": 12715,
+   "occurrences": 1
+  },
+  "668": {
+   "title": "Adaptive networking",
+   "first_line": 12729,
+   "occurrences": 1
+  },
+  "669": {
+   "title": "PKI architecture",
+   "first_line": 12741,
+   "occurrences": 1
+  },
+  "670": {
+   "title": "Key-management architecture",
+   "first_line": 12755,
+   "occurrences": 1
+  },
+  "671": {
+   "title": "Cryptographic agility",
+   "first_line": 12769,
+   "occurrences": 1
+  },
+  "672": {
+   "title": "Secure messaging primitives",
+   "first_line": 12780,
+   "occurrences": 1
+  },
+  "673": {
+   "title": "Multi-user OS architecture",
+   "first_line": 12792,
+   "occurrences": 1
+  },
+  "674": {
+   "title": "Family/household accounts",
+   "first_line": 12806,
+   "occurrences": 1
+  },
+  "675": {
+   "title": "AI ownership model",
+   "first_line": 12819,
+   "occurrences": 1
+  },
+  "676": {
+   "title": "Genesis heirship system",
+   "first_line": 12832,
+   "occurrences": 1
+  },
+  "677": {
+   "title": "Temporary delegation",
+   "first_line": 12844,
+   "occurrences": 1
+  },
+  "678": {
+   "title": "Shared-resource permission system",
+   "first_line": 12857,
+   "occurrences": 1
+  },
+  "679": {
+   "title": "Consent architecture",
+   "first_line": 12872,
+   "occurrences": 1
+  },
+  "680": {
+   "title": "Privacy-control center",
+   "first_line": 12885,
+   "occurrences": 1
+  },
+  "681": {
+   "title": "Data-residency controls",
+   "first_line": 12900,
+   "occurrences": 1
+  },
+  "682": {
+   "title": "Personal data vault",
+   "first_line": 12912,
+   "occurrences": 1
+  },
+  "683": {
+   "title": "Personal data portability",
+   "first_line": 12927,
+   "occurrences": 1
+  },
+  "684": {
+   "title": "Right-to-delete implementation",
+   "first_line": 12939,
+   "occurrences": 1
+  },
+  "685": {
+   "title": "App lifecycle",
+   "first_line": 12951,
+   "occurrences": 1
+  },
+  "686": {
+   "title": "Agent lifecycle",
+   "first_line": 12966,
+   "occurrences": 1
+  },
+  "687": {
+   "title": "Model lifecycle",
+   "first_line": 12981,
+   "occurrences": 1
+  },
+  "688": {
+   "title": "Device lifecycle",
+   "first_line": 12996,
+   "occurrences": 1
+  },
+  "689": {
+   "title": "Automated system health",
+   "first_line": 13011,
+   "occurrences": 1
+  },
+  "690": {
+   "title": "Self-diagnostic engine",
+   "first_line": 13027,
+   "occurrences": 1
+  },
+  "691": {
+   "title": "Autonomous repair hierarchy",
+   "first_line": 13041,
+   "occurrences": 1
+  },
+  "692": {
+   "title": "Predictive maintenance",
+   "first_line": 13054,
+   "occurrences": 1
+  },
+  "693": {
+   "title": "Hardware health telemetry",
+   "first_line": 13069,
+   "occurrences": 1
+  },
+  "694": {
+   "title": "Software health scoring",
+   "first_line": 13083,
+   "occurrences": 1
+  },
+  "695": {
+   "title": "AI health/state monitor",
+   "first_line": 13096,
+   "occurrences": 1
+  },
+  "696": {
+   "title": "Automated regression detection",
+   "first_line": 13109,
+   "occurrences": 1
+  },
+  "697": {
+   "title": "Safe autonomous updating",
+   "first_line": 13123,
+   "occurrences": 1
+  },
+  "698": {
+   "title": "Upstream-watch system",
+   "first_line": 13137,
+   "occurrences": 1
+  },
+  "699": {
+   "title": "Repository health scoring",
+   "first_line": 13151,
+   "occurrences": 1
+  },
+  "700": {
+   "title": "Repository equivalence detection",
+   "first_line": 13165,
+   "occurrences": 1
+  },
+  "701": {
+   "title": "Fork-management system",
+   "first_line": 13178,
+   "occurrences": 1
+  },
+  "702": {
+   "title": "Patch provenance",
+   "first_line": 13191,
+   "occurrences": 1
+  },
+  "703": {
+   "title": "Code ownership/governance",
+   "first_line": 13205,
+   "occurrences": 1
+  },
+  "704": {
+   "title": "Architecture Decision Records",
+   "first_line": 13217,
+   "occurrences": 1
+  },
+  "705": {
+   "title": "Requirements-management system",
+   "first_line": 13230,
+   "occurrences": 1
+  },
+  "706": {
+   "title": "Traceability matrix",
+   "first_line": 13244,
+   "occurrences": 1
+  },
+  "707": {
+   "title": "Design-document system",
+   "first_line": 13257,
+   "occurrences": 1
+  },
+  "708": {
+   "title": "Automated documentation",
+   "first_line": 13270,
+   "occurrences": 1
+  },
+  "709": {
+   "title": "Documentation validation",
+   "first_line": 13283,
+   "occurrences": 1
+  },
+  "710": {
+   "title": "Developer portal",
+   "first_line": 13294,
+   "occurrences": 1
+  },
+  "711": {
+   "title": "Compatibility certification",
+   "first_line": 13307,
+   "occurrences": 1
+  },
+  "712": {
+   "title": "Hardware certification lab",
+   "first_line": 13319,
+   "occurrences": 1
+  },
+  "713": {
+   "title": "Peripheral compatibility",
+   "first_line": 13335,
+   "occurrences": 1
+  },
+  "714": {
+   "title": "Printing stack",
+   "first_line": 13349,
+   "occurrences": 1
+  },
+  "715": {
+   "title": "Scanning stack",
+   "first_line": 13363,
+   "occurrences": 1
+  },
+  "716": {
+   "title": "File-sharing stack",
+   "first_line": 13376,
+   "occurrences": 1
+  },
+  "717": {
+   "title": "Nearby-device sharing",
+   "first_line": 13390,
+   "occurrences": 1
+  },
+  "718": {
+   "title": "Universal clipboard",
+   "first_line": 13403,
+   "occurrences": 1
+  },
+  "719": {
+   "title": "Universal handoff",
+   "first_line": 13416,
+   "occurrences": 1
+  },
+  "720": {
+   "title": "Aetherius self-maintenance control plane",
+   "first_line": 13429,
+   "occurrences": 1
+  },
+  "721": {
+   "title": "Zero-touch device provisioning",
+   "first_line": 13457,
+   "occurrences": 1
+  },
+  "722": {
+   "title": "Factory-reset / reprovisioning architecture",
+   "first_line": 13470,
+   "occurrences": 1
+  },
+  "723": {
+   "title": "User-session manager",
+   "first_line": 13481,
+   "occurrences": 1
+  },
+  "724": {
+   "title": "Desktop shell",
+   "first_line": 13494,
+   "occurrences": 1
+  },
+  "725": {
+   "title": "Universal launcher / command palette",
+   "first_line": 13507,
+   "occurrences": 1
+  },
+  "726": {
+   "title": "System settings framework",
+   "first_line": 13521,
+   "occurrences": 1
+  },
+  "727": {
+   "title": "Permission-management UI",
+   "first_line": 13533,
+   "occurrences": 1
+  },
+  "728": {
+   "title": "System audit explorer",
+   "first_line": 13548,
+   "occurrences": 1
+  },
+  "729": {
+   "title": "Provenance explorer",
+   "first_line": 13562,
+   "occurrences": 1
+  },
+  "730": {
+   "title": "Transparency-log architecture",
+   "first_line": 13576,
+   "occurrences": 1
+  },
+  "731": {
+   "title": "Tamper-evident logging",
+   "first_line": 13588,
+   "occurrences": 1
+  },
+  "732": {
+   "title": "Privacy-preserving telemetry",
+   "first_line": 13599,
+   "occurrences": 1
+  },
+  "733": {
+   "title": "Application trust levels",
+   "first_line": 13610,
+   "occurrences": 1
+  },
+  "734": {
+   "title": "Agent trust levels",
+   "first_line": 13622,
+   "occurrences": 1
+  },
+  "735": {
+   "title": "Model trust levels",
+   "first_line": 13633,
+   "occurrences": 1
+  },
+  "736": {
+   "title": "Plug-in trust model",
+   "first_line": 13644,
+   "occurrences": 1
+  },
+  "737": {
+   "title": "App-store security pipeline",
+   "first_line": 13656,
+   "occurrences": 1
+  },
+  "738": {
+   "title": "App-store compatibility testing",
+   "first_line": 13669,
+   "occurrences": 1
+  },
+  "739": {
+   "title": "Application reputation system",
+   "first_line": 13682,
+   "occurrences": 1
+  },
+  "740": {
+   "title": "Secure remote support",
+   "first_line": 13694,
+   "occurrences": 1
+  },
+  "741": {
+   "title": "Device fleet management",
+   "first_line": 13707,
+   "occurrences": 1
+  },
+  "742": {
+   "title": "Mobile Device Management concepts",
+   "first_line": 13723,
+   "occurrences": 1
+  },
+  "743": {
+   "title": "Self-hosted personal cloud",
+   "first_line": 13735,
+   "occurrences": 1
+  },
+  "744": {
+   "title": "Home-server architecture",
+   "first_line": 13748,
+   "occurrences": 1
+  },
+  "745": {
+   "title": "Personal edge-cloud",
+   "first_line": 13761,
+   "occurrences": 1
+  },
+  "746": {
+   "title": "Local network resource broker",
+   "first_line": 13774,
+   "occurrences": 1
+  },
+  "747": {
+   "title": "Cross-device identity federation",
+   "first_line": 13786,
+   "occurrences": 1
+  },
+  "748": {
+   "title": "Account recovery architecture",
+   "first_line": 13797,
+   "occurrences": 1
+  },
+  "749": {
+   "title": "Cryptographic backup recovery",
+   "first_line": 13808,
+   "occurrences": 1
+  },
+  "750": {
+   "title": "Secret-sharing systems",
+   "first_line": 13818,
+   "occurrences": 1
+  },
+  "751": {
+   "title": "Content authenticity",
+   "first_line": 13828,
+   "occurrences": 1
+  },
+  "752": {
+   "title": "Media-forensics framework",
+   "first_line": 13840,
+   "occurrences": 1
+  },
+  "753": {
+   "title": "Information-quality engine",
+   "first_line": 13851,
+   "occurrences": 1
+  },
+  "754": {
+   "title": "Claim graph",
+   "first_line": 13863,
+   "occurrences": 1
+  },
+  "755": {
+   "title": "Source reputation",
+   "first_line": 13876,
+   "occurrences": 1
+  },
+  "756": {
+   "title": "Automated fact/evidence reconciliation",
+   "first_line": 13889,
+   "occurrences": 1
+  },
+  "757": {
+   "title": "Content moderation infrastructure",
+   "first_line": 13900,
+   "occurrences": 1
+  },
+  "758": {
+   "title": "Federated moderation",
+   "first_line": 13913,
+   "occurrences": 1
+  },
+  "759": {
+   "title": "Anti-spam systems",
+   "first_line": 13924,
+   "occurrences": 1
+  },
+  "760": {
+   "title": "Sybil-resistance research",
+   "first_line": 13936,
+   "occurrences": 1
+  },
+  "761": {
+   "title": "Recommendation-control system",
+   "first_line": 13947,
+   "occurrences": 1
+  },
+  "762": {
+   "title": "Feed-ranking infrastructure",
+   "first_line": 13958,
+   "occurrences": 1
+  },
+  "763": {
+   "title": "Creator platform",
+   "first_line": 13970,
+   "occurrences": 1
+  },
+  "764": {
+   "title": "Creator monetization",
+   "first_line": 13984,
+   "occurrences": 1
+  },
+  "765": {
+   "title": "Digital-goods marketplace",
+   "first_line": 13997,
+   "occurrences": 1
+  },
+  "766": {
+   "title": "Subscription-management engine",
+   "first_line": 14012,
+   "occurrences": 1
+  },
+  "767": {
+   "title": "Billing system",
+   "first_line": 14025,
+   "occurrences": 1
+  },
+  "768": {
+   "title": "Tax/VAT engine",
+   "first_line": 14038,
+   "occurrences": 1
+  },
+  "769": {
+   "title": "Procurement system",
+   "first_line": 14050,
+   "occurrences": 1
+  },
+  "770": {
+   "title": "Supplier intelligence",
+   "first_line": 14063,
+   "occurrences": 1
+  },
+  "771": {
+   "title": "Fraud-detection framework",
+   "first_line": 14076,
+   "occurrences": 1
+  },
+  "772": {
+   "title": "Financial risk engine",
+   "first_line": 14088,
+   "occurrences": 1
+  },
+  "773": {
+   "title": "KYC/identity-verification layer",
+   "first_line": 14100,
+   "occurrences": 1
+  },
+  "774": {
+   "title": "Compliance workflow",
+   "first_line": 14111,
+   "occurrences": 1
+  },
+  "775": {
+   "title": "Skills graph",
+   "first_line": 14122,
+   "occurrences": 1
+  },
+  "776": {
+   "title": "Job-matching engine",
+   "first_line": 14135,
+   "occurrences": 1
+  },
+  "777": {
+   "title": "Credential-verification system",
+   "first_line": 14148,
+   "occurrences": 1
+  },
+  "778": {
+   "title": "Applicant Tracking System",
+   "first_line": 14159,
+   "occurrences": 1
+  },
+  "779": {
+   "title": "Scheduling/booking engine",
+   "first_line": 14172,
+   "occurrences": 1
+  },
+  "780": {
+   "title": "Meeting infrastructure",
+   "first_line": 14186,
+   "occurrences": 1
+  },
+  "781": {
+   "title": "Email infrastructure",
+   "first_line": 14200,
+   "occurrences": 1
+  },
+  "782": {
+   "title": "Calendar infrastructure",
+   "first_line": 14215,
+   "occurrences": 1
+  },
+  "783": {
+   "title": "Contact/address-book system",
+   "first_line": 14228,
+   "occurrences": 1
+  },
+  "784": {
+   "title": "Notes/wiki system",
+   "first_line": 14241,
+   "occurrences": 1
+  },
+  "785": {
+   "title": "Task/project-management engine",
+   "first_line": 14254,
+   "occurrences": 1
+  },
+  "786": {
+   "title": "Knowledge-management system",
+   "first_line": 14268,
+   "occurrences": 1
+  },
+  "787": {
+   "title": "Enterprise search",
+   "first_line": 14283,
+   "occurrences": 1
+  },
+  "788": {
+   "title": "Collaborative document engine",
+   "first_line": 14297,
+   "occurrences": 1
+  },
+  "789": {
+   "title": "Spreadsheet engine",
+   "first_line": 14310,
+   "occurrences": 1
+  },
+  "790": {
+   "title": "Formula/calculation engine",
+   "first_line": 14324,
+   "occurrences": 1
+  },
+  "791": {
+   "title": "Presentation engine",
+   "first_line": 14337,
+   "occurrences": 1
+  },
+  "792": {
+   "title": "Whiteboard/canvas engine",
+   "first_line": 14351,
+   "occurrences": 1
+  },
+  "793": {
+   "title": "Diagramming engine",
+   "first_line": 14364,
+   "occurrences": 1
+  },
+  "794": {
+   "title": "Business-intelligence semantic layer",
+   "first_line": 14377,
+   "occurrences": 1
+  },
+  "795": {
+   "title": "Workflow automation platform",
+   "first_line": 14390,
+   "occurrences": 1
+  },
+  "796": {
+   "title": "Robotic Process Automation",
+   "first_line": 14405,
+   "occurrences": 1
+  },
+  "797": {
+   "title": "Low-code/no-code builder",
+   "first_line": 14418,
+   "occurrences": 1
+  },
+  "798": {
+   "title": "Universal connector framework",
+   "first_line": 14431,
+   "occurrences": 1
+  },
+  "799": {
+   "title": "Marketplace governance",
+   "first_line": 14445,
+   "occurrences": 1
+  },
+  "800": {
+   "title": "Capability maturity framework",
+   "first_line": 14461,
+   "occurrences": 1
+  },
+  "881": {
+   "title": "Autonomous browser research stack",
+   "first_line": 14488,
+   "occurrences": 1
+  },
+  "882": {
+   "title": "Browser-agent evaluation",
+   "first_line": 14505,
+   "occurrences": 1
+  },
+  "883": {
+   "title": "Web interaction recording/replay",
+   "first_line": 14520,
+   "occurrences": 1
+  },
+  "884": {
+   "title": "Web change detection",
+   "first_line": 14533,
+   "occurrences": 1
+  },
+  "885": {
+   "title": "Deep-web/document discovery",
+   "first_line": 14546,
+   "occurrences": 1
+  },
+  "886": {
+   "title": "Search-engine federation",
+   "first_line": 14560,
+   "occurrences": 1
+  },
+  "887": {
+   "title": "Query-planning agent",
+   "first_line": 14574,
+   "occurrences": 1
+  },
+  "888": {
+   "title": "Search-result authority ranking",
+   "first_line": 14587,
+   "occurrences": 1
+  },
+  "889": {
+   "title": "Citation-grounded research engine",
+   "first_line": 14603,
+   "occurrences": 1
+  },
+  "890": {
+   "title": "Research contradiction engine",
+   "first_line": 14615,
+   "occurrences": 1
+  },
+  "891": {
+   "title": "Digital-library architecture",
+   "first_line": 14626,
+   "occurrences": 1
+  },
+  "892": {
+   "title": "Personal scientific library",
+   "first_line": 14642,
+   "occurrences": 1
+  },
+  "893": {
+   "title": "Bibliographic knowledge graph",
+   "first_line": 14656,
+   "occurrences": 1
+  },
+  "894": {
+   "title": "Researcher/entity resolution",
+   "first_line": 14671,
+   "occurrences": 1
+  },
+  "895": {
+   "title": "Scientific publishing workflow",
+   "first_line": 14683,
+   "occurrences": 1
+  },
+  "896": {
+   "title": "Reproducible-paper package",
+   "first_line": 14697,
+   "occurrences": 1
+  },
+  "897": {
+   "title": "Semantic Web stack",
+   "first_line": 14712,
+   "occurrences": 1
+  },
+  "898": {
+   "title": "Ontology management",
+   "first_line": 14726,
+   "occurrences": 1
+  },
+  "899": {
+   "title": "Cross-domain ontology alignment",
+   "first_line": 14739,
+   "occurrences": 1
+  },
+  "900": {
+   "title": "Knowledge-graph reasoning",
+   "first_line": 14755,
+   "occurrences": 1
+  },
+  "901": {
+   "title": "GraphRAG architecture",
+   "first_line": 14768,
+   "occurrences": 1
+  },
+  "902": {
+   "title": "Multimodal knowledge graph",
+   "first_line": 14781,
+   "occurrences": 1
+  },
+  "903": {
+   "title": "Knowledge-graph change tracking",
+   "first_line": 14796,
+   "occurrences": 1
+  },
+  "904": {
+   "title": "AI training-data pipeline",
+   "first_line": 14808,
+   "occurrences": 1
+  },
+  "905": {
+   "title": "Dataset deduplication",
+   "first_line": 14822,
+   "occurrences": 1
+  },
+  "906": {
+   "title": "Dataset provenance",
+   "first_line": 14834,
+   "occurrences": 1
+  },
+  "907": {
+   "title": "Data-labeling infrastructure",
+   "first_line": 14847,
+   "occurrences": 1
+  },
+  "908": {
+   "title": "Synthetic-data factory",
+   "first_line": 14862,
+   "occurrences": 1
+  },
+  "909": {
+   "title": "Synthetic-data validation",
+   "first_line": 14876,
+   "occurrences": 1
+  },
+  "910": {
+   "title": "Training curriculum engine",
+   "first_line": 14888,
+   "occurrences": 1
+  },
+  "911": {
+   "title": "Pretraining infrastructure",
+   "first_line": 14900,
+   "occurrences": 1
+  },
+  "912": {
+   "title": "Fine-tuning stack",
+   "first_line": 14913,
+   "occurrences": 1
+  },
+  "913": {
+   "title": "Preference-optimization research",
+   "first_line": 14926,
+   "occurrences": 1
+  },
+  "914": {
+   "title": "Reinforcement-learning infrastructure",
+   "first_line": 14939,
+   "occurrences": 1
+  },
+  "915": {
+   "title": "Offline reinforcement learning",
+   "first_line": 14953,
+   "occurrences": 1
+  },
+  "916": {
+   "title": "Model-based reinforcement learning",
+   "first_line": 14963,
+   "occurrences": 1
+  },
+  "917": {
+   "title": "Hierarchical reinforcement learning",
+   "first_line": 14974,
+   "occurrences": 1
+  },
+  "918": {
+   "title": "Multi-agent reinforcement learning",
+   "first_line": 14985,
+   "occurrences": 1
+  },
+  "919": {
+   "title": "Safe reinforcement learning",
+   "first_line": 14997,
+   "occurrences": 1
+  },
+  "920": {
+   "title": "Reward-hacking detection",
+   "first_line": 15008,
+   "occurrences": 1
+  },
+  "921": {
+   "title": "World-model training",
+   "first_line": 15019,
+   "occurrences": 1
+  },
+  "922": {
+   "title": "Physical reasoning models",
+   "first_line": 15031,
+   "occurrences": 1
+  },
+  "923": {
+   "title": "Spatial-intelligence models",
+   "first_line": 15045,
+   "occurrences": 1
+  },
+  "924": {
+   "title": "Long-horizon agent training",
+   "first_line": 15058,
+   "occurrences": 1
+  },
+  "925": {
+   "title": "Tool-learning models",
+   "first_line": 15070,
+   "occurrences": 1
+  },
+  "926": {
+   "title": "Device-learning agents",
+   "first_line": 15081,
+   "occurrences": 1
+  },
+  "927": {
+   "title": "Software-learning agents",
+   "first_line": 15094,
+   "occurrences": 1
+  },
+  "928": {
+   "title": "Simulation-platform abstraction",
+   "first_line": 15106,
+   "occurrences": 1
+  },
+  "929": {
+   "title": "Co-simulation orchestration",
+   "first_line": 15120,
+   "occurrences": 1
+  },
+  "930": {
+   "title": "Simulation experiment registry",
+   "first_line": 15132,
+   "occurrences": 1
+  },
+  "931": {
+   "title": "Simulation-to-real gap analysis",
+   "first_line": 15146,
+   "occurrences": 1
+  },
+  "932": {
+   "title": "Cloud-native architecture",
+   "first_line": 15159,
+   "occurrences": 1
+  },
+  "933": {
+   "title": "Serverless computing",
+   "first_line": 15174,
+   "occurrences": 1
+  },
+  "934": {
+   "title": "Durable serverless execution",
+   "first_line": 15187,
+   "occurrences": 1
+  },
+  "935": {
+   "title": "Service-mesh architecture",
+   "first_line": 15199,
+   "occurrences": 1
+  },
+  "936": {
+   "title": "API gateway architecture",
+   "first_line": 15212,
+   "occurrences": 1
+  },
+  "937": {
+   "title": "Event-driven cloud architecture",
+   "first_line": 15225,
+   "occurrences": 1
+  },
+  "938": {
+   "title": "Multi-cloud abstraction",
+   "first_line": 15238,
+   "occurrences": 1
+  },
+  "939": {
+   "title": "Cloud-cost intelligence",
+   "first_line": 15252,
+   "occurrences": 1
+  },
+  "940": {
+   "title": "Data-center resource manager",
+   "first_line": 15265,
+   "occurrences": 1
+  },
+  "941": {
+   "title": "Data-center digital twin",
+   "first_line": 15280,
+   "occurrences": 1
+  },
+  "942": {
+   "title": "Advanced data-center cooling",
+   "first_line": 15293,
+   "occurrences": 1
+  },
+  "943": {
+   "title": "Compute energy accounting",
+   "first_line": 15305,
+   "occurrences": 1
+  },
+  "944": {
+   "title": "Hardware benchmark laboratory",
+   "first_line": 15318,
+   "occurrences": 1
+  },
+  "945": {
+   "title": "Accelerator benchmark normalization",
+   "first_line": 15334,
+   "occurrences": 1
+  },
+  "946": {
+   "title": "Interconnect benchmarking",
+   "first_line": 15348,
+   "occurrences": 1
+  },
+  "947": {
+   "title": "Silicon-photonic interconnects",
+   "first_line": 15362,
+   "occurrences": 1
+  },
+  "948": {
+   "title": "Optical data-center networking",
+   "first_line": 15374,
+   "occurrences": 1
+  },
+  "949": {
+   "title": "Memory-fabric architecture",
+   "first_line": 15385,
+   "occurrences": 1
+  },
+  "950": {
+   "title": "Computational-storage research",
+   "first_line": 15397,
+   "occurrences": 1
+  },
+  "951": {
+   "title": "Quantum/AI integration layer",
+   "first_line": 15408,
+   "occurrences": 1
+  },
+  "952": {
+   "title": "Neuromorphic provider layer",
+   "first_line": 15421,
+   "occurrences": 1
+  },
+  "953": {
+   "title": "Photonic-compute provider layer",
+   "first_line": 15433,
+   "occurrences": 1
+  },
+  "954": {
+   "title": "Analog-compute provider layer",
+   "first_line": 15446,
+   "occurrences": 1
+  },
+  "955": {
+   "title": "Experimental-compute qualification",
+   "first_line": 15458,
+   "occurrences": 1
+  },
+  "956": {
+   "title": "Communications-rights metadata",
+   "first_line": 15472,
+   "occurrences": 1
+  },
+  "957": {
+   "title": "Media licensing engine",
+   "first_line": 15487,
+   "occurrences": 1
+  },
+  "958": {
+   "title": "Genesis learning architecture",
+   "first_line": 15502,
+   "occurrences": 1
+  },
+  "959": {
+   "title": "Genesis skill memory",
+   "first_line": 15517,
+   "occurrences": 1
+  },
+  "960": {
+   "title": "Genesis cognitive integration layer",
+   "first_line": 15532,
+   "occurrences": 1
+  },
+  "961": {
+   "title": "Genesis deliberative reasoning",
+   "first_line": 15560,
+   "occurrences": 1
+  },
+  "962": {
+   "title": "Reactive reasoning",
+   "first_line": 15573,
+   "occurrences": 1
+  },
+  "963": {
+   "title": "Hierarchical planning",
+   "first_line": 15584,
+   "occurrences": 1
+  },
+  "964": {
+   "title": "Classical AI planning",
+   "first_line": 15598,
+   "occurrences": 1
+  },
+  "965": {
+   "title": "Temporal planning",
+   "first_line": 15610,
+   "occurrences": 1
+  },
+  "966": {
+   "title": "Contingency planning",
+   "first_line": 15622,
+   "occurrences": 1
+  },
+  "967": {
+   "title": "Plan execution monitor",
+   "first_line": 15633,
+   "occurrences": 1
+  },
+  "968": {
+   "title": "Long-horizon task memory",
+   "first_line": 15646,
+   "occurrences": 1
+  },
+  "969": {
+   "title": "Episodic learning from completed tasks",
+   "first_line": 15658,
+   "occurrences": 1
+  },
+  "970": {
+   "title": "Case-based reasoning",
+   "first_line": 15670,
+   "occurrences": 1
+  },
+  "971": {
+   "title": "Analogical reasoning",
+   "first_line": 15680,
+   "occurrences": 1
+  },
+  "972": {
+   "title": "Counterfactual reasoning",
+   "first_line": 15690,
+   "occurrences": 1
+  },
+  "973": {
+   "title": "Abductive reasoning",
+   "first_line": 15701,
+   "occurrences": 1
+  },
+  "974": {
+   "title": "Deductive reasoning",
+   "first_line": 15710,
+   "occurrences": 1
+  },
+  "975": {
+   "title": "Inductive reasoning",
+   "first_line": 15720,
+   "occurrences": 1
+  },
+  "976": {
+   "title": "Reasoning-verifier architecture",
+   "first_line": 15730,
+   "occurrences": 1
+  },
+  "977": {
+   "title": "Multi-path reasoning",
+   "first_line": 15741,
+   "occurrences": 1
+  },
+  "978": {
+   "title": "Search-based reasoning",
+   "first_line": 15751,
+   "occurrences": 1
+  },
+  "979": {
+   "title": "Program-of-thought systems",
+   "first_line": 15762,
+   "occurrences": 1
+  },
+  "980": {
+   "title": "Tool-assisted reasoning",
+   "first_line": 15772,
+   "occurrences": 1
+  },
+  "981": {
+   "title": "Multimodal foundation-model architecture",
+   "first_line": 15785,
+   "occurrences": 1
+  },
+  "982": {
+   "title": "Unified multimodal embeddings",
+   "first_line": 15798,
+   "occurrences": 1
+  },
+  "983": {
+   "title": "Multimodal temporal understanding",
+   "first_line": 15810,
+   "occurrences": 1
+  },
+  "984": {
+   "title": "Long-video intelligence",
+   "first_line": 15822,
+   "occurrences": 1
+  },
+  "985": {
+   "title": "Audio-language models",
+   "first_line": 15834,
+   "occurrences": 1
+  },
+  "986": {
+   "title": "3D foundation models",
+   "first_line": 15846,
+   "occurrences": 1
+  },
+  "987": {
+   "title": "Scene-graph generation",
+   "first_line": 15858,
+   "occurrences": 1
+  },
+  "988": {
+   "title": "Persistent world representation",
+   "first_line": 15871,
+   "occurrences": 1
+  },
+  "989": {
+   "title": "Neural 3D reconstruction",
+   "first_line": 15883,
+   "occurrences": 1
+  },
+  "990": {
+   "title": "Dynamic-world reconstruction",
+   "first_line": 15895,
+   "occurrences": 1
+  },
+  "991": {
+   "title": "Digital-world ingestion",
+   "first_line": 15907,
+   "occurrences": 1
+  },
+  "992": {
+   "title": "Vision-language-action grounding",
+   "first_line": 15920,
+   "occurrences": 1
+  },
+  "993": {
+   "title": "Affordance detection",
+   "first_line": 15931,
+   "occurrences": 1
+  },
+  "994": {
+   "title": "Fine-grained visual grounding",
+   "first_line": 15944,
+   "occurrences": 1
+  },
+  "995": {
+   "title": "3D object tracking",
+   "first_line": 15955,
+   "occurrences": 1
+  },
+  "996": {
+   "title": "Open-vocabulary perception",
+   "first_line": 15967,
+   "occurrences": 1
+  },
+  "997": {
+   "title": "Speech foundation stack",
+   "first_line": 15977,
+   "occurrences": 1
+  },
+  "998": {
+   "title": "Streaming speech interaction",
+   "first_line": 15990,
+   "occurrences": 1
+  },
+  "999": {
+   "title": "Speaker diarization",
+   "first_line": 16002,
+   "occurrences": 1
+  },
+  "1000": {
+   "title": "Speech personalization",
+   "first_line": 16014,
+   "occurrences": 1
+  },
+  "1001": {
+   "title": "Multilingual language architecture",
+   "first_line": 16025,
+   "occurrences": 1
+  },
+  "1002": {
+   "title": "Sign-language AI",
+   "first_line": 16037,
+   "occurrences": 1
+  },
+  "1003": {
+   "title": "Model interpretability",
+   "first_line": 16048,
+   "occurrences": 1
+  },
+  "1004": {
+   "title": "Mechanistic interpretability",
+   "first_line": 16060,
+   "occurrences": 1
+  },
+  "1005": {
+   "title": "Behavioral model evaluation",
+   "first_line": 16072,
+   "occurrences": 1
+  },
+  "1006": {
+   "title": "Model calibration",
+   "first_line": 16085,
+   "occurrences": 1
+  },
+  "1007": {
+   "title": "Hallucination evaluation",
+   "first_line": 16096,
+   "occurrences": 1
+  },
+  "1008": {
+   "title": "Long-context evaluation",
+   "first_line": 16107,
+   "occurrences": 1
+  },
+  "1009": {
+   "title": "Agent-evaluation harness",
+   "first_line": 16119,
+   "occurrences": 1
+  },
+  "1010": {
+   "title": "Judge-model evaluation",
+   "first_line": 16133,
+   "occurrences": 1
+  },
+  "1011": {
+   "title": "Federated-learning infrastructure",
+   "first_line": 16144,
+   "occurrences": 1
+  },
+  "1012": {
+   "title": "Decentralized learning",
+   "first_line": 16156,
+   "occurrences": 1
+  },
+  "1013": {
+   "title": "Split-learning architecture",
+   "first_line": 16167,
+   "occurrences": 1
+  },
+  "1014": {
+   "title": "Continual federated learning",
+   "first_line": 16178,
+   "occurrences": 1
+  },
+  "1015": {
+   "title": "Collaborative robot learning",
+   "first_line": 16189,
+   "occurrences": 1
+  },
+  "1016": {
+   "title": "Whole-brain-emulation research boundaries",
+   "first_line": 16200,
+   "occurrences": 1
+  },
+  "1017": {
+   "title": "Connectomics infrastructure",
+   "first_line": 16215,
+   "occurrences": 1
+  },
+  "1018": {
+   "title": "Neural morphology modelling",
+   "first_line": 16228,
+   "occurrences": 1
+  },
+  "1019": {
+   "title": "Synapse/plasticity modelling",
+   "first_line": 16240,
+   "occurrences": 1
+  },
+  "1020": {
+   "title": "Glial-system modelling",
+   "first_line": 16251,
+   "occurrences": 1
+  },
+  "1021": {
+   "title": "Brain/body co-simulation",
+   "first_line": 16263,
+   "occurrences": 1
+  },
+  "1022": {
+   "title": "Neural-data standards",
+   "first_line": 16275,
+   "occurrences": 1
+  },
+  "1023": {
+   "title": "Scientific numerical linear algebra",
+   "first_line": 16288,
+   "occurrences": 1
+  },
+  "1024": {
+   "title": "Numerical optimization",
+   "first_line": 16301,
+   "occurrences": 1
+  },
+  "1025": {
+   "title": "Differential-equation solvers",
+   "first_line": 16313,
+   "occurrences": 1
+  },
+  "1026": {
+   "title": "Mesh-generation infrastructure",
+   "first_line": 16325,
+   "occurrences": 1
+  },
+  "1027": {
+   "title": "CFD ecosystem \u2014 deeper",
+   "first_line": 16337,
+   "occurrences": 1
+  },
+  "1028": {
+   "title": "FEA ecosystem \u2014 deeper",
+   "first_line": 16351,
+   "occurrences": 1
+  },
+  "1029": {
+   "title": "Electromagnetic numerical methods",
+   "first_line": 16365,
+   "occurrences": 1
+  },
+  "1030": {
+   "title": "Particle simulation",
+   "first_line": 16378,
+   "occurrences": 1
+  },
+  "1031": {
+   "title": "Astronomy data infrastructure",
+   "first_line": 16390,
+   "occurrences": 1
+  },
+  "1032": {
+   "title": "Telescope/observatory automation",
+   "first_line": 16403,
+   "occurrences": 1
+  },
+  "1033": {
+   "title": "Astrodynamics",
+   "first_line": 16416,
+   "occurrences": 1
+  },
+  "1034": {
+   "title": "Planetary-science modelling",
+   "first_line": 16429,
+   "occurrences": 1
+  },
+  "1035": {
+   "title": "Geospatial uncertainty",
+   "first_line": 16442,
+   "occurrences": 1
+  },
+  "1036": {
+   "title": "Ocean/acoustic digital twins",
+   "first_line": 16453,
+   "occurrences": 1
+  },
+  "1037": {
+   "title": "Energy-system optimization",
+   "first_line": 16466,
+   "occurrences": 1
+  },
+  "1038": {
+   "title": "Energy-material discovery",
+   "first_line": 16479,
+   "occurrences": 1
+  },
+  "1039": {
+   "title": "Cross-scale scientific modelling",
+   "first_line": 16493,
+   "occurrences": 1
+  },
+  "1040": {
+   "title": "Genesis/Aetherius scientific reasoning fabric",
+   "first_line": 16505,
+   "occurrences": 1
+  }
+ }
+}

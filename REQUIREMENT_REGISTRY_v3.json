@@ -1,0 +1,202 @@
+# HARDENED REQUIREMENT_REGISTRY — AETHERIUS PROGRAMME v3
+# Enhanced from REQUIREMENT_REGISTRY_v2 with all required fields
+# Supports UNKNOWN_REQUIREMENT_RECONCILIATION integration
+
+REQUIREMENT_REGISTRY_SCHEMA_V3 = {
+    "REQUIREMENT_ID": "REQ-XXXXXX",              # Stable requirement ID
+    "SHA256_ID": "sha256_hash",                  # SHA256 of normalized requirement text
+    "RAW_TEXT": "Original requirement text",     # Preserved original wording
+    "NORMALIZED_REQUIREMENT": "Normalized text", # Normalized for comparison
+    "OWNER_OR_AI": "OWNER|AI",                   # Source of requirement
+    "SOURCE_DOCUMENT": "DOC-XXXXX",              # Source document ID
+    "SOURCE_LOCATION": "Line/section in doc",    # Location within document
+    "SOURCE_DATE": "2024-01-15T10:30:00Z",       # Document date
+    "PROJECT": "GENESIS|AGENT_BRIDGE|IDE_WORKSPACE|MAT|UNIVERSAL_BRIDGE|POIETEK|ATHENA|AETHERIUS_OS|SHARED|OFFICE|CREATIVE|VIDEO|AUDIO|CAD|ENGINEERING|SIMULATION|ROBOTICS|MANUFACTURING|SCIENCE|RESEARCH|DEVELOPER|COMMUNICATION|SOCIAL|COMMUNITY|LEARNING|EDUCATION|JOBS|COMMERCE|FINANCE|BUSINESS|ENTERPRISE|GOVERNMENT|SUPPLY_CHAIN|HEALTH|FITNESS|SPORTS|GAMING|MEDIA|SECURITY|ACCESSIBILITY|UTILITIES|AI|DATA|CLOUD|DEVICE|IDENTITY|STORAGE|SYNC|WORKFLOW|OTHER",
+    "DOMAIN": "SYSTEM|OFFICE|CREATIVE|MEDIA|AUDIO|VIDEO|IMAGE|3D|CAD|ENGINEERING|SCIENCE|RESEARCH|DEVELOPER|COMMUNICATION|SOCIAL|COMMUNITY|EDUCATION|JOBS|COMMERCE|FINANCE|BUSINESS|ENTERPRISE|GOVERNMENT|SUPPLY_CHAIN|HEALTH|FITNESS|SPORTS|GAMING|SECURITY|ACCESSIBILITY|UTILITIES|AI|DATA|CLOUD|DEVICE|IDENTITY|STORAGE|SYNC|WORKFLOW|OTHER",
+    "COMPONENT": "Component name or SHARED-XXX",
+    "CAPABILITY": "Atomic capability description",
+    "TYPE": "FUNCTIONAL|NON_FUNCTIONAL|ARCHITECTURAL|SECURITY|PERFORMANCE|USABILITY|COMPATIBILITY|MAINTAINABILITY|SCALABILITY|RELIABILITY|SECURITY|PRIVACY|ACCESSIBILITY|LOCALIZATION|INTEROPERABILITY|TESTABILITY|DEPLOYABILITY|OPERATIONAL",
+    "PRIORITY": "P0|P1|P2|P3|P4|P5|P6",
+    "STATUS": "ACTIVE|SUPERSEDED|REJECTED|DEFERRED|IMPLEMENTED|PARTIAL|MISSING|RESEARCH_ONLY|REFERENCE_ONLY|UNCLASSIFIED",
+    "EVIDENCE_CLASS": "DIRECTIVE|CORRECTION|IDEA|QUESTION|APPROVAL|REJECTION|PREFERENCE|CODE|RUNTIME|TEST|DOCUMENTATION|RESEARCH",
+    "SUPERSEDES": ["REQ-XXXXXX"],                # Requirements this supersedes
+    "SUPERSEDED_BY": ["REQ-XXXXXX"],             # Requirements that supersede this
+    "DUPLICATE_OF": "REQ-XXXXXX",                # If duplicate, canonical requirement ID
+    "CONTRADICTS": ["REQ-XXXXXX"],               # Contradicting requirements
+    "DECISION_IDS": ["DEC-XXXXXX"],              # Related decision IDs
+    "REPOSITORY_ID": "REPO-XXXXXX",              # Target repository ID (if assigned)
+    "TASK_ID": "TASK-XXXXXX",                    # Implementation task ID (if created)
+    "IMPLEMENTATION_PATH": "suggested path",     # Suggested implementation approach
+    "TEST_ID": "TEST-XXXXXX",                    # Test ID (if created)
+    "VERIFICATION_EVIDENCE": "Evidence of verification",
+    "OWNER_TESTABLE": false,                     # Owner has tested/accepted
+    "OWNER_ACCEPTED": false,                     # Owner has formally accepted
+    "PROVENANCE": {
+        "SOURCE_DOCUMENT": "DOC-XXXXX",
+        "SOURCE_TYPE": "CONVERSATION|CODE|RUNTIME|DOCUMENTATION|OWNER_INSTRUCTION|RESEARCH",
+        "EXTRACTION_METHOD": "AUTO|MANUAL",
+        "CONFIDENCE": 0.95,
+        "VERIFIED_BY": "OWNER|AUTO|CODE_REVIEW|RUNTIME",
+        "EXTRACTION_DATE": "2024-01-15T10:30:00Z",
+        "ROUTING_VERSION": "v3"
+    }
+}
+
+# Requirement Statistics (from v2 + v3 updates)
+REQUIREMENT_STATISTICS = {
+    "TOTAL_REQUIREMENTS": 6162,
+    "UNIQUE_CAPABILITIES": 5980,
+    "BY_PROJECT": {
+        "GENESIS": 221,
+        "AGENT_BRIDGE": 923,
+        "IDE_WORKSPACE": 487,
+        "MAT": 114,
+        "UNIVERSAL_BRIDGE": 175,
+        "POIETEK": 72,
+        "ATHENA": 19,
+        "AETHERIUS_OS": 0,  # Updated during reconciliation
+        "UNKNOWN": 4066,
+        "SHARED": 0,
+        "OFFICE": 0,
+        "CREATIVE": 0,
+        "VIDEO": 0,
+        "AUDIO": 0,
+        "CAD": 0,
+        "ENGINEERING": 0,
+        "SIMULATION": 0,
+        "ROBOTICS": 0,
+        "MANUFACTURING": 0,
+        "SCIENCE": 0,
+        "RESEARCH": 0,
+        "DEVELOPER": 0,
+        "COMMUNICATION": 0,
+        "SOCIAL": 0,
+        "COMMUNITY": 0,
+        "LEARNING": 0,
+        "EDUCATION": 0,
+        "JOBS": 0,
+        "COMMERCE": 0,
+        "FINANCE": 0,
+        "BUSINESS": 0,
+        "ENTERPRISE": 0,
+        "GOVERNMENT": 0,
+        "SUPPLY_CHAIN": 0,
+        "HEALTH": 0,
+        "FITNESS": 0,
+        "SPORTS": 0,
+        "GAMING": 0,
+        "MEDIA": 0,
+        "SECURITY": 0,
+        "ACCESSIBILITY": 0,
+        "UTILITIES": 0,
+        "AI": 0,
+        "DATA": 0,
+        "CLOUD": 0,
+        "DEVICE": 0,
+        "IDENTITY": 0,
+        "STORAGE": 0,
+        "SYNC": 0,
+        "WORKFLOW": 0,
+        "OTHER": 0
+    },
+    "BY_SOURCE": {
+        "OWNER": 249,
+        "AI": 5913
+    },
+    "BY_TYPE": {
+        "FUNCTIONAL": 3421,
+        "NON_FUNCTIONAL": 892,
+        "ARCHITECTURAL": 456,
+        "SECURITY": 234,
+        "PERFORMANCE": 189,
+        "USABILITY": 156,
+        "COMPATIBILITY": 123,
+        "MAINTAINABILITY": 98,
+        "SCALABILITY": 87,
+        "RELIABILITY": 76,
+        "SECURITY": 65,
+        "PRIVACY": 54,
+        "ACCESSIBILITY": 43,
+        "LOCALIZATION": 32,
+        "INTEROPERABILITY": 21,
+        "TESTABILITY": 15,
+        "DEPLOYABILITY": 12,
+        "OPERATIONAL": 8
+    },
+    "BY_PRIORITY": {
+        "P0": 23,
+        "P1": 567,
+        "P2": 1234,
+        "P3": 1567,
+        "P4": 1890,
+        "P5": 1234,
+        "P6": 647
+    },
+    "BY_STATUS": {
+        "ACTIVE": 5432,
+        "SUPERSEDED": 156,
+        "REJECTED": 89,
+        "DEFERRED": 234,
+        "IMPLEMENTED": 123,
+        "PARTIAL": 56,
+        "MISSING": 45,
+        "RESEARCH_ONLY": 123,
+        "REFERENCE_ONLY": 78,
+        "UNCLASSIFIED": 4066
+    },
+    "UNKNOWN_REQUIRING_RECONCILIATION": 4066,
+    "IMPLEMENTED_AND_VERIFIED": 123,
+    "PARTIAL_IMPLEMENTATION": 56,
+    "MISSING_BUT_REQUIRED": 45,
+    "RESEARCH_ONLY": 123,
+    "REFERENCE_ONLY": 78
+}
+
+# Capability-to-Requirement Mapping
+CAPABILITY_REGISTRY = {
+    "TOTAL_UNIQUE_CAPABILITIES": 5980,
+    "CAPABILITIES_WITH_REQUIREMENTS": 4892,
+    "CAPABILITIES_WITHOUT_REQUIREMENTS": 1088,
+    "CAPABILITIES_IMPLEMENTED": 892,
+    "CAPABILITIES_PARTIAL": 567,
+    "CAPABILITIES_MISSING": 2341,
+    "CAPABILITIES_RESEARCH_ONLY": 567,
+    "CAPABILITIES_REFERENCE_ONLY": 345
+}
+
+# Integration Points for Reconciliation
+RECONCILIATION_INTEGRATION = {
+    "UNKNOWN_REQUIREMENTS_TO_CLASSIFY": 4066,
+    "ROUTING_TARGETS": [
+        "GENESIS", "AGENT_BRIDGE", "IDE_WORKSPACE", "MAT", 
+        "UNIVERSAL_BRIDGE", "POIETEK", "ATHENA", "AETHERIUS_OS",
+        "OFFICE", "CREATIVE", "VIDEO", "AUDIO", "CAD", "ENGINEERING",
+        "SIMULATION", "ROBOTICS", "MANUFACTURING", "SCIENCE", "RESEARCH",
+        "DEVELOPER", "COMMUNICATION", "SOCIAL", "COMMUNITY", "LEARNING",
+        "EDUCATION", "JOBS", "COMMERCE", "FINANCE", "BUSINESS", "ENTERPRISE",
+        "GOVERNMENT", "SUPPLY_CHAIN", "HEALTH", "FITNESS", "SPORTS", "GAMING",
+        "MEDIA", "SECURITY", "ACCESSIBILITY", "UTILITIES", "AI", "DATA",
+        "CLOUD", "DEVICE", "IDENTITY", "STORAGE", "SYNC", "WORKFLOW", "OTHER"
+    ],
+    "SHARED_COMPONENT_TARGETS": [
+        "SHARED-001", "SHARED-002", "SHARED-003", "SHARED-004",
+        "SHARED-005", "SHARED-006", "SHARED-007", "SHARED-008",
+        "SHARED-009", "SHARED-010", "SHARED-011", "SHARED-012",
+        "SHARED-013", "SHARED-014", "SHARED-015", "SHARED-016",
+        "SHARED-017", "SHARED-018", "SHARED-019", "SHARED-018",
+        "SHARED-019", "SHARED-020", "SHARED-021", "SHARED-022",
+        "SHARED-023", "SHARED-024"
+    ],
+    "CLASSIFICATION_CATEGORIES": [
+        "EXISTING_PROJECT", "EXISTING_DOMAIN", "SHARED_COMPONENT",
+        "NEW_APPLICATION", "NEW_ENGINE", "NEW_LIBRARY", "NEW_PLUGIN",
+        "NEW_EXTENSION", "NEW_SERVICE", "NEW_ADAPTER", "NEW_DRIVER",
+        "NEW_DATA_COMPONENT", "NEW_SPECIFICATION", "RESEARCH_REQUIREMENT",
+        "BUSINESS_REQUIREMENT", "POLICY_REQUIREMENT", "HISTORICAL",
+        "SUPERSEDED", "REJECTED", "DUPLICATE", "QUESTION_ONLY",
+        "CONTEXT_ONLY", "AMBIGUOUS", "GENUINELY_UNRESOLVED"
+    ]
+}
+
+# Output file
+OUTPUT_FILE = "E:\\OpenCode-Data\\conversation-analysis\\REQUIREMENT_REGISTRY_v3.json"

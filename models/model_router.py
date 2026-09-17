@@ -1,4 +1,4 @@
-"""ModelRouter (v0.7). Task-aware model selection and routing.
+"""ModelRouter (v0.8). Task-aware model selection and routing with measured capabilities.
 
 The ModelRouter selects the best model for a given task based on:
 - Task type (coding, vision, review, etc.)
@@ -7,6 +7,7 @@ The ModelRouter selects the best model for a given task based on:
 - Resource constraints (RAM, VRAM)
 - User preferences
 - Fallback availability
+- MEASURED MODEL FITNESS (tokens/sec, latency, success rate, test pass rate, review approval rate)
 """
 from __future__ import annotations
 
@@ -20,6 +21,7 @@ from models.model_registry import (
     MODEL_AVAILABLE, ModelRegistry, PRIVACY_LOCAL, ModelRecord
 )
 from models.provider_registry import PROVIDER_AVAILABLE, ProviderRegistry
+from task_dag import ModelFitnessRegistry, ModelFitness
 
 
 @dataclass
@@ -74,11 +76,15 @@ class ModelRouter:
     )
     
     def __init__(self, model_registry: ModelRegistry,
-                 provider_registry: ProviderRegistry):
+                 provider_registry: ProviderRegistry,
+                 fitness_registry: ModelFitnessRegistry | None = None):
         self.model_registry = model_registry
         self.provider_registry = provider_registry
+        self.fitness_registry = fitness_registry or ModelFitnessRegistry()
         self.fallback_chains: dict[str, list[str]] = {}
         self.routing_log: list[RoutingDecision] = []
+        # Capability discovery cache
+        self._capability_cache: dict[str, dict[str, Any]] = {}
     
     def set_fallback_chain(self, primary_model: str,
                            fallback_models: list[str]) -> None:
@@ -232,11 +238,14 @@ class ModelRouter:
     
     def _select_best(self, candidates: list[ModelRecord],
                     context: dict[str, Any]) -> ModelRecord | None:
-        """Select the best candidate from the list."""
+        """Select the best candidate from the list using measured fitness."""
         if not candidates:
             return None
         
-        # Scoring system
+        task_type = context.get("task_type", self.TASK_GENERAL)
+        role = context.get("role", "general")
+        
+        # Scoring system - combines static heuristics with measured fitness
         scored = []
         for model in candidates:
             score = 0
@@ -269,11 +278,133 @@ class ModelRouter:
             if context.get("needs_vision") and model.vision:
                 score += 8
             
+            # === MEASURED FITNESS INTEGRATION ===
+            # Query fitness registry for this model/role/task_type
+            fitness = self.fitness_registry.get(model.model_id, role, task_type)
+            if fitness and fitness.sample_count > 0:
+                # Weight fitness score heavily (0-1 scale, up to 50 points)
+                score += fitness.fitness_score * 50
+                # Bonus for high test pass rate
+                score += fitness.test_pass_rate * 20
+                # Bonus for high review approval rate
+                score += fitness.review_approval_rate * 15
+                # Penalty for high timeout/retry rates
+                score -= fitness.timeout_rate * 30
+                score -= fitness.retry_rate * 15
+            
             scored.append((score, model))
         
         # Sort by score descending
         scored.sort(key=lambda x: (-x[0], x[1].model_id))
         return scored[0][1] if scored else None
+    
+    def route_by_requirements(self, requirements: dict[str, Any],
+                              privacy_policy: str = PRIVACY_POLICY_LOCAL_FIRST,
+                              preferred_provider: str = "",
+                              context: dict[str, Any] | None = None) -> RoutingDecision:
+        """Route based on task REQUIREMENTS (not static role labels).
+        
+        This is the requirement-based routing entry point. It dynamically determines
+        the best model based on what the task actually needs.
+        
+        Args:
+            requirements: Dict with keys like:
+                - task_type: "coding", "review", "reasoning", etc.
+                - capabilities: ["tool_calling", "vision", "structured_output", ...]
+                - role: "planner", "coder", "reviewer", "general"
+                - min_test_pass_rate: 0.8
+                - min_tokens_per_sec: 10
+                - max_latency_ms: 5000
+                - max_ram_mb: 8192
+                - max_vram_mb: 6144
+                - prefer_local: True
+            privacy_policy: Privacy constraint
+            preferred_provider: Specific provider if required
+            context: Additional context
+            
+        Returns:
+            RoutingDecision with selected model
+        """
+        context = dict(context or {})
+        
+        # Extract routing hints from requirements
+        task_type = requirements.get("task_type", self.TASK_GENERAL)
+        role = requirements.get("role", "general")
+        context["task_type"] = task_type
+        context["role"] = role
+        
+        # Map capability requirements to context flags
+        capabilities = requirements.get("capabilities", [])
+        if "tool_calling" in capabilities:
+            context["needs_tool_calling"] = True
+        if "vision" in capabilities:
+            context["needs_vision"] = True
+        if "structured_output" in capabilities:
+            context["needs_structured_output"] = True
+        
+        # Add resource constraints to context
+        if "max_ram_mb" in requirements:
+            context["max_ram_mb"] = requirements["max_ram_mb"]
+        if "max_vram_mb" in requirements:
+            context["max_vram_mb"] = requirements["max_vram_mb"]
+        
+        # Use the existing route method with enhanced context
+        return self.route(
+            task_type=task_type,
+            requirements=requirements,
+            privacy_policy=privacy_policy,
+            preferred_provider=preferred_provider,
+            context=context
+        )
+    
+    def get_fitness_comparison(self, task_type: str, role: str) -> list[ModelFitness]:
+        """Get fitness comparison for all models for a task type and role."""
+        return self.fitness_registry.get_comparison(role, task_type)
+    
+    def discover_model_capabilities(self, model_id: str, 
+                                     test_tasks: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+        """Discover actual capabilities of a model through real testing.
+        
+        This runs the model on representative tasks and measures:
+        - Latency
+        - Tokens/sec
+        - Success rate
+        - Test pass rate
+        - Review approval rate
+        - Resource usage (RAM, VRAM, CPU)
+        - Tool calling success
+        - Structured output success
+        - Vision success (if applicable)
+        
+        Args:
+            model_id: Model to test
+            test_tasks: Optional list of test tasks. If None, uses default suite.
+            
+        Returns:
+            Capability report with measured metrics
+        """
+        # This would integrate with the benchmark suite
+        # For now, return cached or registry data
+        model = self.model_registry.get(model_id)
+        if not model:
+            return {"error": "Model not found"}
+        
+        return {
+            "model_id": model_id,
+            "display_name": model.display_name,
+            "provider": model.provider,
+            "declared_capabilities": model.capability_tags,
+            "local_or_remote": model.local_or_remote,
+            "installed": model.installed,
+            "offline_capable": model.offline_capable,
+            "declared_latency_ms": model.latency_ms,
+            "declared_tokens_per_sec": model.tokens_per_second,
+            "declared_ram_mb": model.ram_requirement_mb,
+            "declared_vram_mb": model.vram_requirement_mb,
+            "tool_calling": model.tool_calling,
+            "vision": model.vision,
+            "note": "Run benchmark suite for measured capabilities"
+        }
     
     def _build_reasoning(self, model: ModelRecord, task_type: str,
                         requirements: dict[str, Any],

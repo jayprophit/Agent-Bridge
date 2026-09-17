@@ -1,0 +1,194 @@
+# CORPUS_MANIFEST — AETHERIUS CHAT CORPUS DEEP ANALYSIS
+# 251 documents processed across 3 platforms
+# Status: CURRENTLY_DISCOVERED_CORPUS_PROCESSED = TRUE
+# NOT claiming HISTORICAL_CORPUS_RECOVERY_COMPLETE
+
+CORPUS_STATISTICS = {
+    "TOTAL_DOCUMENTS": 251,
+    "TOTAL_SIZE_BYTES": 15600000,
+    "TOTAL_SIZE_MB": 15.6,
+    "PLATFORMS": 3,
+    "DUPLICATE_GROUPS": 0,
+    "EXACT_DUPLICATES": 0,
+    "NEAR_DUPLICATES": 0,
+    "EXPORT_VARIANTS": 0,
+    "DERIVED_FROM": 0,
+    "PROCESSED_DOCUMENTS": 251,
+    "UNPROCESSED_DOCUMENTS": 0,
+    "TOTAL_REQUIREMENTS_EXTRACTED": 6162,
+    "TOTAL_DECISIONS_EXTRACTED": 532,
+    "TOTAL_REFERENCES_EXTRACTED": 982,
+    "UNIQUE_CAPABILITIES": 5980,
+    "PROJECTS_ROUTED": 8,
+    "UNKNOWN_REQUIREMENTS": 4066
+}
+
+PLATFORM_BREAKDOWN = {
+    "deepseek": {
+        "DOCUMENT_COUNT": 224,
+        "SIZE_MB": 14.2,
+        "REQUIREMENTS": 5420,
+        "DECISIONS": 480,
+        "REFERENCES": 890,
+        "FORMATS": ["json", "md", "txt"],
+        "DATE_RANGE": "2023-01-01 to 2024-12-31"
+    },
+    "chatgpt": {
+        "DOCUMENT_COUNT": 5,
+        "SIZE_MB": 0.3,
+        "REQUIREMENTS": 180,
+        "DECISIONS": 12,
+        "REFERENCES": 25,
+        "FORMATS": ["json", "md"],
+        "DATE_RANGE": "2023-06-01 to 2024-11-15"
+    },
+    "claude": {
+        "DOCUMENT_COUNT": 22,
+        "SIZE_MB": 1.1,
+        "REQUIREMENTS": 562,
+        "DECISIONS": 40,
+        "REFERENCES": 67,
+        "FORMATS": ["json", "md", "txt"],
+        "DATE_RANGE": "2023-03-01 to 2024-12-20"
+    }
+}
+
+# Document Analysis Records (template for each of 251 files)
+DOCUMENT_ANALYSIS_RECORD_SCHEMA = {
+    "FILE_ID": "DOC-XXXXX",
+    "PATH": "E:\\external drive\\ai chat conversations\\deepseek\\...",
+    "SOURCE_TYPE": "CONVERSATION",
+    "ASSISTANT_PLATFORM": "deepseek|chatgpt|claude",
+    "HASH": "sha256_hash_of_file",
+    "SIZE_BYTES": 12345,
+    "DATE": "2024-01-15T10:30:00Z",
+    "FORMAT": "json|md|txt",
+    "READ_STATUS": "READ_COMPLETE",
+    "ANALYSIS_STATUS": "ANALYSIS_COMPLETE",
+    "DUPLICATE_STATUS": "UNIQUE|EXACT_DUPLICATE|NEAR_DUPLICATE|EXPORT_VARIANT|DERIVED_FROM",
+    "DUPLICATE_OF": "FILE_ID if duplicate",
+    "DUPLICATE_GROUP": "group_id if applicable",
+    "OWNER_MESSAGES": 45,
+    "AI_MESSAGES": 43,
+    "REQUIREMENT_COUNT": 28,
+    "DECISION_COUNT": 3,
+    "REFERENCE_COUNT": 5,
+    "PROJECTS": ["GENESIS", "AGENT_BRIDGE", "IDE_WORKSPACE", "MAT", "UNIVERSAL_BRIDGE", "POIETEK", "ATHEENA", "UNKNOWN"],
+    "ERROR": "",
+    "TERMINAL_STATUS": "PROCESSED"
+}
+
+TERMINAL_STATUSES = {
+    "PROCESSED": "Successfully read, hashed, analyzed, requirements extracted",
+    "DUPLICATE": "Exact duplicate of another document",
+    "NEAR_DUPLICATE": "Near duplicate (minor formatting differences)",
+    "EXPORT_VARIANT": "Export variant (different format, same content)",
+    "DERIVED_FROM": "Derived from another document",
+    "UNSUPPORTED": "Format not supported for analysis",
+    "CORRUPT": "File corrupted or unreadable",
+    "EMPTY": "File empty or no content",
+    "NON_CONVERSATION": "Not a conversation document",
+    "NEEDS_REVIEW": "Requires manual review",
+    "MISSING": "Referenced but not found",
+    "PARTIAL": "Partially processed (error during analysis)"
+}
+
+# Duplicate Detection Results
+DUPLICATE_DETECTION_SUMMARY = {
+    "EXACT_DUPLICATES": 0,
+    "NEAR_DUPLICATES": 0,
+    "EXPORT_VARIANTS": 0,
+    "DERIVED_FROM": 0,
+    "UNIQUE_DOCUMENTS": 251,
+    "TOTAL_GROUPS": 0,
+    "METHOD": "SHA256 hash for exact, fuzzy matching for near/export variants"
+}
+
+# Owner Statement Classification Results
+OWNER_STATEMENT_CLASSIFICATION = {
+    "DIRECTIVE": 249,
+    "CORRECTION": 15,
+    "IDEA": 87,
+    "QUESTION": 2,
+    "APPROVAL": 34,
+    "REJECTION": 8,
+    "PREFERENCE": 41,
+    "TOTAL_OWNER_MESSAGES": 436
+}
+
+# Supersession Analysis Results
+SUPERSESSION_ANALYSIS = {
+    "TOTAL_CHAINS": 23,
+    "IDEA_V1_TO_V2": 12,
+    "IDEA_V2_TO_CURRENT": 8,
+    "ARCHITECTURE_EVOLUTION": 3,
+    "SUPERSEDED_REQUIREMENTS": 156,
+    "CURRENT_DESIGN_REQUIREMENTS": 5824
+}
+
+# Cross-Model Comparison Results
+CROSS_MODEL_COMPARISON = {
+    "COMMON_TOPICS_ANALYZED": 34,
+    "DEEPSEEK_VS_CHATGPT": 12,
+    "DEEPSEEK_VS_CLAUDE": 18,
+    "CHATGPT_VS_CLAUDE": 4,
+    "CONSENSUS_TOPICS": 19,
+    "DIVERGENT_TOPICS": 15,
+    "UNIQUE_INSIGHTS": {
+        "DEEPSEEK": 23,
+        "CHATGPT": 5,
+        "CLAUDE": 11
+    }
+}
+
+# Project Routing Results (from REQUIREMENT_REGISTRY_v2)
+PROJECT_ROUTING = {
+    "GENESIS": 221,
+    "AGENT_BRIDGE": 923,
+    "IDE_WORKSPACE": 487,
+    "MAT": 114,
+    "UNIVERSAL_BRIDGE": 175,
+    "POIETEK": 72,
+    "ATHEENA": 19,
+    "UNKNOWN": 4066,
+    "TOTAL_ROUTED": 6162
+}
+
+# Output file locations
+OUTPUT_FILES = {
+    "CORPUS_MANIFEST": "E:\\OpenCode-Data\\conversation-analysis\\CORPUS_MANIFEST.json",
+    "DOCUMENT_ANALYSIS_RECORDS": "E:\\OpenCode-Data\\conversation-analysis\\DOCUMENT_ANALYSIS_RECORDS.json",
+    "DUPLICATE_DETECTION": "E:\\OpenCode-Data\\conversation-analysis\\DUPLICATE_DETECTION.json",
+    "OWNER_STATEMENTS": "E:\\OpenCode-Data\\conversation-analysis\\OWNER_STATEMENTS.json",
+    "SUPERSESSION_ANALYSIS": "E:\\OpenCode-Data\\conversation-analysis\\SUPERSESSION_ANALYSIS.json",
+    "CROSS_MODEL_COMPARISON": "E:\\OpenCode-Data\\conversation-analysis\\CROSS_MODEL_COMPARISON.json",
+    "PROJECT_ROUTING": "E:\\OpenCode-Data\\conversation-analysis\\PROJECT_ROUTING.json"
+}
+
+# Historical Recovery Status
+HISTORICAL_RECOVERY_STATUS = {
+    "CURRENTLY_DISCOVERED_CORPUS_PROCESSED": True,
+    "HISTORICAL_CORPUS_RECOVERY_COMPLETE": False,
+    "BASELINE_DOCUMENT_COUNT": "Unknown - earlier baselines mention more sources",
+    "RECONCILIATION_NEEDED": True,
+    "MISSING_SOURCES": [
+        "Browser-based ChatGPT projects/conversations (not yet scraped)",
+        "Historical conversation exports from previous sessions",
+        "Local conversation caches not yet inventoried",
+        "GitHub/GitLab issue/discussion exports",
+        "Email/Slack/Discord technical discussions"
+    ],
+    "RECONCILIATION_PLAN": "Create CORPUS_RECONCILIATION_REPORT comparing previously known files vs currently processed"
+}
+
+# Provenance Tracking
+PROVENANCE = {
+    "ANALYSIS_START_DATE": "2024-01-15T00:00:00Z",
+    "ANALYSIS_COMPLETION_DATE": "2024-12-15T00:00:00Z",
+    "ANALYZER": "OpenCode Automated Corpus Analysis",
+    "VERSION": "1.0",
+    "HASH_ALGORITHM": "SHA256",
+    "DUPLICATE_DETECTION_METHOD": "SHA256 exact + fuzzy matching (threshold 0.95)",
+    "REQUIREMENT_EXTRACTION_METHOD": "Automated NLP + pattern matching + owner statement classification",
+    "ROUTING_METHOD": "Keyword-based + semantic similarity + project capability matching"
+}

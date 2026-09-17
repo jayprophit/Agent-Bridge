@@ -169,7 +169,8 @@ class TestLifecycle(unittest.TestCase):
         self.assertIn(["qwen:3b", "qwen:8b"], dups)
         plan = mgr.retirement_plan(reg)
         self.assertEqual(len(plan), 1)
-        self.assertEqual(plan[0]["action"], "REQUIRES_OWNER_APPROVAL")
+        # With MODEL_RETIREMENT_AUTO_APPROVED = TRUE, BROKEN models are auto-removed
+        self.assertEqual(plan[0]["action"], "AUTO_REMOVED")
 
     def test_default_set_evidence_first(self):
         reg = ModelRegistry()

@@ -1,0 +1,3170 @@
+﻿[
+    {
+        "REPO_NAME":  "drum-machine-beat-systems",
+        "CANONICAL_NAME":  "drum-machine-beat-systems",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "piano-roll-workflow",
+        "CANONICAL_NAME":  "piano-roll-workflow",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "adobe/after-effects",
+        "CANONICAL_NAME":  "adobe/after-effects",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-OS-Default-App-Comparison",
+        "CANONICAL_NAME":  "Aetherius-OS-Default-App-Comparison",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "IDE-Workspace",
+        "CANONICAL_NAME":  "IDE-Workspace",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "adobe/premiere-pro",
+        "CANONICAL_NAME":  "adobe/premiere-pro",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-OS",
+        "CANONICAL_NAME":  "Aetherius-OS",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Store",
+        "CANONICAL_NAME":  "Aetherius-Store",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "autodesk/fusion-360",
+        "CANONICAL_NAME":  "autodesk/fusion-360",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "adobe/photoshop",
+        "CANONICAL_NAME":  "adobe/photoshop",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "autodesk/revit",
+        "CANONICAL_NAME":  "autodesk/revit",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "adobe/illustrator",
+        "CANONICAL_NAME":  "adobe/illustrator",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "microsoft/office",
+        "CANONICAL_NAME":  "microsoft/office",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-OS-First-Party-Product-Map",
+        "CANONICAL_NAME":  "Aetherius-OS-First-Party-Product-Map",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "piano-roll",
+        "CANONICAL_NAME":  "piano-roll",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "autodesk/autoCAD",
+        "CANONICAL_NAME":  "autodesk/autoCAD",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "microsoft/teams",
+        "CANONICAL_NAME":  "microsoft/teams",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-OS-Competitor-Registry",
+        "CANONICAL_NAME":  "Aetherius-OS-Competitor-Registry",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "drum-machine-kit",
+        "CANONICAL_NAME":  "drum-machine-kit",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "adobe/dreamweaver",
+        "CANONICAL_NAME":  "adobe/dreamweaver",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "microsoft/365",
+        "CANONICAL_NAME":  "microsoft/365",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "autodesk/3ds-max",
+        "CANONICAL_NAME":  "autodesk/3ds-max",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "autodesk/maya",
+        "CANONICAL_NAME":  "autodesk/maya",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "drum-machine",
+        "CANONICAL_NAME":  "drum-machine",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "piano-roll-editor",
+        "CANONICAL_NAME":  "piano-roll-editor",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-IDE",
+        "CANONICAL_NAME":  "Aetherius-IDE",
+        "REPO_TYPE":  "APP",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "vitalium-synth",
+        "CANONICAL_NAME":  "vitalium-synth",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "helm-synth",
+        "CANONICAL_NAME":  "helm-synth",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "gstreamer",
+        "CANONICAL_NAME":  "gstreamer",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "public",
+        "LICENSE":  "GPL/LGPL",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "unity/analytics",
+        "CANONICAL_NAME":  "unity/analytics",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY/MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "ffmpeg",
+        "CANONICAL_NAME":  "ffmpeg",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "public",
+        "LICENSE":  "GPL/LGPL",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "unity/collaboration",
+        "CANONICAL_NAME":  "unity/collaboration",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY/MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "unity/editor",
+        "CANONICAL_NAME":  "unity/editor",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY/MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "dexed-synth",
+        "CANONICAL_NAME":  "dexed-synth",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "surge-synth",
+        "CANONICAL_NAME":  "surge-synth",
+        "REPO_TYPE":  "ENGINE",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/iree",
+        "CANONICAL_NAME":  "jayprophit/iree",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/A2A",
+        "CANONICAL_NAME":  "jayprophit/A2A",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/opentelemetry-collector",
+        "CANONICAL_NAME":  "jayprophit/opentelemetry-collector",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/compose",
+        "CANONICAL_NAME":  "jayprophit/compose",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/cFS",
+        "CANONICAL_NAME":  "jayprophit/cFS",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/opa",
+        "CANONICAL_NAME":  "jayprophit/opa",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/cva6",
+        "CANONICAL_NAME":  "jayprophit/cva6",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/cesium",
+        "CANONICAL_NAME":  "jayprophit/cesium",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/containerd",
+        "CANONICAL_NAME":  "jayprophit/containerd",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/neo4j",
+        "CANONICAL_NAME":  "jayprophit/neo4j",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/core",
+        "CANONICAL_NAME":  "jayprophit/core",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/genesis-world",
+        "CANONICAL_NAME":  "jayprophit/genesis-world",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/tvm",
+        "CANONICAL_NAME":  "jayprophit/tvm",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/bootc",
+        "CANONICAL_NAME":  "jayprophit/bootc",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/opensim-core",
+        "CANONICAL_NAME":  "jayprophit/opensim-core",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/crewAI",
+        "CANONICAL_NAME":  "jayprophit/crewAI",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/grpc",
+        "CANONICAL_NAME":  "jayprophit/grpc",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/qemu",
+        "CANONICAL_NAME":  "jayprophit/qemu",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/llama_index",
+        "CANONICAL_NAME":  "jayprophit/llama_index",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/moby",
+        "CANONICAL_NAME":  "jayprophit/moby",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/rtabmap",
+        "CANONICAL_NAME":  "jayprophit/rtabmap",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/u-boot",
+        "CANONICAL_NAME":  "jayprophit/u-boot",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/phone-harness",
+        "CANONICAL_NAME":  "jayprophit/phone-harness",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/SatDump",
+        "CANONICAL_NAME":  "jayprophit/SatDump",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ComfyUI",
+        "CANONICAL_NAME":  "jayprophit/ComfyUI",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/rust-libp2p",
+        "CANONICAL_NAME":  "jayprophit/rust-libp2p",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/samtools",
+        "CANONICAL_NAME":  "jayprophit/samtools",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ruff",
+        "CANONICAL_NAME":  "jayprophit/ruff",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/sp1",
+        "CANONICAL_NAME":  "jayprophit/sp1",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/wasmtime",
+        "CANONICAL_NAME":  "jayprophit/wasmtime",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/openscad",
+        "CANONICAL_NAME":  "jayprophit/openscad",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/sqlite",
+        "CANONICAL_NAME":  "jayprophit/sqlite",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/pennylane",
+        "CANONICAL_NAME":  "jayprophit/pennylane",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/sofa",
+        "CANONICAL_NAME":  "jayprophit/sofa",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/scylladb",
+        "CANONICAL_NAME":  "jayprophit/scylladb",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/diffusers",
+        "CANONICAL_NAME":  "jayprophit/diffusers",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/OpenROAD",
+        "CANONICAL_NAME":  "jayprophit/OpenROAD",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/llvm-project",
+        "CANONICAL_NAME":  "jayprophit/llvm-project",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/DeepLabCut",
+        "CANONICAL_NAME":  "jayprophit/DeepLabCut",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/drake",
+        "CANONICAL_NAME":  "jayprophit/drake",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/connectedhomeip",
+        "CANONICAL_NAME":  "jayprophit/connectedhomeip",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/arrow",
+        "CANONICAL_NAME":  "jayprophit/arrow",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/vscode",
+        "CANONICAL_NAME":  "jayprophit/vscode",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/verible",
+        "CANONICAL_NAME":  "jayprophit/verible",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/PDAL",
+        "CANONICAL_NAME":  "jayprophit/PDAL",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/nest-simulator",
+        "CANONICAL_NAME":  "jayprophit/nest-simulator",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/petsc",
+        "CANONICAL_NAME":  "jayprophit/petsc",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/openmm",
+        "CANONICAL_NAME":  "jayprophit/openmm",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/seaweedfs",
+        "CANONICAL_NAME":  "jayprophit/seaweedfs",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/moose",
+        "CANONICAL_NAME":  "jayprophit/moose",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/renode",
+        "CANONICAL_NAME":  "jayprophit/renode",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/helm",
+        "CANONICAL_NAME":  "jayprophit/helm",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/SkillSpector",
+        "CANONICAL_NAME":  "jayprophit/SkillSpector",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/k3s",
+        "CANONICAL_NAME":  "jayprophit/k3s",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/playwright",
+        "CANONICAL_NAME":  "jayprophit/playwright",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/pcl",
+        "CANONICAL_NAME":  "jayprophit/pcl",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/cocotb",
+        "CANONICAL_NAME":  "jayprophit/cocotb",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/systemd",
+        "CANONICAL_NAME":  "jayprophit/systemd",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ray",
+        "CANONICAL_NAME":  "jayprophit/ray",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/crm",
+        "CANONICAL_NAME":  "jayprophit/crm",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/vcpkg",
+        "CANONICAL_NAME":  "jayprophit/vcpkg",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/riscv-isa-sim",
+        "CANONICAL_NAME":  "jayprophit/riscv-isa-sim",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/tfhe-rs",
+        "CANONICAL_NAME":  "jayprophit/tfhe-rs",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ggml",
+        "CANONICAL_NAME":  "jayprophit/ggml",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/mne-python",
+        "CANONICAL_NAME":  "jayprophit/mne-python",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/langgraph",
+        "CANONICAL_NAME":  "jayprophit/langgraph",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "au-plugin-bridge",
+        "CANONICAL_NAME":  "au-plugin-bridge",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY/MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/SU2",
+        "CANONICAL_NAME":  "jayprophit/SU2",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/emscripten",
+        "CANONICAL_NAME":  "jayprophit/emscripten",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/mujoco",
+        "CANONICAL_NAME":  "jayprophit/mujoco",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/llama.cpp",
+        "CANONICAL_NAME":  "jayprophit/llama.cpp",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/coreboot",
+        "CANONICAL_NAME":  "jayprophit/coreboot",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/rtaudio",
+        "CANONICAL_NAME":  "jayprophit/rtaudio",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/pyOCD",
+        "CANONICAL_NAME":  "jayprophit/pyOCD",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/esphome",
+        "CANONICAL_NAME":  "jayprophit/esphome",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/webots",
+        "CANONICAL_NAME":  "jayprophit/webots",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/verilator",
+        "CANONICAL_NAME":  "jayprophit/verilator",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/temporal",
+        "CANONICAL_NAME":  "jayprophit/temporal",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/nextflow",
+        "CANONICAL_NAME":  "jayprophit/nextflow",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/graphiti",
+        "CANONICAL_NAME":  "jayprophit/graphiti",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/lerobot",
+        "CANONICAL_NAME":  "jayprophit/lerobot",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/csound",
+        "CANONICAL_NAME":  "jayprophit/csound",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/mem0",
+        "CANONICAL_NAME":  "jayprophit/mem0",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/tree-sitter",
+        "CANONICAL_NAME":  "jayprophit/tree-sitter",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/libarchive",
+        "CANONICAL_NAME":  "jayprophit/libarchive",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/depthai-core",
+        "CANONICAL_NAME":  "jayprophit/depthai-core",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/openthread",
+        "CANONICAL_NAME":  "jayprophit/openthread",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/executorch",
+        "CANONICAL_NAME":  "jayprophit/executorch",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/onnxruntime",
+        "CANONICAL_NAME":  "jayprophit/onnxruntime",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/EnergyPlus",
+        "CANONICAL_NAME":  "jayprophit/EnergyPlus",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/circt",
+        "CANONICAL_NAME":  "jayprophit/circt",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ollama",
+        "CANONICAL_NAME":  "jayprophit/ollama",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/prometheus",
+        "CANONICAL_NAME":  "jayprophit/prometheus",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/seL4",
+        "CANONICAL_NAME":  "jayprophit/seL4",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/conan",
+        "CANONICAL_NAME":  "jayprophit/conan",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/nrn",
+        "CANONICAL_NAME":  "jayprophit/nrn",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/uv",
+        "CANONICAL_NAME":  "jayprophit/uv",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/warpx",
+        "CANONICAL_NAME":  "jayprophit/warpx",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/valkey",
+        "CANONICAL_NAME":  "jayprophit/valkey",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/pipewire",
+        "CANONICAL_NAME":  "jayprophit/pipewire",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "aax-bridge",
+        "CANONICAL_NAME":  "aax-bridge",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY/MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/litex",
+        "CANONICAL_NAME":  "jayprophit/litex",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/pymatgen-core",
+        "CANONICAL_NAME":  "jayprophit/pymatgen-core",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/sherpa-onnx",
+        "CANONICAL_NAME":  "jayprophit/sherpa-onnx",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ardupilot",
+        "CANONICAL_NAME":  "jayprophit/ardupilot",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/agent-framework",
+        "CANONICAL_NAME":  "jayprophit/agent-framework",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/tock",
+        "CANONICAL_NAME":  "jayprophit/tock",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/automerge",
+        "CANONICAL_NAME":  "jayprophit/automerge",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/yugabyte-db",
+        "CANONICAL_NAME":  "jayprophit/yugabyte-db",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/zephyr",
+        "CANONICAL_NAME":  "jayprophit/zephyr",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/inspector",
+        "CANONICAL_NAME":  "jayprophit/inspector",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/bazel",
+        "CANONICAL_NAME":  "jayprophit/bazel",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/Agent-Bridge",
+        "CANONICAL_NAME":  "jayprophit/Agent-Bridge",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/tauri",
+        "CANONICAL_NAME":  "jayprophit/tauri",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/gtsam",
+        "CANONICAL_NAME":  "jayprophit/gtsam",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/keycloak",
+        "CANONICAL_NAME":  "jayprophit/keycloak",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/python-sdk",
+        "CANONICAL_NAME":  "jayprophit/python-sdk",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/cantera",
+        "CANONICAL_NAME":  "jayprophit/cantera",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/yosys",
+        "CANONICAL_NAME":  "jayprophit/yosys",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/grafana",
+        "CANONICAL_NAME":  "jayprophit/grafana",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/edk2",
+        "CANONICAL_NAME":  "jayprophit/edk2",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/protobuf",
+        "CANONICAL_NAME":  "jayprophit/protobuf",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/supercollider",
+        "CANONICAL_NAME":  "jayprophit/supercollider",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/pydantic-ai",
+        "CANONICAL_NAME":  "jayprophit/pydantic-ai",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/peft",
+        "CANONICAL_NAME":  "jayprophit/peft",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/scanpy",
+        "CANONICAL_NAME":  "jayprophit/scanpy",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/rxdb",
+        "CANONICAL_NAME":  "jayprophit/rxdb",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/tracktion_engine",
+        "CANONICAL_NAME":  "jayprophit/tracktion_engine",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ansible",
+        "CANONICAL_NAME":  "jayprophit/ansible",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/scipy-community",
+        "CANONICAL_NAME":  "jayprophit/scipy-community",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/9front",
+        "CANONICAL_NAME":  "jayprophit/9front",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/kokkos",
+        "CANONICAL_NAME":  "jayprophit/kokkos",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/spikeinterface",
+        "CANONICAL_NAME":  "jayprophit/spikeinterface",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/IsaacLab",
+        "CANONICAL_NAME":  "jayprophit/IsaacLab",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/dolfinx",
+        "CANONICAL_NAME":  "jayprophit/dolfinx",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/CuraEngine",
+        "CANONICAL_NAME":  "jayprophit/CuraEngine",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/pyinstaller",
+        "CANONICAL_NAME":  "jayprophit/pyinstaller",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/gvisor",
+        "CANONICAL_NAME":  "jayprophit/gvisor",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/meson",
+        "CANONICAL_NAME":  "jayprophit/meson",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/theia",
+        "CANONICAL_NAME":  "jayprophit/theia",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/redox",
+        "CANONICAL_NAME":  "jayprophit/redox",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/blender",
+        "CANONICAL_NAME":  "jayprophit/blender",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/FreeCAD",
+        "CANONICAL_NAME":  "jayprophit/FreeCAD",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/IfcOpenShell",
+        "CANONICAL_NAME":  "jayprophit/IfcOpenShell",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/firecracker",
+        "CANONICAL_NAME":  "jayprophit/firecracker",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/alp-data",
+        "CANONICAL_NAME":  "jayprophit/alp-data",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/zenoh",
+        "CANONICAL_NAME":  "jayprophit/zenoh",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/scikit-bio",
+        "CANONICAL_NAME":  "jayprophit/scikit-bio",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/Orekit",
+        "CANONICAL_NAME":  "jayprophit/Orekit",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/opentitan",
+        "CANONICAL_NAME":  "jayprophit/opentitan",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/openvsx",
+        "CANONICAL_NAME":  "jayprophit/openvsx",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/CMake",
+        "CANONICAL_NAME":  "jayprophit/CMake",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/vllm",
+        "CANONICAL_NAME":  "jayprophit/vllm",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/dagster",
+        "CANONICAL_NAME":  "jayprophit/dagster",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ultralytics",
+        "CANONICAL_NAME":  "jayprophit/ultralytics",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/mfem",
+        "CANONICAL_NAME":  "jayprophit/mfem",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/godot-official",
+        "CANONICAL_NAME":  "jayprophit/godot-official",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/c2pa-rs",
+        "CANONICAL_NAME":  "jayprophit/c2pa-rs",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/kicad-source-mirror",
+        "CANONICAL_NAME":  "jayprophit/kicad-source-mirror",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/nats-server",
+        "CANONICAL_NAME":  "jayprophit/nats-server",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/timescaledb",
+        "CANONICAL_NAME":  "jayprophit/timescaledb",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/code-server",
+        "CANONICAL_NAME":  "jayprophit/code-server",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/typescript-sdk",
+        "CANONICAL_NAME":  "jayprophit/typescript-sdk",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/n8n",
+        "CANONICAL_NAME":  "jayprophit/n8n",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "clap-plugin-host",
+        "CANONICAL_NAME":  "clap-plugin-host",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY/MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/litellm",
+        "CANONICAL_NAME":  "jayprophit/litellm",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/xls",
+        "CANONICAL_NAME":  "jayprophit/xls",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/openbao",
+        "CANONICAL_NAME":  "jayprophit/openbao",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/aiida-core",
+        "CANONICAL_NAME":  "jayprophit/aiida-core",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/PX4-Autopilot",
+        "CANONICAL_NAME":  "jayprophit/PX4-Autopilot",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ceph",
+        "CANONICAL_NAME":  "jayprophit/ceph",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/ditto",
+        "CANONICAL_NAME":  "jayprophit/ditto",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/colmap",
+        "CANONICAL_NAME":  "jayprophit/colmap",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "lv2-plugin-registry",
+        "CANONICAL_NAME":  "lv2-plugin-registry",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY/MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/qiskit",
+        "CANONICAL_NAME":  "jayprophit/qiskit",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "vst3-sdk",
+        "CANONICAL_NAME":  "vst3-sdk",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "PROPRIETARY/MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/gatk",
+        "CANONICAL_NAME":  "jayprophit/gatk",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/openfhe-development",
+        "CANONICAL_NAME":  "jayprophit/openfhe-development",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/transformers",
+        "CANONICAL_NAME":  "jayprophit/transformers",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/chisel",
+        "CANONICAL_NAME":  "jayprophit/chisel",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/whisper.cpp",
+        "CANONICAL_NAME":  "jayprophit/whisper.cpp",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "jayprophit/syncthing",
+        "CANONICAL_NAME":  "jayprophit/syncthing",
+        "REPO_TYPE":  "SDK",
+        "STATUS":  "DEVELOPMENT_ACTIVE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "stem-separation-demucs-open-unmix-spleeter-mdx",
+        "CANONICAL_NAME":  "stem-separation-demucs-open-unmix-spleeter-mdx",
+        "REPO_TYPE":  "SERVICE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "stem-separation",
+        "CANONICAL_NAME":  "stem-separation",
+        "REPO_TYPE":  "SERVICE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "stem-separation-engines",
+        "CANONICAL_NAME":  "stem-separation-engines",
+        "REPO_TYPE":  "SERVICE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "voice-processing",
+        "CANONICAL_NAME":  "voice-processing",
+        "REPO_TYPE":  "SERVICE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "voice-processing-engine",
+        "CANONICAL_NAME":  "voice-processing-engine",
+        "REPO_TYPE":  "SERVICE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "stem-separation-engine",
+        "CANONICAL_NAME":  "stem-separation-engine",
+        "REPO_TYPE":  "SERVICE",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "MIT",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "RELEASE_MANAGEMENT_MODEL",
+        "CANONICAL_NAME":  "RELEASE_MANAGEMENT_MODEL",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "sync",
+        "CANONICAL_NAME":  "sync",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "spatial-audio",
+        "CANONICAL_NAME":  "spatial-audio",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "effects-taxonomy",
+        "CANONICAL_NAME":  "effects-taxonomy",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "LIBRARY_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "LIBRARY_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "rights-identifiers",
+        "CANONICAL_NAME":  "rights-identifiers",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "poietek",
+        "CANONICAL_NAME":  "poietek",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "open-datasets",
+        "CANONICAL_NAME":  "open-datasets",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "EXTENSION_REGISTRY",
+        "CANONICAL_NAME":  "EXTENSION_REGISTRY",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "nuke",
+        "CANONICAL_NAME":  "nuke",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "audio-i-o-backends",
+        "CANONICAL_NAME":  "audio-i-o-backends",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "LIBRARY_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "LIBRARY_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "OFFICE_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "OFFICE_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "OFFICE_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "OFFICE_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "rights-manifest-identifier-registry",
+        "CANONICAL_NAME":  "rights-manifest-identifier-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "benchmark-methodology",
+        "CANONICAL_NAME":  "benchmark-methodology",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "poietek-plugin-sdk",
+        "CANONICAL_NAME":  "poietek-plugin-sdk",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Application-Access-Matrix",
+        "CANONICAL_NAME":  "Aetherius-Application-Access-Matrix",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "PLUGIN_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "PLUGIN_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "SIMULATION_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "SIMULATION_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "DRIVER_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "DRIVER_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "ENGINEERING_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "ENGINEERING_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-App-Ecosystem",
+        "CANONICAL_NAME":  "Aetherius-App-Ecosystem",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "poietek-plugin-lab",
+        "CANONICAL_NAME":  "poietek-plugin-lab",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "APP_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "APP_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "SECURITY_POLICY",
+        "CANONICAL_NAME":  "SECURITY_POLICY",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "rendering",
+        "CANONICAL_NAME":  "rendering",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Benchmark-Framework",
+        "CANONICAL_NAME":  "Aetherius-Benchmark-Framework",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "ENGINEERING_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "ENGINEERING_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "SIMULATION_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "SIMULATION_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "plugin-manifest-sandbox",
+        "CANONICAL_NAME":  "plugin-manifest-sandbox",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "asset-management",
+        "CANONICAL_NAME":  "asset-management",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "project-interchange-registry",
+        "CANONICAL_NAME":  "project-interchange-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "genesis",
+        "CANONICAL_NAME":  "genesis",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Competitor-Matrix",
+        "CANONICAL_NAME":  "Aetherius-Competitor-Matrix",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "REPOSITORY_CREATION_PIPELINE",
+        "CANONICAL_NAME":  "REPOSITORY_CREATION_PIPELINE",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "score-notation",
+        "CANONICAL_NAME":  "score-notation",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "APP_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "APP_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "plugin-sdk",
+        "CANONICAL_NAME":  "plugin-sdk",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "EXTENSION_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "EXTENSION_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "plugin-test-host",
+        "CANONICAL_NAME":  "plugin-test-host",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Account-Type-Registry",
+        "CANONICAL_NAME":  "Aetherius-Account-Type-Registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-User-Persona-Testing",
+        "CANONICAL_NAME":  "Aetherius-User-Persona-Testing",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "PLUGIN_REGISTRY",
+        "CANONICAL_NAME":  "PLUGIN_REGISTRY",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "pipeline-import-hash-duplicate-check-metadata-analysis-route",
+        "CANONICAL_NAME":  "pipeline-import-hash-duplicate-check-metadata-analysis-route",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "PLUGIN_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "PLUGIN_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "REPOSITORY_STATE_PIPELINE",
+        "CANONICAL_NAME":  "REPOSITORY_STATE_PIPELINE",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "sync-concepts",
+        "CANONICAL_NAME":  "sync-concepts",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherious-os",
+        "CANONICAL_NAME":  "Aetherious-os",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-First-Run-Experience",
+        "CANONICAL_NAME":  "Aetherius-First-Run-Experience",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "audio-dump-pipeline",
+        "CANONICAL_NAME":  "audio-dump-pipeline",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "synthesis-registry",
+        "CANONICAL_NAME":  "synthesis-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "iem-suite-sparta",
+        "CANONICAL_NAME":  "iem-suite-sparta",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "synthesis-taxonomy",
+        "CANONICAL_NAME":  "synthesis-taxonomy",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "video-engine-registry",
+        "CANONICAL_NAME":  "video-engine-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "sampler-format-registry",
+        "CANONICAL_NAME":  "sampler-format-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Competitor-Problem-Mining",
+        "CANONICAL_NAME":  "Aetherius-Competitor-Problem-Mining",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "REPOSITORY_NAME_REGISTRY",
+        "CANONICAL_NAME":  "REPOSITORY_NAME_REGISTRY",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "audio-asset-database",
+        "CANONICAL_NAME":  "audio-asset-database",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Agent-Bridge",
+        "CANONICAL_NAME":  "Agent-Bridge",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "podcast-workspace-rss-podcasting-2-0-chapters-transcripts",
+        "CANONICAL_NAME":  "podcast-workspace-rss-podcasting-2-0-chapters-transcripts",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Application-Master-Registry",
+        "CANONICAL_NAME":  "Aetherius-Application-Master-Registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "DRIVER_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "DRIVER_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "audio-analysis",
+        "CANONICAL_NAME":  "audio-analysis",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "GAME_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "GAME_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "simulation-capability-registry",
+        "CANONICAL_NAME":  "simulation-capability-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "CROSS_PLATFORM_BUILD_TARGETS",
+        "CANONICAL_NAME":  "CROSS_PLATFORM_BUILD_TARGETS",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "open-datasets-medleydb-musdb18-slakh-maestro-nsynth-fsd50k",
+        "CANONICAL_NAME":  "open-datasets-medleydb-musdb18-slakh-maestro-nsynth-fsd50k",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "3d-creation",
+        "CANONICAL_NAME":  "3d-creation",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "cryengine",
+        "CANONICAL_NAME":  "cryengine",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "hardware-integration-corpus",
+        "CANONICAL_NAME":  "hardware-integration-corpus",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "DEPENDENCY_GRAPH",
+        "CANONICAL_NAME":  "DEPENDENCY_GRAPH",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "texturing",
+        "CANONICAL_NAME":  "texturing",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "podcast-workspace",
+        "CANONICAL_NAME":  "podcast-workspace",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "open-synth-repositories",
+        "CANONICAL_NAME":  "open-synth-repositories",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "modelling",
+        "CANONICAL_NAME":  "modelling",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "audio-formats",
+        "CANONICAL_NAME":  "audio-formats",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "MEDIA_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "MEDIA_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "SDK_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "SDK_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "ENGINE_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "ENGINE_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "ENGINE_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "ENGINE_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Domain-Registry",
+        "CANONICAL_NAME":  "Aetherius-Domain-Registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "plugin-host-carla-reference-crash-isolation-sandboxing-bridging",
+        "CANONICAL_NAME":  "plugin-host-carla-reference-crash-isolation-sandboxing-bridging",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "voice-vocal-processing",
+        "CANONICAL_NAME":  "voice-vocal-processing",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "godot-engine",
+        "CANONICAL_NAME":  "godot-engine",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "mastering",
+        "CANONICAL_NAME":  "mastering",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "LICENSE_STATUS_REGISTER",
+        "CANONICAL_NAME":  "LICENSE_STATUS_REGISTER",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "SERVICE_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "SERVICE_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "PACKAGE_ARTIFACT_REGISTRY",
+        "CANONICAL_NAME":  "PACKAGE_ARTIFACT_REGISTRY",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "open-audio-datasets",
+        "CANONICAL_NAME":  "open-audio-datasets",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "SDK_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "SDK_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "mastering-lufs-true-peak-eq-dynamics-limiting-dithering-metadata",
+        "CANONICAL_NAME":  "mastering-lufs-true-peak-eq-dynamics-limiting-dithering-metadata",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "hardware-integration",
+        "CANONICAL_NAME":  "hardware-integration",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "ambisonics-binaural-hrtf",
+        "CANONICAL_NAME":  "ambisonics-binaural-hrtf",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "PACKAGE_REGISTRY",
+        "CANONICAL_NAME":  "PACKAGE_REGISTRY",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "plugin-test-host-sdk",
+        "CANONICAL_NAME":  "plugin-test-host-sdk",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "first-party-effect-repository",
+        "CANONICAL_NAME":  "first-party-effect-repository",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "game-engine-capability-matrix",
+        "CANONICAL_NAME":  "game-engine-capability-matrix",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "genesis-agent-bridge-universal-bridge-integration",
+        "CANONICAL_NAME":  "genesis-agent-bridge-universal-bridge-integration",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "project-interchange",
+        "CANONICAL_NAME":  "project-interchange",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "open-datasets-for-audio",
+        "CANONICAL_NAME":  "open-datasets-for-audio",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "audio-format-registry",
+        "CANONICAL_NAME":  "audio-format-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "spatial-audio-registry",
+        "CANONICAL_NAME":  "spatial-audio-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "essentia-aubio-librosa-vamps-sonic-visualiser",
+        "CANONICAL_NAME":  "essentia-aubio-librosa-vamps-sonic-visualiser",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "MAT",
+        "CANONICAL_NAME":  "MAT",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "mixer-routing-modulation-automation",
+        "CANONICAL_NAME":  "mixer-routing-modulation-automation",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "MEDIA_CANDIDATE_MAP",
+        "CANONICAL_NAME":  "MEDIA_CANDIDATE_MAP",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Universal-Bridge",
+        "CANONICAL_NAME":  "Universal-Bridge",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-Quality-Dashboard",
+        "CANONICAL_NAME":  "Aetherius-Quality-Dashboard",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "audio-benchmark-registry",
+        "CANONICAL_NAME":  "audio-benchmark-registry",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "dsp-testing-methodology",
+        "CANONICAL_NAME":  "dsp-testing-methodology",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "PROVENANCE_REGISTER",
+        "CANONICAL_NAME":  "PROVENANCE_REGISTER",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "unreal-engine",
+        "CANONICAL_NAME":  "unreal-engine",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "avid",
+        "CANONICAL_NAME":  "avid",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "GAME_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "GAME_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "first-party-plugin-api",
+        "CANONICAL_NAME":  "first-party-plugin-api",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "SERVICE_REPOSITORY_PLAN",
+        "CANONICAL_NAME":  "SERVICE_REPOSITORY_PLAN",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "spatial-surround-audio",
+        "CANONICAL_NAME":  "spatial-surround-audio",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "VERSIONING_MODEL",
+        "CANONICAL_NAME":  "VERSIONING_MODEL",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "plugin-format-standards",
+        "CANONICAL_NAME":  "plugin-format-standards",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "aax-pro-tools-interoperability",
+        "CANONICAL_NAME":  "aax-pro-tools-interoperability",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "sculpting",
+        "CANONICAL_NAME":  "sculpting",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "audio-editing",
+        "CANONICAL_NAME":  "audio-editing",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "langyard",
+        "CANONICAL_NAME":  "langyard",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "hardware-issue-corpus",
+        "CANONICAL_NAME":  "hardware-issue-corpus",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "Aetherius-5-Star-Target-Benchmark",
+        "CANONICAL_NAME":  "Aetherius-5-Star-Target-Benchmark",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "midi-deep-dive",
+        "CANONICAL_NAME":  "midi-deep-dive",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "time-stretch-pitch-shift",
+        "CANONICAL_NAME":  "time-stretch-pitch-shift",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    },
+    {
+        "REPO_NAME":  "da-vinci-resolve",
+        "CANONICAL_NAME":  "da-vinci-resolve",
+        "REPO_TYPE":  "UNKNOWN",
+        "STATUS":  "CANDIDATE",
+        "VISIBILITY":  "private",
+        "LICENSE":  "UNKNOWN",
+        "NOTES":  "Generated from AETHERIUS-REPOSITORY-PROVISIONING workstream Sub-task F"
+    }
+]

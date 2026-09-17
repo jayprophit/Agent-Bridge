@@ -217,5 +217,78 @@ class TestCLIUsesRuntime(unittest.TestCase):
         return str(tmp)
 
 
+class TestCorsAllowlist(unittest.TestCase):
+    """Owner-approved origins get ACAO; default stays deny (no wildcard)."""
+    ORIGIN = "http://127.0.0.1:5199"
+
+    def setUp(self):
+        import socket
+        self.tmp = Path(tempfile.mkdtemp(prefix="v04_cors_"))
+        self.rt = AgentRuntime(RuntimeConfig(
+            allowed_workspace_roots=[str(self.tmp)],
+            cors_origins=[self.ORIGIN]))
+        probe = socket.socket()
+        probe.bind(("127.0.0.1", 0))
+        self.port = probe.getsockname()[1]
+        probe.close()
+        self.srv = serve(self.rt, "127.0.0.1", self.port)
+        self.assertEqual(self.srv.server_address[1], self.port)
+        self.th = threading.Thread(target=self.srv.serve_forever,
+                                   daemon=True)
+        self.th.start()
+
+    def tearDown(self):
+        try:
+            self.srv.shutdown()
+        except Exception:
+            pass
+        self.srv.server_close()
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _raw(self, method, path, origin=""):
+        import urllib.request
+        import urllib.error
+        req = urllib.request.Request(
+            f"http://127.0.0.1:{self.port}{path}", method=method)
+        if origin:
+            req.add_header("Origin", origin)
+        try:
+            with urllib.request.urlopen(req, timeout=10) as r:
+                return r.status, dict(r.headers)
+        except urllib.error.HTTPError as e:
+            return e.code, dict(e.headers)
+
+    def test_allowlisted_origin_reflected(self):
+        code, headers = self._raw("GET", "/health", self.ORIGIN)
+        self.assertEqual(code, 200)
+        self.assertEqual(headers.get("Access-Control-Allow-Origin"),
+                         self.ORIGIN)
+
+    def test_other_origin_gets_nothing(self):
+        code, headers = self._raw("GET", "/health",
+                                  "http://evil.example")
+        self.assertEqual(code, 200)
+        self.assertNotIn("Access-Control-Allow-Origin", headers)
+
+    def test_no_origin_gets_nothing(self):
+        code, headers = self._raw("GET", "/health")
+        self.assertEqual(code, 200)
+        self.assertNotIn("Access-Control-Allow-Origin", headers)
+
+    def test_preflight_allowlisted(self):
+        code, headers = self._raw("OPTIONS", "/v1/runtime", self.ORIGIN)
+        self.assertEqual(code, 204)
+        self.assertEqual(headers.get("Access-Control-Allow-Origin"),
+                         self.ORIGIN)
+        self.assertIn("Authorization",
+                      headers.get("Access-Control-Allow-Headers", ""))
+
+    def test_preflight_other_origin_bare(self):
+        code, headers = self._raw("OPTIONS", "/v1/runtime",
+                                  "http://evil.example")
+        self.assertEqual(code, 204)
+        self.assertNotIn("Access-Control-Allow-Origin", headers)
+
+
 if __name__ == "__main__":
     unittest.main()

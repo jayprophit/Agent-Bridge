@@ -1,0 +1,269 @@
+# UNKNOWN_REQUIREMENT_RECONCILIATION — AETHERIUS PROGRAMME
+# 4,066 UNKNOWN requirements from corpus routing (6,162 total, 5,980 unique capabilities, 8 projects + UNKNOWN)
+# Priority: HIGH — Must classify before any repository creation from UNKNOWN
+
+# Classification Categories (per owner directive)
+CLASSIFICATION_CATEGORIES = [
+    "EXISTING_PROJECT",           # Maps to one of the 8 existing projects
+    "EXISTING_DOMAIN",            # Maps to a domain without specific project
+    "SHARED_COMPONENT",           # Maps to one of the 24 shared components
+    "NEW_APPLICATION",            # New first-party application
+    "NEW_ENGINE",                 # New reusable engine
+    "NEW_LIBRARY",                # New library
+    "NEW_PLUGIN",                 # New plugin
+    "NEW_EXTENSION",              # New extension
+    "NEW_SERVICE",                # New service
+    "NEW_ADAPTER",                # New adapter
+    "NEW_DRIVER",                 # New driver
+    "NEW_DATA_COMPONENT",         # New data component
+    "NEW_SPECIFICATION",          # New specification
+    "RESEARCH_REQUIREMENT",       # Research-only, not implementation
+    "BUSINESS_REQUIREMENT",       # Business/policy requirement
+    "POLICY_REQUIREMENT",         # Policy/compliance requirement
+    "HISTORICAL",                 # Historical/superseded
+    "SUPERSEDED",                 # Superseded by newer requirement
+    "REJECTED",                   # Rejected by owner
+    "DUPLICATE",                  # Duplicate of existing requirement
+    "QUESTION_ONLY",              # Owner question, not a requirement
+    "CONTEXT_ONLY",               # Context/background, not actionable
+    "AMBIGUOUS",                  # Genuinely ambiguous, needs clarification
+    "GENUINELY_UNRESOLVED"        # Cannot be classified with current info
+]
+
+# Project/Domain Routing Targets (expanded from original 8)
+ROUTING_TARGETS = {
+    "AETHERIUS_OS": "Aetherius Operating System",
+    "GENESIS": "Genesis Intelligence Platform",
+    "AGENT_BRIDGE": "Agent Bridge Execution/Orchestration",
+    "IDE_WORKSPACE": "Aetherius IDE",
+    "MAT": "Materials Atlas Table Codex",
+    "UNIVERSAL_BRIDGE": "Universal Bridge Interoperability",
+    "POIETEK": "Poietek Audio/DAW Ecosystem",
+    "ATHENA": "Athena Health/Fitness/Sports",
+    # Additional domains from expanded model
+    "OFFICE": "Office/Productivity",
+    "DOCUMENTS": "Documents/Word Processing",
+    "SPREADSHEETS": "Spreadsheets",
+    "PRESENTATIONS": "Presentations",
+    "DATABASE": "Database",
+    "PDF": "PDF Tools",
+    "CREATIVE": "Creative Applications",
+    "IMAGE": "Image Editing/Raster",
+    "VECTOR": "Vector Graphics",
+    "VIDEO": "Video Editing/Playback",
+    "VFX": "Visual Effects/Compositing",
+    "3D": "3D Creation/Modelling",
+    "ANIMATION": "Animation",
+    "AUDIO": "Audio Production",
+    "MUSIC": "Music Production",
+    "PODCAST": "Podcasting",
+    "CAD": "CAD/CAM/BIM",
+    "ENGINEERING": "Engineering Applications",
+    "SIMULATION": "Simulation/FEA/CFD",
+    "ROBOTICS": "Robotics",
+    "MANUFACTURING": "Manufacturing/CAM",
+    "SCIENCE": "Science/Research",
+    "RESEARCH": "Research Tools",
+    "DEVELOPER": "Developer Tools",
+    "COMMUNICATION": "Communication/Messaging",
+    "SOCIAL": "Social/Community",
+    "COMMUNITY": "Community Platforms",
+    "LEARNING": "Learning/Education",
+    "EDUCATION": "Education Applications",
+    "JOBS": "Jobs/Career",
+    "COMMERCE": "Commerce/E-commerce",
+    "FINANCE": "Finance/Budgeting",
+    "BUSINESS": "Business Applications",
+    "ENTERPRISE": "Enterprise",
+    "GOVERNMENT": "Government/Public Sector",
+    "SUPPLY_CHAIN": "Supply Chain",
+    "HEALTH": "Health",
+    "FITNESS": "Fitness",
+    "SPORTS": "Sports",
+    "GAMING": "Gaming",
+    "MEDIA": "Media",
+    "SECURITY": "Security",
+    "ACCESSIBILITY": "Accessibility",
+    "UTILITIES": "Utilities",
+    "AI": "AI/ML",
+    "DATA": "Data",
+    "CLOUD": "Cloud",
+    "DEVICE": "Device",
+    "IDENTITY": "Identity",
+    "STORAGE": "Storage",
+    "SYNC": "Sync",
+    "WORKFLOW": "Workflow",
+    "OTHER": "Other/Unclassified"
+}
+
+# Shared Component Registry (24 components from SHARED_COMPONENT_REGISTRY.json)
+SHARED_COMPONENTS = [
+    "Aetherius Math", "Aetherius Units", "Aetherius Geometry", "Aetherius Mesh",
+    "Aetherius Materials", "Aetherius Rendering", "Aetherius Colour", "Aetherius Audio",
+    "Aetherius Video", "Aetherius Media", "Aetherius Timeline", "Aetherius Animation",
+    "Aetherius Physics", "Aetherius Simulation", "Aetherius Database", "Aetherius Storage",
+    "Aetherius Sync", "Aetherius Identity", "Aetherius Permissions", "Aetherius Workflow",
+    "Aetherius Telemetry", "Aetherius Plugin SDK", "Aetherius Project Model", "Aetherius Asset Engine"
+]
+
+# UNKNOWN Requirement Reconciliation Records
+# Format: Each UNKNOWN requirement gets a reconciliation record
+# This is the template structure - actual 4,066 records to be populated
+
+UNKNOWN_REQUIREMENT_RECONCILIATION_SCHEMA = {
+    "REQUIREMENT_ID": "REQ-XXXXXX",           # Original requirement ID from registry
+    "SHA256_ID": "sha256_hash",               # Stable SHA256 identifier
+    "RAW_TEXT": "original requirement text",  # Preserved original wording
+    "NORMALIZED_REQUIREMENT": "normalized",   # Normalized for comparison
+    "SOURCE_DOCUMENT": "doc_id",              # Source document reference
+    "SOURCE_LOCATION": "location_in_doc",     # Location within document
+    "SOURCE_DATE": "2024-01-01T00:00:00Z",    # Document date
+    "ORIGINAL_ROUTING": "UNKNOWN",            # Original routing (UNKNOWN)
+    "NEW_ROUTING": "",                        # New project/domain assignment
+    "NEW_PROJECT": "",                        # Target project (if EXISTING_PROJECT)
+    "NEW_DOMAIN": "",                         # Target domain (if EXISTING_DOMAIN)
+    "NEW_SHARED_COMPONENT": "",               # Target shared component (if SHARED_COMPONENT)
+    "NEW_COMPONENT_TYPE": "",                 # APPLICATION/ENGINE/LIBRARY/PLUGIN/etc.
+    "CLASSIFICATION": "",                     # One of CLASSIFICATION_CATEGORIES
+    "CLASSIFICATION_CONFIDENCE": 0.0,         # 0.0-1.0 confidence score
+    "CLASSIFICATION_REASONING": "",           # Why this classification
+    "SUPERSEDES": [],                         # Requirement IDs this supersedes
+    "SUPERSEDED_BY": [],                      # Requirement IDs that supersede this
+    "DUPLICATE_OF": "",                       # If DUPLICATE, the canonical requirement ID
+    "CONTRADICTS": [],                        # Contradicting requirement IDs
+    "RELATED_REQUIREMENTS": [],               # Related requirement IDs
+    "DECISION_IDS": [],                       # Decision IDs affecting this
+    "REPOSITORY_ID": "",                      # Target repository ID (if known)
+    "TASK_ID": "",                            # Implementation task ID (if created)
+    "IMPLEMENTATION_PATH": "",                # Suggested implementation path
+    "PRIORITY": "P6_RESEARCH_FUTURE",         # P0-P6 priority
+    "STATUS": "UNCLASSIFIED",                 # UNCLASSIFIED/CLASSIFIED/RECONCILED/REJECTED
+    "OWNER_REVIEW_REQUIRED": true,            # Whether owner review needed
+    "RECONCILED_DATE": "",                    # Date of reconciliation
+    "RECONCILED_BY": "AUTO|OWNER|REVIEW",     # Who/what performed reconciliation
+    "PROVENANCE": {
+        "ORIGINAL_SOURCE": "conversation_analysis",
+        "ANALYSIS_DATE": "2024-01-01T00:00:00Z",
+        "ROUTING_VERSION": "v1"
+    }
+}
+
+# Reconciliation Pipeline Stages
+RECONCILIATION_STAGES = [
+    "INGEST",              # Load all 4,066 UNKNOWN requirements
+    "AUTO_CLASSIFY",       # Automated classification using keywords/patterns
+    "SEMANTIC_CLUSTER",    # Cluster similar requirements
+    "PROJECT_ROUTE",       # Route to projects/domains/shared components
+    "DEDUPE",              # Detect duplicates within UNKNOWN set
+    "SUPERSESSION",        # Detect supersession chains
+    "CONTRADICTION",       # Detect contradictions with existing requirements
+    "OWNER_REVIEW",        # Flag for owner review where confidence < threshold
+    "FINALIZE",            # Finalize classification
+    "REGISTER"             # Update REQUIREMENT_REGISTRY with new routing
+]
+
+# Confidence Thresholds
+CONFIDENCE_THRESHOLDS = {
+    "AUTO_ACCEPT": 0.9,      # Auto-accept if confidence >= 0.9
+    "FLAG_REVIEW": 0.7,      # Flag for review if 0.7 <= confidence < 0.9
+    "MANUAL_REQUIRED": 0.7   # Manual review required if confidence < 0.7
+}
+
+# Keywords for Auto-Classification (partial list)
+AUTO_CLASSIFICATION_KEYWORDS = {
+    "GENESIS": ["genesis", "cognition", "adapter", "contract", "avatar", "intelligence", "reasoning", "planning", "memory", "ledger"],
+    "AGENT_BRIDGE": ["agent bridge", "execution", "orchestration", "task graph", "merkle dag", "work proof", "problem memory"],
+    "IDE_WORKSPACE": ["ide", "workspace", "react", "vite", "editor", "development environment", "code editor"],
+    "MAT": ["materials", "atlas", "table", "codex", "material property", "density", "elastic", "thermal", "corrosion"],
+    "UNIVERSAL_BRIDGE": ["universal bridge", "interoperability", "device", "hardware", "midi", "audio routing", "device profile"],
+    "POIETEK": ["poietek", "daw", "audio engine", "plugin", "vst", "clap", "synthesizer", "sampler", "effect", "mixer", "timeline", "piano roll"],
+    "ATHENA": ["athena", "atheena", "health", "fitness", "sport", "nutrition", "workout", "wearable", "biometric", "wellness"],
+    "AETHERIUS_OS": ["aetherius os", "operating system", "kernel", "shell", "system service", "file manager", "settings"],
+    "OFFICE": ["word", "document", "spreadsheet", "presentation", "email", "calendar", "contact", "task", "note", "pdf", "form"],
+    "CREATIVE": ["image", "vector", "raster", "paint", "photo", "draw", "illustration", "desktop publishing", "layout", "typography"],
+    "VIDEO": ["video", "edit", "timeline", "clip", "track", "transcode", "encode", "decode", "compositor", "vfx", "motion graphics"],
+    "AUDIO": ["audio", "sound", "music", "podcast", "synthesis", "sampler", "effect", "mixer", "mastering", "stem"],
+    "CAD": ["cad", "cam", "bim", "mechanical", "electrical", "pcb", "architecture", "civil", "parametric", "constraint", "assembly"],
+    "ENGINEERING": ["engineering", "simulation", "fea", "cfd", "multiphysics", "optimization", "generative", "digital twin"],
+    "SIMULATION": ["simulation", "physics", "rigid body", "soft body", "fluid", "thermal", "electromagnetic", "acoustic", "particle"],
+    "DEVELOPER": ["developer", "ide", "git", "debugger", "profiler", "compiler", "container", "api", "sdk", "regex", "json"],
+    "COMMUNICATION": ["chat", "message", "email", "call", "video call", "meeting", "conference", "screen share", "notification"],
+    "SECURITY": ["security", "firewall", "permission", "credential", "password", "encryption", "authenticator", "sandbox", "privacy"],
+    "ACCESSIBILITY": ["accessibility", "screen reader", "magnifier", "speech", "dictation", "tts", "stt", "caption", "contrast"],
+    "AI": ["ai", "ml", "llm", "inference", "training", "embedding", "vector", "rag", "semantic", "genesis"],
+    "DATA": ["data", "database", "storage", "sync", "backup", "search", "index", "query", "analytics", "visualization"],
+    "CLOUD": ["cloud", "sync", "backup", "distributed", "provider", "conflict", "encryption", "content addressed"],
+    "DEVICE": ["device", "driver", "usb", "bluetooth", "wifi", "display", "audio", "camera", "sensor", "controller"],
+    "HEALTH": ["health", "fitness", "exercise", "sport", "nutrition", "training", "wearable", "biometric", "medical"],
+    "GAMING": ["game", "gaming", "engine", "rendering", "physics", "animation", "network", "multiplayer", "vr", "ar", "xr"],
+    "SECURITY": ["security", "firewall", "permission", "credential", "password", "encryption", "authenticator", "sandbox"],
+    "UTILITIES": ["calculator", "converter", "clock", "timer", "weather", "map", "translate", "dictionary", "scanner", "recorder"]
+}
+
+# Reconciliation Statistics Tracking
+RECONCILIATION_STATS = {
+    "TOTAL_UNKNOWN": 4066,
+    "AUTO_CLASSIFIED": 0,
+    "FLAGGED_REVIEW": 0,
+    "MANUAL_REQUIRED": 0,
+    "DUPLICATES_FOUND": 0,
+    "SUPERSEDED_FOUND": 0,
+    "CONTRADICTIONS_FOUND": 0,
+    "CLASSIFIED_TO_PROJECTS": {},
+    "CLASSIFIED_TO_DOMAINS": {},
+    "CLASSIFIED_TO_SHARED": {},
+    "NEW_APPLICATIONS": 0,
+    "NEW_ENGINES": 0,
+    "NEW_LIBRARIES": 0,
+    "NEW_PLUGINS": 0,
+    "NEW_EXTENSIONS": 0,
+    "NEW_SERVICES": 0,
+    "RESEARCH_ONLY": 0,
+    "REJECTED": 0,
+    "AMBIGUOUS": 0,
+    "GENUINELY_UNRESOLVED": 0,
+    "RECONCILED": 0,
+    "PENDING_REVIEW": 0
+}
+
+# Output file paths
+OUTPUT_FILES = {
+    "RECONCILIATION_LOG": "E:\\OpenCode-Data\\conversation-analysis\\UNKNOWN_REQUIREMENT_RECONCILIATION_LOG.json",
+    "RECONCILED_REQUIREMENTS": "E:\\OpenCode-Data\\conversation-analysis\\RECONCILED_REQUIREMENTS.json",
+    "UNRESOLVED_REQUIREMENTS": "E:\\OpenCode-Data\\conversation-analysis\\UNRESOLVED_REQUIREMENTS.json",
+    "RECONCILIATION_REPORT": "E:\\OpenCode-Data\\conversation-analysis\\UNKNOWN_REQUIREMENT_RECONCILIATION_REPORT.md",
+    "UPDATED_REQUIREMENT_REGISTRY": "E:\\OpenCode-Data\\conversation-analysis\\REQUIREMENT_REGISTRY_v3.json"
+}
+
+# Next Steps (to be executed)
+NEXT_STEPS = [
+    "1. Load all 4,066 UNKNOWN requirements from REQUIREMENT_REGISTRY_v2.json",
+    "2. Apply AUTO_CLASSIFICATION using keyword matching and semantic clustering",
+    "2.1. Route to existing 8 projects + expanded domains",
+    "2.2. Route to 24 shared components where applicable",
+    "2.3. Identify NEW_APPLICATION, NEW_ENGINE, NEW_LIBRARY, etc. candidates",
+    "3. SEMANTIC_CLUSTER: Group similar UNKNOWN requirements",
+    "4. DEDUPE: Find exact/near duplicates within UNKNOWN set",
+    "5. SUPERSESSION: Detect supersession chains (IDEA V1 → V2 → CURRENT)",
+    "6. CONTRADICTION: Cross-reference with existing routed requirements",
+    "7. Apply CONFIDENCE_THRESHOLDS: Auto-accept >= 0.9, Flag review 0.7-0.9, Manual < 0.7",
+    "8. Generate OWNER_REVIEW queue for flagged items",
+    "4. FINALIZE: Update REQUIREMENT_REGISTRY with new routing",
+    "5. Update REPOSITORY_CREATION_QUEUE for new component candidates",
+    "6. Produce RECONCILIATION_REPORT with statistics"
+]
+
+# Integration with existing artefacts
+INTEGRATION_POINTS = {
+    "REQUIREMENT_REGISTRY": "Update PROJECT/DOMAIN/COMPONENT fields for reconciled requirements",
+    "SHARED_COMPONENT_REGISTRY": "Link UNKNOWN requirements to 24 shared components",
+    "REPOSITORY_CREATION_QUEUE": "Add new component candidates from NEW_* classifications",
+    "DECISION_LEDGER": "Record classification decisions with DECISION_ID",
+    "SUPERSESSION_REGISTER": "Record supersession chains discovered",
+    "CONTRADICTION_REGISTER": "Record contradictions found during reconciliation",
+    "GLOBAL_CLOSURE_MATRIX": "Update capability status for reconciled requirements",
+    "CORPUS_MANIFEST": "Update document analysis status for reconciled requirements"
+}
+
+# Immediate Action: Start Phase 1 - INGEST and AUTO_CLASSIFY
+CURRENT_PHASE = "INGEST"

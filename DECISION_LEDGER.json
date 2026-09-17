@@ -1,0 +1,417 @@
+# DECISION_LEDGER — AETHERIUS PROGRAMME
+# Built from recovered corpus decisions + current verified decisions
+# Precedence: Owner instruction > Owner correction > Verified runtime/code > Versioned decision > Conversation/document > Older material
+
+DECISION_LEDGER_SCHEMA = {
+    "DECISION_ID": "DEC-XXXXXX",
+    "RAW_DECISION": "Original decision text from source",
+    "NORMALIZED_DECISION": "Normalized for comparison and search",
+    "OWNER_OR_AI": "OWNER|AI",
+    "SOURCE_DOCUMENT": "DOC-XXXXX",
+    "SOURCE_LOCATION": "Line/section in document",
+    "DATE": "2024-01-15T10:30:00Z",
+    "PROJECT": "GENESIS|AGENT_BRIDGE|IDE_WORKSPACE|MAT|UNIVERSAL_BRIDGE|POIETEK|ATHEENA|AETHERIUS_OS|SHARED|OTHER",
+    "DOMAIN": "AUDIO|VIDEO|ENGINEERING|SECURITY|... (from DOMAIN_REGISTRY)",
+    "COMPONENT": "Component name or SHARED-XXX",
+    "STATUS": "ACTIVE|SUPERSEDED|REJECTED|PENDING|ARCHIVED",
+    "PRIORITY": "P0|P1|P2|P3|P4|P5|P6",
+    "SUPERSEDES": ["DEC-YYYYYY"],
+    "SUPERSEDED_BY": ["DEC-ZZZZZZ"],
+    "CONTRADICTS": ["DEC-AAAAAA"],
+    "AFFECTED_REQUIREMENTS": ["REQ-XXXXXX"],
+    "AFFECTED_TASKS": ["TASK-XXXXXX"],
+    "AFFECTED_REPOSITORIES": ["REPO-XXXXXX"],
+    "PROVENANCE": {
+        "SOURCE_DOCUMENT": "DOC-XXXXX",
+        "SOURCE_TYPE": "CONVERSATION|CODE|RUNTIME|DOCUMENTATION|OWNER_INSTRUCTION",
+        "EXTRACTION_METHOD": "AUTO|MANUAL",
+        "CONFIDENCE": 0.95,
+        "VERIFIED_BY": "RUNTIME|OWNER|CODE_REVIEW"
+    }
+}
+
+# Precedence Rules (Higher = More Authoritative)
+PRECEDENCE_HIERARCHY = {
+    1: "CURRENT_OWNER_INSTRUCTION",
+    2: "LATEST_EXPLICIT_OWNER_CORRECTION",
+    3: "VERIFIED_RUNTIME_CODE",
+    4: "LATEST_VERSIONED_DECISION",
+    5: "LATEST_RELEVANT_CONVERSATION",
+    6: "CURRENT_DOCUMENTATION",
+    7: "OLDER_CONVERSATION",
+    8: "HISTORICAL_DESIGN_REFERENCE"
+}
+
+# Key Decisions Extracted from Corpus (Sample - 532 total decisions)
+
+KEY_DECISIONS = [
+    {
+        "DECISION_ID": "DEC-000001",
+        "RAW_DECISION": "F DRIVE: SKIPPED BY OWNER — CLOSED FROM ACTIONABLE PROGRAMME",
+        "NORMALIZED_DECISION": "F_DRIVE_TASK_BRANCH = CLOSED_BY_OWNER; F_DRIVE_BLOCKING = FALSE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000001",
+        "DATE": "2024-09-10T00:00:00Z",
+        "PROJECT": "AETHERIUS_OS",
+        "DOMAIN": "DEVICE",
+        "COMPONENT": "F_DRIVE",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P0",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": [],
+        "AFFECTED_TASKS": [],
+        "AFFECTED_REPOSITORIES": [],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000001",
+            "SOURCE_TYPE": "OWNER_INSTRUCTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000002",
+        "RAW_DECISION": "JONATHAN OPENS HIS OWN IDE AND USES IT — milestone achieved; Aetherius IDE = OWNER_TESTABLE; Agent Bridge = OWNER_TESTABLE; Genesis 2.2-2.4 = VERIFIED_COMPLETE",
+        "NORMALIZED_DECISION": "IDE_OWNER_TESTABLE = TRUE; AGENT_BRIDGE_OWNER_TESTABLE = TRUE; GENESIS_2_2_TO_2_4_VERIFIED = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000002",
+        "DATE": "2024-09-12T00:00:00Z",
+        "PROJECT": "IDE_WORKSPACE",
+        "DOMAIN": "DEVELOPER",
+        "COMPONENT": "AETHERIUS_IDE",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P0",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-IDE-001", "REQ-AB-001", "REQ-GEN-001"],
+        "AFFECTED_TASKS": ["TASK-IDE-LAUNCH", "TASK-AB-INTEGRATION", "TASK-GEN-INTEGRATION"],
+        "AFFECTED_REPOSITORIES": ["IDE-Workspace", "Agent-Bridge", "genesis"],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000002",
+            "SOURCE_TYPE": "OWNER_INSTRUCTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000003",
+        "RAW_DECISION": "Canonical project name: ATHEENA not ATHENA — Correct newly generated routing/registry references where safe. Do NOT destructively rewrite historical provenance records merely because historical text contains 'ATHENA'.",
+        "NORMALIZED_DECISION": "CANONICAL_PROJECT_NAME = ATHEENA; HISTORICAL_PROVENANCE_PRESERVED = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000003",
+        "DATE": "2024-12-15T00:00:00Z",
+        "PROJECT": "ATHEENA",
+        "DOMAIN": "HEALTH",
+        "COMPONENT": "ATHEENA",
+        "STATUS": "SUPERSEDED",
+        "PRIORITY": "P1",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": ["DEC-000011"],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-ATHEENA-001"],
+        "AFFECTED_TASKS": ["TASK-ATHEENA-ROUTING"],
+        "AFFECTED_REPOSITORIES": [],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000003",
+            "SOURCE_TYPE": "OWNER_CORRECTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000004",
+        "RAW_DECISION": "UNKNOWN requirements (4,066) are NOT repository candidates — create UNKNOWN_REQUIREMENT_RECONCILIATION. For every UNKNOWN item determine: actual project, shared capability, new domain, new application, new plugin, new extension, new engine, new service, research only, historical/superseded, rejected, duplicate, ambiguous, genuinely unknown.",
+        "NORMALIZED_DECISION": "UNKNOWN_REQUIREMENTS_NOT_REPO_CANDIDATES = TRUE; UNKNOWN_REQUIREMENT_RECONCILIATION_REQUIRED = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000004",
+        "DATE": "2024-12-15T00:00:00Z",
+        "PROJECT": "SHARED",
+        "DOMAIN": "OTHER",
+        "COMPONENT": "UNKNOWN_REQUIREMENT_RECONCILIATION",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P0",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["ALL_UNKNOWN_4066"],
+        "AFFECTED_TASKS": ["TASK-UNKNOWN-RECONCILIATION"],
+        "AFFECTED_REPOSITORIES": [],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000004",
+            "SOURCE_TYPE": "OWNER_INSTRUCTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000005",
+        "RAW_DECISION": "Every substantial independently maintainable first-party app, plugin, extension, engine, SDK, service, adapter, driver should have its OWN repository. Do NOT put entire Aetherius ecosystem into one giant monorepo.",
+        "NORMALIZED_DECISION": "REPO_PER_COMPONENT = TRUE; MONOREPO_FORBIDDEN = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000005",
+        "DATE": "2024-09-10T00:00:00Z",
+        "PROJECT": "AETHERIUS_OS",
+        "DOMAIN": "SYSTEM",
+        "COMPONENT": "REPOSITORY_POLICY",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P0",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-REPO-001"],
+        "AFFECTED_TASKS": ["TASK-REPO-PROVISIONING"],
+        "AFFECTED_REPOSITORIES": ["ALL_FIRST_PARTY"],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000005",
+            "SOURCE_TYPE": "OWNER_INSTRUCTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000006",
+        "RAW_DECISION": "DEFAULT: VISIBILITY = PRIVATE for newly created first-party repositories. Public release remains an OWNER GATE.",
+        "NORMALIZED_DECISION": "DEFAULT_VISIBILITY = PRIVATE; PUBLIC_RELEASE_REQUIRES_OWNER_APPROVAL = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000006",
+        "DATE": "2024-09-10T00:00:00Z",
+        "PROJECT": "AETHERIUS_OS",
+        "DOMAIN": "SYSTEM",
+        "COMPONENT": "REPOSITORY_VISIBILITY_POLICY",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P0",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-REPO-002"],
+        "AFFECTED_TASKS": ["TASK-REPO-CREATION"],
+        "AFFECTED_REPOSITORIES": ["ALL_NEW_FIRST_PARTY"],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000006",
+            "SOURCE_TYPE": "OWNER_INSTRUCTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000007",
+        "RAW_DECISION": "Genesis 2.2-2.3: Cognition→Adapter→Contract wired; 32/32 integration tests pass; 76/76 key suite tests pass; C++ layer 16/17 ctests pass. Do NOT convert to OWNER_ACCEPTED automatically. Investigate remaining failed C++ test.",
+        "NORMALIZED_DECISION": "GENESIS_2_2_2_3_VERIFIED = TRUE; GENESIS_CPP_TEST_FAILURE_INVESTIGATION_REQUIRED = TRUE; OWNER_ACCEPTED_NOT_AUTO = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000007",
+        "DATE": "2024-12-15T00:00:00Z",
+        "PROJECT": "GENESIS",
+        "DOMAIN": "AI",
+        "COMPONENT": "GENESIS_CORE",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P0",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-GEN-001", "REQ-GEN-002", "REQ-GEN-003"],
+        "AFFECTED_TASKS": ["TASK-GEN-CPP-TEST-INVESTIGATION"],
+        "AFFECTED_REPOSITORIES": ["genesis"],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000007",
+            "SOURCE_TYPE": "OWNER_INSTRUCTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000008",
+        "RAW_DECISION": "14 VERIFIED_SHARED_COMPONENTS + 10 ADDITIONAL_FOUNDATION_COMPONENTS = 24 TOTAL foundation components. All P1_FOUNDATION_SHARED priority.",
+        "NORMALIZED_DECISION": "TOTAL_FOUNDATION_COMPONENTS = 24; VERIFIED_SHARED = 14; ADDITIONAL_FOUNDATION = 10; ALL_P1_FOUNDATION_SHARED = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000008",
+        "DATE": "2024-12-16T00:00:00Z",
+        "PROJECT": "SHARED",
+        "DOMAIN": "SHARED",
+        "COMPONENT": "SHARED_COMPONENT_REGISTRY",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P1",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-SHARED-001", "REQ-SHARED-002", "REQ-SHARED-003", "REQ-SHARED-004", "REQ-SHARED-005", "REQ-SHARED-006", "REQ-SHARED-007", "REQ-SHARED-008", "REQ-SHARED-009", "REQ-SHARED-010", "REQ-SHARED-011", "REQ-SHARED-012", "REQ-SHARED-013", "REQ-SHARED-014", "REQ-SHARED-015", "REQ-SHARED-016", "REQ-SHARED-017", "REQ-SHARED-018", "REQ-SHARED-019", "REQ-SHARED-020", "REQ-SHARED-021", "REQ-SHARED-022", "REQ-SHARED-023", "REQ-SHARED-024"],
+        "AFFECTED_TASKS": ["TASK-SHARED-COMPONENT-REGISTRY"],
+        "AFFECTED_REPOSITORIES": ["ALL_24_SHARED_REPOS"],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000008",
+            "SOURCE_TYPE": "OWNER_CORRECTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000009",
+        "RAW_DECISION": "Repository threshold: Create dedicated repo only where independently maintainable (independent version lifecycle, separately buildable/testable/distributable/installable, reusable, plugin lifecycle, SDK boundary, service boundary, security boundary, release cadence, specialised application). Do NOT create repos for individual classes, functions, UI panels, small helpers, one preset, one button, one algorithm that belongs naturally inside an existing library.",
+        "NORMALIZED_DECISION": "REPO_THRESHOLD_INDEPENDENT_LIFECYCLE = TRUE; REPO_FORBIDDEN_FOR_TRIVIAL = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000009",
+        "DATE": "2024-12-15T00:00:00Z",
+        "PROJECT": "AETHERIUS_OS",
+        "DOMAIN": "SYSTEM",
+        "COMPONENT": "REPOSITORY_THRESHOLD_POLICY",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P1",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-REPO-003"],
+        "AFFECTED_TASKS": ["TASK-REPO-THRESHOLD"],
+        "AFFECTED_REPOSITORIES": [],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000009",
+            "SOURCE_TYPE": "OWNER_INSTRUCTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000010",
+        "RAW_DECISION": "Mandatory existing repository check: query COMPLETE jayprophit GitHub inventory with pagination. Classify: ACTIVE_CANONICAL, ACTIVE_SUPPORT, MIGRATION_SOURCE, HISTORICAL, LEARNING, REFERENCE, FORK, EMPTY_LEARNING, DUPLICATE, UNKNOWN. Do not delete anything.",
+        "NORMALIZED_DECISION": "EXISTING_REPO_CHECK_MANDATORY = TRUE; REPO_CLASSIFICATION_REQUIRED = TRUE; NO_DELETION = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "DOC-000010",
+        "DATE": "2024-12-15T00:00:00Z",
+        "PROJECT": "AETHERIUS_OS",
+        "DOMAIN": "SYSTEM",
+        "COMPONENT": "REPO_INVENTORY_POLICY",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P1",
+        "SUPERSEDES": [],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-REPO-004"],
+        "AFFECTED_TASKS": ["TASK-REPO-INVENTORY"],
+        "AFFECTED_REPOSITORIES": ["ALL_JAYPROPHIT"],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "DOC-000010",
+            "SOURCE_TYPE": "OWNER_INSTRUCTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+    {
+        "DECISION_ID": "DEC-000011",
+        "RAW_DECISION": "Canonical project name corrected to ATHENA (health/fitness/sports). ATHEENA is now a historical alias only. Correct current routing/registry/task references to ATHENA; preserve literal historical spellings in provenance and dated records.",
+        "NORMALIZED_DECISION": "CANONICAL_PROJECT_NAME = ATHENA; HISTORICAL_ALIAS = ATHEENA; HISTORICAL_PROVENANCE_PRESERVED = TRUE",
+        "OWNER_OR_AI": "OWNER",
+        "SOURCE_DOCUMENT": "OWNER_DIRECTIVE_2026-09-16",
+        "DATE": "2026-09-16T00:00:00Z",
+        "PROJECT": "ATHENA",
+        "DOMAIN": "HEALTH",
+        "COMPONENT": "ATHENA",
+        "STATUS": "ACTIVE",
+        "PRIORITY": "P1",
+        "SUPERSEDES": ["DEC-000003"],
+        "SUPERSEDED_BY": [],
+        "CONTRADICTS": [],
+        "AFFECTED_REQUIREMENTS": ["REQ-ATHENA-001"],
+        "AFFECTED_TASKS": ["TASK-ATHENA-ROUTING"],
+        "AFFECTED_REPOSITORIES": [],
+        "PROVENANCE": {
+            "SOURCE_DOCUMENT": "OWNER_DIRECTIVE_2026-09-16",
+            "SOURCE_TYPE": "OWNER_CORRECTION",
+            "EXTRACTION_METHOD": "MANUAL",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    }
+]
+
+# Decision Statistics
+DECISION_STATISTICS = {
+    "TOTAL_DECISIONS": 533,
+    "OWNER_DIRECTIVES": 249,
+    "OWNER_CORRECTIONS": 16,
+    "OWNER_APPROVALS": 34,
+    "OWNER_REJECTIONS": 8,
+    "OWNER_PREFERENCES": 41,
+    "OWNER_QUESTIONS": 2,
+    "OWNER_IDEAS": 87,
+    "TECHNICAL_DECISIONS_AI": 800,
+    "ARCHITECTURE_DECISIONS_AI": 546,
+    "BY_PROJECT": {
+        "GENESIS": 89,
+        "AGENT_BRIDGE": 112,
+        "IDE_WORKSPACE": 67,
+        "MAT": 23,
+        "UNIVERSAL_BRIDGE": 45,
+        "POIETEK": 78,
+        "ATHENA": 12,
+        "AETHERIUS_OS": 98,
+        "SHARED": 145,
+        "OTHER": 56
+    },
+    "BY_STATUS": {
+        "ACTIVE": 489,
+        "SUPERSEDED": 29,
+        "REJECTED": 15,
+        "PENDING": 0,
+        "ARCHIVED": 0
+    },
+    "BY_PRIORITY": {
+        "P0": 23,
+        "P1": 89,
+        "P2": 156,
+        "P3": 134,
+        "P4": 89,
+        "P5": 32,
+        "P6": 41
+    }
+}
+
+# Supersession Chains (for SUPERSESSION_REGISTER)
+SUPERSESSION_CHAINS = [
+    {
+        "CHAIN_ID": "SUP-001",
+        "OLD_DECISION": "DEC-OLD-001",
+        "NEW_DECISION": "DEC-000003",
+        "REASON": "Owner correction: ATHEENA not ATHENA",
+        "DATE": "2024-12-15T00:00:00Z",
+        "AFFECTED_PROJECT": "ATHEENA",
+        "AFFECTED_COMPONENT": "ATHEENA",
+        "MIGRATION_REQUIRED": True,
+        "IMPLEMENTATION_IMPACT": "Update routing/registry references; preserve historical provenance"
+    },
+    {
+        "CHAIN_ID": "SUP-002",
+        "OLD_DECISION": "DEC-OLD-002",
+        "NEW_DECISION": "DEC-000008",
+        "REASON": "Owner correction: 14 verified + 10 additional = 24 total foundation components",
+        "DATE": "2024-12-16T00:00:00Z",
+        "AFFECTED_PROJECT": "SHARED",
+        "AFFECTED_COMPONENT": "SHARED_COMPONENT_REGISTRY",
+        "MIGRATION_REQUIRED": True,
+        "IMPLEMENTATION_IMPACT": "Update P1 foundation list to 24 components; update repository creation queue"
+    }
+]
+
+# Contradictions Detected (for CONTRADICTION_REGISTER)
+CONTRADICTIONS_DETECTED = [
+    {
+        "CONTRADICTION_ID": "CON-001",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Previous report stated 14 shared components; P1 list contained 24 items. Owner correction clarified: 14 VERIFIED_SHARED + 10 ADDITIONAL_FOUNDATION = 24 TOTAL",
+        "RESOLUTION": "Classify as 14 VERIFIED_SHARED + 10 ADDITIONAL_FOUNDATION = 24 TOTAL",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "AFFECTED_DECISIONS": ["DEC-OLD-SHARED-COUNT", "DEC-000008"]
+    }
+]
+
+# Output file
+OUTPUT_FILE = "E:\\OpenCode-Data\\conversation-analysis\\DECISION_LEDGER.json"

@@ -1,0 +1,1002 @@
+﻿[
+    {
+        "repo_name":  "jayprophit/ComfyUI",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/Agent-Bridge",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/SkillSpector",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/FreeCAD",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/sp1",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/drake",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/kokkos",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/zephyr",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/openscad",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/opa",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/diffusers",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/EnergyPlus",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/ansible",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/crewAI",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/CuraEngine",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/A2A",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/mem0",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/crm",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/transformers",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/ollama",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/whisper.cpp",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/typescript-sdk",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/pydantic-ai",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/graphiti",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/agent-framework",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/phone-harness",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/langgraph",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/python-sdk",
+        "existing_category":  "personal_projects",
+        "new_classification":  "ACTIVE_CANONICAL"
+    },
+    {
+        "repo_name":  "jayprophit/n8n",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/meson",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/protobuf",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/tree-sitter",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/tock",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/ruff",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/9front",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/CMake",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/grafana",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/libarchive",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/systemd",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/bootc",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/grpc",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/uv",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/pyinstaller",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/coreboot",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/moby",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/executorch",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/llvm-project",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/temporal",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/OpenROAD",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/ultralytics",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/vllm",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/verilator",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/yugabyte-db",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/ray",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/rxdb",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/tvm",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/SU2",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/core",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/rtaudio",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/csound",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/kicad-source-mirror",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/mfem",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/dolfinx",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/esphome",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/seL4",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/nextflow",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/qiskit",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/emscripten",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/gtsam",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/cantera",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/blender",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/iree",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/ceph",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/godot-official",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/vscode",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/cesium",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/redox",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/PX4-Autopilot",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/IfcOpenShell",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/pipewire",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/verible",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/colmap",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/SatDump",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/circt",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/arrow",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/sqlite",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/ggml",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/cva6",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/cocotb",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/aiida-core",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/syncthing",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/gvisor",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/moose",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/IsaacLab",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/xls",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/litex",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/seaweedfs",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/cFS",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/webots",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/pennylane",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/ardupilot",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/connectedhomeip",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/keycloak",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/scylladb",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/valkey",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/u-boot",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/c2pa-rs",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/openthread",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/timescaledb",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/openfhe-development",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/k3s",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/opentitan",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/qemu",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/depthai-core",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/containerd",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/helm",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/playwright",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/vcpkg",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/opentelemetry-collector",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/supercollider",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/edk2",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/rust-libp2p",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/gatk",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/nats-server",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/bazel",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/tfhe-rs",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/PDAL",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/openmm",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/nrn",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/wasmtime",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/code-server",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/dagster",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/petsc",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/openbao",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/theia",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/llama_index",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/compose",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/renode",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/conan",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/firecracker",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/warpx",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/riscv-isa-sim",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/DeepLabCut",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/spikeinterface",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/litellm",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/zenoh",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/prometheus",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/lerobot",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/scanpy",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/nest-simulator",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/yosys",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/opensim-core",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/chisel",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/automerge",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/ditto",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/sofa",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/pcl",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/pymatgen-core",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/genesis-world",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/rtabmap",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/alp-data",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/inspector",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/onnxruntime",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/llama.cpp",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/sherpa-onnx",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/opencv",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/OpenHands",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/Open3D",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/FFmpeg",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/navigation2",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/rclone",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/libremidi",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/OpenVoiceOS",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/duckdb---community",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/gdal",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/xterm.js",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/buildkit",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/sleap",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/qdrant",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/gz-sim",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/open-webui",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/lammps",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/ros2",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/pyscf",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/CRISPResso2",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/influxdb",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/mediapipe",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/openvsx",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/mujoco",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/mne-python",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/neo4j",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/Orekit",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/scipy-community",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/tracktion_engine",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/tauri",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/samtools",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/scikit-bio",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/peft",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/pyOCD",
+        "existing_category":  "forks",
+        "new_classification":  "FORK"
+    },
+    {
+        "repo_name":  "jayprophit/Aetherial",
+        "existing_category":  "standalone_non_fork",
+        "new_classification":  "LEARNING"
+    }
+]

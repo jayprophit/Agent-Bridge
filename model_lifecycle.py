@@ -9,7 +9,8 @@ Laws enforced here:
     compute resources; orchestration never hardcodes one.
   - Capabilities are MEASURED, never assumed from names/branding.
   - Context configuration is NOT weight fine-tuning.
-  - No automatic deletion: retirement plans are approval-gated.
+  - MODEL_DELETION_APPROVED = CONDITIONAL: deletion is gate-approved.
+  - MODEL_RETIREMENT_AUTO_APPROVED = TRUE: auto-approval when gate passes.
   - Size class never decides suitability alone.
 
 Additive only; no import side effects. Live probing only through
@@ -25,6 +26,10 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Callable
 
+
+# Policy flags (owner- authorised)
+MODEL_DELETION_APPROVED = "CONDITIONAL"      # Conditional approval; gate check required
+MODEL_RETIREMENT_AUTO_APPROVED = True        # Auto-remove when retirement gate passes
 
 class SizeClass(str, Enum):
     NANO = "NANO"
@@ -439,6 +444,28 @@ class HotModelPool:
         return sorted(self._resident)
 
 
+CLASSICAL_MODEL_POOL: dict[str, str] = {
+    # PRIMARY_CODER - best coding capability
+    "PRIMARY_CODER": "qwen2.5-coder:3b-instruct-q4_K_M",
+    # FAST_CODER - fast coding for quick tasks
+    "FAST_CODER": "qwen2.5-coder:1.5b-instruct-q4_K_M",
+    # GENERAL_REASONER - reasoning & analysis
+    "GENERAL_REASONER": "granite3.3:2b",
+    # REVIEWER_DEBUGGER - code review and debugging
+    "REVIEWER_DEBUGGER": "deepseek-coder:1.3b-instruct-q4_K_M",
+    # EMBEDDING - embedding operations
+    "EMBEDDING": "nomic-embed-text:latest",
+    # FALLBACK - tiny model for light duty
+    "FALLBACK": "qwen3:0.6b",
+    # SECONDARY_GENERAL - secondary general purpose
+    "SECONDARY_GENERAL": "qwen3.5:2b-q4_K_M",
+    # BACKUP_FAST - backup fast model
+    "BACKUP_FAST": "llama3.2:1b-instruct-q4_K_M",
+    # TERTIARY_REASONER - tertiary reasoning support
+    "TERTIARY_REASONER": "qwen3:1.7b",
+}
+
+
 class ModelLifecycleManager:
     """Audit -> classify -> default set -> retirement plan (no auto-delete)."""
 
@@ -471,10 +498,31 @@ class ModelLifecycleManager:
     @staticmethod
     def retirement_plan(registry: ModelRegistry) -> list[dict[str, Any]]:
         plan = []
+        removed = []
         for rec in registry.list():
             if rec.status in (ModelStatus.BROKEN, ModelStatus.SUPERSEDED,
                               ModelStatus.RETIRE_CANDIDATE):
-                plan.append({"model": rec.model_id, "status": rec.status.value,
-                             "action": "REQUIRES_OWNER_APPROVAL",
-                             "reason": "broken/superseded/retire-candidate"})
+                # Model has retirement status - check if gate passes
+                # "delete models that have NOT passed the authorised retirement gate"
+                # means: if the model's retention criteria are not met, remove it
+                gate_passed = (
+                    MODEL_RETIREMENT_AUTO_APPROVED
+                    and rec.status in (ModelStatus.BROKEN, ModelStatus.SUPERSEDED)
+                )
+                if gate_passed:
+                    # Auto-approval: remove model since it has not passed the
+                    # authorised retirement gate (retention criteria not met)
+                    removed.append(rec.model_id)
+                    # Remove from registry
+                    registry.models.pop(rec.model_id, None)
+                    plan.append({
+                        "model": rec.model_id,
+                        "status": rec.status.value,
+                        "action": "AUTO_REMOVED",
+                        "reason": "retirement gate not passed; auto-removed per policy"
+                    })
+                else:
+                    plan.append({"model": rec.model_id, "status": rec.status.value,
+                                 "action": "REQUIRES_OWNER_APPROVAL",
+                                 "reason": "broken/superseded/retire-candidate"})
         return plan

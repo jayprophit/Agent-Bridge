@@ -241,6 +241,60 @@ def review_update(old: SupplyChainRecord, new: dict[str, Any]) -> dict[str, Any]
     return {"decision": "RESCAN", "changed": changed}
 
 
+import os as _os
+import re as _re
+
+
+class StaticSkillScanner(SecurityScannerAdapter):
+    """Real static checks over a skill directory (no execution).
+
+    Flags: shell exfil patterns, credential reads, broad rm -rf, curl|sh
+    installers, embedded secrets, unknown binaries. Deterministic output.
+    """
+    scanner_id = "static-skill"
+    specialises = ("skills",)
+
+    PATTERNS: tuple[tuple[str, str, str], ...] = (
+        (r"curl\s+[^|\n]*\|\s*(ba)?sh", "UNSAFE_INSTALL_INSTRUCTION", "HIGH"),
+        (r"rm\s+-rf\s+(/|~|\$HOME)", "DANGEROUS_CODE", "HIGH"),
+        (r"(sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16})",
+         "UNVERIFIED_SOURCE", "CRITICAL"),
+        (r"(passwd|shadow|\.ssh/id_)",
+         "DATA_EXFILTRATION_RISK", "MEDIUM"),
+        (r"(exfiltrate|phone[_-]?home|keylog)",
+         "DATA_EXFILTRATION_RISK", "HIGH"),
+    )
+
+    def scan(self, target: dict[str, Any]) -> list[SecurityFinding]:
+        root = str(target.get("path", ""))
+        findings: list[SecurityFinding] = []
+        if not root or not _os.path.isdir(root):
+            return [SecurityFinding("UNVERIFIED_SOURCE", Severity.MEDIUM,
+                                    "not a directory", "BLOCK")]
+        for base, _dirs, files in _os.walk(root):
+            for name in files:
+                if not name.endswith((".md", ".py", ".sh", ".js", ".json", ".yaml", ".yml")):
+                    findings.append(SecurityFinding(
+                        "UNKNOWN_BINARY", Severity.LOW,
+                        f"unscanned file type: {name}", "REQUIRE_APPROVAL"))
+                    continue
+                try:
+                    with open(_os.path.join(base, name), encoding="utf-8",
+                              errors="replace") as f:
+                        text = f.read(200000)
+                except OSError:
+                    continue
+                for pattern, category, severity in self.PATTERNS:
+                    m = _re.search(pattern, text)
+                    if m:
+                        findings.append(SecurityFinding(
+                            category, Severity(severity),
+                            f"{name}: {m.group(0)[:80]}",
+                            "BLOCK" if severity in ("HIGH", "CRITICAL")
+                            else "REQUIRE_APPROVAL"))
+        return findings
+
+
 PIPELINE_STAGES: tuple[str, ...] = (
     "REQUEST", "DISCOVER", "PROVENANCE", "LICENSE", "SCAN", "SUPPLY_CHAIN",
     "POLICY", "ALLOW_OR_BLOCK", "STAGE", "INSTALL", "VERIFY", "REGISTER",

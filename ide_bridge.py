@@ -32,6 +32,7 @@ class TaskEntry:
 @dataclass
 class RuntimeSnapshot:
     timestamp: float = field(default_factory=time.time)
+    avatar: dict[str, Any] = field(default_factory=dict)
     tasks: list[dict[str, Any]] = field(default_factory=list)
     queue_depth: int = 0
     queued_ids: list[str] = field(default_factory=list)
@@ -153,9 +154,16 @@ class RuntimeStateTracker:
 
 
 def build_runtime_snapshot(runtime: Any,
-                           tracker: RuntimeStateTracker | None = None
+                           tracker: RuntimeStateTracker | None = None,
+                           genesis: Any | None = None
                            ) -> dict[str, Any]:
-    """Aggregate live runtime sessions (+ optional tracker) for /v1/runtime."""
+    """Aggregate live runtime sessions (+ optional tracker) for /v1/runtime.
+
+    When a live Genesis runtime is available (passed explicitly or as
+    ``runtime.genesis_runtime``), its identity is projected onto the
+    shared avatar binding and merged into snap["avatar"] with genesis_id.
+    Without one, the task-derived avatar stands as fallback.
+    """
     snap = (tracker.snapshot().to_dict() if tracker is not None
             else RuntimeSnapshot().to_dict())
     try:
@@ -186,9 +194,72 @@ def build_runtime_snapshot(runtime: Any,
     snap["approvals_pending"] = approvals
     snap["timestamp"] = time.time()
     try:
+        from avatar_controller import AvatarController
+        avatar = AvatarController()
+        active = [t for t in tasks
+                  if t.get("status") not in ("COMPLETED", "VERIFIED_COMPLETE")]
+        if active:
+            first = sorted(active, key=lambda t: t.get("updated_at", 0))[-1]
+            avatar.from_task_status(str(first.get("status", "")),
+                                    str(first.get("task_id", "")),
+                                    float(first.get("progress_pct", 0) or 0))
+        elif tasks:
+            avatar.from_task_status("COMPLETED")
+        snap["avatar"] = avatar.snapshot()
+    except Exception:
+        snap.setdefault("avatar", {"state": "idle"})
+    try:
+        # Live Genesis identity projection takes precedence; the
+        # task-derived avatar above remains the fallback when no live
+        # identity exists.
+        g = genesis if genesis is not None else getattr(
+            runtime, "genesis_runtime", None)
+        if g is not None:
+            from genesis_avatar import binding_for, project_genesis_runtime
+            ident = getattr(getattr(g, "identity", None), "genesis_id",
+                            "") or ""
+            if ident:
+                rec = project_genesis_runtime(binding_for(str(ident)), g)
+                if rec.get("projected"):
+                    merged = dict(snap.get("avatar") or {})
+                    merged.update(rec)
+                    snap["avatar"] = merged
+                else:
+                    import sys as _sys
+                    print("GENESIS_MERGE_SKIP %r" % (rec,),
+                          file=_sys.stderr)
+    except Exception as _e:
+        import traceback as _tb
+        _tb.print_exc()
+        pass
+    try:
         health = runtime.health()
         snap["health"] = health.get("status", snap.get("health", "UNKNOWN")) \
             if isinstance(health, dict) else str(health)
     except Exception:
         pass
     return snap
+
+
+def feed_loop_record(tracker: RuntimeStateTracker, record: Any,
+                     objective: str = "") -> None:
+    """Bridge -> IDE surface: translate one autonomous-loop IterationRecord
+    into tracker state (the payload TaskCenter polls via GET /v1/runtime)."""
+    status = "VERIFIED_COMPLETE" if record.verified else (
+        "BLOCKED" if record.blocked else
+        ("AWAITING_OWNER" if record.gate else "RUNNING"))
+    tracker.record_task(TaskEntry(
+        task_id=record.task_id, objective=objective, status=status,
+        progress_pct=100.0 if record.verified else 0.0,
+        worker="autonomous-loop", model=""))
+    if record.verified:
+        tracker.record_result({"task_id": record.task_id,
+                               "approach": record.approach,
+                               "duration_s": record.duration_s,
+                               "attempt": record.attempt})
+    if record.blocked:
+        tracker.record_error(f"{record.task_id}: {record.blocked}")
+    if record.gate:
+        tracker.record_approval({"task_id": record.task_id,
+                                 "gate": record.gate,
+                                 "decision": "PENDING_OWNER"})

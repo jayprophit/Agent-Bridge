@@ -95,10 +95,15 @@ class TestApprovalEvents(unittest.TestCase):
         # canonical delete carries permanent:False (protocol normalization)
         target = {"action": "delete", "path": "victim.txt", "permanent": False}
         (self.tmp / "victim.txt").write_text("keep", encoding="utf-8")
+        # Phase 1.1 amendment: a passing SAFE test step (auto-approved, so
+        # the approval-request assertions are unaffected) supplies the
+        # verification evidence completion now requires.
+        (self.tmp / "probe.py").write_text("print(1)\n", encoding="utf-8")
         fp = _j.dumps(target, sort_keys=True)
         iface = PreApprovedApproval(approved=[fp], default="deny")
         cfg = self._cfg(approval="AUTO_SAFE", non_interactive=False)
         fake = FakeProvider(['{"action":"delete","path":"victim.txt"}',
+                             '{"action":"test","command":"python probe.py"}',
                              '{"action":"finish","message":"done"}'])
         out = run_bridge(cfg, "t", provider=fake, approval_interface=iface,
                          )

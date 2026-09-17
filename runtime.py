@@ -51,6 +51,8 @@ class RuntimeConfig:
     host: str = "127.0.0.1"  # localhost only by default; never 0.0.0.0
     port: int = 8471
     token: str = ""  # optional local bearer token; "" = disabled
+    cors_origins: list = field(default_factory=list)  # owner-approved
+    # browser origins allowed ACAO (default: none); never '*'.
     max_request_bytes: int = 1_000_000
     rate_limit_per_min: int = 120
     default_mode: str = "hybrid"

@@ -64,8 +64,10 @@ class TestReplay(unittest.TestCase):
         jl = self.tmp / "sess.jsonl"
         cfg = _cfg(self.tmp)
         cfg.logging.jsonl_log = str(jl)
-        fake = FakeProvider(['{"action":"write","path":"r.txt","content":"data"}',
-                             '{"action":"shell","command":"python r.txt"}',
+        # Phase 1.1 amendment: the script performs a passing test so
+        # finish carries verification evidence. Replay assertions unchanged.
+        fake = FakeProvider(['{"action":"write","path":"r.txt","content":"print(1)\\n"}',
+                             '{"action":"test","command":"python r.txt"}',
                              '{"action":"finish","message":"ok"}'])
         out = run_bridge(cfg, "replay task", provider=fake)
         self.assertTrue(out.get("finished"), out)

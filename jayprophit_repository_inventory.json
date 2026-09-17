@@ -1,0 +1,1610 @@
+﻿{
+    "local_from_txt":  [
+                           "jayprophit/9front",
+                           "jayprophit/A2A",
+                           "jayprophit/Aetherial",
+                           "jayprophit/Agent-Bridge",
+                           "jayprophit/agent-framework",
+                           "jayprophit/aiida-core",
+                           "jayprophit/alp-data",
+                           "jayprophit/ansible",
+                           "jayprophit/ardupilot",
+                           "jayprophit/arrow",
+                           "jayprophit/automerge",
+                           "jayprophit/bazel",
+                           "jayprophit/blender",
+                           "jayprophit/bootc",
+                           "jayprophit/buildkit",
+                           "jayprophit/c2pa-rs",
+                           "jayprophit/cantera",
+                           "jayprophit/ceph",
+                           "jayprophit/cesium",
+                           "jayprophit/cFS",
+                           "jayprophit/chisel",
+                           "jayprophit/circt",
+                           "jayprophit/CMake",
+                           "jayprophit/cocotb",
+                           "jayprophit/code-server",
+                           "jayprophit/colmap",
+                           "jayprophit/ComfyUI",
+                           "jayprophit/compose",
+                           "jayprophit/conan",
+                           "jayprophit/connectedhomeip",
+                           "jayprophit/containerd",
+                           "jayprophit/core",
+                           "jayprophit/coreboot",
+                           "jayprophit/crewAI",
+                           "jayprophit/CRISPResso2",
+                           "jayprophit/crm",
+                           "jayprophit/csound",
+                           "jayprophit/CuraEngine",
+                           "jayprophit/cva6",
+                           "jayprophit/dagster",
+                           "jayprophit/DeepLabCut",
+                           "jayprophit/depthai-core",
+                           "jayprophit/diffusers",
+                           "jayprophit/ditto",
+                           "jayprophit/dolfinx",
+                           "jayprophit/drake",
+                           "jayprophit/duckdb---community",
+                           "jayprophit/edk2",
+                           "jayprophit/emscripten",
+                           "jayprophit/EnergyPlus",
+                           "jayprophit/esphome",
+                           "jayprophit/executorch",
+                           "jayprophit/FFmpeg",
+                           "jayprophit/firecracker",
+                           "jayprophit/FreeCAD",
+                           "jayprophit/gatk",
+                           "jayprophit/gdal",
+                           "jayprophit/genesis-world",
+                           "jayprophit/ggml",
+                           "jayprophit/godot-official",
+                           "jayprophit/grafana",
+                           "jayprophit/graphiti",
+                           "jayprophit/grpc",
+                           "jayprophit/gtsam",
+                           "jayprophit/gvisor",
+                           "jayprophit/gz-sim",
+                           "jayprophit/helm",
+                           "jayprophit/IfcOpenShell",
+                           "jayprophit/influxdb",
+                           "jayprophit/inspector",
+                           "jayprophit/iree",
+                           "jayprophit/IsaacLab",
+                           "jayprophit/k3s",
+                           "jayprophit/keycloak",
+                           "jayprophit/kicad-source-mirror",
+                           "jayprophit/kokkos",
+                           "jayprophit/lammps",
+                           "jayprophit/langgraph",
+                           "jayprophit/lerobot",
+                           "jayprophit/libarchive",
+                           "jayprophit/libremidi",
+                           "jayprophit/litellm",
+                           "jayprophit/litex",
+                           "jayprophit/llama.cpp",
+                           "jayprophit/llama_index",
+                           "jayprophit/llvm-project",
+                           "jayprophit/mediapipe",
+                           "jayprophit/mem0",
+                           "jayprophit/meson",
+                           "jayprophit/mfem",
+                           "jayprophit/mne-python",
+                           "jayprophit/moby",
+                           "jayprophit/moose",
+                           "jayprophit/mujoco",
+                           "jayprophit/n8n",
+                           "jayprophit/nats-server",
+                           "jayprophit/navigation2",
+                           "jayprophit/neo4j",
+                           "jayprophit/nest-simulator",
+                           "jayprophit/nextflow",
+                           "jayprophit/nrn",
+                           "jayprophit/ollama",
+                           "jayprophit/onnxruntime",
+                           "jayprophit/opa",
+                           "jayprophit/Open3D",
+                           "jayprophit/openbao",
+                           "jayprophit/opencv",
+                           "jayprophit/openfhe-development",
+                           "jayprophit/OpenHands",
+                           "jayprophit/openmm",
+                           "jayprophit/OpenROAD",
+                           "jayprophit/openscad",
+                           "jayprophit/opensim-core",
+                           "jayprophit/opentelemetry-collector",
+                           "jayprophit/openthread",
+                           "jayprophit/opentitan",
+                           "jayprophit/OpenVoiceOS",
+                           "jayprophit/openvsx",
+                           "jayprophit/open-webui",
+                           "jayprophit/Orekit",
+                           "jayprophit/pcl",
+                           "jayprophit/PDAL",
+                           "jayprophit/peft",
+                           "jayprophit/pennylane",
+                           "jayprophit/petsc",
+                           "jayprophit/phone-harness",
+                           "jayprophit/pipewire",
+                           "jayprophit/playwright",
+                           "jayprophit/prometheus",
+                           "jayprophit/protobuf",
+                           "jayprophit/PX4-Autopilot",
+                           "jayprophit/pydantic-ai",
+                           "jayprophit/pyinstaller",
+                           "jayprophit/pymatgen-core",
+                           "jayprophit/pyOCD",
+                           "jayprophit/pyscf",
+                           "jayprophit/python-sdk",
+                           "jayprophit/qdrant",
+                           "jayprophit/qemu",
+                           "jayprophit/qiskit",
+                           "jayprophit/ray",
+                           "jayprophit/rclone",
+                           "jayprophit/redox",
+                           "jayprophit/renode",
+                           "jayprophit/riscv-isa-sim",
+                           "jayprophit/ros2",
+                           "jayprophit/rtabmap",
+                           "jayprophit/rtaudio",
+                           "jayprophit/ruff",
+                           "jayprophit/rust-libp2p",
+                           "jayprophit/rxdb",
+                           "jayprophit/samtools",
+                           "jayprophit/SatDump",
+                           "jayprophit/scanpy",
+                           "jayprophit/scikit-bio",
+                           "jayprophit/scipy-community",
+                           "jayprophit/scylladb",
+                           "jayprophit/seaweedfs",
+                           "jayprophit/seL4",
+                           "jayprophit/sherpa-onnx",
+                           "jayprophit/SkillSpector",
+                           "jayprophit/sleap",
+                           "jayprophit/sofa",
+                           "jayprophit/sp1",
+                           "jayprophit/spikeinterface",
+                           "jayprophit/sqlite",
+                           "jayprophit/SU2",
+                           "jayprophit/supercollider",
+                           "jayprophit/syncthing",
+                           "jayprophit/systemd",
+                           "jayprophit/tauri",
+                           "jayprophit/temporal",
+                           "jayprophit/tfhe-rs",
+                           "jayprophit/theia",
+                           "jayprophit/timescaledb",
+                           "jayprophit/tock",
+                           "jayprophit/tracktion_engine",
+                           "jayprophit/transformers",
+                           "jayprophit/tree-sitter",
+                           "jayprophit/tvm",
+                           "jayprophit/typescript-sdk",
+                           "jayprophit/u-boot",
+                           "jayprophit/ultralytics",
+                           "jayprophit/uv",
+                           "jayprophit/valkey",
+                           "jayprophit/vcpkg",
+                           "jayprophit/verible",
+                           "jayprophit/verilator",
+                           "jayprophit/vllm",
+                           "jayprophit/vscode",
+                           "jayprophit/warpx",
+                           "jayprophit/wasmtime",
+                           "jayprophit/webots",
+                           "jayprophit/whisper.cpp",
+                           "jayprophit/xls",
+                           "jayprophit/xterm.js",
+                           "jayprophit/yosys",
+                           "jayprophit/yugabyte-db",
+                           "jayprophit/zenoh",
+                           "jayprophit/zephyr"
+                       ],
+    "standalone_non_fork":  [
+                                {
+                                    "name":  "jayprophit/Aetherial",
+                                    "visibility":  "private",
+                                    "fork":  false,
+                                    "date":  "2026-09-11T07:53:22Z",
+                                    "description":  "Multi facet platform/ app. (Manus.im build)"
+                                }
+                            ],
+    "personal_projects":  [
+                              {
+                                  "name":  "jayprophit/ComfyUI",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-13T09:28:23Z",
+                                  "description":  "The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface."
+                              },
+                              {
+                                  "name":  "jayprophit/Agent-Bridge",
+                                  "visibility":  "private",
+                                  "fork":  false,
+                                  "date":  "2026-09-13T04:57:37Z",
+                                  "description":  "A framework for connecting AI agents, models, tools and local resources through a unified runtime."
+                              },
+                              {
+                                  "name":  "jayprophit/SkillSpector",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T19:53:55Z",
+                                  "description":  "Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, security risks, prompt injection, data exfiltration, and supply-chain risks in Claude Code, Codex, and MCP skills before you install them."
+                              },
+                              {
+                                  "name":  "jayprophit/FreeCAD",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T17:35:46Z",
+                                  "description":  "Official source code of FreeCAD, a free and opensource multiplatform 3D parametric modeler."
+                              },
+                              {
+                                  "name":  "jayprophit/sp1",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T16:16:15Z",
+                                  "description":  "SP1 is a zeroÔÇæknowledge virtual machine that proves the correct execution of programs compiled for the RISC-V architecture."
+                              },
+                              {
+                                  "name":  "jayprophit/drake",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T14:58:08Z",
+                                  "description":  "Model-based design and verification for robotics."
+                              },
+                              {
+                                  "name":  "jayprophit/kokkos",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T12:31:54Z",
+                                  "description":  "Kokkos C++ Performance Portability Programming Ecosystem: The Programming Model - Parallel Execution and Memory Abstraction"
+                              },
+                              {
+                                  "name":  "jayprophit/zephyr",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T11:53:38Z",
+                                  "description":  "Primary Git Repository for the Zephyr Project. Zephyr is a new generation, scalable, optimized, secure RTOS for multiple hardware architectures."
+                              },
+                              {
+                                  "name":  "jayprophit/openscad",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T07:22:09Z",
+                                  "description":  "OpenSCAD - The Programmers Solid 3D CAD Modeller"
+                              },
+                              {
+                                  "name":  "jayprophit/opa",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T06:05:19Z",
+                                  "description":  "Open Policy Agent (OPA) is an open source, general-purpose policy engine."
+                              },
+                              {
+                                  "name":  "jayprophit/diffusers",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-12T02:04:53Z",
+                                  "description":  "­ƒñù Diffusers: State-of-the-art diffusion models for image, video, and audio generation in PyTorch."
+                              },
+                              {
+                                  "name":  "jayprophit/EnergyPlus",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T23:15:57Z",
+                                  "description":  "EnergyPlusÔäó is a whole building energy simulation program that engineers, architects, and researchers use to model both energy consumption and water use in buildings."
+                              },
+                              {
+                                  "name":  "jayprophit/ansible",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T23:00:01Z",
+                                  "description":  "Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy and maintain. Automate everything from code deployment to network configuration to cloud management, in a language that approaches plain English, using SSH, with no agents to install on remote systems. https://docs.ansible.com."
+                              },
+                              {
+                                  "name":  "jayprophit/crewAI",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T19:46:20Z",
+                                  "description":  "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks."
+                              },
+                              {
+                                  "name":  "jayprophit/CuraEngine",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T14:24:54Z",
+                                  "description":  "Powerful, fast and robust engine for converting 3D models into g-code instructions for 3D printers. It is part of the larger open source project Cura."
+                              },
+                              {
+                                  "name":  "jayprophit/A2A",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T11:07:06Z",
+                                  "description":  "Agent2Agent (A2A) is an open protocol enabling communication and interoperability between opaque agentic applications."
+                              },
+                              {
+                                  "name":  "jayprophit/mem0",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T10:43:07Z",
+                                  "description":  "The Memory Layer for AI Agents - Drop-in memory infrastructure for AI agents and apps. Context that persists. Built for production."
+                              },
+                              {
+                                  "name":  "jayprophit/crm",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T07:06:17Z",
+                                  "description":  "Comp AI CRM is an open source, CRM designed for AI agents. Agentic-first CRM."
+                              },
+                              {
+                                  "name":  "jayprophit/transformers",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T06:42:00Z",
+                                  "description":  "­ƒñù Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training."
+                              },
+                              {
+                                  "name":  "jayprophit/ollama",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T06:09:40Z",
+                                  "description":  "Get up and running with Kimi-K2.6, GLM-5.2, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models."
+                              },
+                              {
+                                  "name":  "jayprophit/whisper.cpp",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T05:31:54Z",
+                                  "description":  "Port of OpenAI\u0027s Whisper model in C/C++"
+                              },
+                              {
+                                  "name":  "jayprophit/typescript-sdk",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T04:09:05Z",
+                                  "description":  "The official TypeScript SDK for Model Context Protocol servers and clients"
+                              },
+                              {
+                                  "name":  "jayprophit/pydantic-ai",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-11T02:24:07Z",
+                                  "description":  "How Python does AI. Agents, realtime voice, image generation, embeddings. Every model, every interface, typed end to end."
+                              },
+                              {
+                                  "name":  "jayprophit/graphiti",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-10T20:19:38Z",
+                                  "description":  "Build Real-Time Knowledge Graphs for AI Agents"
+                              },
+                              {
+                                  "name":  "jayprophit/agent-framework",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-10T19:24:33Z",
+                                  "description":  "A framework for building, orchestrating and deploying AI agents and multi-agent workflows with support for Python and .NET."
+                              },
+                              {
+                                  "name":  "jayprophit/phone-harness",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-10T19:04:52Z",
+                                  "description":  "let your agent control your phone"
+                              },
+                              {
+                                  "name":  "jayprophit/langgraph",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-10T17:11:59Z",
+                                  "description":  "Build resilient agents."
+                              },
+                              {
+                                  "name":  "jayprophit/python-sdk",
+                                  "visibility":  "public",
+                                  "fork":  true,
+                                  "date":  "2026-09-10T13:23:39Z",
+                                  "description":  "The official Python SDK for Model Context Protocol servers and clients"
+                              }
+                          ],
+    "forks":  [
+                  {
+                      "name":  "jayprophit/n8n",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T08:53:30Z",
+                      "description":  "Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations."
+                  },
+                  {
+                      "name":  "jayprophit/meson",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T07:33:58Z",
+                      "description":  "The Meson Build System"
+                  },
+                  {
+                      "name":  "jayprophit/protobuf",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T06:35:39Z",
+                      "description":  "Protocol Buffers - Google\u0027s data interchange format"
+                  },
+                  {
+                      "name":  "jayprophit/tree-sitter",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T05:40:25Z",
+                      "description":  "An incremental parsing system for programming tools"
+                  },
+                  {
+                      "name":  "jayprophit/tock",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T05:10:42Z",
+                      "description":  "A secure embedded operating system for microcontrollers"
+                  },
+                  {
+                      "name":  "jayprophit/ruff",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T05:04:21Z",
+                      "description":  "An extremely fast Python linter and code formatter, written in Rust."
+                  },
+                  {
+                      "name":  "jayprophit/9front",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T04:55:29Z",
+                      "description":  "nightly synced mirror"
+                  },
+                  {
+                      "name":  "jayprophit/CMake",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T04:13:03Z",
+                      "description":  "Mirror of CMake upstream repository"
+                  },
+                  {
+                      "name":  "jayprophit/grafana",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T03:38:40Z",
+                      "description":  "The open and composable observability and data visualization platform. Visualize metrics, logs, and traces from multiple sources like Prometheus, Loki, Elasticsearch, InfluxDB, Postgres and many more."
+                  },
+                  {
+                      "name":  "jayprophit/libarchive",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T03:02:51Z",
+                      "description":  "Multi-format archive and compression library"
+                  },
+                  {
+                      "name":  "jayprophit/systemd",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T02:18:22Z",
+                      "description":  "The systemd System and Service Manager"
+                  },
+                  {
+                      "name":  "jayprophit/bootc",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T01:02:25Z",
+                      "description":  "Boot and upgrade via container images"
+                  },
+                  {
+                      "name":  "jayprophit/grpc",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-13T00:50:58Z",
+                      "description":  "C++ based gRPC (C++, Python, Ruby, Objective-C, PHP, C#)"
+                  },
+                  {
+                      "name":  "jayprophit/uv",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T23:05:43Z",
+                      "description":  "An extremely fast Python package and project manager, written in Rust."
+                  },
+                  {
+                      "name":  "jayprophit/pyinstaller",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T21:55:19Z",
+                      "description":  "Freeze (package) Python programs into stand-alone executables"
+                  },
+                  {
+                      "name":  "jayprophit/coreboot",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T21:01:14Z",
+                      "description":  "Read-only mirror of https://review.coreboot.org/coreboot.git. Synced every hour. We don\u0027t handle Pull Requests."
+                  },
+                  {
+                      "name":  "jayprophit/moby",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T20:44:14Z",
+                      "description":  "The Moby Project - a collaborative project for the container ecosystem to assemble container-based systems"
+                  },
+                  {
+                      "name":  "jayprophit/executorch",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T20:43:48Z",
+                      "description":  "On-device AI across mobile, embedded and edge for PyTorch"
+                  },
+                  {
+                      "name":  "jayprophit/llvm-project",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T20:38:21Z",
+                      "description":  "The LLVM Project is a collection of modular and reusable compiler and toolchain technologies."
+                  },
+                  {
+                      "name":  "jayprophit/temporal",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T20:10:38Z",
+                      "description":  "Temporal service"
+                  },
+                  {
+                      "name":  "jayprophit/OpenROAD",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T20:01:49Z",
+                      "description":  "OpenROAD\u0027s unified application implementing an RTL-to-GDS Flow. Documentation at https://openroad.readthedocs.io/en/latest/"
+                  },
+                  {
+                      "name":  "jayprophit/ultralytics",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T19:48:54Z",
+                      "description":  "Ultralytics YOLO26, YOLO11, YOLOv8 ÔÇö object detection, instance segmentation, semantic segmentation, image classification, pose estimation, object tracking"
+                  },
+                  {
+                      "name":  "jayprophit/vllm",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T18:42:01Z",
+                      "description":  "A high-throughput and memory-efficient inference and serving engine for LLMs"
+                  },
+                  {
+                      "name":  "jayprophit/verilator",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T18:36:46Z",
+                      "description":  "Verilator open-source SystemVerilog simulator and lint system"
+                  },
+                  {
+                      "name":  "jayprophit/yugabyte-db",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T18:36:34Z",
+                      "description":  "YugabyteDB - the cloud native distributed SQL database for mission-critical applications."
+                  },
+                  {
+                      "name":  "jayprophit/ray",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T18:34:32Z",
+                      "description":  "Ray is an AI compute engine. Ray consists of a core distributed runtime and a set of AI Libraries for accelerating ML workloads."
+                  },
+                  {
+                      "name":  "jayprophit/rxdb",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T18:28:32Z",
+                      "description":  "The local-first database that runs on every JS runtime and replicates with your existing backend - no vendor, no lock-in - https://rxdb.info/"
+                  },
+                  {
+                      "name":  "jayprophit/tvm",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T18:17:05Z",
+                      "description":  "Open Machine Learning Compiler Framework"
+                  },
+                  {
+                      "name":  "jayprophit/SU2",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T18:14:26Z",
+                      "description":  "SU2: An Open-Source Suite for Multiphysics Simulation and Design"
+                  },
+                  {
+                      "name":  "jayprophit/core",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T17:58:53Z",
+                      "description":  ":house_with_garden: Open source home automation that puts local control and privacy first."
+                  },
+                  {
+                      "name":  "jayprophit/rtaudio",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T17:56:16Z",
+                      "description":  "A set of C++ classes that provide a common API for realtime audio input/output across Linux (native ALSA, JACK, PulseAudio and OSS), Macintosh OS X (CoreAudio and JACK), and Windows (DirectSound, ASIO, and WASAPI) operating systems."
+                  },
+                  {
+                      "name":  "jayprophit/csound",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T17:55:30Z",
+                      "description":  "Main repository for Csound"
+                  },
+                  {
+                      "name":  "jayprophit/kicad-source-mirror",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T17:48:09Z",
+                      "description":  "This is an active mirror of the KiCad development branch, which is hosted at GitLab (updated every time something is pushed). Pull requests on GitHub are not accepted or watched."
+                  },
+                  {
+                      "name":  "jayprophit/mfem",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T17:36:00Z",
+                      "description":  "Lightweight, general, scalable C++ library for finite element methods"
+                  },
+                  {
+                      "name":  "jayprophit/dolfinx",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T17:27:18Z",
+                      "description":  "Next generation FEniCS problem solving environment for solving finite element problems"
+                  },
+                  {
+                      "name":  "jayprophit/esphome",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T16:18:38Z",
+                      "description":  "ESPHome is a system to control your ESP32, ESP8266, BK72xx, RP2040 by simple yet powerful configuration files and control them remotely through Home Automation systems."
+                  },
+                  {
+                      "name":  "jayprophit/seL4",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T16:07:52Z",
+                      "description":  "The seL4 microkernel"
+                  },
+                  {
+                      "name":  "jayprophit/nextflow",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T15:57:39Z",
+                      "description":  "A DSL for data-driven computational pipelines"
+                  },
+                  {
+                      "name":  "jayprophit/qiskit",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T15:17:50Z",
+                      "description":  "Qiskit is an open-source SDK for working with quantum computers at the level of extended quantum circuits, operators, and primitives."
+                  },
+                  {
+                      "name":  "jayprophit/emscripten",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T15:12:51Z",
+                      "description":  "Emscripten: An LLVM-to-WebAssembly Compiler"
+                  },
+                  {
+                      "name":  "jayprophit/gtsam",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T14:33:26Z",
+                      "description":  "GTSAM is a library of C++ classes that implement smoothing and mapping (SAM) in robotics and vision, using factor graphs and Bayes networks as the underlying computing paradigm rather than sparse matrices."
+                  },
+                  {
+                      "name":  "jayprophit/cantera",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T14:25:07Z",
+                      "description":  "Chemical kinetics, thermodynamics, and transport tool suite"
+                  },
+                  {
+                      "name":  "jayprophit/blender",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T14:19:50Z",
+                      "description":  "Official mirror of Blender"
+                  },
+                  {
+                      "name":  "jayprophit/iree",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T14:09:50Z",
+                      "description":  "A retargetable MLIR-based machine learning compiler and runtime toolkit."
+                  },
+                  {
+                      "name":  "jayprophit/ceph",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T14:08:07Z",
+                      "description":  "Ceph is a distributed object, block, and file storage platform"
+                  },
+                  {
+                      "name":  "jayprophit/godot-official",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T14:06:19Z",
+                      "description":  "Godot Engine ÔÇô Multi-platform 2D and 3D game engine"
+                  },
+                  {
+                      "name":  "jayprophit/vscode",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T13:57:52Z",
+                      "description":  "Visual Studio Code"
+                  },
+                  {
+                      "name":  "jayprophit/cesium",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T13:23:02Z",
+                      "description":  "An open-source JavaScript library for world-class 3D globes and maps :earth_americas:"
+                  },
+                  {
+                      "name":  "jayprophit/redox",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T13:17:35Z",
+                      "description":  "Mirror of https://gitlab.redox-os.org/redox-os/redox"
+                  },
+                  {
+                      "name":  "jayprophit/PX4-Autopilot",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T13:10:15Z",
+                      "description":  "PX4 Autopilot Software"
+                  },
+                  {
+                      "name":  "jayprophit/IfcOpenShell",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T13:01:51Z",
+                      "description":  "Open source IFC library and geometry engine"
+                  },
+                  {
+                      "name":  "jayprophit/pipewire",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T12:40:21Z",
+                      "description":  "Mirror of the PipeWire repository (see https://gitlab.freedesktop.org/pipewire/pipewire/)"
+                  },
+                  {
+                      "name":  "jayprophit/verible",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T12:15:33Z",
+                      "description":  "Verible is a suite of SystemVerilog developer tools, including a parser, style-linter, formatter and language server"
+                  },
+                  {
+                      "name":  "jayprophit/colmap",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T11:55:15Z",
+                      "description":  "COLMAP - Structure-from-Motion and Multi-View Stereo"
+                  },
+                  {
+                      "name":  "jayprophit/SatDump",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T11:50:39Z",
+                      "description":  "A generic satellite data processing software."
+                  },
+                  {
+                      "name":  "jayprophit/circt",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T11:30:30Z",
+                      "description":  "Circuit IR Compilers and Tools"
+                  },
+                  {
+                      "name":  "jayprophit/arrow",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T11:18:53Z",
+                      "description":  "Apache Arrow is the universal columnar format and multi-language toolbox for fast data interchange and in-memory analytics"
+                  },
+                  {
+                      "name":  "jayprophit/sqlite",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T11:18:14Z",
+                      "description":  "Official Git mirror of the SQLite source tree"
+                  },
+                  {
+                      "name":  "jayprophit/ggml",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T10:52:04Z",
+                      "description":  "Tensor library for machine learning"
+                  },
+                  {
+                      "name":  "jayprophit/cva6",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T10:48:06Z",
+                      "description":  "The CORE-V CVA6 is a highly configurable, 6-stage RISC-V core for both application and embedded applications. Application class configurations are capable of booting Linux."
+                  },
+                  {
+                      "name":  "jayprophit/cocotb",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T09:46:21Z",
+                      "description":  "cocotb: Python-based chip (RTL) verification"
+                  },
+                  {
+                      "name":  "jayprophit/aiida-core",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T09:39:20Z",
+                      "description":  "The official repository for the AiiDA code"
+                  },
+                  {
+                      "name":  "jayprophit/syncthing",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T09:11:35Z",
+                      "description":  "Open Source Continuous File Synchronization"
+                  },
+                  {
+                      "name":  "jayprophit/gvisor",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T08:22:15Z",
+                      "description":  "Application Kernel for Containers"
+                  },
+                  {
+                      "name":  "jayprophit/moose",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T08:17:46Z",
+                      "description":  "Multiphysics Object Oriented Simulation Environment"
+                  },
+                  {
+                      "name":  "jayprophit/IsaacLab",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T08:12:25Z",
+                      "description":  "Unified framework for robot learning built on NVIDIA Isaac Sim"
+                  },
+                  {
+                      "name":  "jayprophit/xls",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T07:47:40Z",
+                      "description":  "XLS: Accelerated HW Synthesis"
+                  },
+                  {
+                      "name":  "jayprophit/litex",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T06:45:48Z",
+                      "description":  "Build your hardware, easily!"
+                  },
+                  {
+                      "name":  "jayprophit/seaweedfs",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T06:08:39Z",
+                      "description":  "SeaweedFS is a distributed storage system for object storage (S3), file systems, and Iceberg tables, designed to handle billions of files with O(1) disk access and effortless horizontal scaling."
+                  },
+                  {
+                      "name":  "jayprophit/cFS",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T05:49:13Z",
+                      "description":  "The Core Flight System (cFS)"
+                  },
+                  {
+                      "name":  "jayprophit/webots",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T05:44:44Z",
+                      "description":  "Webots Robot Simulator"
+                  },
+                  {
+                      "name":  "jayprophit/pennylane",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T05:16:35Z",
+                      "description":  "PennyLane is an open-source quantum software platform for quantum computing, quantum machine learning, and quantum chemistry. Create meaningful quantum algorithms, from inspiration to implementation."
+                  },
+                  {
+                      "name":  "jayprophit/ardupilot",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T05:00:50Z",
+                      "description":  "ArduPlane, ArduCopter, ArduRover, ArduSub source"
+                  },
+                  {
+                      "name":  "jayprophit/connectedhomeip",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T04:47:51Z",
+                      "description":  "Matter (formerly Project CHIP) creates more connections between more objects, simplifying development for manufacturers and increasing compatibility for consumers, guided by the Connectivity Standards Alliance."
+                  },
+                  {
+                      "name":  "jayprophit/keycloak",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T02:55:37Z",
+                      "description":  "Open Source Identity and Access Management For Modern Applications and Services"
+                  },
+                  {
+                      "name":  "jayprophit/scylladb",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T02:31:43Z",
+                      "description":  "NoSQL data store using the Seastar framework, compatible with Apache Cassandra and Amazon DynamoDB"
+                  },
+                  {
+                      "name":  "jayprophit/valkey",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T02:24:50Z",
+                      "description":  "A flexible distributed key-value database that is optimized for caching and other realtime workloads."
+                  },
+                  {
+                      "name":  "jayprophit/u-boot",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T02:13:55Z",
+                      "description":  "\"Das U-Boot\" Source Tree"
+                  },
+                  {
+                      "name":  "jayprophit/c2pa-rs",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T01:05:27Z",
+                      "description":  "Rust SDK for the core C2PA (Coalition for Content Provenance and Authenticity) specification"
+                  },
+                  {
+                      "name":  "jayprophit/openthread",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T00:50:52Z",
+                      "description":  "OpenThread released by Google is an open-source implementation of the Thread networking protocol"
+                  },
+                  {
+                      "name":  "jayprophit/timescaledb",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T00:40:56Z",
+                      "description":  "A time-series database for high-performance real-time analytics packaged as a Postgres extension"
+                  },
+                  {
+                      "name":  "jayprophit/openfhe-development",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T00:29:31Z",
+                      "description":  "This is the development repository for the OpenFHE library. The current version is 1.5.1 (released on April 10, 2026)."
+                  },
+                  {
+                      "name":  "jayprophit/k3s",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T00:09:03Z",
+                      "description":  "Lightweight Kubernetes"
+                  },
+                  {
+                      "name":  "jayprophit/opentitan",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-12T00:03:25Z",
+                      "description":  "OpenTitan: Open source silicon root of trust"
+                  },
+                  {
+                      "name":  "jayprophit/qemu",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T23:42:36Z",
+                      "description":  "Official QEMU mirror. Please see https://www.qemu.org/contribute/ for how to submit changes to QEMU. Pull Requests are disabled. Please only use release tarballs from the QEMU website."
+                  },
+                  {
+                      "name":  "jayprophit/depthai-core",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T23:31:26Z",
+                      "description":  "DepthAI C++ Library"
+                  },
+                  {
+                      "name":  "jayprophit/containerd",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T23:25:47Z",
+                      "description":  "An open and reliable container runtime"
+                  },
+                  {
+                      "name":  "jayprophit/helm",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T23:11:50Z",
+                      "description":  "The Kubernetes Package Manager"
+                  },
+                  {
+                      "name":  "jayprophit/playwright",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T23:00:20Z",
+                      "description":  "Playwright is a framework for Web Testing and Automation. It allows testing Chromium, Firefox and WebKit with a single API."
+                  },
+                  {
+                      "name":  "jayprophit/vcpkg",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T22:56:10Z",
+                      "description":  "C++ Library Manager for Windows, Linux, and MacOS"
+                  },
+                  {
+                      "name":  "jayprophit/opentelemetry-collector",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T22:36:16Z",
+                      "description":  "OpenTelemetry Collector"
+                  },
+                  {
+                      "name":  "jayprophit/supercollider",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T21:53:14Z",
+                      "description":  "An audio server, programming language, and IDE for sound synthesis and algorithmic composition."
+                  },
+                  {
+                      "name":  "jayprophit/edk2",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T21:41:57Z",
+                      "description":  "EDK II"
+                  },
+                  {
+                      "name":  "jayprophit/rust-libp2p",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T21:34:08Z",
+                      "description":  "The Rust Implementation of the libp2p networking stack."
+                  },
+                  {
+                      "name":  "jayprophit/gatk",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T21:32:24Z",
+                      "description":  "Official code repository for GATK versions 4 and up"
+                  },
+                  {
+                      "name":  "jayprophit/nats-server",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T21:22:16Z",
+                      "description":  "High-Performance server for NATS.io, the cloud and edge native messaging system."
+                  },
+                  {
+                      "name":  "jayprophit/bazel",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T21:19:22Z",
+                      "description":  "a fast, scalable, multi-language and extensible build system"
+                  },
+                  {
+                      "name":  "jayprophit/tfhe-rs",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T20:48:22Z",
+                      "description":  "TFHE-rs: A Pure Rust implementation of the TFHE Scheme for Boolean and Integer Arithmetics Over Encrypted Data."
+                  },
+                  {
+                      "name":  "jayprophit/PDAL",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T20:08:03Z",
+                      "description":  "PDAL is Point Data Abstraction Library. GDAL for point cloud data."
+                  },
+                  {
+                      "name":  "jayprophit/openmm",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T19:31:55Z",
+                      "description":  "OpenMM is a toolkit for molecular simulation using high performance GPU code."
+                  },
+                  {
+                      "name":  "jayprophit/nrn",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T19:31:26Z",
+                      "description":  "NEURON Simulator"
+                  },
+                  {
+                      "name":  "jayprophit/wasmtime",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T19:23:15Z",
+                      "description":  "A lightweight WebAssembly runtime that is fast, secure, and standards-compliant"
+                  },
+                  {
+                      "name":  "jayprophit/code-server",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T19:09:26Z",
+                      "description":  "VS Code in the browser"
+                  },
+                  {
+                      "name":  "jayprophit/dagster",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T19:05:31Z",
+                      "description":  "An orchestration platform for the development, production, and observation of data assets."
+                  },
+                  {
+                      "name":  "jayprophit/petsc",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T18:51:16Z",
+                      "description":  "Mirror of https://gitlab.com/petsc/petsc"
+                  },
+                  {
+                      "name":  "jayprophit/openbao",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T18:25:56Z",
+                      "description":  "OpenBao is a software solution to manage, store, and distribute sensitive data including secrets, certificates, and keys."
+                  },
+                  {
+                      "name":  "jayprophit/theia",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T18:10:33Z",
+                      "description":  "Eclipse Theia is a cloud \u0026 desktop IDE framework implemented in TypeScript."
+                  },
+                  {
+                      "name":  "jayprophit/llama_index",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T18:09:01Z",
+                      "description":  "LlamaIndex is the document processing platform for AI"
+                  },
+                  {
+                      "name":  "jayprophit/compose",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T17:21:34Z",
+                      "description":  "Define and run multi-container applications with Docker"
+                  },
+                  {
+                      "name":  "jayprophit/renode",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T16:25:11Z",
+                      "description":  "Renode - Antmicro\u0027s open source simulation and virtual development framework for complex embedded systems"
+                  },
+                  {
+                      "name":  "jayprophit/conan",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T16:21:30Z",
+                      "description":  "Conan - The open-source C and C++ package manager"
+                  },
+                  {
+                      "name":  "jayprophit/firecracker",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T15:12:20Z",
+                      "description":  "Secure and fast microVMs for serverless computing."
+                  },
+                  {
+                      "name":  "jayprophit/warpx",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T14:37:08Z",
+                      "description":  "WarpX is an advanced Particle-In-Cell code."
+                  },
+                  {
+                      "name":  "jayprophit/riscv-isa-sim",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T14:31:01Z",
+                      "description":  "Spike, a RISC-V ISA Simulator"
+                  },
+                  {
+                      "name":  "jayprophit/DeepLabCut",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T14:19:48Z",
+                      "description":  "Official implementation of DeepLabCut: Markerless pose estimation of user-defined features with deep learning for all animals incl. humans"
+                  },
+                  {
+                      "name":  "jayprophit/spikeinterface",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T14:15:23Z",
+                      "description":  "A Python-based module for creating flexible and robust spike sorting pipelines."
+                  },
+                  {
+                      "name":  "jayprophit/litellm",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T14:14:20Z",
+                      "description":  "The fastest, litest AI Gateway. Rust core with Python SDK. Call 100+ LLM APIs in OpenAI (or native) format with cost tracking, guardrails, load balancing, and logging [Bedrock, Azure, OpenAI, Anthropic, OpenAI, VertexAI, vLLM, Nvidia NIM]"
+                  },
+                  {
+                      "name":  "jayprophit/zenoh",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T14:10:40Z",
+                      "description":  "zenoh unifies data in motion, data in-use, data at rest and computations. It carefully blends traditional pub/sub with geo-distributed storages, queries and computations, while retaining a level of time and space efficiency that is well beyond any of the mainstream stacks."
+                  },
+                  {
+                      "name":  "jayprophit/prometheus",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T14:00:07Z",
+                      "description":  "The Prometheus monitoring system and time series database."
+                  },
+                  {
+                      "name":  "jayprophit/lerobot",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T13:46:05Z",
+                      "description":  "­ƒñù LeRobot: Making AI for Robotics more accessible with end-to-end learning"
+                  },
+                  {
+                      "name":  "jayprophit/scanpy",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T13:38:53Z",
+                      "description":  "Single-cell analysis in Python. Scales to \u003e100M cells."
+                  },
+                  {
+                      "name":  "jayprophit/nest-simulator",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T13:25:31Z",
+                      "description":  "The NEST simulator"
+                  },
+                  {
+                      "name":  "jayprophit/yosys",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T11:45:22Z",
+                      "description":  "Yosys Open SYnthesis Suite"
+                  },
+                  {
+                      "name":  "jayprophit/opensim-core",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T11:28:47Z",
+                      "description":  "SimTK OpenSim C++ libraries and command-line applications, and Java/Python wrapping."
+                  },
+                  {
+                      "name":  "jayprophit/chisel",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T11:17:52Z",
+                      "description":  "Chisel: A Modern Hardware Design Language"
+                  },
+                  {
+                      "name":  "jayprophit/automerge",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T11:11:21Z",
+                      "description":  "A JSON-like data structure (a CRDT) that can be modified concurrently by different users, and merged again automatically."
+                  },
+                  {
+                      "name":  "jayprophit/ditto",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T09:38:43Z",
+                      "description":  "Eclipse DittoÔäó: Digital Twin framework of Eclipse IoT - main repository"
+                  },
+                  {
+                      "name":  "jayprophit/sofa",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T09:09:08Z",
+                      "description":  "Real-time multi-physics simulation with an emphasis on medical simulation."
+                  },
+                  {
+                      "name":  "jayprophit/pcl",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T09:08:02Z",
+                      "description":  "Point Cloud Library (PCL)"
+                  },
+                  {
+                      "name":  "jayprophit/pymatgen-core",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T08:46:34Z",
+                      "description":  "Pymatgen Core"
+                  },
+                  {
+                      "name":  "jayprophit/genesis-world",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T07:23:07Z",
+                      "description":  "Simulation platform for general-purpose robotics \u0026 embodied AI learning."
+                  },
+                  {
+                      "name":  "jayprophit/rtabmap",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T07:17:48Z",
+                      "description":  "RTAB-Map library and standalone application"
+                  },
+                  {
+                      "name":  "jayprophit/alp-data",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T07:14:08Z",
+                      "description":  "Unified access to 35+ bioacoustic datasets behind one Python interface."
+                  },
+                  {
+                      "name":  "jayprophit/inspector",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T06:44:45Z",
+                      "description":  "Visual testing tool for MCP servers"
+                  },
+                  {
+                      "name":  "jayprophit/onnxruntime",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T06:34:01Z",
+                      "description":  "ONNX Runtime: cross-platform, high performance ML inferencing and training accelerator"
+                  },
+                  {
+                      "name":  "jayprophit/llama.cpp",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T06:27:16Z",
+                      "description":  "LLM inference in C/C++"
+                  },
+                  {
+                      "name":  "jayprophit/sherpa-onnx",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T06:27:08Z",
+                      "description":  "Speech-to-text, text-to-speech, speaker diarization, speech enhancement, source separation, and VAD using next-gen Kaldi with onnxruntime without Internet connection. Support embedded systems, Android, iOS, HarmonyOS, Raspberry Pi, RISC-V, RK NPU, Axera NPU, Ascend NPU, x86_64 servers, websocket server/client, support 12 programming languages"
+                  },
+                  {
+                      "name":  "jayprophit/opencv",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T05:56:54Z",
+                      "description":  "Open Source Computer Vision Library"
+                  },
+                  {
+                      "name":  "jayprophit/OpenHands",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T05:37:47Z",
+                      "description":  "­ƒÖî OpenHands: AI-Driven Development"
+                  },
+                  {
+                      "name":  "jayprophit/Open3D",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T05:14:54Z",
+                      "description":  "Open3D: A Modern Library for 3D Data Processing"
+                  },
+                  {
+                      "name":  "jayprophit/FFmpeg",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T05:12:14Z",
+                      "description":  "Mirror of https://git.ffmpeg.org/ffmpeg.git"
+                  },
+                  {
+                      "name":  "jayprophit/navigation2",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T04:46:32Z",
+                      "description":  "ROS 2 Navigation Framework and System"
+                  },
+                  {
+                      "name":  "jayprophit/rclone",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T04:16:22Z",
+                      "description":  "\"rsync for cloud storage\" - Google Drive, S3, Dropbox, Backblaze B2, One Drive, Swift, Hubic, Wasabi, Google Cloud Storage, Azure Blob, Azure Files, Yandex Files"
+                  },
+                  {
+                      "name":  "jayprophit/libremidi",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T03:59:36Z",
+                      "description":  "A modern C++ MIDI 1 / MIDI 2 real-time \u0026 file I/O library. Supports Windows, macOS, Linux and WebMIDI."
+                  },
+                  {
+                      "name":  "jayprophit/OpenVoiceOS",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T03:15:12Z",
+                      "description":  "OpenVoiceOS - Release Tracker"
+                  },
+                  {
+                      "name":  "jayprophit/duckdb---community",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T02:18:01Z",
+                      "description":  "DuckDB is an analytical in-process SQL database management system"
+                  },
+                  {
+                      "name":  "jayprophit/gdal",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T00:41:26Z",
+                      "description":  "GDAL is an open source MIT licensed translator library for raster and vector geospatial data formats."
+                  },
+                  {
+                      "name":  "jayprophit/xterm.js",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T00:31:49Z",
+                      "description":  "A terminal for the web"
+                  },
+                  {
+                      "name":  "jayprophit/buildkit",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T00:24:28Z",
+                      "description":  "concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit"
+                  },
+                  {
+                      "name":  "jayprophit/sleap",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-11T00:07:05Z",
+                      "description":  "A deep learning framework for multi-animal pose tracking."
+                  },
+                  {
+                      "name":  "jayprophit/qdrant",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T23:55:32Z",
+                      "description":  "Qdrant - High-performance, massive-scale Vector Database and Vector Search Engine for the next generation of AI. Also available in the cloud https://cloud.qdrant.io/"
+                  },
+                  {
+                      "name":  "jayprophit/gz-sim",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T23:22:04Z",
+                      "description":  "Open source robotics simulator. The latest version of Gazebo."
+                  },
+                  {
+                      "name":  "jayprophit/open-webui",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T23:05:38Z",
+                      "description":  "User-friendly AI Interface (Supports Ollama, OpenAI API, ...)"
+                  },
+                  {
+                      "name":  "jayprophit/lammps",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T22:30:41Z",
+                      "description":  "Public development project of the LAMMPS MD software package"
+                  },
+                  {
+                      "name":  "jayprophit/ros2",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T22:11:13Z",
+                      "description":  "The Robot Operating System, is a meta operating system for robots."
+                  },
+                  {
+                      "name":  "jayprophit/pyscf",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T21:15:58Z",
+                      "description":  "Python module for quantum chemistry"
+                  },
+                  {
+                      "name":  "jayprophit/CRISPResso2",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T20:32:59Z",
+                      "description":  "Analysis of deep sequencing data for rapid and intuitive interpretation of genome editing experiments"
+                  },
+                  {
+                      "name":  "jayprophit/influxdb",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T20:07:10Z",
+                      "description":  "Scalable datastore for metrics, events, and real-time analytics"
+                  },
+                  {
+                      "name":  "jayprophit/mediapipe",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T19:46:56Z",
+                      "description":  "Cross-platform, customizable ML solutions for live and streaming media."
+                  },
+                  {
+                      "name":  "jayprophit/openvsx",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T19:34:26Z",
+                      "description":  "An open-source registry for VS Code extensions"
+                  },
+                  {
+                      "name":  "jayprophit/mujoco",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T18:00:20Z",
+                      "description":  "Multi-Joint dynamics with Contact. A general purpose physics simulator."
+                  },
+                  {
+                      "name":  "jayprophit/mne-python",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T17:49:10Z",
+                      "description":  "MNE: Magnetoencephalography (MEG) and Electroencephalography (EEG) in Python"
+                  },
+                  {
+                      "name":  "jayprophit/neo4j",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T17:24:46Z",
+                      "description":  "Graphs for Everyone"
+                  },
+                  {
+                      "name":  "jayprophit/Orekit",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T16:42:10Z",
+                      "description":  "OREKIT is a free low level space dynamics library written in Java. Please visit our Gitlab instance for issues and contributions: https://gitlab.orekit.org"
+                  },
+                  {
+                      "name":  "jayprophit/scipy-community",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T16:40:36Z",
+                      "description":  "SciPy library main repository"
+                  },
+                  {
+                      "name":  "jayprophit/tracktion_engine",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T15:55:49Z",
+                      "description":  "Tracktion Engine module"
+                  },
+                  {
+                      "name":  "jayprophit/tauri",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T15:19:42Z",
+                      "description":  "Build smaller, faster, and more secure desktop and mobile applications with a web frontend."
+                  },
+                  {
+                      "name":  "jayprophit/samtools",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T14:38:09Z",
+                      "description":  "Tools (written in C using htslib) for manipulating next-generation sequencing data"
+                  },
+                  {
+                      "name":  "jayprophit/scikit-bio",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T14:08:39Z",
+                      "description":  "scikit-bio: a community-driven Python library for bioinformatics, providing versatile data structures, algorithms and educational resources."
+                  },
+                  {
+                      "name":  "jayprophit/peft",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T13:50:00Z",
+                      "description":  "­ƒñù PEFT: State-of-the-art Parameter-Efficient Fine-Tuning."
+                  },
+                  {
+                      "name":  "jayprophit/pyOCD",
+                      "visibility":  "public",
+                      "fork":  true,
+                      "date":  "2026-09-10T13:25:01Z",
+                      "description":  "Open source Python library for programming and debugging Arm Cortex-M microcontrollers"
+                  }
+              ]
+}

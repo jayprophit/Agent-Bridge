@@ -1,0 +1,503 @@
+# SHARED_COMPONENT_REGISTRY — AETHERIUS-REPOSITORY-PROVISIONING
+# Reconciled: 14 VERIFIED_SHARED_COMPONENTS + 10 ADDITIONAL_FOUNDATION_COMPONENTS = 24 TOTAL
+
+SHARED_COMPONENTS = [
+    # === 14 VERIFIED SHARED COMPONENTS (Cross-project dependencies confirmed) ===
+    
+    {
+        "COMPONENT_ID": "SHARED-001",
+        "NAME": "Aetherius Math",
+        "TYPE": "LIBRARY",
+        "DOMAIN": "SHARED",
+        "PARENT_PROJECT": "AETHERIUS_SHARED",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Core mathematics library (linear algebra, calculus, numeric algorithms, algebra, calculus)",
+        "USED_BY": ["Aetherius Geometry", "Aetherius Mesh", "Aetherius Physics", "Aetherius Simulation", "Aetherius Rendering", "Aetherius CAD", "Aetherius Game Engine"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-math",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-002",
+        "NAME": "Aetherius Units",
+        "TYPE": "LIBRARY",
+        "DOMAIN": "SHARED",
+        "PARENT_PROJECT": "AETHERIUS_SHARED",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Measurement/dimensional analysis library (units, quantities, dimensional analysis, unit conversion)",
+        "USED_BY": ["Aetherius Geometry", "Aetherius Mesh", "Aetherius Materials", "Aetherius Physics", "Aetherius Simulation", "Aetherius CAD", "Aetherius Engineering"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-units",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-003",
+        "NAME": "Aetherius Geometry",
+        "TYPE": "ENGINE",
+        "DOMAIN": "ENGINEERING",
+        "PARENT_PROJECT": "AETHERIUS_CAD",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Core geometry kernel (CSG, B-rep, mesh operations, computational geometry, topology)",
+        "USED_BY": ["Aetherius CAD", "Aetherius CAM", "Aetherius Simulation", "Aetherius Game Engine", "Aetherius Rendering", "Aetherius Mesh", "Aetherius Physics"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-geometry",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-004",
+        "NAME": "Aetherius Mesh",
+        "TYPE": "ENGINE",
+        "DOMAIN": "ENGINEERING",
+        "PARENT_PROJECT": "AETHERIUS_CAD",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Meshing algorithms (tetrahedral, hexahedral, surface meshing, mesh refinement, mesh quality)",
+        "USED_BY": ["Aetherius FEA", "Aetherius CFD", "Aetherius Game Engine", "Aetherius 3D Printing", "Aetherius Physics", "Aetherius Rendering"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-mesh",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-005",
+        "NAME": "Aetherius Materials",
+        "TYPE": "SERVICE",
+        "DOMAIN": "ENGINEERING",
+        "PARENT_PROJECT": "MAT",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Materials property database with provenance (density, elastic modulus, yield, thermal, electrical, optical, acoustic, chemical, corrosion, environmental, uncertainty, temperature/pressure dependency)",
+        "USED_BY": ["Aetherius CAD", "Aetherius Simulation", "Aetherius Rendering", "Aetherius Physics", "Aetherius Engineering", "Aetherius Science"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "mat-materials",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-006",
+        "NAME": "Aetherius Rendering",
+        "TYPE": "ENGINE",
+        "DOMAIN": "GAMING",
+        "PARENT_PROJECT": "AETHERIUS_GAME_ENGINE",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Rendering abstraction (Vulkan/Metal/DX12/WebGPU, render graphs, forward/deferred, PBR, ray tracing, GI, shadows, post-processing)",
+        "USED_BY": ["Aetherius Game Engine", "Aetherius CAD Viewport", "Aetherius Video", "Aetherius VFX", "Aetherius 3D", "Aetherius Animation"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-rendering",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-007",
+        "NAME": "Aetherius Colour",
+        "TYPE": "ENGINE",
+        "DOMAIN": "CREATIVE",
+        "PARENT_PROJECT": "AETHERIUS_CREATIVE",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Colour management (OCIO, ICC, ACES, colour spaces, transforms, gamut mapping, HDR/SDR)",
+        "USED_BY": ["Aetherius Image", "Aetherius Video", "Aetherius VFX", "Aetherius 3D", "Aetherius Print", "Poietek"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-colour",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-008",
+        "NAME": "Aetherius Audio",
+        "TYPE": "ENGINE",
+        "DOMAIN": "AUDIO",
+        "PARENT_PROJECT": "POIETEK",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Real-time audio graph, DSP, plugin host, MIDI engine, synthesis, sampling, effects, routing, latency compensation",
+        "USED_BY": ["Poietek DAW", "Poietek Podcast", "Poietek Live", "Aetherius Video", "Aetherius Streaming", "Aetherius Game Audio"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "poietek-audio-engine",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-009",
+        "NAME": "Aetherius Video",
+        "TYPE": "ENGINE",
+        "DOMAIN": "VIDEO",
+        "PARENT_PROJECT": "AETHERIUS_MEDIA",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Video codec/container engine (FFmpeg/GStreamer wrapper, encode/decode/transcode, proxy media, hardware acceleration)",
+        "USED_BY": ["Aetherius Video Editor", "Aetherius VFX", "Aetherius Streaming", "Aetherius Broadcast", "Aetherius Compositor"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-video",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-010",
+        "NAME": "Aetherius Media",
+        "TYPE": "ENGINE",
+        "DOMAIN": "VIDEO",
+        "PARENT_PROJECT": "AETHERIUS_MEDIA",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Media timeline engine (tracks, clips, sequences, compound clips, nested sequences, multicam, proxy workflow)",
+        "USED_BY": ["Aetherius Video Editor", "Aetherius VFX", "Aetherius Podcast", "Aetherius Mastering", "Aetherius Compositor"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-media",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-011",
+        "NAME": "Aetherius Timeline",
+        "TYPE": "ENGINE",
+        "DOMAIN": "VIDEO",
+        "PARENT_PROJECT": "AETHERIUS_MEDIA",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Timeline/keyframe/automation engine (keyframe curves, animation curves, parameter automation, tempo maps)",
+        "USED_BY": ["Aetherius Video", "Aetherius VFX", "Aetherius Animation", "Aetherius Audio", "Aetherius Game", "Poietek"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-timeline",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-012",
+        "NAME": "Aetherius Animation",
+        "TYPE": "ENGINE",
+        "DOMAIN": "GAMING",
+        "PARENT_PROJECT": "AETHERIUS_GAME_ENGINE",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Skeletal animation, rigging, skinning, IK/FK, blend shapes, motion matching, animation state machines",
+        "USED_BY": ["Aetherius Game Engine", "Aetherius 3D", "Aetherius VFX", "Aetherius Character", "Poietek"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-animation",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-013",
+        "NAME": "Aetherius Physics",
+        "TYPE": "ENGINE",
+        "DOMAIN": "GAMING",
+        "PARENT_PROJECT": "AETHERIUS_GAME_ENGINE",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "Rigid/soft body dynamics, collision detection, constraints, joints, vehicle dynamics, character controller",
+        "USED_BY": ["Aetherius Game Engine", "Aetherius Simulation", "Aetherius Robotics", "Aetherius Vehicle", "Aetherius VR"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-physics",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-014",
+        "NAME": "Aetherius Simulation",
+        "TYPE": "ENGINE",
+        "DOMAIN": "ENGINEERING",
+        "PARENT_PROJECT": "AETHERIUS_CAD",
+        "CLASSIFICATION": "VERIFIED_SHARED",
+        "DESCRIPTION": "FEA/CFD/Multiphysics solver interface (co-simulation, preCICE, solver abstraction, boundary conditions, parameter sweeps)",
+        "USED_BY": ["Aetherius CAD", "Aetherius Engineering", "Aetherius Digital Twin", "Aetherius Aerospace", "Aetherius Manufacturing"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-simulation",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    # === 10 ADDITIONAL FOUNDATION COMPONENTS (Foundation infrastructure, not cross-project shared) ===
+    
+    {
+        "COMPONENT_ID": "SHARED-015",
+        "NAME": "Aetherius Database",
+        "TYPE": "ENGINE",
+        "DOMAIN": "SYSTEM",
+        "PARENT_PROJECT": "AETHERIUS_OS",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Embedded database engine (SQL/NoSQL, ACID, indexing, queries, replication, embedded/server modes)",
+        "USED_BY": ["Aetherius OS", "Aetherius Files", "Aetherius Sync", "Aetherius Search", "Aetherius Identity", "Aetherius Workflow", "Genesis Memory"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-database",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-016",
+        "NAME": "Aetherius Storage",
+        "TYPE": "SERVICE",
+        "DOMAIN": "DATA",
+        "PARENT_PROJECT": "AETHERIUS_FILES",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Storage abstraction (local files, object store, blob, archive, backup, distributed, content-addressed, virtual filesystems)",
+        "USED_BY": ["Aetherius Files", "Aetherius Sync", "Aetherius Backup", "Aetherius Cloud", "Aetherius Asset Engine", "Genesis Memory"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-storage",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-017",
+        "NAME": "Aetherius Sync",
+        "TYPE": "SERVICE",
+        "DOMAIN": "CLOUD",
+        "PARENT_PROJECT": "AETHERIUS_CLOUD",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Synchronisation engine (CRDT, conflict resolution, merge, replication, offline-first, peer-to-peer, server-assisted)",
+        "USED_BY": ["Aetherius Files", "Aetherius Cloud", "Aetherius Backup", "Aetherius Collaboration", "Aetherius Workflow", "Genesis"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-sync",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-018",
+        "NAME": "Aetherius Identity",
+        "TYPE": "SERVICE",
+        "DOMAIN": "SECURITY",
+        "PARENT_PROJECT": "AETHERIUS_SECURITY",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Identity/authentication/authorization (SSO, OIDC, SAML, WebAuthn, passkeys, device identity, agent identity)",
+        "USED_BY": ["Aetherius OS", "Aetherius Admin", "Aetherius Enterprise", "Aetherius Cloud", "Agent Bridge", "Genesis"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-identity",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-019",
+        "NAME": "Aetherius Permissions",
+        "TYPE": "SERVICE",
+        "DOMAIN": "SECURITY",
+        "PARENT_PROJECT": "AETHERIUS_SECURITY",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Permission system (ACL, RBAC, ABAC, capabilities, policies, least privilege, sandboxing, app permissions)",
+        "USED_BY": ["Aetherius OS", "Aetherius Apps", "Aetherius Store", "Aetherius Enterprise", "Agent Bridge", "Universal Bridge"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-permissions",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-020",
+        "NAME": "Aetherius Workflow",
+        "TYPE": "ENGINE",
+        "DOMAIN": "DEVELOPER",
+        "PARENT_PROJECT": "AETHERIUS_IDE",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Workflow/orchestration engine (DAG, task graph, pipelines, automation, scheduling, retries, compensation, saga)",
+        "USED_BY": ["Aetherius IDE", "Agent Bridge", "Aetherius Automation", "Aetherius CI/CD", "Genesis Planning", "Poietek"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-workflow",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-021",
+        "NAME": "Aetherius Telemetry",
+        "TYPE": "SERVICE",
+        "DOMAIN": "DEVELOPER",
+        "PARENT_PROJECT": "AETHERIUS_IDE",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Telemetry/observability (metrics, logs, traces, profiling, monitoring, alerting, dashboards, OpenTelemetry)",
+        "USED_BY": ["All Aetherius components", "Agent Bridge", "Genesis", "Aetherius OS", "Aetherius IDE"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-telemetry",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-022",
+        "NAME": "Aetherius Plugin SDK",
+        "TYPE": "SDK",
+        "DOMAIN": "DEVELOPER",
+        "PARENT_PROJECT": "AETHERIUS_IDE",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Plugin/extension SDK (versioned ABI/API, capabilities, permissions, sandboxing, manifest, testing, packaging, marketplace)",
+        "USED_BY": ["Aetherius IDE", "Poietek", "Aetherius Apps", "Aetherius CAD", "Aetherius Video", "Universal Bridge"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-plugin-sdk",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-023",
+        "NAME": "Aetherius Project Model",
+        "TYPE": "LIBRARY",
+        "DOMAIN": "DEVELOPER",
+        "PARENT_PROJECT": "AETHERIUS_IDE",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Project/session/workspace model (asset graph, dependencies, versioning, provenance, rights, collaboration, serialization)",
+        "USED_BY": ["Aetherius IDE", "Poietek", "Aetherius CAD", "Aetherius Video", "Aetherius Apps", "Genesis"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-project-model",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    },
+    
+    {
+        "COMPONENT_ID": "SHARED-024",
+        "NAME": "Aetherius Asset Engine",
+        "TYPE": "ENGINE",
+        "DOMAIN": "CREATIVE",
+        "PARENT_PROJECT": "AETHERIUS_CREATIVE",
+        "CLASSIFICATION": "ADDITIONAL_FOUNDATION",
+        "DESCRIPTION": "Asset pipeline (import, export, processing, bundling, LOD, compression, format conversion, metadata, search, tagging, provenance)",
+        "USED_BY": ["Aetherius Creative Apps", "Poietek", "Aetherius 3D", "Aetherius Video", "Aetherius Game Engine", "Aetherius CAD"],
+        "INDEPENDENT_LIFECYCLE": true,
+        "SEPARATELY_BUILDABLE": true,
+        "SEPARATELY_TESTABLE": true,
+        "REUSABLE_ACROSS_PROJECTS": true,
+        "REPOSITORY_REQUIRED": true,
+        "CANONICAL_NAME": "aetherius-asset-engine",
+        "STATUS": "PLANNED",
+        "PRIORITY": "P1_FOUNDATION_SHARED"
+    }
+]
+
+TOTAL_SHARED_COMPONENTS = 24
+VERIFIED_SHARED_COUNT = 14
+ADDITIONAL_FOUNDATION_COUNT = 10
+
+CLASSIFICATION_SUMMARY = {
+    "VERIFIED_SHARED": 14,
+    "ADDITIONAL_FOUNDATION": 10,
+    "TOTAL": 24
+}
+
+# Update P1 Foundation list to include all 24
+P1_FOUNDATION_REPOS = [
+    "aetherius-math", "aetherius-units", "aetherius-geometry", "aetherius-mesh",
+    "mat-materials", "aetherius-rendering", "aetherius-colour", "poietek-audio-engine",
+    "aetherius-video", "aetherius-media", "aetherius-timeline", "aetherius-animation",
+    "aetherius-physics", "aetherius-simulation", "aetherius-database", "aetherius-storage",
+    "aetherius-sync", "aetherius-identity", "aetherius-permissions", "aetherius-workflow",
+    "aetherius-telemetry", "aetherius-plugin-sdk", "aetherius-project-model", "aetherius-asset-engine"
+]
+
+# Repository creation states for shared components
+SHARED_COMPONENT_STATES = {
+    comp["CANONICAL_NAME"]: {
+        "STATE": "CANDIDATE",
+        "BOUNDARY_REVIEW": "PENDING",
+        "NAME_RESERVED": False,
+        "LOCAL_CREATED": False,
+        "REMOTE_PRIVATE_CREATED": False,
+        "SCAFFOLDED": False,
+        "DEVELOPMENT_ACTIVE": False,
+        "TESTABLE": False,
+        "OWNER_TESTABLE": False,
+        "OWNER_ACCEPTED": False,
+        "PUBLIC_RELEASE_APPROVED": False,
+        "PUBLIC": False
+    }
+    for comp in SHARED_COMPONENTS
+}

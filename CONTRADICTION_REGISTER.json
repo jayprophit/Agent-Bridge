@@ -1,0 +1,485 @@
+# CONTRADICTION_REGISTER — AETHERIUS PROGRAMME
+# Detect contradictions between:
+# - Owner instructions
+# - Older owner instructions  
+# - AI suggestions
+# - Code/runtime
+# - Documentation
+# - Repository state
+# - Task state
+# - Research references
+
+CONTRADICTION_REGISTER_SCHEMA = {
+    "CONTRADICTION_ID": "CON-XXXXXX",
+    "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION|RESOLVED_BY_RUNTIME|NEEDS_OWNER|FALSE_CONTRADICTION|HISTORICAL_ONLY|UNRESOLVED",
+    "DESCRIPTION": "Description of the contradiction",
+    "SOURCE_1": {
+        "TYPE": "OWNER_INSTRUCTION|OLDER_OWNER_INSTRUCTION|AI_SUGGESTION|CODE_RUNTIME|DOCUMENTATION|REPOSITORY_STATE|TASK_STATE|RESEARCH_REFERENCE",
+        "SOURCE_ID": "DEC-XXXXXX|REQ-XXXXXX|REPO-XXXXXX|TASK-XXXXXX|DOC-XXXXXX|CODE-XXXXXX",
+        "CONTENT": "Conflicting statement 1",
+        "DATE": "2024-01-15T10:30:00Z",
+        "AUTHORITY": "HIGH|MEDIUM|LOW"
+    },
+    "SOURCE_2": {
+        "TYPE": "OWNER_INSTRUCTION|OLDER_OWNER_INSTRUCTION|AI_SUGGESTION|CODE_RUNTIME|DOCUMENTATION|REPOSITORY_STATE|TASK_STATE|RESEARCH_REFERENCE",
+        "SOURCE_ID": "DEC-XXXXXX|REQ-XXXXXX|REPO-XXXXXX|TASK-XXXXXX|DOC-XXXXXX|CODE-XXXXXX",
+        "CONTENT": "Conflicting statement 2",
+        "DATE": "2024-01-15T10:30:00Z",
+        "AUTHORITY": "HIGH|MEDIUM|LOW"
+    },
+    "CONTRADICTION_DETAIL": "Specific nature of the contradiction",
+    "RESOLUTION": "How the contradiction was/will be resolved",
+    "RESOLUTION_METHOD": "PRECEDENCE|OWNER_DECISION|RUNTIME_VERIFICATION|CODE_CHANGE|DOCUMENTATION_UPDATE|DEFERRED",
+    "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION|RESOLVED_BY_RUNTIME|NEEDS_OWNER|FALSE_CONTRADICTION|HISTORICAL_ONLY|UNRESOLVED",
+    "RESOLUTION_DATE": "2024-01-15T10:30:00Z",
+    "RESOLVED_BY": "OWNER|AUTO|RUNTIME",
+    "AFFECTED_REQUIREMENTS": ["REQ-XXXXXX"],
+    "AFFECTED_DECISIONS": ["DEC-XXXXXX"],
+    "AFFECTED_REPOSITORIES": ["REPO-XXXXXX"],
+    "AFFECTED_TASKS": ["TASK-XXXXXX"],
+    "PROVENANCE": {
+        "DETECTION_METHOD": "CROSS_REFERENCE|CODE_ANALYSIS|OWNER_REVIEW|AUTO_DETECTION",
+        "DETECTION_DATE": "2024-01-15T10:30:00Z",
+        "CONFIDENCE": 0.95,
+        "VERIFIED_BY": "OWNER|AUTO|RUNTIME"
+    }
+}
+
+# Documented Contradictions
+
+CONTRADICTIONS = [
+    # === Shared Component Count Discrepancy ===
+    {
+        "CONTRADICTION_ID": "CON-000001",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Sub-task G report stated '14 VERIFIED_SHARED_COMPONENTS' but P1 foundation list contained 24 items (14 + 10 additional)",
+        "SOURCE_1": {
+            "TYPE": "AI_SUGGESTION",
+            "SOURCE_ID": "SUBTASK_G_REPORT",
+            "CONTENT": "14 VERIFIED_SHARED_COMPONENTS identified",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "MEDIUM"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000008",
+            "CONTENT": "14 VERIFIED_SHARED_COMPONENTS + 10 ADDITIONAL_FOUNDATION_COMPONENTS = 24 TOTAL",
+            "DATE": "2024-12-16T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Report counted only 14 verified shared components but P1 list included 24 items. The 10 additional were ADDITIONAL_FOUNDATION_COMPONENTS, not VERIFIED_SHARED.",
+        "RESOLUTION": "Classify as: 14 VERIFIED_SHARED_COMPONENTS + 10 ADDITIONAL_FOUNDATION_COMPONENTS = 24 TOTAL FOUNDATION COMPONENTS. All 24 are P1_FOUNDATION_SHARED priority.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "RESOLUTION_DATE": "2024-12-16T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "AFFECTED_REQUIREMENTS": ["REQ-SHARED-001", "REQ-SHARED-002", "REQ-SHARED-003", "REQ-SHARED-004", "REQ-SHARED-005", "REQ-SHARED-006", "REQ-SHARED-007", "REQ-SHARED-008", "REQ-SHARED-009", "REQ-SHARED-010", "REQ-SHARED-011", "REQ-SHARED-012", "REQ-SHARED-013", "REQ-SHARED-014", "REQ-SHARED-015", "REQ-SHARED-016", "REQ-SHARED-017", "REQ-SHARED-018", "REQ-SHARED-019", "REQ-SHARED-020", "REQ-SHARED-021", "REQ-SHARED-022", "REQ-SHARED-023", "REQ-SHARED-024"],
+        "AFFECTED_DECISIONS": ["DEC-000008"],
+        "AFFECTED_REPOSITORIES": ["ALL_24_SHARED_REPOS"],
+        "AFFECTED_TASKS": ["TASK-SHARED-COMPONENT-REGISTRY", "TASK-REPO-CREATION-QUEUE"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-12-16T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === ATHENA vs ATHEENA ===
+    {
+        "CONTRADICTION_ID": "CON-000002",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Historical corpus and some routing references use 'ATHENA'; owner correction establishes canonical name as 'ATHEENA'",
+        "SOURCE_1": {
+            "TYPE": "HISTORICAL_DESIGN_REFERENCE",
+            "SOURCE_ID": "REQ-ATHENA-001",
+            "CONTENT": "Project name: ATHENA",
+            "DATE": "2023-06-15T00:00:00Z",
+            "AUTHORITY": "LOW"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000003",
+            "CONTENT": "Canonical project name: ATHEENA not ATHENA. Preserve historical ATHENA in provenance.",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Historical documents and some routing use 'ATHENA'; owner correction establishes 'ATHEENA' as canonical. Historical documents must not be rewritten.",
+        "RESOLUTION": "Canonical name = ATHEENA for all new routing/registry; preserve literal 'ATHENA' in historical provenance records; do not destructively rewrite historical text.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "RESOLUTION_DATE": "2024-12-15T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "SUPERSEDED_BY": "CON-000011",
+        "SUPERSEDED_NOTE": "Naming direction reversed by owner 2026-09-16: canonical is now ATHENA, ATHEENA is the historical alias. Entry preserved as history.",
+        "AFFECTED_REQUIREMENTS": ["REQ-ATHENA-001", "REQ-ATHENA-002", "REQ-ATHENA-003"],
+        "AFFECTED_DECISIONS": ["DEC-000003"],
+        "AFFECTED_REPOSITORIES": [],
+        "AFFECTED_TASKS": ["TASK-ATHEENA-ROUTING-UPDATE"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-12-15T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === F Drive Status ===
+    {
+        "CONTRADICTION_ID": "CON-000003",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Earlier programme assumed F drive partitioning was actionable; owner directive: manually completed, skip entirely",
+        "SOURCE_1": {
+            "TYPE": "OLDER_OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-OLD-F-DRIVE",
+            "CONTENT": "F drive partitioning in progress; include in programme",
+            "DATE": "2024-08-01T00:00:00Z",
+            "AUTHORITY": "MEDIUM"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000001",
+            "CONTENT": "F drive manually completed by owner; skip entirely; F_DRIVE_TASK_BRANCH = CLOSED_BY_OWNER; F_DRIVE_BLOCKING = FALSE",
+            "DATE": "2024-09-10T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Earlier programme included F drive partitioning as active task; owner later completed manually and directed to skip entirely.",
+        "RESOLUTION": "F_DRIVE_TASK_BRANCH = CLOSED_BY_OWNER; F_DRIVE_BLOCKING = FALSE; remove from actionable programme entirely.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "RESOLUTION_DATE": "2024-09-10T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "AFFECTED_REQUIREMENTS": ["REQ-F-DRIVE-PARTITION"],
+        "AFFECTED_DECISIONS": ["DEC-OLD-F-DRIVE"],
+        "AFFECTED_REPOSITORIES": [],
+        "AFFECTED_TASKS": [],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-09-10T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === Genesis 2.2-2.3 Status vs C++ Test Failure ===
+    {
+        "CONTRADICTION_ID": "CON-000004",
+        "TYPE": "NEEDS_OWNER",
+        "DESCRIPTION": "Reported: 32/32 integration tests pass, 76/76 key suite pass, 16/17 C++ ctests pass. Owner: Do not auto-convert to OWNER_ACCEPTED; investigate remaining failure",
+        "SOURCE_1": {
+            "TYPE": "CODE_RUNTIME",
+            "SOURCE_ID": "GENESIS_TEST_RESULTS",
+            "CONTENT": "32/32 integration tests pass; 76/76 key suite pass; 16/17 C++ ctests pass",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000007",
+            "CONTENT": "Do NOT convert to OWNER_ACCEPTED automatically. Investigate remaining failed C++ test. Classify failure.",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Test results show near-complete pass but one C++ test fails. Owner requires investigation before accepting, not automatic acceptance based on pass rate.",
+        "RESOLUTION": "Investigate remaining C++ test failure; classify as PRODUCT_DEFECT/TEST_DEFECT/ENVIRONMENT/OPTIONAL/EXPECTED_FAILURE/STALE_TEST/UNKNOWN. Do not auto-accept Genesis 2.2-2.3 as OWNER_ACCEPTED.",
+        "RESOLUTION_METHOD": "NEEDS_OWNER",
+        "STATUS": "NEEDS_OWNER",
+        "RESOLUTION_DATE": "",
+        "RESOLVED_BY": "",
+        "AFFECTED_REQUIREMENTS": ["REQ-GEN-001", "REQ-GEN-002", "REQ-GEN-003"],
+        "AFFECTED_DECISIONS": ["DEC-000007"],
+        "AFFECTED_REPOSITORIES": ["genesis"],
+        "AFFECTED_TASKS": ["TASK-GEN-CPP-TEST-INVESTIGATION"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-12-15T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === Unknown Requirements as Repository Candidates ===
+    {
+        "CONTRADICTION_ID": "CON-000005",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Previous routing placed 4,066 requirements in UNKNOWN project; some automation might have treated UNKNOWN as a project for repository creation",
+        "SOURCE_1": {
+            "TYPE": "AI_SUGGESTION",
+            "SOURCE_ID": "REQUIREMENT_ROUTING_AUTOMATION",
+            "CONTENT": "UNKNOWN project receives 4,066 routed requirements; may be treated as project for repo creation",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "MEDIUM"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000004",
+            "CONTENT": "UNKNOWN requirements (4,066) are NOT repository candidates — create UNKNOWN_REQUIREMENT_RECONCILIATION. Classify each before any repo creation.",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Automation risk: UNKNOWN routing category might be treated as a project for repository creation. Owner explicitly forbids this.",
+        "RESOLUTION": "UNKNOWN requirements are NOT repository candidates. Create UNKNOWN_REQUIREMENT_RECONCILIATION. Classify each into: EXISTING_PROJECT, EXISTING_DOMAIN, SHARED_COMPONENT, NEW_APPLICATION, NEW_ENGINE, NEW_LIBRARY, NEW_PLUGIN, NEW_EXTENSION, NEW_SERVICE, NEW_ADAPTER, NEW_DRIVER, NEW_DATA_COMPONENT, NEW_SPECIFICATION, RESEARCH_REQUIREMENT, BUSINESS_REQUIREMENT, POLICY_REQUIREMENT, HISTORICAL, SUPERSEDED, REJECTED, DUPLICATE, QUESTION_ONLY, CONTEXT_ONLY, AMBIGUOUS, GENUINELY_UNRESOLVED.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "RESOLUTION_DATE": "2024-12-15T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "AFFECTED_REQUIREMENTS": ["ALL_4066_UNKNOWN"],
+        "AFFECTED_DECISIONS": ["DEC-000004"],
+        "AFFECTED_REPOSITORIES": [],
+        "AFFECTED_TASKS": ["TASK-UNKNOWN-RECONCILIATION"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-12-15T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === Repository Creation: Monorepo vs Per-Component ===
+    {
+        "CONTRADICTION_ID": "CON-000006",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Earlier discussions might have implied monorepo approach; owner explicitly forbids monorepo, requires per-component repositories",
+        "SOURCE_1": {
+            "TYPE": "AI_SUGGESTION",
+            "SOURCE_ID": "EARLY_ARCHITECTURE_DISCUSSION",
+            "CONTENT": "Consider monorepo for Aetherius ecosystem for simpler dependency management",
+            "DATE": "2024-08-15T00:00:00Z",
+            "AUTHORITY": "LOW"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000005",
+            "CONTENT": "Every substantial independently maintainable first-party component should have its OWN repository. Do NOT put entire Aetherius ecosystem into one giant monorepo.",
+            "DATE": "2024-09-10T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Early architectural discussion considered monorepo; owner explicitly forbids monorepo, mandates per-component repositories.",
+        "RESOLUTION": "REPO_PER_COMPONENT = TRUE; MONOREPO_FORBIDDEN = TRUE. Every substantial independently maintainable component gets its own repository. Monorepo forbidden.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "RESOLUTION_DATE": "2024-09-10T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "AFFECTED_REQUIREMENTS": ["REQ-REPO-001"],
+        "AFFECTED_DECISIONS": ["DEC-000005"],
+        "AFFECTED_REPOSITORIES": ["ALL_FIRST_PARTY"],
+        "AFFECTED_TASKS": ["TASK-REPO-PROVISIONING"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-09-10T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === Repository Visibility: Public vs Private ===
+    {
+        "CONTRADICTION_ID": "CON-000007",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Default GitHub visibility might be public; owner requires private by default, public only with explicit approval",
+        "SOURCE_1": {
+            "TYPE": "CODE_RUNTIME",
+            "SOURCE_ID": "GITHUB_DEFAULT_VISIBILITY",
+            "CONTENT": "GitHub default repository visibility is PUBLIC",
+            "DATE": "2024-09-10T00:00:00Z",
+            "AUTHORITY": "MEDIUM"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000006",
+            "CONTENT": "DEFAULT: VISIBILITY = PRIVATE for newly created first-party repositories. Public release remains an OWNER GATE.",
+            "DATE": "2024-09-10T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "GitHub default is public; owner requires private by default with explicit approval for public release.",
+        "RESOLUTION": "DEFAULT_VISIBILITY = PRIVATE for all new first-party repositories. Public release requires explicit OWNER_APPROVAL gate. No automatic public release.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "RESOLUTION_DATE": "2024-09-10T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "AFFECTED_REQUIREMENTS": ["REQ-REPO-002"],
+        "AFFECTED_DECISIONS": ["DEC-000006"],
+        "AFFECTED_REPOSITORIES": ["ALL_NEW_FIRST_PARTY"],
+        "AFFECTED_TASKS": ["TASK-REPO-CREATION"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-09-10T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === UNKNOWN Requirements as Repo Candidates ===
+    {
+        "CONTRADICTION_ID": "CON-000008",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Risk that UNKNOWN routing category (4,066 requirements) might be treated as a project for repository creation",
+        "SOURCE_1": {
+            "TYPE": "AI_SUGGESTION",
+            "SOURCE_ID": "REQUIREMENT_ROUTING_AUTOMATION",
+            "CONTENT": "UNKNOWN project receives 4,066 routed requirements; automation risk of treating as project for repo creation",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "MEDIUM"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000004",
+            "CONTENT": "UNKNOWN requirements (4,066) are NOT repository candidates — create UNKNOWN_REQUIREMENT_RECONCILIATION. Classify each before any repo creation.",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Automation might treat UNKNOWN routing category as a project for repository creation. Owner explicitly forbids this.",
+        "RESOLUTION": "UNKNOWN requirements are NOT repository candidates. Create UNKNOWN_REQUIREMENT_RECONCILIATION. Classify each into 24 categories before any repo creation.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "RESOLUTION_DATE": "2024-12-15T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "AFFECTED_REQUIREMENTS": ["ALL_4066_UNKNOWN"],
+        "AFFECTED_DECISIONS": ["DEC-000004"],
+        "AFFECTED_REPOSITORIES": [],
+        "AFFECTED_TASKS": ["TASK-UNKNOWN-RECONCILIATION"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-12-15T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === Genesis 2.2-2.3: Test Pass Rate vs Owner Acceptance ===
+    {
+        "CONTRADICTION_ID": "CON-000009",
+        "TYPE": "NEEDS_OWNER",
+        "DESCRIPTION": "High test pass rates (32/32, 76/76, 16/17) might suggest acceptance; owner requires investigation of remaining failure before acceptance",
+        "SOURCE_1": {
+            "TYPE": "CODE_RUNTIME",
+            "SOURCE_ID": "GENESIS_TEST_RESULTS",
+            "CONTENT": "32/32 integration tests pass; 76/76 key suite pass; 16/17 C++ ctests pass",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000007",
+            "CONTENT": "Do NOT convert to OWNER_ACCEPTED automatically. Investigate remaining failed C++ test. Classify failure type.",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "High pass rates could be interpreted as 'good enough'; owner requires explicit investigation of the one failure before acceptance.",
+        "RESOLUTION": "Investigate remaining C++ test failure; classify as PRODUCT_DEFECT/TEST_DEFECT/ENVIRONMENT/OPTIONAL/EXPECTED_FAILURE/STALE_TEST/UNKNOWN. Do not auto-accept.",
+        "RESOLUTION_METHOD": "NEEDS_OWNER",
+        "STATUS": "NEEDS_OWNER",
+        "RESOLUTION_DATE": "",
+        "RESOLVED_BY": "",
+        "AFFECTED_REQUIREMENTS": ["REQ-GEN-001", "REQ-GEN-002", "REQ-GEN-003"],
+        "AFFECTED_DECISIONS": ["DEC-000007"],
+        "AFFECTED_REPOSITORIES": ["genesis"],
+        "AFFECTED_TASKS": ["TASK-GEN-CPP-TEST-INVESTIGATION"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-12-15T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === Cursor/ATHENA Historical References ===
+    {
+        "CONTRADICTION_ID": "CON-000010",
+        "TYPE": "HISTORICAL_ONLY",
+        "DESCRIPTION": "Historical documents reference 'ATHENA' extensively; owner correction says preserve historical text but use ATHEENA for new routing",
+        "SOURCE_1": {
+            "TYPE": "HISTORICAL_DESIGN_REFERENCE",
+            "SOURCE_ID": "HISTORICAL_CORPUS",
+            "CONTENT": "Multiple documents reference 'ATHENA' as project name for health/fitness/sports ecosystem",
+            "DATE": "2023-01-01 to 2024-12-01",
+            "AUTHORITY": "LOW"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000003",
+            "CONTENT": "Canonical name: ATHEENA. Preserve historical ATHENA in provenance. Do NOT destructively rewrite historical text.",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Historical corpus contains 'ATHENA' extensively; new routing must use 'ATHEENA' but historical text must be preserved unchanged.",
+        "RESOLUTION": "Canonical routing = ATHEENA. Historical documents: preserve literal 'ATHENA'. New registry/routing = ATHEENA. Do not rewrite history.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "HISTORICAL_ONLY",
+        "RESOLUTION_DATE": "2024-12-15T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "SUPERSEDED_BY": "CON-000011",
+        "SUPERSEDED_NOTE": "Naming direction reversed by owner 2026-09-16: canonical is now ATHENA, ATHEENA is the historical alias. Entry preserved as history.",
+        "AFFECTED_REQUIREMENTS": ["REQ-ATHENA-001", "REQ-ATHENA-002", "REQ-ATHENA-003"],
+        "AFFECTED_DECISIONS": ["DEC-000003"],
+        "AFFECTED_REPOSITORIES": [],
+        "AFFECTED_TASKS": ["TASK-ATHEENA-ROUTING-UPDATE"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_REVIEW",
+            "DETECTION_DATE": "2024-12-15T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    },
+
+    # === ATHENA Naming Re-correction (ATHEENA -> ATHENA) ===
+    {
+        "CONTRADICTION_ID": "CON-000011",
+        "TYPE": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "DESCRIPTION": "Prior canonical ATHEENA (per DEC-000003/CON-000002/CON-000010/SUP-000001/SUP-000009) reversed by owner: canonical project name is ATHENA; ATHEENA is now the historical alias",
+        "SOURCE_1": {
+            "TYPE": "OLDER_OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000003",
+            "CONTENT": "Canonical project name: ATHEENA not ATHENA",
+            "DATE": "2024-12-15T00:00:00Z",
+            "AUTHORITY": "MEDIUM"
+        },
+        "SOURCE_2": {
+            "TYPE": "OWNER_INSTRUCTION",
+            "SOURCE_ID": "DEC-000011",
+            "CONTENT": "Canonical project name corrected to ATHENA; ATHEENA is now a historical alias only",
+            "DATE": "2026-09-16T00:00:00Z",
+            "AUTHORITY": "HIGH"
+        },
+        "CONTRADICTION_DETAIL": "Naming direction reversed. Historical spellings (ATHENA and ATHEENA) in dated records and raw sources are preserved unchanged; only current-identity references migrate to ATHENA.",
+        "RESOLUTION": "CANONICAL = ATHENA; HISTORICAL_ALIAS = ATHEENA; alias map in project_identity.py; SUP-000011 tracks the migration.",
+        "RESOLUTION_METHOD": "OWNER_DECISION",
+        "STATUS": "RESOLVED_BY_NEWER_OWNER_INSTRUCTION",
+        "RESOLUTION_DATE": "2026-09-16T00:00:00Z",
+        "RESOLVED_BY": "OWNER",
+        "AFFECTED_REQUIREMENTS": ["REQ-ATHENA-001"],
+        "AFFECTED_DECISIONS": ["DEC-000003", "DEC-000011"],
+        "AFFECTED_REPOSITORIES": [],
+        "AFFECTED_TASKS": ["TASK-ATHENA-ROUTING"],
+        "PROVENANCE": {
+            "DETECTION_METHOD": "OWNER_CORRECTION",
+            "DETECTION_DATE": "2026-09-16T00:00:00Z",
+            "CONFIDENCE": 1.0,
+            "VERIFIED_BY": "OWNER"
+        }
+    }
+]
+
+# Contradiction Statistics
+CONTRADICTION_STATISTICS = {
+    "TOTAL_CONTRADICTIONS": 11,
+    "BY_TYPE": {
+        "RESOLVED_BY_NEWER_OWNER_INSTRUCTION": 8,
+        "RESOLVED_BY_RUNTIME": 0,
+        "NEEDS_OWNER": 2,
+        "FALSE_CONTRADICTION": 0,
+        "HISTORICAL_ONLY": 1,
+        "UNRESOLVED": 0
+    },
+    "BY_SEVERITY": {
+        "HIGH": 4,
+        "MEDIUM": 4,
+        "LOW": 2
+    },
+    "RESOLVED": 9,
+    "NEEDS_OWNER": 2,
+    "UNRESOLVED": 0
+}
+
+# Output file
+OUTPUT_FILE = "E:\\OpenCode-Data\\conversation-analysis\\CONTRADICTION_REGISTER.json"

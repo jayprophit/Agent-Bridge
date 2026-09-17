@@ -29,7 +29,10 @@ class TestPromptProfiles(unittest.TestCase):
             cfg = BridgeConfig(workspace=tmp, mode="build", approval="AUTO_SAFE",
                                max_steps=6, non_interactive=True,
                                enable_reviewer=False, prompt_profile="small")
-            fake = FakeProvider(['{"action":"write","path":"s.txt","content":"hi"}',
+            # Phase 1.1 amendment: passing test supplies finish
+            # verification evidence. Assertions unchanged.
+            fake = FakeProvider(['{"action":"write","path":"s.txt","content":"print(1)\\n"}',
+                                 '{"action":"test","command":"python s.txt"}',
                                  '{"action":"finish","message":"done"}'])
             out = run_bridge(cfg, "t", provider=fake)
             self.assertTrue(out.get("finished"), out)

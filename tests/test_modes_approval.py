@@ -39,23 +39,28 @@ class TestModes(unittest.TestCase):
 
     def test_build_can_mutate(self):
         cfg = make_cfg(self.tmp, mode="build")
+        # Phase 1.1 amendment: passing test supplies finish verification
+        # evidence. Assertions (finished, file exists) unchanged.
         fake = FakeProvider([
-            '{"action":"write","path":"ok.txt","content":"hi"}',
+            '{"action":"write","path":"ok.txt","content":"print(1)\\n"}',
+            '{"action":"test","command":"python ok.txt"}',
             '{"action":"finish","message":"built"}',
         ])
         out = run_bridge(cfg, "build test", provider=fake)
-        self.assertTrue(out["finished"], out)
+        self.assertTrue(out.get("finished"), out)
         self.assertTrue((self.tmp / "ok.txt").exists())
 
     def test_hybrid_functions(self):
         cfg = make_cfg(self.tmp, mode="hybrid")
+        # Phase 1.1 amendment: see test_build_can_mutate.
         fake = FakeProvider([
             '{"action":"list","path":"."}',
-            '{"action":"write","path":"h.txt","content":"v"}',
+            '{"action":"write","path":"h.txt","content":"print(1)\\n"}',
+            '{"action":"test","command":"python h.txt"}',
             '{"action":"finish","message":"hybrid done"}',
         ])
         out = run_bridge(cfg, "hybrid test", provider=fake)
-        self.assertTrue(out["finished"], out)
+        self.assertTrue(out.get("finished"), out)
         self.assertTrue((self.tmp / "h.txt").exists())
 
 

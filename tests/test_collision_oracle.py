@@ -47,8 +47,12 @@ class TestCollisionPolicy(unittest.TestCase):
         self.assertTrue(any(h.get("kind") == "COLLISION_DENIED" for h in out["history"]))
 
     def test_overwrite_allows_once(self):
+        # Phase 1.1 amendment: a passing test step supplies the verification
+        # evidence completion now requires. Seed content assertion unchanged.
         out = self._run("OVERWRITE",
                         ['{"action":"write","path":"seed.txt","content":"new"}',
+                         '{"action":"write","path":"t_ok.py","content":"print(1)\\n"}',
+                         '{"action":"test","command":"python t_ok.py"}',
                          '{"action":"finish","message":"ok"}'])
         self.assertTrue(out.get("finished"), out)
         self.assertEqual((self.tmp / "seed.txt").read_text(), "new")
@@ -65,8 +69,12 @@ class TestCollisionPolicy(unittest.TestCase):
         self.assertEqual((self.tmp / "seed.txt").read_text(), "user original\n")
 
     def test_bridge_created_rewrite_allowed_by_default(self):
+        # Phase 1.1 amendment: completion requires verification evidence,
+        # so the script runs a passing test before finish. Assertions
+        # (finished, file exists) are unchanged.
         out = self._run("REQUIRE_APPROVAL",
-                        ['{"action":"write","path":"fresh.txt","content":"v1"}',
+                        ['{"action":"write","path":"fresh.txt","content":"print(1)\\n"}',
+                         '{"action":"test","command":"python fresh.txt"}',
                          '{"action":"finish","message":"ok"}'])
         self.assertTrue(out.get("finished"), out)
         self.assertTrue((self.tmp / "fresh.txt").exists())

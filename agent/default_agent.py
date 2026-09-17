@@ -24,6 +24,10 @@ from typing import Any
 from agent.agent_core import AgentCore
 from agent.agent_loop import AgentLoop
 from agent.agent_session import AgentSession, SessionConfig, create_session_id
+from execution_contract import (
+    BLOCK_WITH_EVIDENCE, COMPLETE, ExecutionContract,
+    ExecutionPolicyViolation, PLAN_MISSING,
+    REEVALUATION_QUESTIONS, VERIFIED as CX_VERIFIED, FAILED as CX_FAILED)
 from models.model_router import ModelRouter
 from models.model_registry import ModelRegistry
 from models.provider_registry import ProviderRegistry
@@ -84,27 +88,109 @@ class DefaultAgent:
         return session
     
     def run_task(self, session: AgentSession, task: str,
-                context: dict[str, Any] | None = None) -> dict[str, Any]:
-        """Run a task in a session.
-        
-        Args:
-            session: The session to run the task in.
-            task: The task to execute.
-            context: Additional execution context.
-            
-        Returns:
-            Task execution result.
+                 context: dict[str, Any] | None = None) -> dict[str, Any]:
+        """Run a task in a session under the Adaptive Execution Contract.
+
+        Second enforced execution path (Phase 1.1 runtime closure): the
+        AgentPlan becomes a contract plan, the loop run is the bounded
+        execution, and completion requires verification + re-evaluation.
+        Fail-closed: a plan with no steps, or a result that cannot verify,
+        is rejected, never silently completed.
         """
+        from pathlib import Path as _Path
         context = dict(context or {})
-        
-        # Submit task
+
+        ws = getattr(session, "workspace", "") or ""
+        cx = ExecutionContract(
+            _Path(ws) / ".bridge" / "execution_contract.json" if ws else None)
+
+        # Submit task -> AgentPlan (plan-first by construction)
         plan = session.submit_task(task, context)
-        
-        # Create loop and execute
+        ctid = f"{session.session_id}:{plan.plan_id}"
+        try:
+            cx.receive(ctid)
+        except ValueError:
+            cx.note_event(ctid, "resumed")
+
+        def _denied(reason: str, detail: str) -> dict[str, Any]:
+            try:
+                snap = cx.contract_snapshot(ctid)
+            except (KeyError, ValueError):
+                snap = {"task_id": ctid, "state": "UNKNOWN",
+                        "plan_version": 0, "telemetry": {}}
+            return {"ok": False, "error": f"{reason}: {detail}",
+                    "kind": "EXECUTION_POLICY_VIOLATION",
+                    "contract": snap}
+
+        if not plan.steps:
+            return _denied(PLAN_MISSING, "agent plan has no steps")
+        try:
+            cx.recover_context(ctid)
+            depth = "FULL" if (plan.total_steps or 0) > 5 else "LIGHTWEIGHT"
+            fields: dict[str, Any] = {
+                "objective": plan.task[:500],
+                "change": f"{len(plan.steps)} planned step(s)",
+                "expected_result": "agent plan executed to completion",
+                "verify": "plan status completed + step results ok",
+            }
+            if depth == "FULL":
+                meta = getattr(plan, "metadata", {}) or {}
+                fields.update({
+                    "current_state": str(meta.get("task_type", "agent session")),
+                    "requirements": str(task)[:300],
+                    "constraints": "session config limits",
+                    "dependencies": "tool registry capabilities",
+                    "risks": "not specified in AgentPlan",
+                    "unknowns": "not specified in AgentPlan",
+                    "steps": [s.to_dict() for s in plan.steps][:20],
+                    "evidence_requirements": "step results recorded",
+                    "acceptance": "plan.status == completed",
+                })
+            cx.plan(ctid, fields, depth=depth, author="agent-core")
+            cx.mark_ready(ctid)
+            cx.begin_execute(ctid)
+        except ExecutionPolicyViolation as e:
+            return _denied(e.reason, e.detail)
+
+        # Create loop and execute (the bounded unit)
         loop = AgentLoop(session, self.agent_core)
         result = loop.run(plan, context)
-        
-        return result
+        try:
+            cx.capture_result(ctid, f"loop.run ok={bool((result or {}).get('ok', True))}"[:300]
+                              if isinstance(result, dict) else "loop.run done")
+            cx.begin_verify(ctid)
+            ok = bool(result.get("ok", True)) if isinstance(result, dict) else True
+            cx.record_verification(
+                ctid, CX_VERIFIED if ok else CX_FAILED,
+                [f"plan.status={plan.status}"], verifier="agent-loop")
+            cx.begin_reevaluate(ctid)
+            findings = {q: f"agent-loop: plan.status={plan.status}"[:200]
+                        for q in REEVALUATION_QUESTIONS}
+            if ok:
+                cx.record_reevaluation(ctid, findings, COMPLETE,
+                                       [f"plan.status={plan.status}"],
+                                       author="default-agent")
+                cx.finalize(ctid)
+            else:
+                cx.record_reevaluation(ctid, findings, BLOCK_WITH_EVIDENCE,
+                                       [f"plan.status={plan.status}"],
+                                       author="default-agent")
+        except ExecutionPolicyViolation as e:
+            if isinstance(result, dict):
+                result = dict(result)
+                result["contract_error"] = f"{e.reason}: {e.detail}"
+            else:
+                result = {"ok": False, "error": f"{e.reason}: {e.detail}",
+                          "kind": "EXECUTION_POLICY_VIOLATION"}
+        if isinstance(result, dict):
+            result = dict(result)
+            try:
+                result["contract"] = cx.contract_snapshot(ctid)
+            except (KeyError, ValueError):
+                pass
+            return result
+        return {"ok": True, "result": result,
+                "contract": cx.contract_snapshot(ctid)}
     
     def run_task_sync(self, workspace: str, task: str,
                      config: SessionConfig | None = None,
