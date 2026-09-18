@@ -1,0 +1,6 @@
+{
+  "name": "Aetherius IDE",
+  "description": "An agentic AI IDE and desktop companion operating system for thinking, building, iterating, and deploying together.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Fira Code', monospace;
+    font-size: 13px; /* VS Code, Devin & Antigravity Desktop metric scale */
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Custom Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+/* Glowing Hologram Keyframe Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+    filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.45));
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.65));
+  }
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes waveOscillate {
+  0%, 100% {
+    height: 6px;
+  }
+  50% {
+    height: 28px;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.animate-orbit {
+  animation: orbitSpin 20s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: orbitSpin 25s linear infinite reverse;
+}
+
