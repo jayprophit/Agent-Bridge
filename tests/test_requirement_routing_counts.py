@@ -15,7 +15,7 @@ import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
-DESKTOP = Path("C:/Users/jpowe/Desktop")
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def _load(name, path):
@@ -26,9 +26,9 @@ def _load(name, path):
 
 
 route_requirements = _load("route_requirements",
-                            DESKTOP / "Agent-Bridge" / "route_requirements.py")
+                            REPO_ROOT / "route_requirements.py")
 reconciler = _load("reconciler_under_test",
-                   DESKTOP / "Agent-Bridge" / "reconcile_unknown_requirements.py")
+                   REPO_ROOT / "reconcile_unknown_requirements.py")
 
 
 def _records(*texts):
@@ -179,7 +179,7 @@ class Pass2Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.p2 = _load("pass2_under_test",
-                       DESKTOP / "Agent-Bridge" / "pass2_context_enrichment.py")
+                       REPO_ROOT / "pass2_context_enrichment.py")
 
     def test_locate_returns_raw_coordinates(self):
         p2 = self.p2
@@ -249,7 +249,7 @@ class DomainEnrichmentTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.dom = _load("domain_under_test",
-                        DESKTOP / "Agent-Bridge" / "pass2_domain_enrichment.py")
+                        REPO_ROOT / "pass2_domain_enrichment.py")
 
     def _rec(self, **kw):
         r = {"RAW_TEXT": "fragment", "NEW_DOMAIN": "AI",

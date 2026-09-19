@@ -8,16 +8,22 @@ import json
 import os
 from pathlib import Path
 
-# Project directories
+# Project directories. Canonical C: workspace root is configurable via
+# AETHERIUS_PROJECTS_ROOT (default: ~/Desktop/Projects). No machine-specific
+# absolute paths are hardcoded here.
+PROJECTS_ROOT = Path(os.environ.get(
+    "AETHERIUS_PROJECTS_ROOT",
+    str(Path.home() / "Desktop" / "Projects")))
+
 PROJECTS = {
-    "AGENT_BRIDGE": r"C:\Users\jpowe\Desktop\Agent-Bridge",
-    "IDE_WORKSPACE": r"C:\Users\jpowe\Desktop\IDE-Workspace",
-    "GENESIS": r"C:\Users\jpowe\Desktop\Genesis",
-    "AETHERIUS_OS": r"C:\Users\jpowe\Desktop\Aetherius-OS",
-    "POIETEK": r"C:\Users\jpowe\Desktop\Poietek",
-    "MAT": r"C:\Users\jpowe\Desktop\MAT",
-    "ATHENA": r"C:\Users\jpowe\Desktop\ATHENA",
-    "UNIVERSAL_BRIDGE": r"C:\Users\jpowe\Desktop\Universal-Bridge"
+    "AGENT_BRIDGE": str(PROJECTS_ROOT / "Agent-Bridge"),
+    "IDE_WORKSPACE": str(PROJECTS_ROOT / "IDE-Workspace"),
+    "GENESIS": str(PROJECTS_ROOT / "Genesis"),
+    "AETHERIUS_OS": str(PROJECTS_ROOT / "Aetherius-OS"),
+    "POIETEK": str(PROJECTS_ROOT / "Poietek"),
+    "MAT": str(PROJECTS_ROOT / "Materials-Atlas-Table-Codex---MAT"),
+    "ATHENA": str(PROJECTS_ROOT / "ATHENA"),
+    "UNIVERSAL_BRIDGE": str(PROJECTS_ROOT / "Universal-Bridge")
 }
 
 # Entry point patterns

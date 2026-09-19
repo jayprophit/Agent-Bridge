@@ -8,12 +8,24 @@ For each TRUE gap ID (1..1040 present set):
 No foundations/repos are created here. This is classification only.
 """
 import json
+import os
 import re
 
-SRC = r"C:\Users\jpowe\Documents\openCDE-agent\master reequirements.txt"
-INV = (r"C:\Users\jpowe\Desktop\Agent-Bridge"
-       r"\jayprophit_repository_inventory.json")
-OUTDIR = r"E:\OpenCode-Data\Repository-Governance"
+
+def _input_path(env_name):
+    """Machine-specific input paths are configured, never hardcoded."""
+    value = os.environ.get(env_name, "")
+    if not value:
+        raise SystemExit(
+            f"Set {env_name} to the input path "
+            "(machine-specific paths are not hardcoded).")
+    return value
+
+
+SRC = _input_path("AGENT_BRIDGE_REQUIREMENTS_SRC")
+INV = _input_path("AGENT_BRIDGE_INVENTORY_JSON")
+OUTDIR = os.environ.get("AGENT_BRIDGE_GOVERNANCE_OUTDIR",
+                        r"E:\OpenCode-Data\Repository-Governance")
 
 # ---- capability equivalence seeds (documented, capability not name) ----
 EQUIV = {

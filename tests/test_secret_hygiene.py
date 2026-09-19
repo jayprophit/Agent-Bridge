@@ -33,9 +33,13 @@ REQUIRED_GITIGNORE = (
 class HygieneTests(unittest.TestCase):
     def _source_files(self):
         # local/ holds ignored non-product archives; hygiene guards product.
+        # Vendor/dependency trees (.opencode, node_modules) carry upstream
+        # test fixtures and must not trip product hygiene.
         for base, dirs, files in os.walk(REPO_ROOT):
             dirs[:] = [d for d in dirs
-                       if d not in (".git", "__pycache__", ".bridge", "local")]
+                       if d not in (".git", "__pycache__", ".bridge", "local",
+                                    ".opencode", "node_modules", ".venv",
+                                    "venv", "dist", "build")]
             for name in files:
                 if name.endswith((".pyc", ".pyo")):
                     continue

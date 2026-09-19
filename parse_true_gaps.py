@@ -8,9 +8,21 @@ title carries the true gap family number, e.g.:
 First batch has no inner number: '1. **Aetherius kernel ...**' -> true ID 1.
 """
 import json
+import os
 import re
 
-SRC = r"C:\Users\jpowe\Documents\openCDE-agent\master reequirements.txt"
+
+def _input_path(env_name):
+    """Machine-specific input paths are configured, never hardcoded."""
+    value = os.environ.get(env_name, "")
+    if not value:
+        raise SystemExit(
+            f"Set {env_name} to the input path "
+            "(machine-specific paths are not hardcoded).")
+    return value
+
+
+SRC = _input_path("AGENT_BRIDGE_REQUIREMENTS_SRC")
 
 def main():
     with open(SRC, "r", encoding="utf-8-sig", errors="replace") as f:
@@ -61,10 +73,11 @@ def main():
            "id_min": min(ids), "id_max": max(ids),
            "missing": missing,
            "gaps": {str(k): gaps[k] for k in ids}}
-    with open(r"C:\Users\jpowe\Desktop\Agent-Bridge\true_gap_index.json",
-              "w", encoding="utf-8") as f:
+    from pathlib import Path
+    out_path = Path(__file__).resolve().parent / "true_gap_index.json"
+    with open(out_path, "w", encoding="utf-8") as f:
         json.dump(out, f, indent=1)
-    print("wrote true_gap_index.json")
+    print(f"wrote {out_path}")
 
 if __name__ == "__main__":
     main()

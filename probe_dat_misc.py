@@ -4,7 +4,17 @@ import os
 import re
 import zipfile
 
-SRC = r"C:\Users\jpowe\Downloads\chatgpt files"
+def _input_path(env_name):
+    """Machine-specific input paths are configured, never hardcoded."""
+    value = os.environ.get(env_name, "")
+    if not value:
+        raise SystemExit(
+            f"Set {env_name} to the input path "
+            "(machine-specific paths are not hardcoded).")
+    return value
+
+
+SRC = _input_path("AGENT_BRIDGE_CHATGPT_CORPUS_DIR")
 MANIFEST = (r"E:\OpenCode-Data\conversation-analysis"
             r"\CHATGPT_DAT_CORPUS_MANIFEST.json")
 import json as J

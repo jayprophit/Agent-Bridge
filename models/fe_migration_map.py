@@ -15,9 +15,15 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any
+
+# Canonical C: workspace root (configurable; no machine-specific paths).
+PROJECTS_ROOT = Path(os.environ.get(
+    "AETHERIUS_PROJECTS_ROOT",
+    str(Path.home() / "Desktop" / "Projects")))
 
 KNOWLEDGE_DIR = Path(r"E:\OpenCode-Data\Knowledge")
 MAP_PATH = KNOWLEDGE_DIR / "F-E-MIGRATION-MAP.json"
@@ -50,34 +56,34 @@ MIGRATION_EVENTS: list[dict[str, Any]] = [
     {"event": "genesis aux-folder merge",
      "evidence": "DESKTOP-CONSOLIDATION-VERIFICATION.md",
      "initial_E_copy_path": r"E:\external drive\Downloads\New folder (historical Genesis material)",
-     "current_location": r"C:\Users\jpowe\Desktop\Genesis\integration-archive",
+      "current_location": str(PROJECTS_ROOT / "Genesis" / "integration-archive"),
      "classification": "MIGRATION_SOURCE", "project": "genesis",
      "move_history": ["E:Downloads staging", "Desktop Genesis/integration-archive"],
      "verification_status": "PENDING_F_VERIFICATION"},
     {"event": "MAT aux-folder merge",
      "evidence": "DESKTOP-CONSOLIDATION-VERIFICATION.md",
      "initial_E_copy_path": r"E:\external drive\Downloads (historical MAT material)",
-     "current_location": r"C:\Users\jpowe\Desktop\Materials-Atlas-Table-Codex---MAT\integration-archive",
+      "current_location": str(PROJECTS_ROOT / "Materials-Atlas-Table-Codex---MAT" / "integration-archive"),
      "classification": "MIGRATION_SOURCE", "project": "mat",
      "move_history": ["E:Downloads staging", "Desktop MAT/integration-archive"],
      "verification_status": "PENDING_F_VERIFICATION"},
     {"event": "Poietek native-build merge",
      "evidence": "DESKTOP-CONSOLIDATION-VERIFICATION.md",
      "initial_E_copy_path": r"E:\external drive\Downloads (Poietek native material)",
-     "current_location": r"C:\Users\jpowe\Desktop\Poietek\native-build",
+      "current_location": str(PROJECTS_ROOT / "Poietek" / "native-build"),
      "classification": "MIGRATION_SOURCE", "project": "poietek",
      "move_history": ["E:Downloads staging", "Desktop Poietek/native-build"],
      "verification_status": "PENDING_F_VERIFICATION"},
     {"event": "Universal-Bridge output merge",
      "evidence": "DESKTOP-CONSOLIDATION-VERIFICATION.md",
      "initial_E_copy_path": r"E:\external drive\Downloads (UB output material)",
-     "current_location": r"C:\Users\jpowe\Desktop\Universal-Bridge\output",
+      "current_location": str(PROJECTS_ROOT / "Universal-Bridge" / "output"),
      "classification": "MIGRATION_SOURCE", "project": "universal-bridge",
      "move_history": ["E:Downloads staging", "Desktop Universal-Bridge/output"],
      "verification_status": "PENDING_F_VERIFICATION"},
     {"event": "UBRIDGE-CERT-001 certification asset placement",
      "evidence": "DESKTOP-CONSOLIDATION-VERIFICATION.md",
-     "initial_E_copy_path": r"C:\Users\jpowe\Desktop\UBRIDGE-CERT-001 (loose)",
+      "initial_E_copy_path": str(PROJECTS_ROOT / "UBRIDGE-CERT-001 (loose)"),
      "current_location": r"E:\OpenCode-Data\Universal-Bridge\Test-Data\UBRIDGE-CERT-001",
      "classification": "DEVICE_DATA", "project": "universal-bridge",
      "move_history": ["Desktop loose", "E:OpenCode-Data Test-Data",
@@ -85,8 +91,8 @@ MIGRATION_EVENTS: list[dict[str, Any]] = [
      "verification_status": "PENDING_F_VERIFICATION"},
     {"event": "Aetherius-OS incorrect relocation + restore",
      "evidence": "session ledger (owner correction)",
-     "initial_E_copy_path": r"C:\Users\jpowe\Desktop\Aetherius-OS (canonical, must stay)",
-     "current_location": r"C:\Users\jpowe\Desktop\Aetherius-OS",
+      "initial_E_copy_path": str(PROJECTS_ROOT / "Aetherius-OS (canonical, must stay)"),
+      "current_location": str(PROJECTS_ROOT / "Aetherius-OS"),
      "classification": "RESTRICTED_EVENT",
      "project": "aetherious",
      "move_history": ["Desktop canonical", "E:OpenCode-Data (INVALID DIRECTION, corrected)",
