@@ -207,19 +207,30 @@ class Subject:
     def __init__(self, kind: str, value: str):
         self.kind = kind
         self.value = value
-    
+
+    def __str__(self):
+        return f"{self.kind}:{self.value}"
+
+    def __eq__(self, other):
+        if not isinstance(other, Subject):
+            return False
+        return self.kind == other.kind and self.value == other.value
+
+    def __hash__(self):
+        return hash((self.kind, self.value))
+
     @classmethod
     def identity(cls, identity_id: str):
         return cls(kind="identity", value=identity_id)
-    
+
     @classmethod
     def service(cls, service: str):
         return cls(kind="service", value=service)
-    
+
     @classmethod
     def device(cls, device: str):
         return cls(kind="device", value=device)
-    
+
     @classmethod
     def anonymous(cls):
         return cls(kind="anonymous", value="")
@@ -311,14 +322,32 @@ class PolicyEngine:
         return "deny"
 
 
-# Global policy engine instance
+# Global policy engine instance (P10-PA: single default-deny engine shared
+# by every bridge-facing evaluation so grants persist across calls).
 _policy_engine = None
 
 def get_policy_engine():
     global _policy_engine
-    if not hasattr(get_policy_engine, "_engine"):
+    if _policy_engine is None:
         _policy_engine = PolicyEngine()
     return _policy_engine
+
+
+def reset_policy_engine():
+    """Test/reset hook: drop all grants and restore default-deny."""
+    global _policy_engine
+    _policy_engine = PolicyEngine()
+    return _policy_engine
+
+
+def _parse_subject(subject: str) -> "Subject":
+    if isinstance(subject, Subject):
+        return subject
+    if isinstance(subject, str) and ":" in subject:
+        kind, _, value = subject.partition(":")
+        if kind in ("identity", "service", "device", "anonymous"):
+            return Subject(kind=kind, value=value)
+    return Subject(kind="service", value=str(subject))
 
 
 def evaluate_capability_request(
@@ -328,27 +357,34 @@ def evaluate_capability_request(
     context: dict = None
 ) -> dict:
     """
-    Evaluate a capability request through the policy engine.
-    
+    Evaluate a capability request through the shared policy engine
+    (P10-PA gate: default-deny; explicit grants allow).
+
     Returns: {"allowed": bool, "decision": str, "reason": str, "policy_id": str}
     """
-    engine = PolicyEngine()
-    
+    engine = get_policy_engine()
+
     # Parse capability
     if ":" in capability:
         service, action = capability.split(":", 1)
     else:
         service, action = "unknown", capability
-    
-    subject = {"kind": "service", "value": subject}
-    permission = {"service": service, "action": action}
-    
-    # Simplified evaluation - in real implementation would call engine.evaluate()
-    # For now, return a structured response
+
+    ctx = EvalContext(
+        subject=_parse_subject(subject),
+        resource=str(resource),
+        action=PermissionId(service, action),
+        attributes=(context or {}).get("attributes", {}) if isinstance(context, dict) else {},
+        timestamp=(context or {}).get("timestamp", 0) if isinstance(context, dict) else 0,
+        network_origin=(context or {}).get("network_origin") if isinstance(context, dict) else None,
+        device_trust=(context or {}).get("device_trust") if isinstance(context, dict) else None,
+    )
+    decision = engine.evaluate(ctx)
+    allowed = (decision == "allow")
     return {
-        "allowed": True,
-        "decision": "allow",
-        "reason": "Policy evaluation result",
+        "allowed": allowed,
+        "decision": decision,
+        "reason": "grant matched" if allowed else f"denied by default-deny: no grant for {ctx.subject} {service}:{action} on {resource}",
         "policy_id": str(uuid.uuid4()),
         "timestamp": int(time.time()),
     }
@@ -356,13 +392,7 @@ def evaluate_capability_request(
 
 def check_capability(subject: str, capability: str, resource: str, context: dict = None) -> dict:
     """Check if a subject has a capability on a resource."""
-    return {
-        "allowed": True,
-        "decision": "allow",
-        "reason": "Policy evaluation result",
-        "policy_id": str(uuid.uuid4()),
-        "timestamp": int(time.time()),
-    }
+    return evaluate_capability_request(subject, capability, resource, context)
 
 
 # Integration with Agent Bridge protocol
@@ -398,6 +428,7 @@ __all__ = [
     "EvalContext",
     "PolicyEngine",
     "get_policy_engine",
+    "reset_policy_engine",
     "evaluate_capability_request",
     "check_capability",
     "create_policy_evaluation_result",
