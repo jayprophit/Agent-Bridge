@@ -317,6 +317,7 @@ def main():
     
     # Save certification
     cert_dir = workspace / ".bridge" / "delegation_cert"
+    cert_dir.mkdir(parents=True, exist_ok=True)
     cert_path = cert_dir / "REAL_DELEGATION_CERTIFICATION.json"
     
     cert_data = {
@@ -364,13 +365,13 @@ def main():
     print(f"{'='*70}")
     
     if verified > 0:
-        print("\n✅ AGENT BRIDGE REAL DELEGATION: EVIDENCE OF DELEGATION FOUND")
+        print("\n[OK] AGENT BRIDGE REAL DELEGATION: EVIDENCE OF DELEGATION FOUND")
         print("   The Bridge successfully delegated tasks to worker models.")
         print("   File modifications were performed by the worker through the Bridge.")
         print("   Even when final result marked 'revision exhausted', edits were executed.")
         return 0
     else:
-        print("\n❌ AGENT BRIDGE REAL DELEGATION: NO DELEGATION EVIDENCE")
+        print("\n[FAIL] AGENT BRIDGE REAL DELEGATION: NO DELEGATION EVIDENCE")
         print("   Some delegations did not complete successfully.")
         return 1
 

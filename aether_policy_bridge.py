@@ -311,12 +311,27 @@ class PolicyEngine:
             self.grants[subject_key] = []
         self.grants[subject_key].append(grant)
     
+    def _normalize_path(self, path: str) -> str:
+        """Normalize path to forward slashes for consistent matching."""
+        return path.replace("\\", "/")
+
     def evaluate(self, ctx) -> str:
         # Check explicit grants
         subject_key = str(ctx.subject)
         if subject_key in self.grants:
             for grant in self.grants.get(subject_key, []):
-                if grant.permission == ctx.action and grant.resource == ctx.resource:
+                if grant.permission != ctx.action:
+                    continue
+                # Support prefix matching for resources ending with /**
+                # grant.resource may be ResourceId or string
+                grant_resource = grant.resource.value if hasattr(grant.resource, 'value') else grant.resource
+                grant_res = self._normalize_path(str(grant_resource))
+                ctx_res = self._normalize_path(ctx.resource)
+                if grant_res.endswith("/**"):
+                    prefix = grant_res[:-3]  # remove /**
+                    if ctx_res.startswith(prefix):
+                        return "allow"
+                elif grant_res == ctx_res:
                     return "allow"
         
         return "deny"
@@ -338,6 +353,118 @@ def reset_policy_engine():
     global _policy_engine
     _policy_engine = PolicyEngine()
     return _policy_engine
+
+
+def issue_session_workspace_grants(
+    session_id: str,
+    workspace_path: str,
+    approval_mode: str,
+    owner_mode: bool = False
+) -> None:
+    """
+    Issue workspace-scoped workspace grants at session start (P10-PA compatibility).
+
+    Grants are scoped to the workspace, allowing any session operating in that
+    workspace to have the appropriate permissions. The subject is the workspace
+    itself (service:agent-bridge:workspace:<workspace_hash>).
+
+    Approval mode mapping:
+    - AUTO_SAFE: read/list/safe-write within workspace
+    - OWNER_AUTO_APPROVE: full workspace access (owner pre-auth)
+    - OWNER_FULL_ACCESS: full workspace + privileged paths (owner pre-auth)
+    - ASK_ALL_WRITES / REQUIRE_APPROVAL: no pre-grants (approval gate handles)
+    - READ_ONLY: read/list only
+    """
+    from pathlib import Path
+    import hashlib
+    engine = get_policy_engine()
+    ws = Path(workspace_path).resolve()
+    ws_str = str(ws)
+    # Create a stable workspace identifier
+    ws_hash = hashlib.sha256(ws_str.encode()).hexdigest()[:16]
+
+    # Workspace-scoped resources
+    ws_prefix = f"workspace:{ws_str}"
+
+    # NOTE: AUTO_SAFE mirrors the approval system's in-workspace file-op
+    # allowance (edit/patch/mkdir/move/copy are executor-level mutations
+    # the approval gate already risk-assesses). Policy enforces workspace
+    # scoping; approval still makes the per-action risk decision.
+    # delete/restore stay approval-authoritative (no policy grant, and the
+    # bridge/executor policy checks skip them by design).
+    grants_config = {
+        "AUTO_SAFE": [
+            ("filesystem", "read", f"{ws_prefix}/**"),
+            ("filesystem", "list", f"{ws_prefix}/**"),
+            ("filesystem", "write", f"{ws_prefix}/**"),
+            ("filesystem", "edit", f"{ws_prefix}/**"),
+            ("filesystem", "patch", f"{ws_prefix}/**"),
+            ("filesystem", "mkdir", f"{ws_prefix}/**"),
+            ("filesystem", "move", f"{ws_prefix}/**"),
+            ("filesystem", "copy", f"{ws_prefix}/**"),
+            ("shell", "execute", f"{ws_prefix}/**"),
+        ],
+        "OWNER_AUTO_APPROVE": [
+            ("filesystem", "read", f"{ws_prefix}/**"),
+            ("filesystem", "list", f"{ws_prefix}/**"),
+            ("filesystem", "write", f"{ws_prefix}/**"),
+            ("filesystem", "delete", f"{ws_prefix}/**"),
+            ("filesystem", "edit", f"{ws_prefix}/**"),
+            ("filesystem", "patch", f"{ws_prefix}/**"),
+            ("filesystem", "mkdir", f"{ws_prefix}/**"),
+            ("filesystem", "move", f"{ws_prefix}/**"),
+            ("filesystem", "copy", f"{ws_prefix}/**"),
+            ("shell", "execute", f"{ws_prefix}/**"),
+            ("shell", "install", f"{ws_prefix}/**"),
+            ("git", "commit", f"{ws_prefix}/**"),
+            ("git", "push", f"{ws_prefix}/**"),
+        ],
+        "OWNER_FULL_ACCESS": [
+            ("filesystem", "read", f"{ws_prefix}/**"),
+            ("filesystem", "list", f"{ws_prefix}/**"),
+            ("filesystem", "write", f"{ws_prefix}/**"),
+            ("filesystem", "delete", f"{ws_prefix}/**"),
+            ("filesystem", "edit", f"{ws_prefix}/**"),
+            ("filesystem", "patch", f"{ws_prefix}/**"),
+            ("filesystem", "mkdir", f"{ws_prefix}/**"),
+            ("filesystem", "move", f"{ws_prefix}/**"),
+            ("filesystem", "copy", f"{ws_prefix}/**"),
+            ("shell", "execute", f"{ws_prefix}/**"),
+            ("shell", "install", f"{ws_prefix}/**"),
+            ("git", "commit", f"{ws_prefix}/**"),
+            ("git", "push", f"{ws_prefix}/**"),
+            ("filesystem", "read", "workspace:C:/Windows/**"),
+            ("filesystem", "write", "workspace:C:/Windows/**"),
+        ],
+        "READ_ONLY": [
+            ("filesystem", "read", f"{ws_prefix}/**"),
+            ("filesystem", "list", f"{ws_prefix}/**"),
+        ],
+        "ASK_ALL_WRITES": [],  # approval gate handles everything
+        "REQUIRE_APPROVAL": [],  # approval gate handles everything
+    }
+
+    # Select grants based on approval mode; owner_mode overrides
+    if owner_mode:
+        grants = grants_config["OWNER_FULL_ACCESS"]
+    else:
+        grants = grants_config.get(approval_mode, [])
+
+    # Subject is workspace-scoped for cross-session access
+    subject = Subject(kind="service", value=f"agent-bridge:workspace:{ws_hash}")
+
+    for service, action, resource in grants:
+        # Normalize resource to forward slashes for consistent matching
+        norm_resource = resource.replace("\\", "/")
+        engine.add_grant(Grant(
+            subject=subject,
+            permission=PermissionId(service, action),
+            resource=ResourceId(norm_resource),
+            conditions=[],
+            granted_by="bridge-workspace-authn",
+            granted_at=0,
+            expires_at=None,
+        ))
 
 
 def _parse_subject(subject: str) -> "Subject":

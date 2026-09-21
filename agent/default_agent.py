@@ -24,6 +24,7 @@ from typing import Any
 from agent.agent_core import AgentCore
 from agent.agent_loop import AgentLoop
 from agent.agent_session import AgentSession, SessionConfig, create_session_id
+from aether_policy_bridge import issue_session_workspace_grants
 from execution_contract import (
     BLOCK_WITH_EVIDENCE, COMPLETE, ExecutionContract,
     ExecutionPolicyViolation, PLAN_MISSING,
@@ -84,6 +85,14 @@ class DefaultAgent:
             workspace=workspace
         )
         
+        # Issue workspace-scoped policy grants for this session (P10-PA compat)
+        issue_session_workspace_grants(
+            session_id=session.session_id,
+            workspace_path=workspace,
+            approval_mode="AUTO_SAFE",  # default safe profile
+            owner_mode=False,
+        )
+
         self.sessions[session_id] = session
         return session
     

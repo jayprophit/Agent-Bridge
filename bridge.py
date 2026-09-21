@@ -44,6 +44,7 @@ from aether_policy_bridge import (
     evaluate_capability_request,
     check_capability,
     create_policy_evaluation_result,
+    issue_session_workspace_grants,
     PermissionId,
     Subject,
     ResourceId,
@@ -476,6 +477,13 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
     # ---- owner mode activation (explicit only; safe profiles untouched) ----
     owner_mode = (getattr(cfg, "profile", "") == "OWNER_FULL_ACCESS"
                   and bool(getattr(cfg, "owner_authorized", False)))
+    # ---- session-scoped workspace grants (P10-PA compat) ----
+    issue_session_workspace_grants(
+        session_id=session.session_id,
+        workspace_path=str(cfg.workspace),
+        approval_mode=cfg.approval,
+        owner_mode=owner_mode,
+    )
     owner_record: dict[str, Any] = {"owner_authorization_active": False}
     if owner_mode:
         from owner import OWNER
@@ -573,10 +581,17 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
             adapter.propose_plan(ctid, {
                 # strip: a whitespace-only task is no objective at all and
                 # must fail closed (PLAN_MISSING), not run empty steps.
+                # constraints/dependencies must be truthful non-empty strings:
+                # the fail-closed contract treats falsy as missing, and an
+                # empty proposal would deterministically deny every fresh
+                # intake (no persisted contract to resume from).
                 "goal": task.strip()[:500],
                 "current_state": "run_bridge intake",
-                "constraints": getattr(cfg, "constraints", ""),
-                "dependencies": "",
+                "constraints": getattr(cfg, "constraints", "") or (
+                    f"approval={getattr(cfg, 'approval', 'AUTO_SAFE')}; "
+                    f"workspace-scoped; mode={getattr(cfg, 'mode', '')}; "
+                    f"non_interactive={getattr(cfg, 'non_interactive', False)}"),
+                "dependencies": "tool registry capabilities",
                 "project": "agent-bridge",
             })
             cx.mark_ready(ctid)
@@ -1325,54 +1340,6 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                              "Continue planning (dry-run: nothing executes).")}]
             continue
 
-        # ---- policy evaluation gate (P10-PA) ----
-        # Evaluate the action through the Aether policy engine before standard approval
-        capability = f"{action.get('action', 'unknown')}:{action.get('path', action.get('command', ''))}"
-        resource = action.get("path", action.get("dest", action.get("target", "")))
-        
-        policy_eval = evaluate_capability_request(
-            subject="service:agent-bridge",
-            capability=capability,
-            resource=resource,
-            context={
-                "timestamp": int(time.time()),
-                "network_origin": "local",
-                "device_trust": 100,
-                "attributes": {
-                    "action": action.get("action", ""),
-                    "mode": cfg.mode,
-                }
-            }
-        )
-        
-        if not policy_eval["allowed"]:
-            entry = {"step": step, "action": action, "action_id": action_id,
-                      "validation_ok": True, "approved": False,
-                      "executed": False,
-                      "result": {"ok": False, "error": f"Policy denied: {policy_eval['reason']}"},
-                      "kind": "POLICY_DENIED", "role": role}
-            history.append(entry)
-            memory.record("failed", {"step": step, "kind": "POLICY_DENIED",
-                                      "action": action, "reason": policy_eval["reason"]})
-            session.errors += 1
-            consecutive_failures += 1
-            logger.human(f"STEP {step} POLICY-DENIED {policy_eval['reason']}")
-            logger.event(event="step", step=step, action=action, action_id=action_id,
-                         validation="ok", policy=policy_eval, executed=False,
-                         kind="POLICY_DENIED", role=role)
-            messages += [{"role": "assistant", "content": raw},
-                         {"role": "user", "content":
-                           f"DENIED (POLICY): {policy_eval['reason']}. "
-                           "Choose a safe in-workspace alternative or finish."}]
-            if loop_guard.note(f"POLICY_DENIED:{act}") >= cfg.repeat_threshold:
-                session.status = FAILED
-                _cx_abort("repeated policy denials", [act])
-                _restore_sigint()
-                return {"ok": False, "error": "repeated policy denials",
-                        "kind": "POLICY_DENIED", "steps": step,
-                        "session_id": session.session_id, "status": FAILED, "history": history}
-            continue
-
         # ---- approval gate ----
         preview = _preview_action(executor, action)
         session.status = WAITING_APPROVAL
@@ -1413,6 +1380,72 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                 _restore_sigint()
                 return {"ok": False, "error": f"stopping: {consecutive_failures} consecutive failed steps",
                         "kind": APPROVAL_DENIED, "steps": step,
+                        "session_id": session.session_id, "status": FAILED, "history": history}
+            continue
+
+        # ---- policy evaluation gate (P10-PA, post-approval) ----
+        # Runs AFTER the approval gate so the approval system's deny/allow
+        # logic is preserved.  Policy acts as a secondary security filter:
+        # even if approval passed, policy can still deny.
+        # Skip for delete/restore: the approval system is the authority for
+        # destructive actions; policy focuses on write/edit/shell scope.
+        act_name = action.get("action", "unknown")
+        if act_name in ("delete", "restore"):
+            policy_eval = {"allowed": True, "decision": "allow",
+                           "reason": "approval-authoritative action"}
+        else:
+            act_resource = action.get("path", action.get("dest", action.get("target",
+                           action.get("command", ""))))
+            # Map test → shell:execute since test runs a shell command
+            capability = f"shell:execute" if act_name == "test" else f"filesystem:{act_name}"
+            import hashlib
+            ws_str = str(cfg.workspace.resolve())
+            ws_hash = hashlib.sha256(ws_str.encode()).hexdigest()[:16]
+            # Normalize resource to workspace-absolute forward-slash path
+            norm_resource = act_resource.replace("\\", "/")
+            if norm_resource and not norm_resource.startswith("workspace:"):
+                norm_resource = f"workspace:{ws_str}/{norm_resource}".replace("\\", "/")
+
+            policy_eval = evaluate_capability_request(
+                subject=f"service:agent-bridge:workspace:{ws_hash}",
+                capability=capability,
+                resource=norm_resource,
+                context={
+                    "timestamp": int(time.time()),
+                    "network_origin": "local",
+                    "device_trust": 100,
+                    "attributes": {
+                        "action": action.get("action", ""),
+                        "mode": cfg.mode,
+                    }
+                }
+            )
+
+        if not policy_eval["allowed"]:
+            entry = {"step": step, "action": action, "action_id": action_id,
+                      "validation_ok": True, "approved": True, "approval": verdict,
+                      "executed": False,
+                      "result": {"ok": False, "error": f"Policy denied: {policy_eval['reason']}"},
+                      "kind": "POLICY_DENIED", "role": role}
+            history.append(entry)
+            memory.record("failed", {"step": step, "kind": "POLICY_DENIED",
+                                      "action": action, "reason": policy_eval["reason"]})
+            session.errors += 1
+            consecutive_failures += 1
+            logger.human(f"STEP {step} POLICY-DENIED {policy_eval['reason']}")
+            logger.event(event="step", step=step, action=action, action_id=action_id,
+                         validation="ok", approval=verdict, policy=policy_eval, executed=False,
+                         kind="POLICY_DENIED", role=role)
+            messages += [{"role": "assistant", "content": raw},
+                         {"role": "user", "content":
+                           f"DENIED (POLICY): {policy_eval['reason']}. "
+                           "Choose a safe in-workspace alternative or finish."}]
+            if loop_guard.note(f"POLICY_DENIED:{act}") >= cfg.repeat_threshold:
+                session.status = FAILED
+                _cx_abort("repeated policy denials", [act])
+                _restore_sigint()
+                return {"ok": False, "error": "repeated policy denials",
+                        "kind": "POLICY_DENIED", "steps": step,
                         "session_id": session.session_id, "status": FAILED, "history": history}
             continue
 

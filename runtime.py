@@ -688,6 +688,14 @@ class AgentRuntime:
                                        ("planner", "coder", "reviewer", "general")})
         bcfg.session_id = sid
         sess = Session(self, sid, ws, bcfg.mode, bcfg, self.provider_factory)
+        # Issue workspace-scoped policy grants for this session (P10-PA compat)
+        from aether_policy_bridge import issue_session_workspace_grants
+        issue_session_workspace_grants(
+            session_id=sid,
+            workspace_path=str(ws),
+            approval_mode=approval or "AUTO_SAFE",
+            owner_mode=owner_authorized,
+        )
         with self.lock:
             self.sessions[sid] = sess
             self.metrics["sessions"] += 1

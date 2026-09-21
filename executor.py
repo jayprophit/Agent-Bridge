@@ -143,6 +143,35 @@ class Executor:
         if setup_dirs:
             self._ensure_bridge_dirs()
 
+    def _check_policy(self, action: str, resource: str) -> dict[str, Any]:
+        """Check policy for an action before execution."""
+        from aether_policy_bridge import evaluate_capability_request
+        import hashlib
+        ws_str = str(self.workspace.resolve())
+        ws_hash = hashlib.sha256(ws_str.encode()).hexdigest()[:16]
+        # Normalize resource to workspace-relative forward-slash path
+        # so it matches the grant pattern workspace:<ws>/**
+        norm_resource = resource.replace("\\", "/")
+        if not norm_resource.startswith("workspace:"):
+            norm_resource = f"workspace:{ws_str}/{norm_resource}".replace("\\", "/")
+        # Map test/shell → shell:execute since both run shell commands
+        capability = f"shell:execute" if action in ("test", "shell") else f"filesystem:{action}"
+        policy_eval = evaluate_capability_request(
+            subject=f"service:agent-bridge:workspace:{ws_hash}",
+            capability=capability,
+            resource=norm_resource,
+            context={
+                "timestamp": int(time.time()),
+                "network_origin": "local",
+                "device_trust": 100,
+                "attributes": {
+                    "action": action,
+                    "executor": True,
+                }
+            }
+        )
+        return policy_eval
+
     def _resolve(self, user_path: str, allow_internal: bool = False) -> Path:
         """Owner-aware path resolution. Safe profiles use the sandbox;
         owner mode uses the machine namespace (still validated)."""
@@ -930,6 +959,18 @@ class Executor:
                         approval_override: bool = False,
                         action_id: str = "") -> dict[str, Any]:
         act = action.get("action")
+        # Policy evaluation gate for mutating actions.
+        # delete/restore excluded: bridge gate is authoritative for destructive ops.
+        mutating_actions = {"write", "edit", "patch", "mkdir",
+                           "move", "copy", "shell", "test"}
+        if act in mutating_actions:
+            # Determine resource path
+            resource = action.get("path", action.get("src", action.get("dest", action.get("command", ""))))
+            policy_eval = self._check_policy(act, resource)
+            if not policy_eval.get("allowed", False):
+                return {"ok": False, "error": policy_eval.get("reason", "Policy denied"),
+                        "kind": "POLICY_DENIED", "executed": False}
+
         if act == "list":
             return self.do_list(action.get("path", "."))
         if act == "read":
