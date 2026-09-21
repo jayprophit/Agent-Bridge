@@ -40,6 +40,15 @@ from memory import SessionMemory
 from milestones import KNOWN as _MILESTONES_KNOWN
 from milestones import check as milestones_check
 from policy import ApprovalManager, ConsoleApproval, PreApprovedApproval
+from aether_policy_bridge import (
+    evaluate_capability_request,
+    check_capability,
+    create_policy_evaluation_result,
+    PermissionId,
+    Subject,
+    ResourceId,
+    PermissionId,
+)
 from progress import ProgressTracker
 from protocol import (MUTATING_ACTIONS, READ_ONLY_ACTIONS, parse_model_output)
 from providers import ProviderError, create_provider
@@ -1314,6 +1323,54 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                           + ("Show the next planned action or finish with your plan."
                              if cfg.mode == "plan" else
                              "Continue planning (dry-run: nothing executes).")}]
+            continue
+
+        # ---- policy evaluation gate (P10-PA) ----
+        # Evaluate the action through the Aether policy engine before standard approval
+        capability = f"{action.get('action', 'unknown')}:{action.get('path', action.get('command', ''))}"
+        resource = action.get("path", action.get("dest", action.get("target", "")))
+        
+        policy_eval = evaluate_capability_request(
+            subject="service:agent-bridge",
+            capability=capability,
+            resource=resource,
+            context={
+                "timestamp": int(time.time()),
+                "network_origin": "local",
+                "device_trust": 100,
+                "attributes": {
+                    "action": action.get("action", ""),
+                    "mode": cfg.mode,
+                }
+            }
+        )
+        
+        if not policy_eval["allowed"]:
+            entry = {"step": step, "action": action, "action_id": action_id,
+                      "validation_ok": True, "approved": False,
+                      "executed": False,
+                      "result": {"ok": False, "error": f"Policy denied: {policy_eval['reason']}"},
+                      "kind": "POLICY_DENIED", "role": role}
+            history.append(entry)
+            memory.record("failed", {"step": step, "kind": "POLICY_DENIED",
+                                      "action": action, "reason": policy_eval["reason"]})
+            session.errors += 1
+            consecutive_failures += 1
+            logger.human(f"STEP {step} POLICY-DENIED {policy_eval['reason']}")
+            logger.event(event="step", step=step, action=action, action_id=action_id,
+                         validation="ok", policy=policy_eval, executed=False,
+                         kind="POLICY_DENIED", role=role)
+            messages += [{"role": "assistant", "content": raw},
+                         {"role": "user", "content":
+                           f"DENIED (POLICY): {policy_eval['reason']}. "
+                           "Choose a safe in-workspace alternative or finish."}]
+            if loop_guard.note(f"POLICY_DENIED:{act}") >= cfg.repeat_threshold:
+                session.status = FAILED
+                _cx_abort("repeated policy denials", [act])
+                _restore_sigint()
+                return {"ok": False, "error": "repeated policy denials",
+                        "kind": "POLICY_DENIED", "steps": step,
+                        "session_id": session.session_id, "status": FAILED, "history": history}
             continue
 
         # ---- approval gate ----
