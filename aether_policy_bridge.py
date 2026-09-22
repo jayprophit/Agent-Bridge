@@ -419,6 +419,65 @@ def workspace_subject(workspace_path: str, session_id: str = "") -> str:
     return f"{base}:session:{session_id}" if session_id else base
 
 
+PRINCIPAL_KINDS = ("genesis", "worker", "owner")
+
+
+@dataclass
+class PrincipalContext:
+    """Who an action is performed for. Validated input + audit context.
+
+    A principal is NEVER authority: it grants no capability, approves
+    nothing, and cannot widen a grant. Unknown/malformed principals and
+    impersonation attempts fail closed at validation.
+    """
+    kind: str
+    id: str
+    on_behalf_of: str = ""
+
+    def summary(self) -> str:
+        base = f"{self.kind}:{self.id}"
+        return f"{base} on behalf of {self.on_behalf_of}" if self.on_behalf_of else base
+
+
+def parse_principal(raw: Any) -> "PrincipalContext | None":
+    """Parse untrusted principal input; None when absent. Never throws."""
+    if raw is None:
+        return None
+    if isinstance(raw, PrincipalContext):
+        return raw
+    if not isinstance(raw, dict):
+        return None
+    kind = raw.get("kind", "")
+    ident = raw.get("id", "")
+    obo = raw.get("on_behalf_of", "")
+    if not isinstance(kind, str) or not isinstance(ident, str):
+        return None
+    if not isinstance(obo, str):
+        obo = ""
+    return PrincipalContext(kind=kind.strip(), id=ident.strip(), on_behalf_of=obo.strip())
+
+
+def validate_principal(principal: "PrincipalContext | None", genesis_id: str = "") -> list:
+    """Validate a principal; returns error strings (empty = valid).
+
+    Rules: known kind; non-empty id; a worker id must never equal the known
+    Genesis id (impersonation); on_behalf_of must differ from the principal
+    id (no collapsed owner/Genesis). Absent principal is valid (legacy path).
+    """
+    if principal is None:
+        return []
+    errors = []
+    if principal.kind not in PRINCIPAL_KINDS:
+        errors.append(f"unknown principal kind {principal.kind!r}")
+    if not principal.id:
+        errors.append("principal id is required")
+    if genesis_id and principal.kind == "worker" and principal.id == genesis_id:
+        errors.append("worker principal must not impersonate the Genesis identity")
+    if principal.on_behalf_of and principal.on_behalf_of == principal.id:
+        errors.append("on_behalf_of must differ from the principal id (owner and Genesis stay distinct)")
+    return errors
+
+
 def issue_session_workspace_grants(
     session_id: str,
     workspace_path: str,
@@ -451,11 +510,10 @@ def issue_session_workspace_grants(
     ws_prefix = f"workspace:{ws_str}"
 
     # NOTE: AUTO_SAFE mirrors the approval system's in-workspace file-op
-    # allowance (edit/patch/mkdir/move/copy are executor-level mutations
-    # the approval gate already risk-assesses). Policy enforces workspace
-    # scoping; approval still makes the per-action risk decision.
-    # delete/restore stay approval-authoritative (no policy grant, and the
-    # bridge/executor policy checks skip them by design).
+    # allowance (edit/patch/mkdir/move/copy/delete/restore are executor-level
+    # mutations the approval gate already risk-assesses). Policy enforces
+    # workspace scoping; approval still makes the per-action risk decision.
+    # Principals are validated separately and never widen these grants.
     grants_config = {
         "AUTO_SAFE": [
             ("filesystem", "read", f"{ws_prefix}/**"),
@@ -573,15 +631,39 @@ def evaluate_capability_request(
     subject: str,
     capability: str,
     resource: str,
-    context: dict = None
+    context: dict = None,
+    principal: Any = None,
+    genesis_id: str = "",
 ) -> dict:
     """
     Evaluate a capability request through the shared policy engine
     (P10-PA gate: default-deny; explicit grants allow).
 
+    The optional principal is validated input + audit context ONLY: it can
+    never grant, approve, or widen. Invalid principals fail closed.
+
     Returns: {"allowed": bool, "decision": str, "reason": str, "policy_id": str}
     """
     engine = get_policy_engine()
+
+    parsed_principal = parse_principal(principal)
+    if principal is not None and parsed_principal is None:
+        return {
+            "allowed": False,
+            "decision": "deny",
+            "reason": "denied: malformed principal context",
+            "policy_id": str(uuid.uuid4()),
+            "timestamp": int(time.time()),
+        }
+    principal_errors = validate_principal(parsed_principal, genesis_id)
+    if principal_errors:
+        return {
+            "allowed": False,
+            "decision": "deny",
+            "reason": "denied: invalid principal (" + "; ".join(principal_errors) + ")",
+            "policy_id": str(uuid.uuid4()),
+            "timestamp": int(time.time()),
+        }
 
     # Parse capability
     if ":" in capability:
@@ -589,21 +671,29 @@ def evaluate_capability_request(
     else:
         service, action = "unknown", capability
 
+    attributes = (context or {}).get("attributes", {}) if isinstance(context, dict) else {}
+    if isinstance(attributes, dict) and parsed_principal is not None:
+        attributes = dict(attributes)
+        attributes["principal_kind"] = parsed_principal.kind
+        attributes["principal_id"] = parsed_principal.id
+        if parsed_principal.on_behalf_of:
+            attributes["principal_on_behalf_of"] = parsed_principal.on_behalf_of
     ctx = EvalContext(
         subject=_parse_subject(subject),
         resource=str(resource),
         action=PermissionId(service, action),
-        attributes=(context or {}).get("attributes", {}) if isinstance(context, dict) else {},
+        attributes=attributes,
         timestamp=(context or {}).get("timestamp", 0) if isinstance(context, dict) else 0,
         network_origin=(context or {}).get("network_origin") if isinstance(context, dict) else None,
         device_trust=(context or {}).get("device_trust") if isinstance(context, dict) else None,
     )
     decision = engine.evaluate(ctx)
     allowed = (decision == "allow")
+    principal_note = f" principal {parsed_principal.summary()}" if parsed_principal else ""
     return {
         "allowed": allowed,
         "decision": decision,
-        "reason": "grant matched" if allowed else f"denied by default-deny: no grant for {ctx.subject} {service}:{action} on {resource}",
+        "reason": ("grant matched" if allowed else f"denied by default-deny: no grant for {ctx.subject} {service}:{action} on {resource}") + principal_note,
         "policy_id": str(uuid.uuid4()),
         "timestamp": int(time.time()),
     }
@@ -654,4 +744,8 @@ __all__ = [
     "ACTION_CAPABILITY",
     "action_to_capability",
     "workspace_subject",
+    "PRINCIPAL_KINDS",
+    "PrincipalContext",
+    "parse_principal",
+    "validate_principal",
 ]

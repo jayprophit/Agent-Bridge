@@ -1420,7 +1420,10 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                         "action": action.get("action", ""),
                         "mode": cfg.mode,
                     }
-                }
+                },
+                # Validated principal context only: never grants, never
+                # approves. Invalid principals fail closed at the gate.
+                principal=action.get("principal"),
             )
 
         if not policy_eval["allowed"]:

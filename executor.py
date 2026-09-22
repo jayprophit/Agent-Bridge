@@ -116,7 +116,8 @@ class Executor:
     def __init__(self, workspace: Path, shell_timeout_s: int = 60,
                  max_output_chars: int = 8000, shell_profile: str = "dev",
                  cache: Any | None = None, session_id: str = "",
-                 setup_dirs: bool = True, owner_mode: bool = False):
+                 setup_dirs: bool = True, owner_mode: bool = False,
+                 expected_genesis_id: str = ""):
         self.sandbox = Sandbox(workspace)
         self.workspace = self.sandbox.workspace
         self.shell_timeout_s = shell_timeout_s
@@ -132,6 +133,10 @@ class Executor:
         self.allowlist = (ALLOWED_BINARIES_STRICT if shell_profile == "strict"
                           else ALLOWED_BINARIES_DEV)
         self.session_id = session_id or uuid.uuid4().hex[:12]
+        # Known Genesis identity for worker-impersonation checks. Empty
+        # means unknown: structural validation still applies, but the
+        # impersonation comparison cannot run.
+        self.expected_genesis_id = expected_genesis_id or ""
         # Managed executors (explicit session_id from bridge/runtime) enforce
         # session-bound policy subjects. Direct/unmanaged use keeps the
         # legacy workspace-only subject and prior behavior.
@@ -147,11 +152,16 @@ class Executor:
         if setup_dirs:
             self._ensure_bridge_dirs()
 
-    def _check_policy(self, action: str, resource: str) -> dict[str, Any]:
-        """Check policy for an action before execution."""
+    def _check_policy(self, action: str, resource: str, principal: Any = None) -> dict[str, Any]:
+        """Check policy for an action before execution.
+
+        An optional principal (action["principal"]) is validated input and
+        audit context only: it can never grant, approve, or widen. Invalid
+        principals fail closed here, before any mutation.
+        """
         from aether_policy_bridge import (
             evaluate_capability_request, action_to_capability,
-            workspace_subject,
+            parse_principal, workspace_subject,
         )
         ws_str = str(self.workspace.resolve())
         # Normalize resource to workspace-relative forward-slash path
@@ -164,6 +174,13 @@ class Executor:
         capability = f"{cap.service}:{cap.action}"
         subject = workspace_subject(
             ws_str, self.session_id if self._session_managed else "")
+        parsed = parse_principal(principal)
+        attributes = {"action": action, "executor": True}
+        if parsed is not None:
+            attributes["principal_kind"] = parsed.kind
+            attributes["principal_id"] = parsed.id
+            if parsed.on_behalf_of:
+                attributes["principal_on_behalf_of"] = parsed.on_behalf_of
         policy_eval = evaluate_capability_request(
             subject=subject,
             capability=capability,
@@ -172,11 +189,10 @@ class Executor:
                 "timestamp": int(time.time()),
                 "network_origin": "local",
                 "device_trust": 100,
-                "attributes": {
-                    "action": action,
-                    "executor": True,
-                }
-            }
+                "attributes": attributes,
+            },
+            principal=principal,
+            genesis_id=self.expected_genesis_id,
         )
         return policy_eval
 
@@ -250,6 +266,9 @@ class Executor:
         entry = dict(entry)
         entry.setdefault("timestamp", _utcnow())
         entry.setdefault("session", self.session_id)
+        active_principal = getattr(self, "_active_principal", None)
+        if active_principal is not None and "principal" not in entry:
+            entry["principal"] = active_principal
         self.journal.append(entry)
 
     def _admin_gate(self, *targets: Path) -> dict[str, Any] | None:
@@ -958,7 +977,10 @@ class Executor:
             prior["dedup"] = True
             prior["note"] = "duplicate action_id: recorded result returned, not re-executed"
             return prior
-        res = self._dispatch_inner(action, approval_override, action_id)
+        try:
+            res = self._dispatch_inner(action, approval_override, action_id)
+        finally:
+            self._active_principal = None
         if action_id and action.get("action") in _MUT:
             self.completed[action_id] = dict(res)
         return res
@@ -975,10 +997,19 @@ class Executor:
         if act in mutating_actions:
             # Determine resource path
             resource = action.get("path", action.get("src", action.get("dest", action.get("command", ""))))
-            policy_eval = self._check_policy(act, resource)
+            policy_eval = self._check_policy(act, resource, action.get("principal"))
             if not policy_eval.get("allowed", False):
                 return {"ok": False, "error": policy_eval.get("reason", "Policy denied"),
                         "kind": "POLICY_DENIED", "executed": False}
+            # Validated principal only (gate already rejected invalid ones):
+            # journal evidence for this mutation, cleared by dispatch().
+            from aether_policy_bridge import parse_principal as _parse_principal
+            parsed_principal = _parse_principal(action.get("principal"))
+            self._active_principal = (
+                {"kind": parsed_principal.kind, "id": parsed_principal.id,
+                 "on_behalf_of": parsed_principal.on_behalf_of}
+                if parsed_principal is not None else None
+            )
 
         if act == "list":
             return self.do_list(action.get("path", "."))
