@@ -59,7 +59,22 @@ Genesis and owner/Genesis collapse are denied before grant evaluation, and
 a principal can never grant, approve or widen. Executor journal entries
 retain the validated principal; idempotent resubmission preserves it.
 
-## 7. OWNER_FULL_CONTROL profile v1 (P25/1)
+## 7. Deterministic execution boundary (P21)
+
+Probabilistic intelligence ends where typed execution begins. Model output
+is parsed into validated structured actions (protocol.validate_action
+rebuilds allowlisted dicts — prose is never authority; unknown capabilities
+fail closed). Principals, grants and approvals travel only through trusted
+runtime paths, never inside model payloads. Dispatch over the registered
+capability set is deterministic; unavailable adapters fail honestly, never
+with simulated success. Writes verify by read-back hash compare and
+mismatches surface as VERIFICATION_FAILED, distinct from execution success.
+Journal entries carry deterministic evidence hashes. Timeouts on mutating
+operations yield UNKNOWN_OUTCOME (never assumed); read-only timeouts yield
+TIMED_OUT. Idempotent replay never duplicates side effects. Proven by
+tests/test_deterministic_execution.py (15 tests).
+
+## 8. OWNER_FULL_CONTROL profile v1 (P25/1)
 
 A versioned explicit owner grant for ordinary reversible operations
 (filesystem read/list/write/edit/patch/mkdir/move/copy, shell execute).

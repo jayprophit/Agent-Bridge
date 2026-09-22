@@ -269,6 +269,15 @@ class Executor:
         active_principal = getattr(self, "_active_principal", None)
         if active_principal is not None and "principal" not in entry:
             entry["principal"] = active_principal
+        # Deterministic evidence fingerprint over the stable identity triple
+        # (action/action_id/path) plus outcome class. Timestamp and session
+        # are excluded so identical logical operations hash identically.
+        import hashlib as _hashlib
+        import json as _json
+        fingerprint = {k: entry.get(k) for k in ("action", "action_id", "path", "ok")}
+        entry["entry_hash"] = _hashlib.sha256(
+            _json.dumps(fingerprint, sort_keys=True, default=str).encode("utf-8")
+        ).hexdigest()[:16]
         self.journal.append(entry)
 
     def _admin_gate(self, *targets: Path) -> dict[str, Any] | None:
@@ -381,7 +390,10 @@ class Executor:
             except OSError as e:
                 return {"ok": False, "error": f"EXECUTION_ERROR: verify failed: {e}"}
             if actual != content:
-                return {"ok": False, "error": "EXECUTION_ERROR: content mismatch after write"}
+                self._record({"action": "write", "action_id": action_id, "path": rel,
+                              "ok": False, "verification": "content-mismatch"})
+                return {"ok": False, "error": "VERIFICATION_FAILED: content mismatch after write",
+                        "kind": "VERIFICATION_FAILED", "verified": False}
             self._cache_invalidate(path)
             self._record({"action": "write", "action_id": action_id, "path": rel,
                           "existed": existed, "backup": original, "bytes": len(content)})
@@ -586,7 +598,8 @@ class Executor:
         except OSError as e:
             return {"ok": False, "error": f"EXECUTION_ERROR: mkdir failed: {e}"}
         if not target.is_dir():
-            return {"ok": False, "error": "EXECUTION_ERROR: directory missing after mkdir"}
+            return {"ok": False, "error": "VERIFICATION_FAILED: directory missing after mkdir",
+                    "kind": "VERIFICATION_FAILED", "verified": False}
         rel = self._rel(target)
         self._record({"action": "mkdir", "action_id": action_id, "path": rel,
                       "existed": False, "backup": None})
