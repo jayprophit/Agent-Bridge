@@ -1386,28 +1386,30 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
         # ---- policy evaluation gate (P10-PA, post-approval) ----
         # Runs AFTER the approval gate so the approval system's deny/allow
         # logic is preserved.  Policy acts as a secondary security filter:
-        # even if approval passed, policy can still deny.
-        # Skip for delete/restore: the approval system is the authority for
-        # destructive actions; policy focuses on write/edit/shell scope.
+        # even if approval passed, policy can still deny (including
+        # delete/restore, which carry workspace-scoped policy grants so the
+        # policy layer scope-checks destructive actions too).
+        # Approval-driven modes (ASK_*/REQUIRE_APPROVAL) carry no mutation
+        # grants by design: the approval verdict IS the authorization there.
+        from aether_policy_bridge import action_to_capability, workspace_subject
         act_name = action.get("action", "unknown")
-        if act_name in ("delete", "restore"):
+        if cfg.approval in ("ASK_ALL_WRITES", "ASK_RISKY", "REQUIRE_APPROVAL"):
             policy_eval = {"allowed": True, "decision": "allow",
-                           "reason": "approval-authoritative action"}
+                           "reason": "approval-authoritative mode"}
         else:
             act_resource = action.get("path", action.get("dest", action.get("target",
                            action.get("command", ""))))
-            # Map test → shell:execute since test runs a shell command
-            capability = f"shell:execute" if act_name == "test" else f"filesystem:{act_name}"
-            import hashlib
+            # Shared canonical mapping (same as executor gate).
+            _cap = action_to_capability(act_name)
+            capability = f"{_cap.service}:{_cap.action}"
             ws_str = str(cfg.workspace.resolve())
-            ws_hash = hashlib.sha256(ws_str.encode()).hexdigest()[:16]
             # Normalize resource to workspace-absolute forward-slash path
             norm_resource = act_resource.replace("\\", "/")
             if norm_resource and not norm_resource.startswith("workspace:"):
                 norm_resource = f"workspace:{ws_str}/{norm_resource}".replace("\\", "/")
 
             policy_eval = evaluate_capability_request(
-                subject=f"service:agent-bridge:workspace:{ws_hash}",
+                subject=workspace_subject(ws_str, session.session_id),
                 capability=capability,
                 resource=norm_resource,
                 context={

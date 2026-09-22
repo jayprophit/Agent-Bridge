@@ -132,6 +132,10 @@ class Executor:
         self.allowlist = (ALLOWED_BINARIES_STRICT if shell_profile == "strict"
                           else ALLOWED_BINARIES_DEV)
         self.session_id = session_id or uuid.uuid4().hex[:12]
+        # Managed executors (explicit session_id from bridge/runtime) enforce
+        # session-bound policy subjects. Direct/unmanaged use keeps the
+        # legacy workspace-only subject and prior behavior.
+        self._session_managed = bool(session_id)
         self.journal: list[dict[str, Any]] = []  # mutation evidence for diff/rollback
         self.context: dict[str, Any] = {}  # set by bridge (capabilities/status)
         self.completed: dict[str, dict[str, Any]] = {}  # action_id -> result
@@ -145,19 +149,23 @@ class Executor:
 
     def _check_policy(self, action: str, resource: str) -> dict[str, Any]:
         """Check policy for an action before execution."""
-        from aether_policy_bridge import evaluate_capability_request
-        import hashlib
+        from aether_policy_bridge import (
+            evaluate_capability_request, action_to_capability,
+            workspace_subject,
+        )
         ws_str = str(self.workspace.resolve())
-        ws_hash = hashlib.sha256(ws_str.encode()).hexdigest()[:16]
         # Normalize resource to workspace-relative forward-slash path
         # so it matches the grant pattern workspace:<ws>/**
         norm_resource = resource.replace("\\", "/")
         if not norm_resource.startswith("workspace:"):
             norm_resource = f"workspace:{ws_str}/{norm_resource}".replace("\\", "/")
-        # Map test/shell → shell:execute since both run shell commands
-        capability = f"shell:execute" if action in ("test", "shell") else f"filesystem:{action}"
+        # Shared canonical mapping (same as bridge gate).
+        cap = action_to_capability(action)
+        capability = f"{cap.service}:{cap.action}"
+        subject = workspace_subject(
+            ws_str, self.session_id if self._session_managed else "")
         policy_eval = evaluate_capability_request(
-            subject=f"service:agent-bridge:workspace:{ws_hash}",
+            subject=subject,
             capability=capability,
             resource=norm_resource,
             context={
@@ -959,10 +967,11 @@ class Executor:
                         approval_override: bool = False,
                         action_id: str = "") -> dict[str, Any]:
         act = action.get("action")
-        # Policy evaluation gate for mutating actions.
-        # delete/restore excluded: bridge gate is authoritative for destructive ops.
-        mutating_actions = {"write", "edit", "patch", "mkdir",
-                           "move", "copy", "shell", "test"}
+        # Policy evaluation gate for mutating actions. delete/restore are
+        # included: AUTO_SAFE/OWNER grants scope them to the workspace and
+        # the approval gate still makes the risk decision.
+        mutating_actions = {"write", "edit", "patch", "mkdir", "delete",
+                           "restore", "move", "copy", "shell", "test"}
         if act in mutating_actions:
             # Determine resource path
             resource = action.get("path", action.get("src", action.get("dest", action.get("command", ""))))

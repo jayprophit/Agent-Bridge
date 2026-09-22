@@ -315,6 +315,23 @@ class PolicyEngine:
         """Normalize path to forward slashes for consistent matching."""
         return path.replace("\\", "/")
 
+    def _canonical_resource(self, path) -> str:
+        """Forward slashes + lexical `.`/`..` resolution (no FS access).
+
+        The `scheme:drive:` leading segment (e.g. `workspace:C:`) is never
+        popped, so `..` cannot escape above the grant root.
+        """
+        parts: list[str] = []
+        for seg in str(path).replace("\\", "/").split("/"):
+            if seg in ("", "."):
+                continue
+            if seg == "..":
+                if parts and not parts[-1].endswith(":"):
+                    parts.pop()
+                continue
+            parts.append(seg)
+        return "/".join(parts)
+
     def evaluate(self, ctx) -> str:
         # Check explicit grants
         subject_key = str(ctx.subject)
@@ -325,15 +342,19 @@ class PolicyEngine:
                 # Support prefix matching for resources ending with /**
                 # grant.resource may be ResourceId or string
                 grant_resource = grant.resource.value if hasattr(grant.resource, 'value') else grant.resource
-                grant_res = self._normalize_path(str(grant_resource))
-                ctx_res = self._normalize_path(ctx.resource)
+                grant_res = self._canonical_resource(str(grant_resource))
+                ctx_res = self._canonical_resource(ctx.resource)
                 if grant_res.endswith("/**"):
                     prefix = grant_res[:-3]  # remove /**
-                    if ctx_res.startswith(prefix):
+                    # Boundary-aware: exact root or strictly beneath it.
+                    # `workspace:C:/repo` must NOT match
+                    # `workspace:C:/repo-other/f` or `../` escapes
+                    # (escapes already collapsed by canonicalization).
+                    if ctx_res == prefix or ctx_res.startswith(prefix + "/"):
                         return "allow"
                 elif grant_res == ctx_res:
                     return "allow"
-        
+
         return "deny"
 
 
@@ -353,6 +374,49 @@ def reset_policy_engine():
     global _policy_engine
     _policy_engine = PolicyEngine()
     return _policy_engine
+
+
+# Shared action → capability mapping used by BOTH the bridge gate and the
+# executor gate so they can never disagree (shell/test run commands;
+# read-family actions are content reads; owner tools are explicit).
+ACTION_CAPABILITY: dict[str, tuple[str, str]] = {
+    "test": ("shell", "execute"),
+    "shell": ("shell", "execute"),
+    "read": ("filesystem", "read"),
+    "list": ("filesystem", "list"),
+    "search": ("filesystem", "read"),
+    "exists": ("filesystem", "read"),
+    "stat": ("filesystem", "read"),
+    "diff": ("filesystem", "read"),
+    "capabilities": ("filesystem", "read"),
+    "status": ("filesystem", "read"),
+    "browser": ("owner", "browser"),
+    "net": ("owner", "net"),
+    "proc": ("owner", "proc"),
+    "git": ("owner", "git"),
+}
+
+
+def action_to_capability(action: str) -> "PermissionId":
+    """Single canonical mapping from bridge action name to capability."""
+    service, act = ACTION_CAPABILITY.get(action, ("filesystem", action))
+    return PermissionId(service, act)
+
+
+def workspace_subject(workspace_path: str, session_id: str = "") -> str:
+    """Policy subject for a workspace, optionally bound to one session.
+
+    Session binding isolates concurrent sessions sharing a workspace:
+    grants issued for session A never authorize session B. Callers without
+    an explicit session (direct Executor use, probes) get the legacy
+    workspace-only subject and keep prior behavior.
+    """
+    from pathlib import Path
+    import hashlib
+    ws_str = str(Path(workspace_path).resolve())
+    ws_hash = hashlib.sha256(ws_str.encode()).hexdigest()[:16]
+    base = f"service:agent-bridge:workspace:{ws_hash}"
+    return f"{base}:session:{session_id}" if session_id else base
 
 
 def issue_session_workspace_grants(
@@ -402,6 +466,8 @@ def issue_session_workspace_grants(
             ("filesystem", "mkdir", f"{ws_prefix}/**"),
             ("filesystem", "move", f"{ws_prefix}/**"),
             ("filesystem", "copy", f"{ws_prefix}/**"),
+            ("filesystem", "delete", f"{ws_prefix}/**"),
+            ("filesystem", "restore", f"{ws_prefix}/**"),
             ("shell", "execute", f"{ws_prefix}/**"),
         ],
         "OWNER_AUTO_APPROVE": [
@@ -409,6 +475,7 @@ def issue_session_workspace_grants(
             ("filesystem", "list", f"{ws_prefix}/**"),
             ("filesystem", "write", f"{ws_prefix}/**"),
             ("filesystem", "delete", f"{ws_prefix}/**"),
+            ("filesystem", "restore", f"{ws_prefix}/**"),
             ("filesystem", "edit", f"{ws_prefix}/**"),
             ("filesystem", "patch", f"{ws_prefix}/**"),
             ("filesystem", "mkdir", f"{ws_prefix}/**"),
@@ -418,12 +485,17 @@ def issue_session_workspace_grants(
             ("shell", "install", f"{ws_prefix}/**"),
             ("git", "commit", f"{ws_prefix}/**"),
             ("git", "push", f"{ws_prefix}/**"),
+            ("owner", "browser", f"{ws_prefix}/**"),
+            ("owner", "net", f"{ws_prefix}/**"),
+            ("owner", "proc", f"{ws_prefix}/**"),
+            ("owner", "git", f"{ws_prefix}/**"),
         ],
         "OWNER_FULL_ACCESS": [
             ("filesystem", "read", f"{ws_prefix}/**"),
             ("filesystem", "list", f"{ws_prefix}/**"),
             ("filesystem", "write", f"{ws_prefix}/**"),
             ("filesystem", "delete", f"{ws_prefix}/**"),
+            ("filesystem", "restore", f"{ws_prefix}/**"),
             ("filesystem", "edit", f"{ws_prefix}/**"),
             ("filesystem", "patch", f"{ws_prefix}/**"),
             ("filesystem", "mkdir", f"{ws_prefix}/**"),
@@ -433,6 +505,10 @@ def issue_session_workspace_grants(
             ("shell", "install", f"{ws_prefix}/**"),
             ("git", "commit", f"{ws_prefix}/**"),
             ("git", "push", f"{ws_prefix}/**"),
+            ("owner", "browser", f"{ws_prefix}/**"),
+            ("owner", "net", f"{ws_prefix}/**"),
+            ("owner", "proc", f"{ws_prefix}/**"),
+            ("owner", "git", f"{ws_prefix}/**"),
             ("filesystem", "read", "workspace:C:/Windows/**"),
             ("filesystem", "write", "workspace:C:/Windows/**"),
         ],
@@ -440,8 +516,20 @@ def issue_session_workspace_grants(
             ("filesystem", "read", f"{ws_prefix}/**"),
             ("filesystem", "list", f"{ws_prefix}/**"),
         ],
-        "ASK_ALL_WRITES": [],  # approval gate handles everything
-        "REQUIRE_APPROVAL": [],  # approval gate handles everything
+        # Approval-driven modes: baseline reads only; the approval verdict
+        # authorizes mutations (bridge gate skips policy for these modes).
+        "ASK_ALL_WRITES": [
+            ("filesystem", "read", f"{ws_prefix}/**"),
+            ("filesystem", "list", f"{ws_prefix}/**"),
+        ],
+        "ASK_RISKY": [
+            ("filesystem", "read", f"{ws_prefix}/**"),
+            ("filesystem", "list", f"{ws_prefix}/**"),
+        ],
+        "REQUIRE_APPROVAL": [
+            ("filesystem", "read", f"{ws_prefix}/**"),
+            ("filesystem", "list", f"{ws_prefix}/**"),
+        ],
     }
 
     # Select grants based on approval mode; owner_mode overrides
@@ -450,8 +538,12 @@ def issue_session_workspace_grants(
     else:
         grants = grants_config.get(approval_mode, [])
 
-    # Subject is workspace-scoped for cross-session access
-    subject = Subject(kind="service", value=f"agent-bridge:workspace:{ws_hash}")
+    # Subject is session-bound: concurrent sessions sharing one workspace
+    # never share grants. workspace_subject() falls back to workspace-only
+    # when session_id is empty (direct/unmanaged use keeps prior behavior).
+    full = workspace_subject(str(ws), session_id)
+    _, _, sub_value = full.partition(":")
+    subject = Subject(kind="service", value=sub_value)
 
     for service, action, resource in grants:
         # Normalize resource to forward slashes for consistent matching
@@ -559,4 +651,7 @@ __all__ = [
     "evaluate_capability_request",
     "check_capability",
     "create_policy_evaluation_result",
+    "ACTION_CAPABILITY",
+    "action_to_capability",
+    "workspace_subject",
 ]

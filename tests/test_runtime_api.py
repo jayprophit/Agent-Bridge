@@ -130,8 +130,10 @@ class TestPersistenceRecovery(unittest.TestCase):
             s2 = rt2.load_session(s.session_id, str(ws))
             self.assertEqual(s2.status, INTERRUPTED)
             # completed action not repeated: resend same action id via bridge
+            # (executor carries the bridge session id, mirroring run_bridge
+            # wiring, so session-bound policy grants apply).
             from executor import Executor
-            ex = Executor(ws)
+            ex = Executor(ws, session_id=s.session_id)
             first = ex.dispatch({"action": "write", "path": "z.txt", "content": "1"},
                                 action_id="dup-1")
             self.assertTrue(first["ok"])
