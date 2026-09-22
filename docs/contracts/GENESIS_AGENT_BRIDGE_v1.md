@@ -49,3 +49,25 @@ OWNER-only actions (browser/net/proc/git per protocol.py) always gate.
 Fail-closed on unknown capability, unsigned/expired authority, budget
 exhaustion, or policy denial. Intelligence never implies authority.
 Local-first: Bridge unreachable → Genesis continues without external reach.
+
+## 6. Principal context (P22/1)
+
+Actions may carry `principal: {kind, id, on_behalf_of?}` where kind is
+genesis, worker or owner. Principals are validated input plus journal
+evidence only: unknown/malformed kinds, empty ids, worker-impersonates-
+Genesis and owner/Genesis collapse are denied before grant evaluation, and
+a principal can never grant, approve or widen. Executor journal entries
+retain the validated principal; idempotent resubmission preserves it.
+
+## 7. OWNER_FULL_CONTROL profile v1 (P25/1)
+
+A versioned explicit owner grant for ordinary reversible operations
+(filesystem read/list/write/edit/patch/mkdir/move/copy, shell execute).
+It is not a bypass: default-deny stands, protected actions (permanent
+delete, credential/security-policy/finance/firmware/physical flags) are
+never auto-granted, unknown future capabilities are never inherited, and
+session-bound grants isolate sessions (workers never inherit the grant).
+Activation requires an explicit owner-authorized call no model, skill,
+workflow, routine, worker or external agent can forge. Revocation removes
+the tagged grants (history preserved); expiry is clock-checked. Proven by
+tests/test_owner_full_control.py (21 tests).
