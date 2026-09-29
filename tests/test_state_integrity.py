@@ -11,8 +11,30 @@ import threading
 import unittest
 from pathlib import Path
 
+from aether_policy_bridge import issue_session_workspace_grants, reset_policy_engine
 from executor import Executor
 from tools.artifacts import ArtifactRegistry
+
+SESSION = "state-integrity"
+
+
+def granted_executor(ws):
+    """An Executor holding exactly the workspace write authority it needs.
+
+    These tests were written before the default-deny policy gate existed, so
+    every write was refused with POLICY_DENIED and the atomic-write,
+    journal-rollback, crash-recovery and concurrent-write guarantees they
+    exist to verify have been dark. The gate is correct and is NOT relaxed:
+    the authority is issued through the same issue_session_workspace_grants
+    path every other policy-aware test uses, scoped to this workspace only,
+    and the policy engine is reset afterwards.
+
+    The side effect is deliberate: with real write authority in hand, the
+    path-traversal refusal below is refused by PATH VALIDATION rather than by
+    the blanket deny, so that test can finally mean what its name says.
+    """
+    issue_session_workspace_grants(SESSION, str(ws), "AUTO_SAFE")
+    return Executor(workspace=ws, session_id=SESSION)
 
 
 class AtomicWriteTests(unittest.TestCase):
@@ -20,9 +42,10 @@ class AtomicWriteTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(prefix="ab_state_")
         self.ws = Path(self.tmp.name) / "ws"
         self.ws.mkdir()
-        self.ex = Executor(workspace=self.ws)
+        self.ex = granted_executor(self.ws)
 
     def tearDown(self):
+        reset_policy_engine()
         self.tmp.cleanup()
 
     def test_write_is_exact_and_leaves_no_partials(self):
@@ -63,7 +86,7 @@ class CrashRecoveryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="ab_crash_") as d:
             ws = Path(d) / "ws"
             ws.mkdir()
-            ex = Executor(workspace=ws)
+            ex = granted_executor(ws)
             # Step 1-2 commit; step 3 "crashes" (never dispatched).
             self.assertTrue(ex.dispatch(
                 {"action": "write", "path": "s1.txt",
@@ -96,7 +119,7 @@ class ConcurrentWriteTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="ab_conc_") as d:
             ws = Path(d) / "ws"
             ws.mkdir()
-            ex = Executor(workspace=ws)
+            ex = granted_executor(ws)
             results = {}
             threads = [
                 threading.Thread(
@@ -123,7 +146,7 @@ class ConcurrentWriteTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="ab_conc2_") as d:
             ws = Path(d) / "ws"
             ws.mkdir()
-            ex = Executor(workspace=ws)
+            ex = granted_executor(ws)
             v1 = "A" * 5000
             v2 = "B" * 5000
             outs = []
