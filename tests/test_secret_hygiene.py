@@ -73,8 +73,29 @@ class HygieneTests(unittest.TestCase):
         self.assertEqual(found, [], f"raw captures in tree: {found[:5]}")
 
     def test_no_bridge_runtime_state(self):
-        self.assertFalse(os.path.exists(os.path.join(REPO_ROOT, ".bridge")),
-                         ".bridge runtime state must not be committed")
+        """Runtime state must not be COMMITTED - not must not exist on disk.
+
+        This previously asserted that .bridge/ is absent from the working
+        tree, which is not the invariant and could never be true for anyone
+        who has actually run the bridge: .bridge/ is deliberately ignored
+        (.gitignore) and holds local runtime state including recorded
+        delegation certifications. So the test was permanently red for
+        correct behaviour while proving nothing about the real risk.
+
+        It now checks the two things that actually matter, using the same
+        approach as test_local_tree_is_git_ignored: the path is ignored, and
+        nothing under it is tracked. Force-adding runtime state still fails.
+        """
+        import subprocess
+        bridge = os.path.join(REPO_ROOT, ".bridge")
+        ignored = subprocess.run(["git", "check-ignore", "-q", bridge],
+                                 capture_output=True, cwd=REPO_ROOT)
+        self.assertEqual(ignored.returncode, 0, ".bridge must be git-ignored")
+        tracked = subprocess.run(["git", "ls-files", "--", ".bridge"],
+                                 capture_output=True, text=True, cwd=REPO_ROOT)
+        self.assertEqual(tracked.returncode, 0, "git ls-files must succeed")
+        self.assertEqual(tracked.stdout.strip(), "",
+                         f".bridge runtime state must not be committed: {tracked.stdout[:200]}")
 
     def test_local_tree_is_git_ignored(self):
         import subprocess
