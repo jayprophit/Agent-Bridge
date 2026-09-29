@@ -146,10 +146,19 @@ class RunnerDetectionTests(unittest.TestCase):
 class SafeEditTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp(prefix="ab_edit_"))
+        from aether_policy_bridge import issue_session_workspace_grants
         from executor import Executor
-        self.ex = Executor(workspace=self.tmp)
+        # These tests predate the default-deny gate, so every write was refused
+        # with POLICY_DENIED and the safe-edit guarantees they exist to verify
+        # - stale-hash conflict without mutation, reconcile retry - were dark.
+        # The gate is not relaxed: the same workspace-scoped AUTO_SAFE grant
+        # every other policy-aware test uses, for this one directory only.
+        issue_session_workspace_grants("maintenance-v081", str(self.tmp), "AUTO_SAFE")
+        self.ex = Executor(workspace=self.tmp, session_id="maintenance-v081")
 
     def tearDown(self):
+        from aether_policy_bridge import reset_policy_engine
+        reset_policy_engine()
         import shutil
         shutil.rmtree(self.tmp, ignore_errors=True)
 

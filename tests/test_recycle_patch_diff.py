@@ -49,9 +49,19 @@ class TestRecycle(unittest.TestCase):
 class TestMultiHunkPatch(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp(prefix="v03_patch_"))
-        self.ex = Executor(self.tmp)
+        # These tests predate the default-deny gate and issue no grant, so
+        # every patch was refused with POLICY_DENIED and the multi-hunk,
+        # dry-run and no-op guarantees they exist to verify were dark. The
+        # gate is not relaxed: AUTO_SAFE already carries filesystem:patch for
+        # the workspace, so this grants exactly what the test needs and
+        # nothing wider. Reset afterwards so no grant leaks to the next file.
+        from aether_policy_bridge import issue_session_workspace_grants
+        issue_session_workspace_grants("v03-patch", str(self.tmp), "AUTO_SAFE")
+        self.ex = Executor(self.tmp, session_id="v03-patch")
 
     def tearDown(self):
+        from aether_policy_bridge import reset_policy_engine
+        reset_policy_engine()
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_multi_replace(self):
