@@ -76,6 +76,12 @@ from state import (CANCELLED as ST_CANCELLED, COMPLETED, EXECUTING, FAILED,
                    BridgeSession)
 from versions import PROMPT_PROFILE_VERSION
 
+# History kinds where an authority or safety layer refused a requested effect.
+# Used to report effect truth: a run whose every mutation was refused did not
+# achieve what it asked for, whatever terminal status the loop reached.
+_DENIAL_KINDS = (APPROVAL_DENIED, "POLICY_DENIED", SANDBOX_VIOLATION,
+                 COLLISION_DENIED, "EXTERNAL_DENIED")
+
 _cancel = {"flag": False}
 
 
@@ -303,6 +309,13 @@ def build_task_result(session: BridgeSession, history: list[dict],
               for h in history if h.get("kind")]
     tests_passed = all(t["passed"] for t in tests) if tests else None
     verified = ok and (oracle.get("quality", "UNKNOWN") != "SUSPICIOUS")
+    # Effect truth, derived only from the execution journal and the recorded
+    # authority decisions. A run that asked for changes and had every one of
+    # them refused is not a success just because the model stopped talking:
+    # COMPLETED reports that the run ended, these fields report what it did.
+    denied_actions = sum(1 for h in history if h.get("kind") in _DENIAL_KINDS)
+    effect_achieved = bool(files_created or files_modified or
+                           files_deleted or commands)
     return {
         "session_id": session.session_id, "task_id": session.task_id,
         "status": session.status, "mode": session.mode,
@@ -316,6 +329,9 @@ def build_task_result(session: BridgeSession, history: list[dict],
         "review_verdict": review.get("status", "skipped"),
         "revision_count": session.revision,
         "approvals": approvals, "errors": errors,
+        "effect_achieved": effect_achieved,
+        "denied_actions": denied_actions,
+        "blocked": bool(denied_actions and not effect_achieved),
             "duration_s": round(duration_s, 2), "finished_reason": finished_reason,
             "competence": competence.summary(),
         }
@@ -1389,25 +1405,46 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
         # even if approval passed, policy can still deny (including
         # delete/restore, which carry workspace-scoped policy grants so the
         # policy layer scope-checks destructive actions too).
-        # Approval-driven modes (ASK_*/REQUIRE_APPROVAL) carry no mutation
-        # grants by design: the approval verdict IS the authorization there.
-        from aether_policy_bridge import action_to_capability, workspace_subject
+        # Approval-driven modes (ASK_*/REQUIRE_APPROVAL) carry no standing
+        # mutation grants: the approval verdict IS the authorization there.
+        # That verdict is therefore materialized as a narrow single-action
+        # grant for exactly the approved resource(s) before the same policy
+        # evaluation runs, so P25 still gates the effect and the approval
+        # cannot silently become a standing capability.
+        from aether_policy_bridge import (action_to_capability,
+                                          issue_approved_action_grant,
+                                          revoke_approved_action_grant,
+                                          workspace_subject)
         act_name = action.get("action", "unknown")
-        if cfg.approval in ("ASK_ALL_WRITES", "ASK_RISKY", "REQUIRE_APPROVAL"):
-            policy_eval = {"allowed": True, "decision": "allow",
-                           "reason": "approval-authoritative mode"}
-        else:
-            act_resource = action.get("path", action.get("dest", action.get("target",
+        act_resource = action.get("path", action.get("dest", action.get("target",
                            action.get("command", ""))))
-            # Shared canonical mapping (same as executor gate).
-            _cap = action_to_capability(act_name)
-            capability = f"{_cap.service}:{_cap.action}"
-            ws_str = str(cfg.workspace.resolve())
-            # Normalize resource to workspace-absolute forward-slash path
-            norm_resource = act_resource.replace("\\", "/")
-            if norm_resource and not norm_resource.startswith("workspace:"):
-                norm_resource = f"workspace:{ws_str}/{norm_resource}".replace("\\", "/")
+        _cap = action_to_capability(act_name)
+        capability = f"{_cap.service}:{_cap.action}"
+        ws_str = str(cfg.workspace.resolve())
+        # Normalize resource to workspace-absolute forward-slash path
+        norm_resource = act_resource.replace("\\", "/")
+        if norm_resource and not norm_resource.startswith("workspace:"):
+            norm_resource = f"workspace:{ws_str}/{norm_resource}".replace("\\", "/")
 
+        approval_authoritative = cfg.approval in ("ASK_ALL_WRITES", "ASK_RISKY",
+                                                   "REQUIRE_APPROVAL")
+        _issued: list[str] = []
+        if approval_authoritative and verdict.get("approved"):
+            from aether_policy_bridge import exact_policy_resource
+            for res_ref in executor.policy_resources(action):
+                issued = issue_approved_action_grant(
+                    session.session_id, ws_str, act_name, res_ref,
+                    granted_by=f"approval:{session.session_id}")
+                if not issued["granted"]:
+                    policy_eval = {"allowed": False, "decision": "deny",
+                                   "reason": issued["reason"]}
+                    break
+                _issued.append(res_ref)
+            else:
+                policy_eval = {"allowed": True, "decision": "allow",
+                               "reason": "approval-authoritative mode: "
+                                         "single-action grant issued"}
+        else:
             policy_eval = evaluate_capability_request(
                 subject=workspace_subject(ws_str, session.session_id),
                 capability=capability,
@@ -1510,6 +1547,12 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                               "Reply with EXACTLY ONE JSON action."}]
                 continue
         result = executor.dispatch(action, approval_override=override, action_id=action_id)
+        # An approval authorizes one effect. Revoke the single-action grant as
+        # soon as the dispatch returns so "approve once" cannot become a
+        # standing capability for the rest of the session.
+        for res_ref in _issued:
+            revoke_approved_action_grant(session.session_id, ws_str, act_name,
+                                         res_ref)
         dur_ms = int((time.monotonic() - step_t0) * 1000)
         kind = None if result.get("ok") else (
             TEST_FAILURE if act == "test" else _failure_kind(result))

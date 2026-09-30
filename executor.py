@@ -998,6 +998,27 @@ class Executor:
             self.completed[action_id] = dict(res)
         return res
 
+    @staticmethod
+    def policy_resources(action: dict[str, Any]) -> list[str]:
+        """Every resource a mutating action will actually touch.
+
+        move/copy read one path and write another, so authorizing only the
+        source would leave the destination unauthorized. The policy gate and
+        the approval-grant path both use this list, so what a human approved
+        is exactly what gets checked.
+        """
+        act = action.get("action", "")
+        if act in ("move", "copy"):
+            out = []
+            for key in ("src", "dest"):
+                val = action.get(key)
+                if isinstance(val, str) and val:
+                    out.append(val)
+            return out or [""]
+        resource = action.get("path", action.get("src", action.get(
+            "dest", action.get("command", ""))))
+        return [resource if isinstance(resource, str) else ""]
+
     def _dispatch_inner(self, action: dict[str, Any],
                         approval_override: bool = False,
                         action_id: str = "") -> dict[str, Any]:
@@ -1008,12 +1029,15 @@ class Executor:
         mutating_actions = {"write", "edit", "patch", "mkdir", "delete",
                            "restore", "move", "copy", "shell", "test"}
         if act in mutating_actions:
-            # Determine resource path
-            resource = action.get("path", action.get("src", action.get("dest", action.get("command", ""))))
-            policy_eval = self._check_policy(act, resource, action.get("principal"))
-            if not policy_eval.get("allowed", False):
-                return {"ok": False, "error": policy_eval.get("reason", "Policy denied"),
-                        "kind": "POLICY_DENIED", "executed": False}
+            # Determine resource path(s): every target is gated, not just the
+            # first one, so an approved move/copy cannot carry an unchecked
+            # destination.
+            for resource in self.policy_resources(action):
+                policy_eval = self._check_policy(act, resource,
+                                                 action.get("principal"))
+                if not policy_eval.get("allowed", False):
+                    return {"ok": False, "error": policy_eval.get("reason", "Policy denied"),
+                            "kind": "POLICY_DENIED", "executed": False}
             # Validated principal only (gate already rejected invalid ones):
             # journal evidence for this mutation, cleared by dispatch().
             from aether_policy_bridge import parse_principal as _parse_principal

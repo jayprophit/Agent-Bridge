@@ -30,6 +30,7 @@ def _runtime(args: Any) -> AgentRuntime:
             preset=args.preset or "LOW_RESOURCE",
             profile=getattr(args, "profile", "") or "",
             owner_authorized=bool(getattr(args, "owner_authorized", False)),
+            external_approvals=bool(getattr(args, "external_approvals", False)),
             network_policy=getattr(args, "network", "") or "LOCAL_MODEL_NETWORK"))
     return _RT
 
@@ -61,8 +62,10 @@ def cmd_session_create(args: Any) -> int:
     s = rt.create_session(args.workspace, mode=args.mode or "",
                           approval=args.approval or "",
                           profile=getattr(args, "profile", "") or "",
-                          owner_authorized=bool(getattr(args, "owner_authorized", False)))
-    return _out({"session_id": s.session_id, "mode": s.mode})
+                          owner_authorized=bool(getattr(args, "owner_authorized", False)),
+                          interactive=bool(getattr(args, "interactive", False)))
+    return _out({"session_id": s.session_id, "mode": s.mode,
+                 "interactive": not s.bridge_cfg.non_interactive})
 
 
 def cmd_session_status(args: Any) -> int:
@@ -151,6 +154,10 @@ def build_parser() -> argparse.ArgumentParser:
                             "AUTONOMOUS_SANDBOX", "PRECIOUS_PROJECT",
                             "OWNER_FULL_ACCESS"])
     p.add_argument("--owner-authorized", action="store_true")
+    p.add_argument("--external-approvals", action="store_true",
+                   help="allow sessions to opt into an external human approval "
+                        "channel (asks are denied, never auto-answered, unless "
+                        "a session sets --interactive)")
     p.add_argument("--network", default="",
                    choices=["", "LOCAL_MODEL_NETWORK", "EXTERNAL_NETWORK",
                             "NO_NETWORK"])
@@ -165,6 +172,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     sc = sub.add_parser("session-create")
     sc.add_argument("--workspace", required=True)
+    sc.add_argument("--interactive", action="store_true",
+                    help="wait for out-of-process approval decisions "
+                         "(requires --external-approvals)")
     sc.set_defaults(fn=lambda a: cmd_session_create(a))
     ss = sub.add_parser("session-status")
     ss.add_argument("--session", required=True)

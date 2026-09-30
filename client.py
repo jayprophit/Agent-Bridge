@@ -69,13 +69,15 @@ class AgentRuntimeClient:
                        approval: str = "", model: str = "",
                        roles: dict | None = None, profile: str = "",
                        owner_authorized: bool = False,
-                       network_policy: str = "") -> dict:
+                       network_policy: str = "",
+                       interactive: bool = False) -> dict:
         return self._req("POST", "/v1/sessions",
                          {"workspace": workspace, "mode": mode,
                           "approval": approval, "model": model,
                           "roles": roles or {}, "profile": profile,
                           "owner_authorized": owner_authorized,
-                          "network_policy": network_policy})
+                          "network_policy": network_policy,
+                          "interactive": interactive})
 
     def emergency_stop(self, reason: str = "operator stop") -> dict:
         return self._req("POST", "/v1/stop", {"reason": reason})
@@ -116,6 +118,11 @@ class AgentRuntimeClient:
         return self._req("POST",
                          f"/v1/sessions/{session_id}/approvals/{approval_id}",
                          {"decision": decision})
+
+    def deny(self, session_id: str, approval_id: str) -> dict:
+        """Explicit refusal. Denying is never the same as not answering:
+        the worker is released with a recorded decision."""
+        return self.approve(session_id, approval_id, "deny")
 
     def rollback(self, session_id: str, label: str = "") -> dict:
         return self._req("POST", f"/v1/sessions/{session_id}/rollback",

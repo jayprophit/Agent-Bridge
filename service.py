@@ -388,10 +388,13 @@ class Handler(BaseHTTPRequestHandler):
                         roles=body.get("roles"),
                         profile=body.get("profile", ""),
                         owner_authorized=bool(body.get("owner_authorized", False)),
-                        network_policy=body.get("network_policy", ""))
+                        network_policy=body.get("network_policy", ""),
+                        interactive=bool(body.get("interactive", False)))
                 except PermissionError as e:
                     return self._send(403, {"ok": False, "error": str(e)})
-                return self._send(201, {"session_id": s.session_id, "mode": s.mode})
+                return self._send(201, {"session_id": s.session_id, "mode": s.mode,
+                                        "approval": s.bridge_cfg.approval,
+                                        "interactive": not s.bridge_cfg.non_interactive})
             if len(parts) == 4 and parts[:2] == [API_VERSION, "sessions"] \
                     and parts[3] == "tasks":
                 s = rt.get_session(parts[2])

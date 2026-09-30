@@ -69,6 +69,14 @@ class RuntimeConfig:
     root_rules: dict = field(default_factory=dict)  # root -> rule dict
     human_gate: str = "NONE"  # NONE|ON_REVIEW_REJECT|ON_REVIEW_REVISE|BEFORE_COMPLETE|ALWAYS
     gate_timeout_s: int = 1800
+    # External (out-of-process) approval channel. Off by default: with it
+    # disabled a session is always non-interactive, so any action that needs
+    # an ask is denied rather than silently answered. An owner who runs a
+    # served runtime for a human-in-the-loop client (IDE, console) may enable
+    # it explicitly; a session must still opt in per session. Enabling it
+    # never auto-approves: RuntimeApproval waits for a real decision and
+    # denies on timeout.
+    external_approvals: bool = False
 
 
 PRESET_QUOTAS = {
@@ -437,6 +445,7 @@ class Session:
             "competence": (tr.get("competence") or {}),
             "pending_approvals": list(self.pending_approvals),
             "pending_final": bool(getattr(self, "_gate", None)),
+            "interactive": not self.bridge_cfg.non_interactive,
         }
 
     def wait_task(self, task_id: str, timeout: float = 1200) -> dict[str, Any]:
@@ -621,7 +630,8 @@ class AgentRuntime:
                        approval: str = "", model: str = "",
                        roles: dict | None = None,
                        profile: str = "", owner_authorized: bool = False,
-                       network_policy: str = "") -> Session:
+                       network_policy: str = "",
+                       interactive: bool = False) -> Session:
         ws = self.authorize_workspace(workspace)
         mode = mode or self.cfg.default_mode
         approval = approval or self.cfg.default_approval
@@ -635,6 +645,16 @@ class AgentRuntime:
             approval = "OWNER_AUTO_APPROVE"
             if network_policy == "LOCAL_MODEL_NETWORK":
                 network_policy = "EXTERNAL_NETWORK"
+        if profile == "OWNER_AUTO_APPROVE" or approval == "OWNER_AUTO_APPROVE":
+            # The owner-auto profile answers its own approvals inline; an
+            # external decision channel would be dead weight and could imply
+            # a human gate that does not exist.
+            interactive = False
+        if interactive and not self.cfg.external_approvals:
+            raise PermissionError(
+                "interactive approvals are not enabled on this runtime; "
+                "start it with external approvals to allow a human decision "
+                "channel (an action needing an ask is otherwise denied)")
         rule = self._root_rule(ws)
         if rule.get("allowed_modes") and mode not in rule["allowed_modes"]:
             raise PermissionError(
@@ -663,7 +683,7 @@ class AgentRuntime:
             workspace=ws, mode=mode,
             approval=approval,
             model=model or self.cfg.default_model,
-            non_interactive=True)
+            non_interactive=not interactive)
         if profile:
             bcfg.profile = profile
         if owner_authorized:
@@ -1034,6 +1054,8 @@ class AgentRuntime:
                          "OWNER_FULL_ACCESS"],
             "owner_profile": self.cfg.profile,
             "owner_authorized": bool(self.cfg.owner_authorized),
+            "external_approvals": bool(self.cfg.external_approvals),
+            "interactive_session_opt_in": bool(self.cfg.external_approvals),
             "presets": ["LOW_RESOURCE", "STANDARD", "HIGH_QUALITY"],
             "default_model": self.cfg.default_model,
             "network_policy": self.cfg.network_policy,

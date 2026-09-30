@@ -321,16 +321,7 @@ class PolicyEngine:
         The `scheme:drive:` leading segment (e.g. `workspace:C:`) is never
         popped, so `..` cannot escape above the grant root.
         """
-        parts: list[str] = []
-        for seg in str(path).replace("\\", "/").split("/"):
-            if seg in ("", "."):
-                continue
-            if seg == "..":
-                if parts and not parts[-1].endswith(":"):
-                    parts.pop()
-                continue
-            parts.append(seg)
-        return "/".join(parts)
+        return canonical_resource(path)
 
     def evaluate(self, ctx) -> str:
         # Check explicit grants
@@ -417,6 +408,109 @@ def workspace_subject(workspace_path: str, session_id: str = "") -> str:
     ws_hash = hashlib.sha256(ws_str.encode()).hexdigest()[:16]
     base = f"service:agent-bridge:workspace:{ws_hash}"
     return f"{base}:session:{session_id}" if session_id else base
+
+
+# Characters that make a policy resource a pattern instead of one concrete
+# target. The engine treats a trailing "/**" grant as a prefix grant, so a
+# model-chosen path containing these characters must never be turned into a
+# grant: approval of one effect can only ever authorize one effect.
+GLOB_RESOURCE_CHARS = ("*", "?", "[", "]", "{", "}")
+
+
+def canonical_resource(path: str) -> str:
+    """Lexically canonical policy resource (forward slashes, no `.`/`..`).
+
+    The ``scheme:drive:`` leading segment is never popped, so ``..`` cannot
+    climb above the grant root.
+    """
+    parts: list[str] = []
+    for seg in str(path).replace("\\", "/").split("/"):
+        if seg in ("", "."):
+            continue
+        if seg == "..":
+            if parts and not parts[-1].endswith(":"):
+                parts.pop()
+            continue
+        parts.append(seg)
+    return "/".join(parts)
+
+
+def exact_policy_resource(workspace_path: str, resource: str) -> str:
+    """The single concrete in-workspace policy resource for one effect.
+
+    Returns "" when the request cannot be expressed as exactly one target
+    inside the workspace: a glob/pattern, a traversal that leaves the
+    workspace, or an empty reference. Callers must treat "" as "refuse to
+    authorize", never as "authorize something close to this".
+    """
+    from pathlib import Path
+    raw = str(resource or "").replace("\\", "/").strip()
+    if not raw or any(ch in raw for ch in GLOB_RESOURCE_CHARS):
+        return ""
+    # An absolute or already-namespaced reference is ambiguous once re-rooted
+    # into the workspace, so it is refused rather than guessed. (Re-rooting
+    # `C:/ws/../x` under the workspace would name a different string than the
+    # sandbox resolves, which is exactly the ambiguity a grant must not have.)
+    if (raw.startswith("workspace:") or raw.startswith("/")
+            or (len(raw) > 1 and raw[1] == ":")):
+        return ""
+    ws = f"workspace:{canonical_resource(str(Path(workspace_path).resolve()))}"
+    candidate = canonical_resource(f"{ws}/{raw.lstrip('/')}")
+    # Must land strictly inside this workspace. A request that canonically
+    # escapes it (../..) is not something a workspace grant can name.
+    if not candidate.startswith(f"{ws}/"):
+        return ""
+    return candidate
+
+
+def issue_approved_action_grant(session_id: str, workspace_path: str,
+                                action: str, resource: str,
+                                granted_by: str = "") -> dict:
+    """Authorize exactly one approved effect, and nothing else.
+
+    An approval decision is a real authorization, so it has to reach the
+    policy layer. This issues a single-capability, exact-resource,
+    session-scoped grant that matches only the resource the human approved.
+    The caller is expected to revoke it once the action has been dispatched
+    (``revoke_approved_action_grant``), making the approval single-use.
+
+    Refuses globs, workspace escapes and empty references, so approving one
+    effect can never turn into a standing or broader grant.
+    """
+    engine = get_policy_engine()
+    cap = action_to_capability(action)
+    res = exact_policy_resource(workspace_path, resource)
+    if not res:
+        return {"ok": False, "granted": False, "capability": str(cap),
+                "resource": res,
+                "reason": "refused: effect is not one concrete in-workspace "
+                          "resource (glob, pattern or escape)"}
+    subject = workspace_subject(workspace_path, session_id)
+    _, _, sub_value = subject.partition(":")
+    engine.add_grant(Grant(subject=Subject(kind="service", value=sub_value),
+                           permission=cap, resource=res, conditions=[],
+                           granted_by=granted_by or "approved-action",
+                           granted_at=0, expires_at=None))
+    return {"ok": True, "granted": True, "capability": str(cap),
+            "resource": res, "reason": "single-action grant for the approved effect"}
+
+
+def revoke_approved_action_grant(session_id: str, workspace_path: str,
+                                 action: str, resource: str) -> bool:
+    """Remove a single-action grant after dispatch (single-use approvals)."""
+    engine = get_policy_engine()
+    cap = action_to_capability(action)
+    res = exact_policy_resource(workspace_path, resource)
+    if not res:
+        return False
+    subject = workspace_subject(workspace_path, session_id)
+    _, _, sub_value = subject.partition(":")
+    subj = Subject(kind="service", value=sub_value)
+    before = len(engine.grants.get(str(subj), []))
+    engine.grants[str(subj)] = [
+        g for g in engine.grants.get(str(subj), [])
+        if not (g.permission == cap and str(g.resource) == res)]
+    return len(engine.grants[str(subj)]) < before
 
 
 PRINCIPAL_KINDS = ("genesis", "worker", "owner")
@@ -744,6 +838,11 @@ __all__ = [
     "ACTION_CAPABILITY",
     "action_to_capability",
     "workspace_subject",
+    "canonical_resource",
+    "exact_policy_resource",
+    "issue_approved_action_grant",
+    "revoke_approved_action_grant",
+    "GLOB_RESOURCE_CHARS",
     "PRINCIPAL_KINDS",
     "PrincipalContext",
     "parse_principal",
