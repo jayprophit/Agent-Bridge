@@ -10,6 +10,11 @@ dependencies = []
 [project.optional-dependencies]
 telemetry = ["psutil==7.2.2"]
 yaml = ["pyyaml>=6"]
+# The benchmark harness genuinely REQUIRES psutil for its measurements, unlike
+# the rest of the codebase where psutil is imported defensively and degrades to
+# os.cpu_count(). Declared explicitly so that requirement is visible instead of
+# being an undeclared hard import in benchmarks/benchmark_runner.py.
+benchmark = ["psutil==7.2.2"]
 
 [tool.agent-bridge]
 test_command = "python -m unittest discover -s tests -p test_*.py"

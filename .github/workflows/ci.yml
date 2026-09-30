@@ -9,4 +9,10 @@ jobs:
         with:
           python-version: "3.13"
       - run: pip install "psutil==7.2.2"
-      - run: python -m unittest tests.test_resources tests.test_compat tests.test_realtime tests.test_avatar_creator tests.test_avatar_capture tests.test_repo_portability tests.test_secret_hygiene tests.test_state_integrity tests.test_maintenance_v081
+      # Runs the suite the project itself declares in pyproject.toml
+      # (tool.agent-bridge.test_command). It previously ran a hand-picked list
+      # of 9 modules out of 112, so 103 modules - including every policy,
+      # state-integrity, maintenance and capability test - were not gating
+      # merges at all. Optional packages are imported defensively, so the
+      # single pinned dependency is all the declared command needs.
+      - run: python -m unittest discover -s tests -p "test_*.py"
