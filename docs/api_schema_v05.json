@@ -23,7 +23,7 @@
   "403": "workspace outside roots",
   "404": "unknown route/id",
   "405": "method not allowed",
-  "409": "conflict (active tasks)",
+  "409": "conflict (active tasks, action id collision, session label bound elsewhere)",
   "413": "request too large",
   "429": "rate limited",
   "500": "internal error"
@@ -132,6 +132,15 @@
   {
    "method": "DELETE",
    "path": "/v1/sessions/{id}"
+  },
+  {
+   "method": "POST",
+   "path": "/v1/actions",
+   "body": "{action_id*, action*, resource*, workspace, session_id, payload, principal, owner_mode, approval, interactive, wait_ms}"
+  },
+  {
+   "method": "GET",
+   "path": "/v1/actions/{action_id}"
   }
  ],
  "transitions": [

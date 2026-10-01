@@ -95,6 +95,26 @@ class AgentRuntimeClient:
                          {"text": text, "idempotency_key": idempotency_key,
                           "parent_task_id": parent_task_id})
 
+    def submit_action(self, action_id: str, action: str, resource: str,
+                      workspace: str = "", session_id: str = "",
+                      payload: dict | None = None, principal: Any = None,
+                      owner_mode: str = "", approval: str = "",
+                      interactive: bool = False,
+                      wait_ms: int = 30000) -> dict:
+        """Typed action intake. The action runs through the session's own
+        approval gate, policy engine, executor and journal; this call only
+        carries the decided action to them. Never authorizes anything."""
+        return self._req("POST", "/v1/actions",
+                         {"action_id": action_id, "action": action,
+                          "resource": resource, "workspace": workspace,
+                          "session_id": session_id, "payload": payload or {},
+                          "principal": principal, "owner_mode": owner_mode,
+                          "approval": approval, "interactive": interactive,
+                          "wait_ms": wait_ms})
+
+    def action_status(self, action_id: str) -> dict:
+        return self._req("GET", f"/v1/actions/{action_id}")
+
     def request_revision(self, session_id: str, task_id: str,
                          instruction: str) -> dict:
         return self._req("POST", f"/v1/sessions/{session_id}/revise",

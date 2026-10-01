@@ -164,6 +164,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, rt.capabilities())
             if parts == [API_VERSION, "caps"]:
                 return self._send(200, rt.machine_inventory())
+            if len(parts) == 3 and parts[:2] == [API_VERSION, "actions"]:
+                from actions import action_status
+                code, response = action_status(rt, parts[2])
+                return self._send(code, response)
             if parts == [API_VERSION, "terminal", "sessions"]:
                 return self._send(200, {"sessions": self.state.terminal_manager().list()})
             if len(parts) == 4 and parts[:2] == [API_VERSION, "terminal"] \
@@ -445,6 +449,25 @@ class Handler(BaseHTTPRequestHandler):
                     and parts[3] == "rollback":
                 s = rt.get_session(parts[2])
                 return self._send(200, s.rollback(body.get("label", "")))
+            if parts == [API_VERSION, "actions"]:
+                # Typed action intake: an adapter into the session/task fabric,
+                # not a second execution path. Validation, approval, policy,
+                # execution and journaling are all reused; see actions.py.
+                from actions import submit_directed_action
+                try:
+                    wait_ms = body.get("wait_ms", 30000)
+                    code, response = submit_directed_action(
+                        rt, body, wait_ms=wait_ms)
+                except (ValueError, TypeError) as e:
+                    return self._send(400, {"outcome": "FAILED",
+                                            "error": f"invalid request: {e}"})
+                except PermissionError as e:
+                    return self._send(403, {"outcome": "FAILED",
+                                            "error": str(e)})
+                except Exception as e:  # never leak internals; never hang
+                    return self._send(500, {"outcome": "FAILED",
+                                            "error": f"{type(e).__name__}"})
+                return self._send(code, response)
             if parts == [API_VERSION, "stop"]:
                 reason = body.get("reason", "operator stop")
                 return self._send(200, rt.emergency_stop(reason))
@@ -733,6 +756,14 @@ def api_schema() -> dict[str, Any]:
             {"method": "GET", "path": "/v1/sessions/{id}/timeline"},
             {"method": "GET", "path": "/v1/sessions/{id}/export?format=json|markdown|jsonl"},
             {"method": "DELETE", "path": "/v1/sessions/{id}"},
+            {"method": "POST", "path": "/v1/actions",
+             "body": "{action_id*, action*, resource*, workspace, "
+                     "session_id, payload, principal, owner_mode, approval, "
+                     "interactive, wait_ms}",
+             "notes": "typed action intake: adapter into the session/task "
+                      "fabric, reuses validation, approval, policy, executor "
+                      "and journal"},
+            {"method": "GET", "path": "/v1/actions/{action_id}"},
             {"method": "POST", "path": "/v1/stop",
              "body": "{reason}"},
             {"method": "GET", "path": "/v1/caps"},

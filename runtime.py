@@ -161,11 +161,17 @@ class RuntimeApproval:
 
 class TaskRecord:
     def __init__(self, task_id: str, text: str, idempotency_key: str = "",
-                 parent_task_id: str = ""):
+                 parent_task_id: str = "",
+                 provider_factory: Callable[[str], Any] | None = None):
         self.task_id = task_id
         self.text = text
         self.idempotency_key = idempotency_key
         self.parent_task_id = parent_task_id
+        # Task-scoped model override. The session keeps its identity,
+        # workspace, approval level, journal and events; only the "model" for
+        # this task is directed. Used by typed action intake so a decided
+        # action never invokes a model. None means the session default.
+        self.provider_factory = provider_factory
         self.status = QUEUED
         self.result: dict[str, Any] | None = None
         self.error = ""
@@ -208,7 +214,8 @@ class Session:
 
     # -- lifecycle ---------------------------------------------------------
     def submit_task(self, text: str, idempotency_key: str = "",
-                    parent_task_id: str = "") -> str:
+                    parent_task_id: str = "",
+                    provider_factory: Callable[[str], Any] | None = None) -> str:
         """Submit without blocking. Same key+payload returns existing task."""
         if len(text.encode()) > self.runtime.cfg.max_request_bytes:
             raise ValueError("task text exceeds max_request_bytes")
@@ -228,7 +235,8 @@ class Session:
                         return t.task_id
             self.last_submit_deduped = False
             tid = f"t-{uuid.uuid4().hex[:10]}"
-            rec = TaskRecord(tid, text, idempotency_key)
+            rec = TaskRecord(tid, text, idempotency_key,
+                             provider_factory=provider_factory)
             rec.parent_task_id = parent_task_id
             self.tasks[tid] = rec
             self.status = QUEUED
@@ -284,10 +292,11 @@ class Session:
         t0 = time.time()
         try:
             providers: dict[str, Any] = {}
-            if self.provider_factory:
+            factory = rec.provider_factory or self.provider_factory
+            if factory:
                 for role in ("planner", "coder", "reviewer", "general"):
                     try:
-                        providers[role] = self.provider_factory(role)
+                        providers[role] = factory(role)
                     except Exception:
                         pass
             approval_iface = None
@@ -542,6 +551,15 @@ class AgentRuntime:
         self.provider_factory = provider_factory
         self.lock = threading.RLock()
         self.sessions: dict[str, Session] = {}
+        # Typed action-intake index: action_id -> {session_id, task_id,
+        # fingerprint, submitted_at}. The fingerprint is the canonical hash of
+        # the accepted action; a second submission under the same id with a
+        # different fingerprint is a collision and is refused, never aliased.
+        self.action_index: dict[str, dict[str, Any]] = {}
+        # Correlation labels for intake sessions: caller session label ->
+        # server session id. A label always resolves to the same session so a
+        # workflow run's actions stay correlated without forging session ids.
+        self.session_labels: dict[str, str] = {}
         self.metrics = {"sessions": 0, "tasks_completed": 0, "tasks_failed": 0,
                         "tasks_deduplicated": 0}
         for r in self.cfg.allowed_workspace_roots:
@@ -736,6 +754,65 @@ class AgentRuntime:
                 raise ValueError("session has active tasks; cancel first")
             del self.sessions[session_id]
         return {"ok": True, "session_id": session_id}
+
+    # -- typed action-intake index --------------------------------------
+    def register_action(self, action_id: str, session_id: str, task_id: str,
+                        fingerprint: str) -> dict[str, Any]:
+        """Record an accepted action. Returns {ok, deduped}.
+
+        Same id + same fingerprint replays the existing entry (no second
+        execution). Same id + different fingerprint is a collision and raises
+        ValueError: two different actions must never share one id.
+        """
+        import time as _time
+        with self.lock:
+            prior = self.action_index.get(action_id)
+            if prior is not None:
+                if prior["fingerprint"] != fingerprint:
+                    raise ValueError(
+                        f"action id collision: {action_id!r} already names a "
+                        "different action")
+                if prior["session_id"] != session_id:
+                    raise ValueError(
+                        f"action id {action_id!r} already belongs to session "
+                        f"{prior['session_id']!r}")
+                return {"ok": True, "deduped": True,
+                        "session_id": prior["session_id"],
+                        "task_id": prior["task_id"]}
+            self.action_index[action_id] = {
+                "session_id": session_id, "task_id": task_id,
+                "fingerprint": fingerprint, "submitted_at": _time.time()}
+            return {"ok": True, "deduped": False,
+                    "session_id": session_id, "task_id": task_id}
+
+    def lookup_action(self, action_id: str) -> dict[str, Any]:
+        with self.lock:
+            entry = self.action_index.get(action_id)
+            if entry is None:
+                raise KeyError(f"unknown action: {action_id}")
+            return dict(entry)
+
+    def resolve_session_label(self, label: str, workspace: str) -> str | None:
+        """Return the server session id for a caller label. An empty workspace
+        means no constraint; a non-empty one must match, because a label bound
+        to another workspace is caller confusion, not a silent rebind."""
+        with self.lock:
+            sid = self.session_labels.get(label)
+            if sid is None:
+                return None
+            sess = self.sessions.get(sid)
+            if sess is None:
+                del self.session_labels[label]
+                return None
+            if workspace and str(sess.workspace) != str(workspace):
+                raise ValueError(
+                    f"session label {label!r} already belongs to workspace "
+                    f"{sess.workspace}")
+            return sid
+
+    def bind_session_label(self, label: str, session_id: str) -> None:
+        with self.lock:
+            self.session_labels[label] = session_id
 
     def load_session(self, session_id: str, workspace: str | Path) -> Session:
         """Recover persisted state after restart. Active work resumes as
