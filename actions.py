@@ -25,12 +25,13 @@ Permanent:
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import threading
 import time
 import uuid
 from typing import Any, Callable
+
+from protocol import action_fingerprint
 
 TERMINAL_STATUSES = ("COMPLETED", "FAILED", "CANCELLED", "ROLLED_BACK",
                       "INTERRUPTED")
@@ -139,27 +140,46 @@ def build_bridge_action(body: dict[str, Any]) -> tuple[dict[str, Any] | None, st
         dest_err = _refuse_pattern_or_escape(dest, "destination")
         if dest_err:
             return None, dest_err
+        conflict = _slot_conflict(payload, "src", resource)
+        if conflict:
+            return None, conflict
         action["src"] = resource
         action["dest"] = dest
         for key, value in payload.items():
-            if key != "dest":
+            if key not in ("dest", "src"):
                 action[key] = value
     elif verb in COMMAND_FAMILY:
         command = payload.get("command", resource)
         if not isinstance(command, str) or not command:
             return None, _BAD_RESOURCE
+        if ("command" in payload and isinstance(resource, str) and resource
+                and payload["command"] != resource):
+            return None, ("invalid payload: 'command' conflicts with the "
+                           "requested resource")
         action["command"] = command
         for key, value in payload.items():
             if key != "command":
                 action[key] = value
     elif verb == "restore":
-        action["restore_id"] = payload.get("restore_id", resource)
+        rid = payload.get("restore_id", resource)
+        if not isinstance(rid, str) or not rid:
+            return None, _BAD_RESOURCE
+        if ("restore_id" in payload and isinstance(resource, str) and resource
+                and payload["restore_id"] != resource):
+            return None, ("invalid payload: 'restore_id' conflicts with the "
+                           "requested resource")
+        action["restore_id"] = rid
         for key, value in payload.items():
             if key != "restore_id":
                 action[key] = value
     else:
+        conflict = _slot_conflict(payload, "path", resource)
+        if conflict:
+            return None, conflict
         action["path"] = resource
-        action.update(payload)
+        for key, value in payload.items():
+            if key != "path":
+                action[key] = value
 
     ok, validated = validate_action(action)
     if not ok:
@@ -196,6 +216,22 @@ def _intake_resource_ok(verb: str, resource: str, workspace: str) -> str:
     return _refuse_pattern_or_escape(resource, "resource")
 
 
+def _slot_conflict(payload: dict[str, Any], key: str, assigned: str,
+                   action_id: str = "") -> str:
+    """A payload key naming the same slot as the resource must agree with it.
+
+    Without this, `resource: ok.txt` passes intake strictness while
+    `payload: {path: ../evil.txt}` silently replaces what executes: the
+    validated request would no longer describe the effect, and the journal
+    would record an action nobody asked for. Identical values merge
+    harmlessly; anything else is a 400.
+    """
+    if key in payload and payload[key] != assigned:
+        return (f"invalid payload: {key!r} conflicts with the requested "
+                f"resource")
+    return ""
+
+
 def _principal_error(principal: Any) -> str:
     """Shape-check caller-supplied identity metadata. Absent is fine (legacy
     path); present-but-malformed is a 400, because garbage identity metadata
@@ -227,9 +263,7 @@ def _owner_request(body: dict[str, Any], runtime) -> tuple[bool, str]:
     return False, f"invalid owner_mode: {mode!r}"
 
 
-def action_fingerprint(action: dict[str, Any]) -> str:
-    return hashlib.sha256(
-        json.dumps(action, sort_keys=True, default=str).encode()).hexdigest()
+
 
 
 def map_action_outcome(session, task_id: str, action_id: str,

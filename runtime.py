@@ -304,7 +304,8 @@ class Session:
                 approval_iface = RuntimeApproval(self)
             out = run_bridge(self.bridge_cfg, rec.text,
                              providers=providers or None,
-                             approval_interface=approval_iface)
+                             approval_interface=approval_iface,
+                             task_id=task_id)
             self.bus.emit("planning.completed", {"task_id": task_id})
             rec.result = out.get("task_result") or {
                 "session_id": self.session_id, "task_id": task_id,

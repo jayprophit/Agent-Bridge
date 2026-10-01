@@ -984,18 +984,25 @@ class Executor:
     def dispatch(self, action: dict[str, Any],
                  approval_override: bool = False, action_id: str = "") -> dict[str, Any]:
         from protocol import MUTATING_ACTIONS as _MUT
+        from protocol import action_fingerprint
         # Action-id idempotency: a completed mutation is never re-executed.
+        # The recorded fingerprint must match the requested effect, not just
+        # the verb: same id plus a different target or content is a different
+        # action and executes. Same id plus the same effect returns recorded.
         if action_id and action_id in self.completed and action.get("action") in _MUT:
             prior = dict(self.completed[action_id])
-            prior["dedup"] = True
-            prior["note"] = "duplicate action_id: recorded result returned, not re-executed"
-            return prior
+            if prior.pop("_action_fingerprint", None) == action_fingerprint(action):
+                prior["dedup"] = True
+                prior["note"] = "duplicate action_id: recorded result returned, not re-executed"
+                return prior
         try:
             res = self._dispatch_inner(action, approval_override, action_id)
         finally:
             self._active_principal = None
         if action_id and action.get("action") in _MUT:
-            self.completed[action_id] = dict(res)
+            stored = dict(res)
+            stored["_action_fingerprint"] = action_fingerprint(action)
+            self.completed[action_id] = stored
         return res
 
     @staticmethod

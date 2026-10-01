@@ -64,8 +64,13 @@ class BridgeSession:
         self._action_seq = 0
 
     def next_action_id(self) -> str:
+        # The task id is part of the identity: two tasks in one session must
+        # never mint the same action id, or the executor's idempotency record
+        # aliases one requested effect for another and reports success without
+        # effect. Still starts with "a-" (pinned by contract tests).
         self._action_seq += 1
-        return f"a-{self.session_id}-{self.step}-{self._action_seq}"
+        return (f"a-{self.session_id}-{self.task_id}-"
+                f"{self.step}-{self._action_seq}")
 
     def set_status(self, to: str) -> None:
         """Guarded transition; raises ValueError on illegal jumps."""

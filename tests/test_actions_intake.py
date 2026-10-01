@@ -154,6 +154,30 @@ class TestIntakeValidation(IntakeBase):
         with self.assertRaises(ClientError):
             self.act("v-mv", "filesystem:move", "a.txt")
 
+    def test_payload_path_cannot_override_resource(self):
+        # D5: resource ok.txt passes strictness while payload.path swaps in
+        # ../evil.txt. The validated request must describe the effect.
+        with self.assertRaises(ClientError) as ctx:
+            self.act("v-sm1", "write", "ok.txt",
+                     payload={"path": "../evil.txt", "content": "x"})
+        self.assertIn("400", str(ctx.exception))
+        self.assertFalse((self.svc.ws / "ok.txt").exists())
+        self.assertFalse((self.svc.tmp / "evil.txt").exists())
+
+    def test_payload_dest_cannot_override_src(self):
+        (self.svc.ws / "s.txt").write_text("keep", encoding="utf-8")
+        with self.assertRaises(ClientError):
+            self.act("v-sm2", "filesystem:move", "s.txt",
+                     payload={"src": "other.txt", "dest": "d.txt"})
+        self.assertTrue((self.svc.ws / "s.txt").exists())
+        self.assertFalse((self.svc.ws / "d.txt").exists())
+
+    def test_identical_slot_value_merges_harmlessly(self):
+        r = self.act("v-sm3", "write", "same.txt",
+                     payload={"path": "same.txt", "content": "v"})
+        self.assertEqual(r["outcome"], "SUCCEEDED")
+        self.assertTrue((self.svc.ws / "same.txt").exists())
+
     def test_missing_action_fields_are_400(self):
         # The verb is known but the action is incomplete: canonical field
         # validation refuses it before anything runs.
@@ -258,6 +282,8 @@ class TestIntakeExecution(IntakeBase):
         self.assertEqual(r["outcome"], "SUCCEEDED")
 
     def test_session_label_correlates_actions(self):
+        # Both effects must be real: this test once passed vacuously while
+        # the second write was skipped by cross-task id aliasing (D4).
         r1 = self.act("e-4", "write", "one.txt", session_id="wf-9",
                       payload={"content": "1"})
         r2 = self.act("e-5", "write", "two.txt", session_id="wf-9",
@@ -266,6 +292,10 @@ class TestIntakeExecution(IntakeBase):
         self.assertEqual(r2["outcome"], "SUCCEEDED")
         self.assertEqual(r1["session_id"], r2["session_id"])
         self.assertNotEqual(r1["task_id"], r2["task_id"])
+        self.assertTrue(r1["effect_achieved"])
+        self.assertTrue(r2["effect_achieved"])
+        self.assertEqual((self.svc.ws / "one.txt").read_text(), "1")
+        self.assertEqual((self.svc.ws / "two.txt").read_text(), "2")
 
     def test_journal_records_the_directed_action(self):
         r = self.act("e-6", "write", "j.txt", payload={"content": "j"})

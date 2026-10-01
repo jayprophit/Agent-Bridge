@@ -16,7 +16,7 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-TARGETS = ["tests/test_actions_intake.py"]
+TARGETS = ["tests/test_actions_intake.py", "tests/test_action_id_uniqueness.py"]
 
 # Directories that carry no importable source or fixtures for these tests.
 SKIP_DIRS = shutil.ignore_patterns(
@@ -89,6 +89,33 @@ MUTATIONS = [
      "        if prior[\"fingerprint\"] != fingerprint:",
      "        if False:  # MUTATED: different actions share one id",
      ["test_same_id_different_action_is_409"]),
+    ("payload path silently overrides the validated resource (D5)",
+     "actions.py",
+     "        conflict = _slot_conflict(payload, \"path\", resource)\n"
+     "        if conflict:\n"
+     "            return None, conflict",
+     "        pass  # MUTATED: smuggled slot wins",
+     ["test_payload_path_cannot_override_resource"]),
+    ("action ids restart per task, aliasing cross-task effects (D4a)",
+     "state.py",
+     "        return (f\"a-{self.session_id}-{self.task_id}-\"\n"
+     "                f\"{self.step}-{self._action_seq}\")",
+     "        return (f\"a-{self.session_id}-\"  # MUTATED: task identity dropped\n"
+     "                f\"{self.step}-{self._action_seq}\")",
+     # Caught at the contract level. Notably the integration tests still pass
+     # under this mutation because the fingerprint check (D4b) independently
+     # preserves correctness: the two fixes are independent layers, and this
+     # proves it.
+     ["test_ids_differ_across_tasks"]),
+    ("idempotency ignores the requested effect (D4b)",
+     "executor.py",
+     "        if action_id and action_id in self.completed and action.get(\"action\") in _MUT:\n"
+     "            prior = dict(self.completed[action_id])\n"
+     "            if prior.pop(\"_action_fingerprint\", None) == action_fingerprint(action):",
+     "        if action_id and action_id in self.completed and action.get(\"action\") in _MUT:\n"
+     "            prior = dict(self.completed[action_id])\n"
+     "            if True:  # MUTATED: verb match alone suppresses execution",
+     ["test_different_actions_same_id_both_execute"]),
 ]
 
 

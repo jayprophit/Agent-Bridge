@@ -378,7 +378,8 @@ def _contract_outcome(fn):  # type: ignore[no-untyped-def]
 def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                providers: dict[str, Any] | None = None,
                approval_interface: Any | None = None,
-               required_milestones: list[str] | None = None) -> dict[str, Any]:
+               required_milestones: list[str] | None = None,
+               task_id: str = "") -> dict[str, Any]:
     _cancel["flag"] = False
     _install_sigint()
     t0 = time.monotonic()
@@ -488,7 +489,8 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                          cfg.model, cfg.mode, cfg.session_id, bus)
     session = BridgeSession(task, cfg.mode, cfg.approval, str(cfg.workspace),
                             {r: routes[r].model for r in routes},
-                            session_id=cfg.session_id, task_id=cfg.task_id)
+                            session_id=cfg.session_id,
+                            task_id=task_id or cfg.task_id)
     session.status = PLANNING
     # ---- owner mode activation (explicit only; safe profiles untouched) ----
     owner_mode = (getattr(cfg, "profile", "") == "OWNER_FULL_ACCESS"

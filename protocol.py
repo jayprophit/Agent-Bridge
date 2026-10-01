@@ -7,6 +7,7 @@ New in v0.6 (4, OWNER profile only): browser net proc git.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from typing import Any
@@ -26,6 +27,19 @@ MUTATING_ACTIONS = frozenset({"write", "edit", "mkdir", "delete", "move",
                               "copy", "patch", "shell", "test", "restore",
                               "browser", "net", "proc", "git"})
 OWNER_ONLY_ACTIONS = frozenset({"browser", "net", "proc", "git"})
+
+
+def action_fingerprint(action: dict[str, Any]) -> str:
+    """Canonical identity of an action's requested effect.
+
+    Used everywhere an action must be compared for sameness: intake replay
+    detection and executor idempotency. Two actions with different verbs,
+    targets or parameters have different fingerprints, so neither layer can
+    mistake one requested effect for another. Single canonical definition;
+    do not reimplement per caller.
+    """
+    return hashlib.sha256(
+        json.dumps(action, sort_keys=True, default=str).encode()).hexdigest()
 
 _KEY_ALIASES = {
     "filepath": "path", "file_path": "path", "filename": "path", "file": "path",

@@ -132,15 +132,24 @@ class TestPersistenceRecovery(unittest.TestCase):
             # completed action not repeated: resend same action id via bridge
             # (executor carries the bridge session id, mirroring run_bridge
             # wiring, so session-bound policy grants apply).
+            # Idempotency compares the requested effect, not just the id: an
+            # identical resend returns recorded (recovery protection), while
+            # different content under a reused id executes (D4: aliasing a
+            # new effect onto an old id reported success without effect).
             from executor import Executor
             ex = Executor(ws, session_id=s.session_id)
             first = ex.dispatch({"action": "write", "path": "z.txt", "content": "1"},
                                 action_id="dup-1")
             self.assertTrue(first["ok"])
-            again = ex.dispatch({"action": "write", "path": "z.txt", "content": "2"},
-                                action_id="dup-1")
-            self.assertTrue(again.get("dedup"))
+            same = ex.dispatch({"action": "write", "path": "z.txt", "content": "1"},
+                               action_id="dup-1")
+            self.assertTrue(same.get("dedup"))
             self.assertEqual((ws / "z.txt").read_text(), "1")
+            different = ex.dispatch({"action": "write", "path": "z.txt", "content": "2"},
+                                    action_id="dup-1")
+            self.assertTrue(different["ok"])
+            self.assertNotIn("dedup", different)
+            self.assertEqual((ws / "z.txt").read_text(), "2")
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
