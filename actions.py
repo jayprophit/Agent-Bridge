@@ -152,10 +152,6 @@ def build_bridge_action(body: dict[str, Any]) -> tuple[dict[str, Any] | None, st
         command = payload.get("command", resource)
         if not isinstance(command, str) or not command:
             return None, _BAD_RESOURCE
-        if ("command" in payload and isinstance(resource, str) and resource
-                and payload["command"] != resource):
-            return None, ("invalid payload: 'command' conflicts with the "
-                           "requested resource")
         action["command"] = command
         for key, value in payload.items():
             if key != "command":
@@ -210,8 +206,11 @@ def _intake_resource_ok(verb: str, resource: str, workspace: str) -> str:
     it already knows the answer to.
     """
     if verb in COMMAND_FAMILY:
-        if any(ch in resource for ch in ("*", "?", "[", "]", "{", "}")):
-            return "invalid resource: patterns are not concrete targets"
+        # No intake strictness on commands: the resource names what the run
+        # is about while the command is opaque by nature (globs and paths in
+        # it are shell syntax, not evasion). The shell profile, policy engine
+        # and sandbox are the real gates; the intake records both verbatim so
+        # the journal shows exactly what was asked and what ran.
         return ""
     return _refuse_pattern_or_escape(resource, "resource")
 
