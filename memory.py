@@ -2,9 +2,47 @@
 from __future__ import annotations
 
 import datetime as _dt
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
+
+
+# Payload keys whose values are arbitrary user data, not control metadata.
+# They are redacted (replaced by a digest) in every persisted record, so a
+# refused action leaves no content at rest: denial must not become storage.
+# Digests preserve equality, so dedup and continuity keep working on hashes.
+# Paths, commands, decisions and reasons are control metadata and stay.
+REDACTED_KEYS = frozenset({
+    "content", "old", "new", "edits", "stdin", "body",
+    "secret", "password", "token", "key",
+})
+
+
+def _digest(value: Any) -> str:
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, default=str).encode()).hexdigest()
+
+
+def redact_persisted(obj: Any) -> Any:
+    """Copy obj with payload values replaced by {"sha256": digest}.
+
+    Applied at every persistence boundary (memory snapshots, history
+    archives). Working memory keeps full values; only what reaches disk is
+    redacted. Live approval events are intentionally untouched: the human
+    decider must see what they are deciding.
+    """
+    if isinstance(obj, dict):
+        out: dict[str, Any] = {}
+        for key, value in obj.items():
+            if key in REDACTED_KEYS:
+                out[key] = {"sha256": _digest(value)}
+            else:
+                out[key] = redact_persisted(value)
+        return out
+    if isinstance(obj, (list, tuple)):
+        return [redact_persisted(item) for item in obj]
+    return obj
 
 
 def _now() -> str:
@@ -49,7 +87,8 @@ class SessionMemory:
             return
         try:
             self.path.parent.mkdir(parents=True, exist_ok=True)
-            self.path.write_text(json.dumps(self.data, indent=2)[:300_000],
+            redacted = redact_persisted(self.data)
+            self.path.write_text(json.dumps(redacted, indent=2)[:300_000],
                                  encoding="utf-8")
         except OSError:
             pass

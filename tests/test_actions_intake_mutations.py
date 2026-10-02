@@ -16,7 +16,8 @@ import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-TARGETS = ["tests/test_actions_intake.py", "tests/test_action_id_uniqueness.py"]
+TARGETS = ["tests/test_actions_intake.py", "tests/test_action_id_uniqueness.py",
+           "tests/test_recovery_privacy.py"]
 
 # Directories that carry no importable source or fixtures for these tests.
 SKIP_DIRS = shutil.ignore_patterns(
@@ -84,6 +85,12 @@ MUTATIONS = [
       "test_deny_blocks_with_truth",
       "test_all_denied_is_blocked_not_success",
       "test_cancelled_action_maps_cancelled"]),
+    ("denied content persists to disk unredacted",
+     "memory.py",
+     "            redacted = redact_persisted(self.data)\n"
+     "            self.path.write_text(json.dumps(redacted, indent=2)[:300_000],",
+     "            self.path.write_text(json.dumps(self.data, indent=2)[:300_000],",
+     ["test_denied_content_boundary"]),
     ("action id collisions are silently aliased",
      "actions.py",
      "        if prior[\"fingerprint\"] != fingerprint:",

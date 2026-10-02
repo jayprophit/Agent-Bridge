@@ -864,8 +864,12 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                 fallback_log=fallback_log)
             (d / "session.json").write_text(json.dumps(snap, indent=2)[:200000],
                                             encoding="utf-8")
+            from memory import redact_persisted
+            # History archives carry actions; payloads are redacted at rest
+            # while verbs, targets, decisions and reasons stay for forensics.
             (d / "history.jsonl").write_text(
-                "\n".join(json.dumps(h, default=str)[:4000] for h in history[-200:]),
+                "\n".join(json.dumps(redact_persisted(h), default=str)[:4000]
+                           for h in history[-200:]),
                 encoding="utf-8")
             appr = {"session_approved": sorted(approval.session_approved),
                     "level": approval.level}
