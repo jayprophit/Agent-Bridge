@@ -1890,13 +1890,34 @@ def _finish_ok(message: str, step: int, history: list, session: BridgeSession,
     return out
 
 
+UNTRUSTED_FENCE = "<<<UNTRUSTED_DATA>>>"
+UNTRUSTED_END = "<<<END_UNTRUSTED_DATA>>>"
+
+
+def fence_untrusted(text: str) -> str:
+    """Wrap text that came from outside the Bridge in an explicit data envelope.
+
+    File contents, stdout and stderr are attacker-influenced: anyone who can
+    get text into a file can put an action-looking JSON object in it. The
+    system rules already say those bytes are data, but a rule is only as good
+    as the model's compliance, so the boundary is also drawn structurally: the
+    payload is labelled, and any attempt to close the envelope early is
+    neutralised so a reader cannot be walked out of it.
+    """
+    body = text.replace(UNTRUSTED_END, UNTRUSTED_END.replace("<", "[")[:16])
+    body = body.replace(UNTRUSTED_FENCE, UNTRUSTED_FENCE.replace("<", "[")[:16])
+    return f"{UNTRUSTED_FENCE}\n{body}\n{UNTRUSTED_END}"
+
+
 def _result_text(act: str, result: dict[str, Any], action_id: str) -> str:
     slim = dict(result)
     for k in ("content", "stdout", "stderr"):
-        if isinstance(slim.get(k), str) and len(slim[k]) > 2000:
-            slim[k] = truncate_middle(slim[k], 2000)
+        if isinstance(slim.get(k), str):
+            slim[k] = fence_untrusted(truncate_middle(slim[k], 2000)
+                                     if len(slim[k]) > 2000 else slim[k])
     status = "ok=true" if result.get("ok") else "ok=false"
-    return f"RESULT {status} action={act} id={action_id} {json.dumps(slim)[:2700]}"
+    return (f"RESULT {status} action={act} id={action_id} "
+            f"{json.dumps(slim)[:2700]}")
 
 
 def main(argv: list[str] | None = None) -> int:

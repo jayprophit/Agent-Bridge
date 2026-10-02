@@ -17,7 +17,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 TARGETS = ["tests/test_actions_intake.py", "tests/test_action_id_uniqueness.py",
-           "tests/test_recovery_privacy.py", "tests/test_evidence_integrity.py"]
+           "tests/test_recovery_privacy.py", "tests/test_evidence_integrity.py",
+           "tests/test_untrusted_input.py"]
 
 # Directories that carry no importable source or fixtures for these tests.
 SKIP_DIRS = shutil.ignore_patterns(
@@ -196,6 +197,22 @@ MUTATIONS = [
      "            return",
      ["test_a_write_that_cannot_commit_changes_nothing",
       "test_a_concurrent_reader_never_sees_a_partial_file"]),
+    ("untrusted file bytes reach the model unfenced",
+     "bridge.py",
+     "        if isinstance(slim.get(k), str):\n"
+     "            slim[k] = fence_untrusted(truncate_middle(slim[k], 2000)\n"
+     "                                     if len(slim[k]) > 2000 else slim[k])",
+     "        if isinstance(slim.get(k), str) and len(slim[k]) > 2000:\n"
+     "            slim[k] = truncate_middle(slim[k], 2000)  # MUTATED: no fence",
+     ["test_result_text_fences_content_stdout_and_stderr",
+      "test_a_file_read_reaches_the_model_inside_the_envelope"]),
+    ("the data envelope can be closed by its own payload",
+     "bridge.py",
+     "    body = text.replace(UNTRUSTED_END, UNTRUSTED_END.replace(\"<\", \"[\")[:16])\n"
+     "    body = body.replace(UNTRUSTED_FENCE, UNTRUSTED_FENCE.replace(\"<\", \"[\")[:16])",
+     "    body = text  # MUTATED: markers passed through intact",
+     ["test_content_cannot_close_the_envelope_early",
+      "test_content_cannot_open_a_fake_envelope"]),
 ]
 
 
