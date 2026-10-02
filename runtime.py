@@ -561,6 +561,11 @@ class AgentRuntime:
         # server session id. A label always resolves to the same session so a
         # workflow run's actions stay correlated without forging session ids.
         self.session_labels: dict[str, str] = {}
+        # Per-action locks for typed intake: lookup, session attach, submit
+        # and index registration happen atomically per action id, so racing
+        # identical requests serialize into one task instead of executing N
+        # times. Distinct ids never block each other.
+        self.action_locks: dict[str, threading.Lock] = {}
         self.metrics = {"sessions": 0, "tasks_completed": 0, "tasks_failed": 0,
                         "tasks_deduplicated": 0}
         for r in self.cfg.allowed_workspace_roots:
@@ -568,6 +573,15 @@ class AgentRuntime:
             if not p.exists():
                 raise ValueError(f"workspace root does not exist: {r}")
         self._validate_root_rules()
+
+    def action_lock(self, action_id: str) -> threading.Lock:
+        """Return the lock serializing one action id's intake path."""
+        with self.lock:
+            lock = self.action_locks.get(action_id)
+            if lock is None:
+                lock = threading.Lock()
+                self.action_locks[action_id] = lock
+            return lock
 
     def _root_rule(self, workspace: Path) -> dict[str, Any]:
         for root, rule in (self.cfg.root_rules or {}).items():
@@ -773,10 +787,10 @@ class AgentRuntime:
                     raise ValueError(
                         f"action id collision: {action_id!r} already names a "
                         "different action")
-                if prior["session_id"] != session_id:
-                    raise ValueError(
-                        f"action id {action_id!r} already belongs to session "
-                        f"{prior['session_id']!r}")
+                # Same fingerprint is the same requested effect: return the
+                # recorded task whatever session it ran in. No new execution
+                # occurs, so there is nothing to launder; the response names
+                # the original session transparently.
                 return {"ok": True, "deduped": True,
                         "session_id": prior["session_id"],
                         "task_id": prior["task_id"]}

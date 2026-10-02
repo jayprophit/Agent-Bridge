@@ -265,6 +265,38 @@ def _owner_request(body: dict[str, Any], runtime) -> tuple[bool, str]:
 
 
 
+def await_outcome(session, task_id: str, action_id: str,
+                    wait_ms: int, deduped: bool) -> dict[str, Any]:
+    """Bounded wait for approval pauses and terminal states, then map.
+
+    Approval pauses return promptly (the human decides out of band); terminal
+    states map exactly; expiry reports TIMED_OUT with poll instructions
+    instead of inventing a terminal value.
+    """
+    import time as _time
+    from runtime import TASK_ACTIVE
+    wait_ms = max(0, min(int(wait_ms), 300000))
+    deadline = _time.time() + wait_ms / 1000.0
+    while True:
+        with session.lock:
+            rec = session.tasks.get(task_id)
+            status = rec.status if rec else "UNKNOWN"
+            waiting = bool(session.pending_approvals) and \
+                status in TASK_ACTIVE
+            terminal = status in TERMINAL_STATUSES
+        if terminal or waiting:
+            break
+        if _time.time() >= deadline:
+            response = map_action_outcome(session, task_id, action_id,
+                                          wait_expired=True, wait_ms=wait_ms)
+            response["deduped"] = deduped
+            return response
+        _time.sleep(0.15)
+    response = map_action_outcome(session, task_id, action_id)
+    response["deduped"] = deduped
+    return response
+
+
 def map_action_outcome(session, task_id: str, action_id: str,
                        wait_expired: bool = False,
                        wait_ms: int = 0) -> dict[str, Any]:
@@ -424,29 +456,42 @@ def submit_directed_action(runtime, body: dict[str, Any],
         return 403, {"outcome": "FAILED", "error": f"workspace refused: {e}",
                      "action_id": action_id}
 
-    # --- collision / replay handling (before creating anything)
-    try:
-        prior = runtime.lookup_action(action_id)
-    except KeyError:
-        prior = None
-    if prior is not None:
-        if prior["fingerprint"] != fingerprint:
-            return 409, {"outcome": "FAILED",
-                         "error": f"action id collision: {action_id!r} already "
-                                  "names a different action",
-                         "action_id": action_id}
+    # --- collision / replay handling (before creating anything).
+    # Held under the per-action lock with submission and registration, so
+    # racing identical requests serialize: the first registers, the rest
+    # observe the recorded task instead of spawning duplicates.
+    with runtime.action_lock(action_id):
         try:
-            old_session = runtime.get_session(prior["session_id"])
+            prior = runtime.lookup_action(action_id)
         except KeyError:
-            old_session = None
-        if old_session is None:
-            pass  # prior session is gone; fall through and re-run honestly
-        else:
-            response = map_action_outcome(old_session, prior["task_id"],
-                                          action_id)
-            response["deduped"] = True
-            return 200, response
+            prior = None
+        if prior is not None:
+            if prior["fingerprint"] != fingerprint:
+                return 409, {"outcome": "FAILED",
+                             "error": f"action id collision: {action_id!r} already "
+                               "names a different action",
+                             "action_id": action_id}
+            try:
+                old_session = runtime.get_session(prior["session_id"])
+            except KeyError:
+                old_session = None
+            if old_session is not None:
+                return 200, await_outcome(old_session, prior["task_id"],
+                                          action_id, wait_ms, True)
+            # prior session is gone; fall through and re-run honestly
+        return _submit_new(runtime, body, action_id, action, verb, resource,
+                           fingerprint, principal, owner,
+                           workspace_raw, label, session, ws, wait_ms)
 
+
+def _submit_new(runtime, body: dict[str, Any], action_id: str,
+                action: dict[str, Any], verb: str, resource: str,
+                fingerprint: str, principal: Any, owner: bool,
+                workspace_raw: str, label: str, session, ws,
+                wait_ms: int) -> tuple[int, dict[str, Any]]:
+    """Attach-or-create the session, submit the directed task, register the
+    action and wait. Runs under the per-action lock: racing identical
+    requests cannot interleave here."""
     # --- session attach-or-create
     try:
         if session is None:
@@ -499,28 +544,7 @@ def submit_directed_action(runtime, body: dict[str, Any],
         return 409, {"outcome": "FAILED", "error": str(e),
                      "action_id": action_id}
 
-    # --- bounded wait: approval pause returns promptly, terminal maps exactly
-    wait_ms = max(0, min(int(wait_ms), 300000))
-    deadline = _time.time() + wait_ms / 1000.0
-    while True:
-        with session.lock:
-            rec = session.tasks.get(task_id)
-            status = rec.status if rec else "UNKNOWN"
-            waiting = bool(session.pending_approvals) and \
-                status in TASK_ACTIVE
-            terminal = status in TERMINAL_STATUSES
-        if terminal or waiting:
-            break
-        if _time.time() >= deadline:
-            response = map_action_outcome(session, task_id, action_id,
-                                          wait_expired=True, wait_ms=wait_ms)
-            response["deduped"] = deduped
-            return 200, response
-        _time.sleep(0.15)
-
-    response = map_action_outcome(session, task_id, action_id)
-    response["deduped"] = deduped
-    return 200, response
+    return 200, await_outcome(session, task_id, action_id, wait_ms, deduped)
 
 
 def action_status(runtime, action_id: str) -> tuple[int, dict[str, Any]]:
