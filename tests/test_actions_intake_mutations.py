@@ -18,7 +18,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 TARGETS = ["tests/test_actions_intake.py", "tests/test_action_id_uniqueness.py",
            "tests/test_recovery_privacy.py", "tests/test_evidence_integrity.py",
-           "tests/test_untrusted_input.py"]
+           "tests/test_untrusted_input.py", "tests/test_cross_process_state.py"]
 
 # Directories that carry no importable source or fixtures for these tests.
 SKIP_DIRS = shutil.ignore_patterns(
@@ -171,9 +171,9 @@ MUTATIONS = [
       "test_manager_cannot_be_pointed_outside_the_checkpoint_store"]),
     ("rollback trusts the backup path named by the manifest",
      "checkpoints.py",
-     "                    bp = (self.workspace / entry[\"backup\"]).resolve()\n"
-     "                    bp.relative_to(self.base.resolve())",
-     "                    bp = (self.workspace / entry[\"backup\"]).resolve()",
+     "            bp = (self.workspace / blob).resolve()\n"
+     "            bp.relative_to(self.base.resolve())",
+     "            bp = (self.workspace / blob).resolve()",
      ["test_manifest_cannot_retarget_a_backup_outside_the_store"]),
     ("credential-shaped keys persist unredacted",
      "memory.py",
@@ -213,6 +213,32 @@ MUTATIONS = [
      "    body = text  # MUTATED: markers passed through intact",
      ["test_content_cannot_close_the_envelope_early",
       "test_content_cannot_open_a_fake_envelope"]),
+    ("the idempotency store is overwritten instead of merged",
+     "bridge.py",
+     "    with WorkspaceLock(workspace, \"completed_actions\"):\n"
+     "        try:\n"
+     "            existing = json.loads(cpath.read_text(encoding=\"utf-8\"))\n"
+     "            if not isinstance(existing, dict):\n"
+     "                existing = {}\n"
+     "        except (OSError, ValueError):\n"
+     "            existing = {}\n"
+     "        existing.update(executor.completed)\n"
+     "        atomic_write_text(cpath, json.dumps(existing, default=str)[:500_000])",
+     "    atomic_write_text(cpath,  # MUTATED: no lock, no merge\n"
+     "                      json.dumps(executor.completed, default=str)[:500_000])",
+     ["test_concurrent_writers_do_not_lose_each_others_records"]),
+    ("the checkpoint manifest is overwritten instead of merged",
+     "checkpoints.py",
+     "        with WorkspaceLock(self.workspace, f\"checkpoint-{self.label}\"):\n"
+     "            existing = self._load()\n"
+     "            if isinstance(existing.get(\"files\"), dict):\n"
+     "                for rel, entry in existing[\"files\"].items():\n"
+     "                    man.setdefault(\"files\", {}).setdefault(rel, entry)\n"
+     "            self.dir.mkdir(parents=True, exist_ok=True)",
+     "        if True:  # MUTATED: no lock, no merge\n"
+     "            self.dir.mkdir(parents=True, exist_ok=True)",
+     ["test_concurrent_snapshots_keep_every_file",
+      "test_every_surviving_backup_is_actually_restorable"]),
 ]
 
 

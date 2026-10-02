@@ -82,11 +82,21 @@ class CheckpointManager:
         return {"label": self.label, "created": _utcnow(), "files": {}}
 
     def _save(self, man: dict[str, Any]) -> None:
-        self.dir.mkdir(parents=True, exist_ok=True)
-        # manifest itself lives under .bridge: never part of rollback payload
-        man["label"] = self.label
-        self.manifest_path.write_text(json.dumps(man, indent=2)[:500_000],
-                                      encoding="utf-8")
+        from executor import WorkspaceLock, atomic_write_text
+        # A checkpoint is written by whoever runs last, and a torn manifest
+        # silently turns rollback into a no-op. Under the cross-process lock,
+        # merged and committed atomically, it is either the whole record or
+        # the previous one.
+        with WorkspaceLock(self.workspace, f"checkpoint-{self.label}"):
+            existing = self._load()
+            if isinstance(existing.get("files"), dict):
+                for rel, entry in existing["files"].items():
+                    man.setdefault("files", {}).setdefault(rel, entry)
+            self.dir.mkdir(parents=True, exist_ok=True)
+            # manifest itself lives under .bridge: never part of rollback payload
+            man["label"] = self.label
+            atomic_write_text(self.manifest_path,
+                              json.dumps(man, indent=2)[:500_000])
 
     def snapshot(self, rel: str, existed: bool,
                  original: bytes | None) -> None:
@@ -104,6 +114,10 @@ class CheckpointManager:
             files[rel] = entry
         except OSError:
             files[rel] = {"existed": existed, "backup": None}
+        # _save holds the cross-process lock across re-read, merge and commit.
+        # Two processes snapshotting different files under the same label would
+        # otherwise each read the same manifest and the second write would drop
+        # the first file's pre-image, making its rollback silently do nothing.
         self._save(man)
 
     def preview(self) -> dict[str, Any]:
@@ -119,18 +133,29 @@ class CheckpointManager:
                 "would_restore": sorted(would_restore),
                 "would_remove": sorted(would_remove)}
 
+    def _read_backup(self, blob: Any) -> bytes:
+        """Read a manifest-named backup, or nothing if it is not ours.
+
+        The manifest is the trust root here, so the path it names is held to
+        the same rule as rollback: it must resolve inside the checkpoint
+        store. Otherwise preview and diff become read primitives for the whole
+        disk, merely because someone could write a manifest.
+        """
+        if not isinstance(blob, str) or not blob:
+            return b""
+        try:
+            bp = (self.workspace / blob).resolve()
+            bp.relative_to(self.base.resolve())
+            return bp.read_bytes()
+        except (OSError, ValueError):
+            return b""
+
     def diff(self, max_chars: int = 8000) -> str:
         man = self._load()
         out: list[str] = []
         for rel, en in man.get("files", {}).items():
-            before: list[str] = []
-            blob = en.get("backup")
-            if blob:
-                try:
-                    before = (self.workspace / blob).read_bytes().decode(
-                        "utf-8", "replace").splitlines()
-                except OSError:
-                    pass
+            before = self._read_backup(en.get("backup")).decode(
+                "utf-8", "replace").splitlines()
             t = self._target(rel)
             after = t.read_bytes().decode("utf-8", "replace").splitlines() \
                 if t.is_file() else []
@@ -140,6 +165,11 @@ class CheckpointManager:
         return "\n".join(out)[:max_chars] or "(no changes)"
 
     def rollback(self) -> dict[str, Any]:
+        from executor import WorkspaceLock
+        with WorkspaceLock(self.workspace, f"checkpoint-{self.label}"):
+            return self._rollback_locked()
+
+    def _rollback_locked(self) -> dict[str, Any]:
         if not self.manifest_path.exists():
             return {"ok": False,
                     "error": "refusing rollback: no manifest (cannot guarantee safety)"}
@@ -161,15 +191,11 @@ class CheckpointManager:
                 continue
             try:
                 if entry.get("existed") and entry.get("backup"):
-                    # The manifest is the trust root for rollback, so the
-                    # backup path it names is validated like any other path:
-                    # it must resolve to a blob inside this checkpoint's own
-                    # directory. An arbitrary path here would copy any
-                    # readable file on the machine into the workspace.
-                    bp = (self.workspace / entry["backup"]).resolve()
-                    bp.relative_to(self.base.resolve())
+                    payload = self._read_backup(entry["backup"])
+                    if not payload:
+                        raise ValueError("backup is outside the checkpoint store")
                     target.parent.mkdir(parents=True, exist_ok=True)
-                    target.write_bytes(bp.read_bytes())
+                    target.write_bytes(payload)
                     restored.append(rel)
                 elif not entry.get("existed") and target.exists():
                     if target.is_file():

@@ -115,6 +115,77 @@ def _exe_base(argv0: str) -> str:
     return low[:-4] if low.endswith(".exe") else low
 
 
+class WorkspaceLock:
+    """A cross-process exclusive lock on one named resource in the workspace.
+
+    In-process locks do not reach other processes. Two Bridge processes over
+    the same workspace previously had no mutual exclusion at all, so their
+    read-modify-write updates to the same state file could interleave and lose
+    a record entirely -- which for the idempotency store means a completed
+    mutation could be executed twice.
+
+    The lock is an OS file lock (fcntl on POSIX, msvcrt.locking on Windows) on
+    a file under .bridge/locks, so it is released automatically if the holding
+    process dies. Nothing here replaces the in-process threading locks; it is
+    the layer beneath them.
+    """
+
+    def __init__(self, workspace: Path, name: str, timeout_s: float = 30.0):
+        self.workspace = Path(workspace).resolve()
+        self.name = re.sub(r"[^A-Za-z0-9_.-]", "_", name)[:120]
+        self.timeout_s = timeout_s
+        self.dir = self.workspace / BRIDGE_DIR / "locks"
+        self.path = self.dir / f"{self.name}.lock"
+        self._fh = None
+
+    def __enter__(self) -> "WorkspaceLock":
+        self.dir.mkdir(parents=True, exist_ok=True)
+        self._fh = open(self.path, "a+b")
+        deadline = time.monotonic() + self.timeout_s
+        delay = 0.002
+        while True:
+            try:
+                if os.name == "nt":
+                    import msvcrt
+                    self._fh.seek(0)
+                    msvcrt.locking(self._fh.fileno(), msvcrt.LK_NBLCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(self._fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                return self
+            except OSError:
+                if time.monotonic() >= deadline:
+                    self._close()
+                    raise TimeoutError(
+                        f"could not acquire workspace lock {self.name!r} within "
+                        f"{self.timeout_s}s")
+                time.sleep(delay)
+                delay = min(delay * 2, 0.05)
+
+    def _close(self) -> None:
+        fh, self._fh = self._fh, None
+        if fh is None:
+            return
+        try:
+            if os.name == "nt":
+                import msvcrt
+                fh.seek(0)
+                msvcrt.locking(fh.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+        except OSError:
+            pass
+        finally:
+            try:
+                fh.close()
+            except OSError:
+                pass
+
+    def __exit__(self, *_exc: Any) -> None:
+        self._close()
+
+
 def _utcnow() -> str:
     return datetime.now().isoformat(timespec="seconds")
 

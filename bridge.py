@@ -374,6 +374,29 @@ def _contract_outcome(fn):  # type: ignore[no-untyped-def]
     return wrapper
 
 
+def persist_completed_records(executor: Any, cpath: Path,
+                              workspace: Path) -> None:
+    """Merge this run's completed records into the shared store, atomically.
+
+    Two processes can share a workspace. A plain overwrite would discard
+    whatever the other one recorded, and a lost idempotency record means a
+    completed mutation runs a second time. So the file is re-read under a
+    cross-process lock, merged, and replaced.
+    """
+    from executor import WorkspaceLock, atomic_write_text
+    cpath = Path(cpath)
+    cpath.parent.mkdir(parents=True, exist_ok=True)
+    with WorkspaceLock(workspace, "completed_actions"):
+        try:
+            existing = json.loads(cpath.read_text(encoding="utf-8"))
+            if not isinstance(existing, dict):
+                existing = {}
+        except (OSError, ValueError):
+            existing = {}
+        existing.update(executor.completed)
+        atomic_write_text(cpath, json.dumps(existing, default=str)[:500_000])
+
+
 def load_completed_records(executor: Any, cpath: Path) -> tuple[int, int]:
     """Adopt only the completed-action records we could later confirm.
 
@@ -911,8 +934,12 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
             appr = {"session_approved": sorted(approval.session_approved),
                     "level": approval.level}
             atomic_write_text(d / "approvals.json", json.dumps(appr, indent=2))
-            atomic_write_text(d / "completed_actions.json",
-                              json.dumps(executor.completed, default=str)[:500000])
+            try:
+                persist_completed_records(executor,
+                                          d / "completed_actions.json",
+                                          cfg.workspace)
+            except (OSError, TimeoutError) as e:
+                logger.human(f"WARN idempotency store not persisted: {e}")
             try:
                 atomic_write_text(d / "contract.json",
                                   json.dumps(cx.to_dict(), indent=1)[:500000])
