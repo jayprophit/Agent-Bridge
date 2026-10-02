@@ -17,7 +17,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 TARGETS = ["tests/test_actions_intake.py", "tests/test_action_id_uniqueness.py",
-           "tests/test_recovery_privacy.py"]
+           "tests/test_recovery_privacy.py", "tests/test_evidence_integrity.py"]
 
 # Directories that carry no importable source or fixtures for these tests.
 SKIP_DIRS = shutil.ignore_patterns(
@@ -121,8 +121,81 @@ MUTATIONS = [
      "            if prior.pop(\"_action_fingerprint\", None) == action_fingerprint(action):",
      "        if action_id and action_id in self.completed and action.get(\"action\") in _MUT:\n"
      "            prior = dict(self.completed[action_id])\n"
-     "            if True:  # MUTATED: verb match alone suppresses execution",
-     ["test_different_actions_same_id_both_execute"]),
+"            if True:  # MUTATED: verb match alone suppresses execution",
+      ["test_different_actions_same_id_both_execute"]),
+    ("recorded completions are replayed without checking the world",
+     "executor.py",
+     "                holds, reason = self._verify_effect(claim)\n"
+     "                if not holds:",
+     "                holds, reason = True, \"MUTATED: never re-checked\"\n"
+     "                if not holds:",
+     ["test_forged_success_for_an_unperformed_write_is_refused",
+      "test_recorded_success_is_refused_when_the_world_disagrees",
+      "test_checkable_record_still_fails_when_the_world_disagrees"]),
+    ("unverifiable claims are treated as holding",
+     "executor.py",
+     "        if not isinstance(claim, dict):\n"
+     "            return False, \"no checkable effect assertion\"",
+     "        if not isinstance(claim, dict):\n"
+     "            return True, \"MUTATED: an absent claim counts as proof\"",
+     ["test_forged_delete_record_cannot_hide_a_surviving_file",
+      "test_unverifiable_record_is_audited"]),
+    ("recovery adopts records with no checkable effect",
+     "bridge.py",
+     "        if (isinstance(rec, dict)\n"
+     "                and isinstance(rec.get(\"_effect\"), dict)\n"
+     "                and isinstance(rec.get(\"_action_fingerprint\"), str)):\n"
+     "            kept[aid] = rec\n"
+     "        else:\n"
+     "            dropped += 1",
+     "        if isinstance(rec, dict):\n"
+     "            kept[aid] = rec  # MUTATED: uncheckable records adopted\n"
+     "        else:\n"
+     "            dropped += 1",
+     ["test_forged_success_without_a_checkable_effect_is_dropped"]),
+    ("internal directories are protected only at the root",
+     "executor.py",
+     "    segs = [s for s in rel.replace(\"\\\\\", \"/\").split(\"/\") if s and s != \".\"]\n"
+     "    return any(s.lower() in PROTECTED_PREFIXES for s in segs)",
+     "    segs = [s for s in rel.replace(\"\\\\\", \"/\").split(\"/\") if s and s != \".\"]\n"
+     "    return segs[0].lower() in PROTECTED_PREFIXES  # MUTATED: depth ignored",
+     ["test_nested_internal_directory_is_protected"]),
+    ("checkpoint labels are treated as paths",
+     "checkpoints.py",
+     "    if \"/\" in lbl or \"\\\\\" in lbl or lbl in (\".\", \"..\"):\n"
+     "        raise ValueError(f\"checkpoint label must be a single name: {label!r}\")",
+     "    if False:  # MUTATED: separators and traversal accepted\n"
+     "        raise ValueError(f\"checkpoint label must be a single name: {label!r}\")",
+     ["test_traversal_labels_are_rejected",
+      "test_manager_cannot_be_pointed_outside_the_checkpoint_store"]),
+    ("rollback trusts the backup path named by the manifest",
+     "checkpoints.py",
+     "                    bp = (self.workspace / entry[\"backup\"]).resolve()\n"
+     "                    bp.relative_to(self.base.resolve())",
+     "                    bp = (self.workspace / entry[\"backup\"]).resolve()",
+     ["test_manifest_cannot_retarget_a_backup_outside_the_store"]),
+    ("credential-shaped keys persist unredacted",
+     "memory.py",
+     "    \"secret\", \"password\", \"token\", \"key\", \"api_key\", \"authorization\",\n"
+     "    \"private_key\", \"pairing_token\", \"challenge\", \"credential\", \"credentials\",\n"
+     "    \"response\",",
+     "    \"content\",",
+     ["test_credential_shaped_keys_are_redacted",
+      "test_runtime_and_transport_redaction_sets_are_covered"]),
+    ("state files are written in place",
+     "executor.py",
+     "    for attempt in range(attempts):\n"
+     "        try:\n"
+     "            os.replace(tmp, target)\n"
+     "            return",
+     "    for attempt in range(1):\n"
+     "        try:\n"
+     "            with open(target, \"w\", encoding=\"utf-8\") as f:  # MUTATED\n"
+     "                f.write(Path(tmp).read_text(encoding=\"utf-8\"))\n"
+     "            os.unlink(tmp)\n"
+     "            return",
+     ["test_a_write_that_cannot_commit_changes_nothing",
+      "test_a_concurrent_reader_never_sees_a_partial_file"]),
 ]
 
 

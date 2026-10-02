@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import difflib
 import fnmatch
+import hashlib
 import json
 import os
 import re
@@ -50,8 +51,14 @@ def _decode_traversal(s: str) -> str:
 
 
 def _is_protected_rel(rel: str) -> bool:
-    first = rel.replace("\\", "/").split("/", 1)[0].lower()
-    return first in PROTECTED_PREFIXES
+    """True if any segment of the relative path is an internal directory.
+
+    Checking only the first segment left `sub/.bridge/x` writable: the
+    internals are protected by name, so the name has to be protected at any
+    depth, not just at the root.
+    """
+    segs = [s for s in rel.replace("\\", "/").split("/") if s and s != "."]
+    return any(s.lower() in PROTECTED_PREFIXES for s in segs)
 
 
 class Sandbox:
@@ -110,6 +117,61 @@ def _exe_base(argv0: str) -> str:
 
 def _utcnow() -> str:
     return datetime.now().isoformat(timespec="seconds")
+
+
+def _commit_replace(tmp: str, target: Path, attempts: int = 20,
+                    delay_s: float = 0.005) -> None:
+    """os.replace with a bounded retry for Windows sharing violations."""
+    last: OSError | None = None
+    for attempt in range(attempts):
+        try:
+            os.replace(tmp, target)
+            return
+        except PermissionError as e:  # sharing violation: someone holds it
+            last = e
+            time.sleep(delay_s * (attempt + 1))
+    assert last is not None
+    raise last
+
+
+def atomic_write_text(target: Path, content: str, mode: int | None = None) -> None:
+    """Replace target with content atomically, or leave it untouched.
+
+    A torn or half-written state file is indistinguishable from a lie: the
+    loader cannot tell a truncated record from a short one. Every durable
+    artifact in .bridge goes through here for that reason.
+
+    On Windows the commit step can fail transiently with a sharing violation
+    while a reader, an indexer or a scanner holds the target open. That is not
+    a real failure of the operation, so the commit is retried briefly before
+    giving up -- otherwise a busy reader turns a durable write into a lost one.
+    """
+    target = Path(target)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if mode is None and target.exists():
+        try:
+            mode = target.stat().st_mode
+        except OSError:
+            mode = None
+    fd, tmp = tempfile.mkstemp(dir=str(target.parent), prefix=".bridge-tmp-",
+                               suffix=".part")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(content)
+            f.flush()
+            os.fsync(f.fileno())
+        _commit_replace(tmp, target)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+    if mode is not None:
+        try:
+            os.chmod(target, mode)
+        except OSError:
+            pass
 
 
 class Executor:
@@ -295,27 +357,7 @@ class Executor:
 
     # -- atomic write helper ------------------------------------------------
     def _atomic_write_text(self, target: Path, content: str) -> None:
-        target.parent.mkdir(parents=True, exist_ok=True)
-        mode = target.stat().st_mode if target.exists() else None
-        fd, tmp = tempfile.mkstemp(dir=str(target.parent),
-                                   prefix=".bridge-tmp-", suffix=".part")
-        try:
-            with os.fdopen(fd, "w", encoding="utf-8") as f:
-                f.write(content)
-                f.flush()
-                os.fsync(f.fileno())
-            os.replace(tmp, target)  # atomic on same filesystem
-        except BaseException:
-            try:
-                os.unlink(tmp)
-            except OSError:
-                pass
-            raise
-        if mode is not None:
-            try:
-                os.chmod(target, mode)
-            except OSError:
-                pass
+        atomic_write_text(target, content)
 
     # -- file tools ----------------------------------------------------------
     def do_list(self, path: str = ".") -> dict[str, Any]:
@@ -980,6 +1022,81 @@ class Executor:
             out["error"] = r["error"]
         return out
 
+    # -- effect assertions ----------------------------------------------------
+    def _effect_assertion(self, action: dict[str, Any],
+                          result: dict[str, Any]) -> dict[str, Any] | None:
+        """A checkable claim about the world that this action produced.
+
+        An idempotency record is only worth replaying if something outside the
+        record can confirm it. We cannot keep a secret from a process running
+        as the same user, so nothing on disk is authentic by construction; the
+        only sound check is the world itself. Filesystem mutations therefore
+        persist *what the world must look like*, and that claim is re-read
+        before any recorded success is returned.
+
+        Actions whose effect is not observable in the world (shell, test, and
+        the owner-only families) return None: they cannot be certified on
+        replay, so they are not certified at all.
+        """
+        if not isinstance(result, dict) or not result.get("ok"):
+            return None
+        act = action.get("action")
+        rel = result.get("path")
+        if not isinstance(rel, str) or not rel:
+            return None
+        try:
+            target = self._resolve(rel)
+        except Exception:
+            return None
+        if act in ("write", "edit", "patch"):
+            content = action.get("content")
+            if not isinstance(content, str):
+                return None
+            return {"expect": "content_sha256", "path": rel,
+                    "sha256": hashlib.sha256(content.encode("utf-8")).hexdigest()}
+        if act == "delete":
+            return {"expect": "absent", "path": rel}
+        if act == "mkdir":
+            return {"expect": "dir", "path": rel}
+        if act in ("move", "copy"):
+            return {"expect": "present", "path": rel}
+        return None
+
+    def _verify_effect(self, claim: Any) -> tuple[bool, str]:
+        """Re-read the world and decide whether a recorded effect still holds.
+
+        Returns (holds, reason). A claim that cannot be checked is reported as
+        not holding: uncertainty is never reported as success.
+        """
+        if not isinstance(claim, dict):
+            return False, "no checkable effect assertion"
+        rel = claim.get("path")
+        expect = claim.get("expect")
+        if not isinstance(rel, str) or not isinstance(expect, str):
+            return False, "malformed effect assertion"
+        try:
+            target = self._resolve(rel)
+        except Exception as e:  # noqa: BLE001
+            return False, f"effect path no longer resolves: {e}"
+        if expect == "absent":
+            return (not target.exists()), f"{rel} exists but the record says it was deleted"
+        if expect == "dir":
+            return target.is_dir(), f"{rel} is not a directory"
+        if expect == "present":
+            return target.exists(), f"{rel} is missing"
+        if expect == "content_sha256":
+            if not target.is_file():
+                return False, f"{rel} is missing"
+            try:
+                data = target.read_bytes()
+            except OSError as e:
+                return False, f"{rel} unreadable: {e}"
+            got = hashlib.sha256(data).hexdigest()
+            if got != claim.get("sha256"):
+                return False, f"{rel} content does not match the recorded effect"
+            return True, "content matches"
+        return False, f"unknown assertion {expect!r}"
+
     # -- dispatch ------------------------------------------------------------------
     def dispatch(self, action: dict[str, Any],
                  approval_override: bool = False, action_id: str = "") -> dict[str, Any]:
@@ -989,11 +1106,28 @@ class Executor:
         # The recorded fingerprint must match the requested effect, not just
         # the verb: same id plus a different target or content is a different
         # action and executes. Same id plus the same effect returns recorded.
+        #
+        # A recorded result is replayed only after the world confirms it. The
+        # idempotency store is a plain file that any process running as this
+        # user can edit, so an unverified record is not evidence of anything.
         if action_id and action_id in self.completed and action.get("action") in _MUT:
             prior = dict(self.completed[action_id])
             if prior.pop("_action_fingerprint", None) == action_fingerprint(action):
+                claim = prior.pop("_effect", None)
+                holds, reason = self._verify_effect(claim)
+                if not holds:
+                    self._audit("idempotency_record_unverified",
+                                {"action_id": action_id, "action": action.get("action"),
+                                 "path": (claim or {}).get("path", ""), "reason": reason})
+                    return {"ok": False, "executed": False,
+                            "kind": "STALE_IDEMPOTENCY_RECORD",
+                            "action_id": action_id,
+                            "error": ("recorded completion cannot be confirmed against the "
+                                      f"workspace: {reason}")}
                 prior["dedup"] = True
-                prior["note"] = "duplicate action_id: recorded result returned, not re-executed"
+                prior["effect_verified"] = True
+                prior["note"] = ("duplicate action_id: recorded result returned, not "
+                                 "re-executed; effect re-verified against the workspace")
                 return prior
         try:
             res = self._dispatch_inner(action, approval_override, action_id)
@@ -1002,6 +1136,9 @@ class Executor:
         if action_id and action.get("action") in _MUT:
             stored = dict(res)
             stored["_action_fingerprint"] = action_fingerprint(action)
+            claim = self._effect_assertion(action, res)
+            if claim is not None:
+                stored["_effect"] = claim
             self.completed[action_id] = stored
         return res
 

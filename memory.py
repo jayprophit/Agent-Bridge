@@ -13,9 +13,18 @@ from typing import Any
 # refused action leaves no content at rest: denial must not become storage.
 # Digests preserve equality, so dedup and continuity keep working on hashes.
 # Paths, commands, decisions and reasons are control metadata and stay.
+#
+# This set is the union of the credential-shaped keys the rest of the Bridge
+# already redacts (runtime.py, nodes/node_transport.py). Keeping it narrower
+# than those sets meant a payload key named `api_key` persisted in cleartext
+# while the same key was scrubbed everywhere else.
 REDACTED_KEYS = frozenset({
+    # arbitrary user payloads
     "content", "old", "new", "edits", "stdin", "body",
-    "secret", "password", "token", "key",
+    # credential-shaped keys
+    "secret", "password", "token", "key", "api_key", "authorization",
+    "private_key", "pairing_token", "challenge", "credential", "credentials",
+    "response",
 })
 
 

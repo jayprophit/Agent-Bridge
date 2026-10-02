@@ -374,6 +374,39 @@ def _contract_outcome(fn):  # type: ignore[no-untyped-def]
     return wrapper
 
 
+def load_completed_records(executor: Any, cpath: Path) -> tuple[int, int]:
+    """Adopt only the completed-action records we could later confirm.
+
+    The store lives in the workspace, so it is a hint written by whoever ran
+    this account last -- not evidence. A record is taken only if it carries a
+    checkable effect assertion and a fingerprint, and even then the executor
+    re-verifies the assertion against the workspace before replaying it.
+    Records we cannot check are counted and dropped: they re-execute under
+    normal approval, which is slower but honest.
+
+    Returns (adopted, dropped).
+    """
+    try:
+        if not Path(cpath).exists():
+            return 0, 0
+        loaded = json.loads(Path(cpath).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return 0, 0
+    if not isinstance(loaded, dict):
+        return 0, 0
+    kept: dict[str, Any] = {}
+    dropped = 0
+    for aid, rec in loaded.items():
+        if (isinstance(rec, dict)
+                and isinstance(rec.get("_effect"), dict)
+                and isinstance(rec.get("_action_fingerprint"), str)):
+            kept[aid] = rec
+        else:
+            dropped += 1
+    executor.completed.update(kept)
+    return len(kept), dropped
+
+
 @_contract_outcome
 def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                providers: dict[str, Any] | None = None,
@@ -527,17 +560,18 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
         executor.context["owner"] = _owner_capabilities()
     if not dry:
         # crash-recovery: reload completed action IDs for this session so a
-        # resumed run never re-executes a recorded mutation.
-        try:
-            cpath = (cfg.workspace / ".bridge" / "sessions" / session.session_id
-                     / "completed_actions.json")
-            if cpath.exists():
-                loaded = json.loads(cpath.read_text(encoding="utf-8"))
-                if isinstance(loaded, dict):
-                    executor.completed.update(loaded)
-                    logger.human(f"RECOVERY loaded {len(loaded)} completed action(s)")
-        except (OSError, ValueError):
-            pass
+        # resumed run never re-executes a recorded mutation. The store is an
+        # unauthenticated file, so it is loaded as a *hint* only.
+        _cpath = (cfg.workspace / ".bridge" / "sessions" / session.session_id
+                  / "completed_actions.json")
+        _kept, _dropped = load_completed_records(executor, _cpath)
+        if _kept or _dropped:
+            logger.human(f"RECOVERY loaded {_kept} completed action(s)")
+        if _dropped:
+            logger.human(
+                "RECOVERY dropped %d completed action record(s) with no checkable "
+                "effect; they will re-execute under normal approval rather than be "
+                "reported as done" % _dropped)
     if approval_interface is not None:
         approval_iface = approval_interface
     elif cfg.non_interactive:
@@ -858,30 +892,30 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
         try:
             d = cfg.workspace / ".bridge" / "sessions" / session.session_id
             d.mkdir(parents=True, exist_ok=True)
+            from executor import atomic_write_text
+            from memory import redact_persisted
             snap = session.snapshot(
                 models={r: routes[r].model for r in routes},
                 prompt_profile=prompt_name, terminal=terminal,
                 fallback_log=fallback_log)
-            (d / "session.json").write_text(json.dumps(snap, indent=2)[:200000],
-                                            encoding="utf-8")
-            from memory import redact_persisted
+            # Every durable artifact is replaced atomically: a truncated state
+            # file is indistinguishable from a short one, and the loader
+            # cannot tell a torn record from a real one.
+            atomic_write_text(d / "session.json",
+                              json.dumps(snap, indent=2)[:200000])
             # History archives carry actions; payloads are redacted at rest
             # while verbs, targets, decisions and reasons stay for forensics.
-            (d / "history.jsonl").write_text(
-                "\n".join(json.dumps(redact_persisted(h), default=str)[:4000]
-                           for h in history[-200:]),
-                encoding="utf-8")
+            atomic_write_text(d / "history.jsonl",
+                              "\n".join(json.dumps(redact_persisted(h), default=str)[:4000]
+                                        for h in history[-200:]))
             appr = {"session_approved": sorted(approval.session_approved),
                     "level": approval.level}
-            (d / "approvals.json").write_text(json.dumps(appr, indent=2),
-                                              encoding="utf-8")
-            (d / "completed_actions.json").write_text(
-                json.dumps(executor.completed, default=str)[:500000],
-                encoding="utf-8")
+            atomic_write_text(d / "approvals.json", json.dumps(appr, indent=2))
+            atomic_write_text(d / "completed_actions.json",
+                              json.dumps(executor.completed, default=str)[:500000])
             try:
-                (d / "contract.json").write_text(
-                    json.dumps(cx.to_dict(), indent=1)[:500000],
-                    encoding="utf-8")
+                atomic_write_text(d / "contract.json",
+                                  json.dumps(cx.to_dict(), indent=1)[:500000])
             except (OSError, ValueError):
                 pass
             try:

@@ -924,9 +924,13 @@ class AgentRuntime:
             return {"ok": True, "diff": diff or "(no changes)"}
         # session/checkpoint diff from manifest blobs
         mgr_dir = s.workspace / ".bridge" / "checkpoints"
+        from checkpoints import _valid_label
         diffs = []
-        labels = [label] if label else sorted(p.name for p in mgr_dir.iterdir()
-                                              if p.is_dir())
+        try:
+            labels = ([_valid_label(label)] if label
+                      else sorted(p.name for p in mgr_dir.iterdir() if p.is_dir()))
+        except (ValueError, OSError) as e:
+            return {"ok": False, "error": f"invalid checkpoint label: {e}"}
         for lbl in labels[:5]:
             man = mgr_dir / lbl / "manifest.json"
             if not man.exists():
@@ -939,10 +943,14 @@ class AgentRuntime:
                 if target == "session" or True:
                     b = ""
                     if en.get("backup"):
+                        # Same trust-root rule as rollback: a backup path must
+                        # resolve inside the checkpoint store, or the diff view
+                        # becomes a read primitive for the whole disk.
                         try:
-                            b = (s.workspace / en["backup"]).read_bytes().decode(
-                                "utf-8", "replace")
-                        except OSError:
+                            bp = (s.workspace / en["backup"]).resolve()
+                            bp.relative_to(mgr_dir.resolve())
+                            b = bp.read_bytes().decode("utf-8", "replace")
+                        except (OSError, ValueError):
                             pass
                     t = s.workspace / rel
                     a = t.read_text(encoding="utf-8") if t.is_file() else ""

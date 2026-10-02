@@ -34,14 +34,37 @@ def _utcnow() -> str:
     return datetime.now().isoformat(timespec="seconds")
 
 
+def _valid_label(label: str) -> str:
+    """A checkpoint label is a directory name, not a path.
+
+    Labels arrive from request bodies and diff queries, and they are joined
+    into a path under .bridge. A label carrying separators or traversal would
+    let a caller read or write a manifest outside its own checkpoint, so it is
+    rejected here rather than sanitised into something surprising.
+    """
+    if not isinstance(label, str):
+        raise ValueError("checkpoint label must be a string")
+    lbl = label.strip()
+    if not lbl:
+        raise ValueError("checkpoint label must not be empty")
+    if len(lbl) > 128:
+        raise ValueError("checkpoint label too long")
+    if "/" in lbl or "\\" in lbl or lbl in (".", ".."):
+        raise ValueError(f"checkpoint label must be a single name: {label!r}")
+    if any(ord(ch) < 32 or ch in '<>:"|?*' for ch in lbl):
+        raise ValueError(f"checkpoint label has illegal characters: {label!r}")
+    return lbl
+
+
 class CheckpointManager:
     """File-manifest checkpoints under .bridge/checkpoints (no git needed)."""
 
     def __init__(self, workspace: Path, label: str, owner_mode: bool = False):
         self.workspace = Path(workspace).resolve()
-        self.label = label
+        self.label = _valid_label(label)
         self.owner_mode = owner_mode
-        self.dir = self.workspace / ".bridge" / "checkpoints" / label
+        self.base = self.workspace / ".bridge" / "checkpoints"
+        self.dir = self.base / self.label
         self.manifest_path = self.dir / "manifest.json"
 
     def _target(self, rel: str) -> Path:
@@ -138,7 +161,13 @@ class CheckpointManager:
                 continue
             try:
                 if entry.get("existed") and entry.get("backup"):
-                    bp = self.workspace / entry["backup"]
+                    # The manifest is the trust root for rollback, so the
+                    # backup path it names is validated like any other path:
+                    # it must resolve to a blob inside this checkpoint's own
+                    # directory. An arbitrary path here would copy any
+                    # readable file on the machine into the workspace.
+                    bp = (self.workspace / entry["backup"]).resolve()
+                    bp.relative_to(self.base.resolve())
                     target.parent.mkdir(parents=True, exist_ok=True)
                     target.write_bytes(bp.read_bytes())
                     restored.append(rel)
@@ -148,7 +177,7 @@ class CheckpointManager:
                         removed.append(rel)
                     else:
                         errors.append(f"{rel}: not a file, left in place")
-            except OSError as e:
+            except (OSError, ValueError) as e:
                 errors.append(f"{rel}: {e}")
         return {"ok": not errors, "restored": restored, "removed": removed,
                 "errors": errors}

@@ -68,11 +68,41 @@ class ExecutorIdempotency(unittest.TestCase):
         action = {"action": "write", "path": "a.txt", "content": "one"}
         r1 = self.ex.dispatch(dict(action), action_id="x-2")
         self.assertTrue(r1["ok"], r1)
-        (self.tmp / "a.txt").write_text("external", encoding="utf-8")
         r2 = self.ex.dispatch(dict(action), action_id="x-2")
         self.assertTrue(r2.get("dedup"), r2)
-        # not re-executed: the external change survives
+        self.assertTrue(r2.get("effect_verified"), r2)
+        # not re-executed: the recorded content is still there
+        self.assertEqual((self.tmp / "a.txt").read_text(), "one")
+
+    def test_recorded_success_is_refused_when_the_world_disagrees(self):
+        # The recorded completion says a.txt holds "one". If the world no
+        # longer agrees, replaying that record would report an effect that is
+        # not there. The store is a file any same-user process can edit, so
+        # the world is the only authority: disagreement means the record is
+        # refused outright, and nothing is written.
+        action = {"action": "write", "path": "a.txt", "content": "one"}
+        self.assertTrue(self.ex.dispatch(dict(action), action_id="x-2")["ok"])
+        (self.tmp / "a.txt").write_text("external", encoding="utf-8")
+        r2 = self.ex.dispatch(dict(action), action_id="x-2")
+        self.assertFalse(r2["ok"], r2)
+        self.assertNotIn("dedup", r2)
+        self.assertEqual(r2["kind"], "STALE_IDEMPOTENCY_RECORD")
+        # not re-executed either: the external content is left alone
         self.assertEqual((self.tmp / "a.txt").read_text(), "external")
+
+    def test_forged_record_cannot_certify_an_effect_that_never_happened(self):
+        # A hand-written completed_actions.json entry that matches the
+        # requested fingerprint must not be able to report a mutation that was
+        # never performed.
+        from protocol import action_fingerprint
+        action = {"action": "write", "path": "never.txt", "content": "one"}
+        self.ex.completed["forged"] = {
+            "ok": True, "executed": True, "verified": True,
+            "_action_fingerprint": action_fingerprint(action)}
+        r = self.ex.dispatch(dict(action), action_id="forged")
+        self.assertFalse(r["ok"])
+        self.assertEqual(r["kind"], "STALE_IDEMPOTENCY_RECORD")
+        self.assertFalse((self.tmp / "never.txt").exists())
 
     def test_legacy_entry_without_fingerprint_executes_fresh(self):
         # Entries recorded before fingerprints existed (or forged without one)
