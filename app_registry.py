@@ -232,7 +232,7 @@ def seed_workstation_registry() -> ApplicationRegistry:
         cli=True, api=False, scripting=False, headless=True,
         bridge_adapter="",
         verification_status="PARTIAL", last_verified="2026-10-07",
-        limitations="retested 2026-10-07: feature_extractor RUNS (prior 0xC0000409 crash NOT reproduced) but needs QT_QPA_PLATFORM_PLUGIN_PATH=<install>/bin/plugins/platforms or Qt platform plugin is missing; GPU SIFT matcher yields 0 matches headless (no GL) - CPU flag namespace is --FeatureMatching.use_gpu (4.x); smooth gray renders match nothing (need texture); textured 8-view chain in progress; no bridge adapter yet"))
+        limitations="retested 2026-10-07: feature_extractor RUNS (prior 0xC0000409 crash NOT reproduced) but needs QT_QPA_PLATFORM_PLUGIN_PATH=<install>/bin/plugins/platforms; GPU SIFT matcher yields 0 matches headless (no GL) - CPU flag namespace is --FeatureMatching.use_gpu (4.x); full chain closed 2026-10-07: Blender 10 textured views -> extract (500-950 SIFT/view w/ relaxed thresholds) -> CPU match -> mapper, but init rejects (best 55 inliers; synthetic repetitive texture aliases, even init_min_num_inliers=30 triangulates bad); needs REAL textured photos for a model; no bridge adapter yet"))
     reg.register(ApplicationRecord(
         app_id="gmsh", name="Gmsh", version="4.15.2 (pip API)",
         executable="(Python API, pip user install)",
