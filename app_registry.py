@@ -231,8 +231,8 @@ def seed_workstation_registry() -> ApplicationRegistry:
         native_formats=(), import_formats=("JPG", "PNG"), export_formats=("PLY", "NVM"),
         cli=True, api=False, scripting=False, headless=True,
         bridge_adapter="",
-        verification_status="PARTIAL", last_verified="2026-10-06",
-        limitations="CLI/help/option-validation work; feature_extractor crashes deterministically (exit 0xC0000409, zero output) on this machine; 8 Blender bracket views preserved as ready input"))
+        verification_status="PARTIAL", last_verified="2026-10-07",
+        limitations="retested 2026-10-07: feature_extractor RUNS (prior 0xC0000409 crash NOT reproduced) but needs QT_QPA_PLATFORM_PLUGIN_PATH=<install>/bin/plugins/platforms or Qt platform plugin is missing; GPU SIFT matcher yields 0 matches headless (no GL) - CPU flag namespace is --FeatureMatching.use_gpu (4.x); smooth gray renders match nothing (need texture); textured 8-view chain in progress; no bridge adapter yet"))
     reg.register(ApplicationRecord(
         app_id="gmsh", name="Gmsh", version="4.15.2 (pip API)",
         executable="(Python API, pip user install)",
