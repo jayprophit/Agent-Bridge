@@ -188,7 +188,7 @@ def seed_workstation_registry() -> ApplicationRegistry:
         cli=True, api=False, scripting=False, headless=True,
         bridge_adapter="cura_adapter.py",
         verification_status="VERIFIED", last_verified="2026-10-07",
-        limitations="standalone slice PROVEN 2026-10-07: 10mm box STL + shipped fdmprinter/fdmextruder defs + roofing_layer_count=0 + flooring_layer_count=0 (bare chain dies mid-slice without them) -> 576863B gcode, 298 layers, 13832 G1 moves; cura_adapter.py wraps the proven invocation"))
+        limitations="closure-proven 2026-10-07: standalone slice (10mm box -> 576863B gcode, 298 layers, 13832 G1 moves; roofing/flooring_layer_count=0 required) + Agent Bridge chain supervisor->worker->cura_adapter->CuraEngine->verified gcode (supervised-workers Path C); definitions resolved from install share"))
     reg.register(ApplicationRecord(
         app_id="kicad", name="KiCad", version="10.0.6",
         executable="%LOCALAPPDATA%/Programs/KiCad/10.0/bin/kicad-cli.exe",
@@ -341,9 +341,9 @@ def seed_workstation_registry() -> ApplicationRegistry:
         native_formats=(".mo", ".mos", ".mat"),
         import_formats=(".mo",), export_formats=(".mat", ".csv", ".plt"),
         cli=True, api=True, scripting=True, headless=True,
-        bridge_adapter="",
-        verification_status="PARTIAL", last_verified="2026-10-07",
-        limitations="omc decay-model sim PROVEN 2026-10-07: load+frontend+backend+C-compile(117s)+dassl sim ok, x(2)=0.1353 exactly e^-2; .mos scripts are the automation surface (run with correct cwd); no bridge adapter yet"))
+        bridge_adapter="openmodelica_adapter.py",
+        verification_status="VERIFIED", last_verified="2026-10-07",
+        limitations="closure-proven 2026-10-07: direct omc decay sim (x(2)=0.1353, e^-2) + Agent Bridge chain supervisor->worker->openmodelica_adapter->omc->Decay_res.mat with transcript marker + numeric check (test_openmodelica_adapter.py, supervised-workers Path D); .mos scripts run with cwd=workdir; first compile ~31-117s so budgets stay >=600s"))
     # New 2026-10-07 discoveries: tools with no prior record at all.
     reg.register(ApplicationRecord(
         app_id="gimp", name="GIMP", version="3.2.6",

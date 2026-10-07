@@ -1,0 +1,16 @@
+# Agent Bridge reproducible test/runtime lockfile.
+#
+# The runtime itself remains dependency-free by design: every third-party
+# package below is either an optional capability (psutil/PyYAML) or part of
+# the pytest runner used for verification. Pinning them here does not widen
+# the accepted pyproject ranges; it records the exact versions this tree was
+# verified against, so a later install can reproduce verification rather than
+# merely satisfy ranges.
+colorama==0.4.6
+iniconfig==2.3.0
+packaging==26.3
+pluggy==1.6.0
+psutil==7.2.2
+Pygments==2.21.0
+pytest==9.1.1
+PyYAML==6.0.3
