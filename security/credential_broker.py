@@ -27,6 +27,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional, Protocol
 
+from .keepass_bridge import KeePassBridge, KeePassBridgeError
+
 logger = logging.getLogger("aetherius.credential_broker")
 
 # ---- Vault states (§4, §23) ----
@@ -147,8 +149,8 @@ class CredentialBroker:
     def register_adapter(self, adapter: VaultAdapter) -> None:
         """Register a vault adapter (§2, §12)."""
         self._adapter = adapter
-        self._log_audit("BROKER_INIT", "BROKER", adapter.adapter_id,
-                       "REGISTER", "success", "system")
+        self._log_audit(adapter.adapter_id, "BROKER", "REGISTER",
+                        "SUCCESS", "system")
 
     def set_worker_access(self, worker_id: str, access_level: str) -> None:
         """Set a worker's vault access level (§8)."""
@@ -488,25 +490,35 @@ class InMemoryVaultAdapter:
 
 
 class KeePassAdapter:
-    """KeePass v2 adapter using KeePass.exe CLI mode (§12).
+    """KeePass v2 adapter — real database via the pykeepass subprocess bridge (§12).
 
-    Discovers the KeePass installation and database path dynamically.
-    Uses subprocess to invoke KeePass CLI for operations.
+    Two-layer design:
 
-    The master password is passed per-operation and NEVER stored.
+        KeePassAdapter   (in-process policy + reference layer)
+            -> KeePassBridge   (spawns a short-lived child process)
+                -> keepass_bridge_worker.py  (pykeepass, real .kdbx)
+
+    The master password is passed per-operation to the bridge and NEVER
+    stored on this object. `lock()` clears any cached session state.
+
+    Discovery (§21 step 1-3): the KeePass executable and the .kdbx path are
+    both discovered at construction. An owner-supplied path always wins.
     """
 
     adapter_id = "keepass"
 
-    def __init__(self):
+    def __init__(self, db_path: str | None = None,
+                 interpreter: str | None = None):
         self._db_path: Optional[str] = None
         self._keepass_exe: Optional[str] = None
         self._unlocked = False
+        self._master_password: Optional[str] = None  # session-scoped only
+        self._bridge = KeePassBridge(db_path=db_path, interpreter=interpreter)
         self._discover_installation()
+        self._db_path = self._bridge.db_path
 
     def _discover_installation(self) -> None:
         """Discover KeePass installation (§21 step 1-3)."""
-        # Check standard KeePass 2 installation paths
         candidates = [
             os.environ.get("PROGRAMFILES", "C:/Program Files") + "/KeePass Password Safe 2/KeePass.exe",
             os.environ.get("PROGRAMFILES", "C:/Program Files") + "/KeePass/KeePass.exe",
@@ -517,70 +529,152 @@ class KeePassAdapter:
                 self._keepass_exe = path
                 break
 
+    def set_database_path(self, db_path: str) -> None:
+        """Point the adapter at a specific .kdbx file (§21 step 2)."""
+        self._bridge = KeePassBridge(db_path=db_path,
+                                     interpreter=self._bridge.interpreter)
+        self._db_path = self._bridge.db_path
+
+    @property
+    def bridge(self) -> KeePassBridge:
+        """Direct bridge access — used by CLI tooling and diagnostics."""
+        return self._bridge
+
+    @property
+    def vault_state(self) -> str:
+        return VAULT_UNLOCKED if self._unlocked else VAULT_LOCKED
+
+    def unlock(self, master_password: str) -> bool:
+        """Unlock the database for this session (§4, §23).
+
+        Verifies the password once via the bridge, then holds it ONLY in
+        this object's memory for the duration of the session. The password
+        is never written to disk and never logged.
+        """
+        if not self._bridge.ready():
+            return False
+        try:
+            self._bridge.verify(master_password)
+        except KeePassBridgeError as exc:
+            logger.warning(f"KeePass unlock failed: {exc.error_code}")
+            self._unlocked = False
+            return False
+        self._master_password = master_password
+        self._unlocked = True
+        return True
+
     def status(self) -> dict:
+        bridge_status = self._bridge.status()
+        container = {}
+        if bridge_status.get("db_present"):
+            try:
+                container = self._bridge.header()
+            except KeePassBridgeError:
+                container = {"signature_valid": False}
         return {
             "adapter_id": self.adapter_id,
             "vault_state": VAULT_UNLOCKED if self._unlocked else VAULT_LOCKED,
             "keepass_installed": self._keepass_exe is not None,
+            "keepass_exe": self._keepass_exe,
             "database_path": self._db_path,
+            "db_present": bridge_status.get("db_present", False),
+            "bridge_ready": bridge_status.get("ready", False),
+            "kdbx_signature_valid": container.get("signature_valid", False),
+            "kdbx_major_version": container.get("major_version"),
             "auth_required": not self._unlocked,
         }
-
-    def set_database_path(self, db_path: str) -> None:
-        """Set the KeePass database path (§21 step 2)."""
-        self._db_path = db_path
 
     def status_str(self) -> str:
         return VAULT_UNLOCKED if self._unlocked else VAULT_LOCKED
 
+    def _require_session(self) -> bool:
+        """Fail closed unless the adapter is unlocked with a live password."""
+        return self._unlocked and self._master_password is not None
+
     def list_metadata(self, project: str | None = None) -> list:
-        """List credential metadata via KeePass CLI (no secrets)."""
-        # KeePass CLI does not have a direct 'list' command without unlocking.
-        # This requires the database to be unlocked first.
-        if not self._unlocked:
+        """List credential metadata via the bridge (no secrets) (§16)."""
+        if not self._require_session():
             return []
-        result = self._run_keepass(["list"])
-        if result:
-            lines = result.strip().split("\n")
-            return [{"entry": line} for line in lines if line]
-        return []
+        try:
+            entries = self._bridge.list_metadata(self._master_password)
+        except KeePassBridgeError as exc:
+            logger.warning(f"KeePass list_metadata failed: {exc.error_code}")
+            return []
+        return [
+            {
+                "credential_id": e.get("title", ""),
+                "service": e.get("url", ""),
+                "account_label": e.get("username", ""),
+                "purpose": e.get("notes", ""),
+                "group": e.get("group_path", ""),
+            }
+            for e in entries
+        ]
 
     def read_entry(self, credential_id: str,
                    master_password: str | None = None) -> str:
         """Read a credential value from KeePass by entry title (§7).
 
-        Uses KeePass.exe -- stdout mode to extract the password field.
-        The master password is passed via stdin prompt, never stored.
+        The credential_id doubles as the KeePass entry title, which is the
+        stable reference used across Aetherius (e.g. CRED-OPENROUTER-PRIMARY).
+
+        A per-call `master_password` overrides the session password; if the
+        adapter was never unlocked the call fails closed.
         """
-        if not self._keepass_exe or not self._db_path:
+        password = master_password or self._master_password
+        if not self._bridge.ready() or not password:
             return ""
-        # KeePass CLI mode: we need to unlock and query.
-        # This is a simplified implementation — full KeePass CLI integration
-        # requires KeePassRPC or the KeePass plugin ecosystem.
-        # For now, we raise NotImplementedError and the broker falls back.
-        return ""
+        try:
+            result = self._bridge.read_entry(credential_id, password)
+        except KeePassBridgeError as exc:
+            logger.warning(f"KeePass read_entry failed for {credential_id}: "
+                           f"{exc.error_code}")
+            return ""
+        return result.get("password", "")
 
     def create_entry(self, credential_id: str, secret_value: str,
                      metadata: dict, master_password: str | None = None) -> bool:
         """Create a new entry in KeePass (§15)."""
-        if not self._keepass_exe or not self._db_path:
+        password = master_password or self._master_password
+        if not self._bridge.ready() or not password:
             return False
-        return False  # Requires full CLI integration
+        try:
+            self._bridge.create_entry(
+                title=credential_id,
+                secret=secret_value,
+                password=password,
+                username=metadata.get("account", ""),
+                url=metadata.get("service", ""),
+                notes=metadata.get("purpose", ""),
+                group="Aetherius",
+            )
+            return True
+        except KeePassBridgeError as exc:
+            logger.warning(f"KeePass create_entry failed: {exc.error_code}")
+            return False
 
     def update_entry(self, credential_id: str, secret_value: str,
                      master_password: str | None = None) -> bool:
         """Update an existing entry in KeePass (§15)."""
-        if not self._keepass_exe or not self._db_path:
+        password = master_password or self._master_password
+        if not self._bridge.ready() or not password:
             return False
-        return False  # Requires full CLI integration
+        try:
+            self._bridge.update_entry(
+                title=credential_id, password=password, secret=secret_value)
+            return True
+        except KeePassBridgeError as exc:
+            logger.warning(f"KeePass update_entry failed: {exc.error_code}")
+            return False
 
     def lock(self) -> bool:
+        """Lock the vault — drop the session password from memory (§3, §23)."""
         self._unlocked = False
-        self._db_path = None
+        self._master_password = None
         return True
 
     def _run_keepass(self, args: list, input_text: str | None = None) -> str:
-        """Run a KeePass CLI command (§12 — supported CLI as last resort)."""
+        """Legacy KeePass.exe CLI passthrough (§12 — last resort only)."""
         if not self._keepass_exe:
             return ""
         try:

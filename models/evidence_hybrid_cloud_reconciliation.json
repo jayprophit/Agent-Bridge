@@ -8,23 +8,64 @@
     "local_head": "bab898745683a189df20a81b3cee15bf71680d10",
     "remote_head": "bab898745683a189df20a81b3cee15bf71680d10",
     "remote_verified": true,
-    "commits_pushed": ["a8fa0d6", "ba2747b", "bab8987"]
+    "commits_pushed": [
+      "a8fa0d6",
+      "ba2747b",
+      "bab8987"
+    ]
   },
   "tests": {
-    "hybrid_cloud": {"file": "tests/test_hybrid_cloud_p0.py", "total": 29, "passed": 29, "failed": 0},
-    "knowledge_fabric_v1": {"file": "tests/test_ai_gateway_and_knowledge_fabric.py", "total": 23, "passed": 23, "failed": 0},
-    "knowledge_fabric_v2": {"file": "tests/test_ai_gateway_and_knowledge_fabric_v2.py", "total": 24, "passed": 24, "failed": 0},
-    "credential_broker": {"file": "tests/test_credential_broker.py", "total": 14, "passed": 14, "failed": 0},
-    "team_execution_fabric": {"file": "tests/test_team_execution_fabric.py", "total": 23, "passed": 23, "failed": 0},
-    "data_service_registry": {"file": "tests/test_data_service_registry.py", "total": 30, "passed": 30, "failed": 0},
-    "all_total": 143,
-    "all_passed": 143,
+    "hybrid_cloud": {
+      "file": "tests/test_hybrid_cloud_p0.py",
+      "total": 29,
+      "passed": 29,
+      "failed": 0
+    },
+    "knowledge_fabric_v1": {
+      "file": "tests/test_ai_gateway_and_knowledge_fabric.py",
+      "total": 23,
+      "passed": 23,
+      "failed": 0
+    },
+    "knowledge_fabric_v2": {
+      "file": "tests/test_ai_gateway_and_knowledge_fabric_v2.py",
+      "total": 24,
+      "passed": 24,
+      "failed": 0
+    },
+    "credential_broker": {
+      "file": "tests/test_credential_broker.py",
+      "total": 14,
+      "passed": 14,
+      "failed": 0
+    },
+    "team_execution_fabric": {
+      "file": "tests/test_team_execution_fabric.py",
+      "total": 23,
+      "passed": 23,
+      "failed": 0
+    },
+    "data_service_registry": {
+      "file": "tests/test_data_service_registry.py",
+      "total": 30,
+      "passed": 30,
+      "failed": 0
+    },
+    "all_total": 187,
+    "all_passed": 187,
     "all_skipped": 0,
-    "all_failed": 0
+    "all_failed": 0,
+    "keepass_bridge": {
+      "file": "tests/test_keepass_bridge.py",
+      "total": 44,
+      "passed": 44,
+      "failed": 0
+    }
   },
   "owner_blockers": [
-    "Free cloud provider API credentials (OpenRouter, Groq, Gemini, HuggingFace, DeepSeek) flagged as previously exposed - require owner rotation before cloud routing/failover verification",
-    "RESOLUTION PATH: Credential Broker + KeePass adapter implemented. Owner rotates credentials into KeePass via stable reference (e.g. CRED-OPENROUTER-PRIMARY). Broker retrieves and injects locally - secrets never reach cloud workers or model prompts."
+    "Cloud provider credentials (OpenRouter, Groq, Gemini, HuggingFace, DeepSeek) flagged as previously exposed - require owner rotation before cloud routing/failover verification",
+    "RESOLUTION PATH: Credential Broker + real KeePass bridge implemented and verified against the owner database at C:/Users/jpowe/Documents/Database.kdbx. Owner rotates credentials into KeePass under stable references (e.g. CRED-OPENROUTER-PRIMARY); the broker reads them locally so secrets never reach cloud workers or model prompts.",
+    "REMAINING OWNER ACTION: unlock the vault (master password entered by the owner only, never in prompts/logs/git) and store the rotated provider credentials as Aetherius entries."
   ],
   "verified_enterprise_foundation": {
     "description": "Only evidence actually demonstrated during the Enterprise phase. Do NOT downgrade these.",
@@ -73,28 +114,97 @@
   "hybrid_cloud_candidates_requiring_live_reverification": {
     "description": "All cloud/provider/model/VM claims that need the next programme (Hybrid Cloud) to validate.",
     "claims": [
-      {"claim": "anthropic/claude-3-sonnet available as free via OpenRouter", "status": "BLOCKED_OWNER", "reason": "OpenRouter credential flagged as exposed; zero-cost route not proven"},
-      {"claim": "Claude-3-Sonnet as free Hugging Face inference route with 5M token monthly quota", "status": "UNVERIFIED", "reason": "No evidence; quota not confirmed via provider metadata"},
-      {"claim": "AWS EC2 t4g.micro as generic free-tier execution target", "status": "UNVERIFIED", "reason": "No owner AWS account evidence"},
-      {"claim": "2-vCPU / 4-GB free VM available", "status": "UNVERIFIED", "reason": "No cloud VM spun up"},
-      {"claim": "Exact cloud quotas for OpenRouter/Groq/Gemini/HuggingFace/DeepSeek", "status": "BLOCKED_OWNER", "reason": "Credentials flagged as exposed"},
-      {"claim": "Cloud latencies measured", "status": "UNVERIFIED", "reason": "No remote inference executed"},
-      {"claim": "Remote Ollama server proof", "status": "UNVERIFIED", "reason": "Only local Ollama verified"},
-      {"claim": "Cloud sandbox provisioning", "status": "UNVERIFIED", "reason": "No sandbox spun up"},
-      {"claim": "Cloud worker execution proof", "status": "BLOCKED_OWNER", "reason": "No cloud credentials available"},
-      {"claim": "Provider failover local to cloud", "status": "UNVERIFIED", "reason": "No cloud target verified"},
-      {"claim": "10M token free quota on any provider", "status": "REJECTED", "reason": "No evidence; do not invent free quotas"}
+      {
+        "claim": "anthropic/claude-3-sonnet available as free via OpenRouter",
+        "status": "BLOCKED_OWNER",
+        "reason": "OpenRouter credential flagged as exposed; zero-cost route not proven"
+      },
+      {
+        "claim": "Claude-3-Sonnet as free Hugging Face inference route with 5M token monthly quota",
+        "status": "UNVERIFIED",
+        "reason": "No evidence; quota not confirmed via provider metadata"
+      },
+      {
+        "claim": "AWS EC2 t4g.micro as generic free-tier execution target",
+        "status": "UNVERIFIED",
+        "reason": "No owner AWS account evidence"
+      },
+      {
+        "claim": "2-vCPU / 4-GB free VM available",
+        "status": "UNVERIFIED",
+        "reason": "No cloud VM spun up"
+      },
+      {
+        "claim": "Exact cloud quotas for OpenRouter/Groq/Gemini/HuggingFace/DeepSeek",
+        "status": "BLOCKED_OWNER",
+        "reason": "Credentials flagged as exposed"
+      },
+      {
+        "claim": "Cloud latencies measured",
+        "status": "UNVERIFIED",
+        "reason": "No remote inference executed"
+      },
+      {
+        "claim": "Remote Ollama server proof",
+        "status": "UNVERIFIED",
+        "reason": "Only local Ollama verified"
+      },
+      {
+        "claim": "Cloud sandbox provisioning",
+        "status": "UNVERIFIED",
+        "reason": "No sandbox spun up"
+      },
+      {
+        "claim": "Cloud worker execution proof",
+        "status": "BLOCKED_OWNER",
+        "reason": "No cloud credentials available"
+      },
+      {
+        "claim": "Provider failover local to cloud",
+        "status": "UNVERIFIED",
+        "reason": "No cloud target verified"
+      },
+      {
+        "claim": "10M token free quota on any provider",
+        "status": "REJECTED",
+        "reason": "No evidence; do not invent free quotas"
+      }
     ]
   },
   "cloud_provider_status": {
-    "openrouter": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
-    "groq": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
-    "gemini": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
-    "huggingface": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
-    "deepseek": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
-    "anthropic": {"status": "PAID_DISABLED", "reason": "no free route verified"},
-    "ollama": {"status": "VERIFIED_LIVE", "url": "http://localhost:11434", "model_count": 17},
-    "openai": {"status": "PAID_DISABLED", "reason": "no free-tier model verified"}
+    "openrouter": {
+      "status": "BLOCKED_OWNER",
+      "reason": "credential previously exposed"
+    },
+    "groq": {
+      "status": "BLOCKED_OWNER",
+      "reason": "credential previously exposed"
+    },
+    "gemini": {
+      "status": "BLOCKED_OWNER",
+      "reason": "credential previously exposed"
+    },
+    "huggingface": {
+      "status": "BLOCKED_OWNER",
+      "reason": "credential previously exposed"
+    },
+    "deepseek": {
+      "status": "BLOCKED_OWNER",
+      "reason": "credential previously exposed"
+    },
+    "anthropic": {
+      "status": "PAID_DISABLED",
+      "reason": "no free route verified"
+    },
+    "ollama": {
+      "status": "VERIFIED_LIVE",
+      "url": "http://localhost:11434",
+      "model_count": 17
+    },
+    "openai": {
+      "status": "PAID_DISABLED",
+      "reason": "no free-tier model verified"
+    }
   },
   "knowledge_fabric_maturity": {
     "context_broker": "VERIFIED",
@@ -128,19 +238,15 @@
   },
   "credential_broker_maturity": {
     "credential_broker": "VERIFIED (policy enforcement layer)",
-    "keepass_adapter": "DISCOVERED (keepass.exe found at C:/Program Files/KeePass Password Safe 2/KeePass.exe)",
-    "keepass_database": "NOT_FOUND (not at standard paths; owner to specify path)",
+    "keepass_adapter": "VERIFIED (real .kdbx via pykeepass subprocess bridge; keepass.exe at C:/Program Files/KeePass Password Safe 2/KeePass.exe)",
+    "keepass_database": "VERIFIED (owner-supplied C:/Users/jpowe/Documents/Database.kdbx; KDBX v4, signature valid, 2199 bytes, header parse without password)",
     "credential_references": "VERIFIED (stable IDs supported)",
-    "scoped_access_levels": "VERIFIED (6 levels enforced)",
-    "audit_trail": "VERIFIED (never logs secrets)",
-    "rotation_workflow": "VERIFIED (REVOKE + re-store)",
-    "non_sensitive_test_entry": "VERIFIED (AETHERIUS-TEST-CREDENTIAL)",
-    "data_service_registry": "VERIFIED (30+ services pre-registered from §53)",
-    "data_service_adapter_protocol": "VERIFIED (DataServiceAdapter + LocalFileAdapter)",
-    "data_policy_engine": "VERIFIED (default-deny, specificity-based rule resolution)",
-    "proton_pass_adapter": "VERIFIED (adapter registered, CLI not installed, OWNER_ACTION_REQUIRED)",
-    "bitwarden_adapter": "VERIFIED (adapter registered, CLI not installed, OWNER_ACTION_REQUIRED)",
-    "live_inventory": "VERIFIED (KeePass + Docker found installed; others NOT_INSTALLED)"
+    "bridge_transport": "VERIFIED (one short-lived child process per request; master password on stdin PIPE only, never argv/disk/logs)",
+    "crypto_isolation": "VERIFIED (pykeepass venv lives outside the repo at ~/.aetherius/venvs/kdbx313 so the hygiene gate is not weakened)",
+    "upsert_semantics": "VERIFIED (re-store/rotation updates in place; KeePass rejects duplicate titles within a group)",
+    "fail_closed": "VERIFIED (explicit db_path/interpreter are authoritative; a missing target errors instead of falling back to the owner's real vault)",
+    "audit_safety": "VERIFIED (audit trail and metadata listing contain no secret values)",
+    "secret_hygiene": "VERIFIED (7/7 hygiene tests pass after removing the hardcoded personal path in data_fabric/default_registry.py)"
   },
   "next_authorized_major_programme": "AETHERIUS HYBRID AI CLOUD / MODEL INFERENCE FABRIC",
   "next_phase_status": "READY_FOR_FRESH_CHAT",

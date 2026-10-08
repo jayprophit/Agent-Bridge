@@ -6,10 +6,29 @@ Others are NOT_INSTALLED or EVALUATION.
 
 This is project configuration data — no secrets.
 """
+import os
+
 from data_fabric.data_service_registry import (
     DataServiceRegistry, DataServiceEntry,
     AppState, SourceModel, SourceType, DataClass,
 )
+
+
+def _resolve_user_local_path(relative: str) -> str:
+    """Resolve a per-user LOCALAPPDATA path without hardcoding a username.
+
+    The repository is PUBLIC and `tests/test_secret_hygiene.py` rejects
+    personal absolute paths in source, so no `C:/Users/<name>/...` literal
+    may appear here. Returns the resolved path when the target exists and
+    the template path otherwise (state stays accurate, source stays clean).
+    """
+    base = os.environ.get("LOCALAPPDATA", "")
+    if base:
+        candidate = os.path.join(base, *relative.split("/"))
+        if os.path.isfile(candidate):
+            return candidate.replace("\\", "/")
+    return "%LOCALAPPDATA%/" + relative
+
 
 def build_default_registry() -> DataServiceRegistry:
     """Build the canonical registry with all §53 services pre-registered."""
@@ -598,7 +617,9 @@ def build_default_registry() -> DataServiceRegistry:
             source_type=SourceType.CLOSED_SOURCE,
             pricing="free",
             state=AppState.INSTALLED,
-            installation_path="C:/Users/jpowe/AppData/Local/GitHubDesktop/GitHubDesktop.exe",
+            # Resolved at load time, never hardcoded: the repo is PUBLIC and
+            # personal absolute paths are a hygiene violation.
+            installation_path=_resolve_user_local_path("GitHubDesktop/GitHubDesktop.exe"),
             data_classes=[DataClass.SOURCE_CODE.value],
             privacy_ceiling="PRIVACY_PROJECT",
             has_cli=True,
