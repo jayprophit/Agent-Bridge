@@ -51,14 +51,20 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 187,
-    "all_passed": 187,
+    "all_total": 242,
+    "all_passed": 242,
     "all_skipped": 0,
     "all_failed": 0,
     "keepass_bridge": {
       "file": "tests/test_keepass_bridge.py",
       "total": 44,
       "passed": 44,
+      "failed": 0
+    },
+    "migration_provenance": {
+      "file": "tests/test_migration_provenance.py",
+      "total": 55,
+      "passed": 55,
       "failed": 0
     }
   },
@@ -255,5 +261,20 @@
     "do_not_start_hybrid_cloud_in_this_chat": true,
     "do_not_invent_free_quotas": true,
     "stop_after_corrected_handoff": true
+  },
+  "migration_programme_status": {
+    "phase": "LIVE AUDIT IN PROGRESS - ZERO DELETIONS AUTHORISED",
+    "inventory_basis": "Aetherius_GitHub_Repository_Inventory_2026-10-02.csv: 394 repos = 44 ORIGINAL + 350 FORK_CANDIDATE",
+    "catalog_ingested": "350 rows, 18 categories, 233 HIGH / 107 MEDIUM / 10 LOW confidence",
+    "gate_enforcement": "VERIFIED (11 strictly-ordered gates; skipping raises GateError; enforced in code not convention)",
+    "deletion_authority": "VERIFIED (requires all gates + deletable disposition + known unique-commit status + preservation ref + REMOTE-verified destination commit; local commit is not sufficient)",
+    "provenance_permanence": "VERIFIED (record survives fork deletion; never keyed on repository existence; append-only)",
+    "live_audit_batch_1": "10/10 VERIFY_UPSTREAM rows resolved to real upstreams with zero unique commits",
+    "forks_audited": 10,
+    "forks_remaining_not_checked": 340,
+    "deletions_authorised": 0,
+    "dispositions": "all 10 records PENDING_AUDIT at GATE_1",
+    "auditor_is_read_only": "VERIFIED (no delete/archive/mutation verb in migration/auditor.py; asserted by test)",
+    "next_action": "continue bounded live audits 10-25 repos per run, then assign canonical owner + strategy per verified fork"
   }
 }
