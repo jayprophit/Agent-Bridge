@@ -14,13 +14,14 @@
     "hybrid_cloud": {"file": "tests/test_hybrid_cloud_p0.py", "total": 29, "passed": 29, "failed": 0},
     "knowledge_fabric_v1": {"file": "tests/test_ai_gateway_and_knowledge_fabric.py", "total": 23, "passed": 23, "failed": 0},
     "knowledge_fabric_v2": {"file": "tests/test_ai_gateway_and_knowledge_fabric_v2.py", "total": 24, "passed": 24, "failed": 0},
-    "all_total": 76,
-    "all_passed": 76,
+    "all_total": 90,
+    "all_passed": 90,
     "all_skipped": 0,
     "all_failed": 0
   },
   "owner_blockers": [
-    "Free cloud provider API credentials (OpenRouter, Groq, Gemini, HuggingFace, DeepSeek) flagged as previously exposed - require owner rotation before cloud routing/failover verification"
+    "Free cloud provider API credentials (OpenRouter, Groq, Gemini, HuggingFace, DeepSeek) flagged as previously exposed - require owner rotation before cloud routing/failover verification",
+    "RESOLUTION PATH: Credential Broker + KeePass adapter implemented. Owner rotates credentials into KeePass via stable reference (e.g. CRED-OPENROUTER-PRIMARY). Broker retrieves and injects locally — secrets never reach cloud workers or model prompts."
   ],
   "verified_enterprise_foundation": {
     "description": "Only evidence actually demonstrated during the Enterprise phase. Do NOT downgrade these.",
@@ -45,7 +46,14 @@
       "Docker v29.7.2 (VERIFIED_LIVE)",
       "WSL 2.7.14 (VERIFIED_CONFIGURED)",
       "GitHub CLI authenticated as jayprophit (VERIFIED_LIVE)",
-      "76 of 76 tests pass (0 skipped, 0 failed)"
+      "76 of 76 tests pass (0 skipped, 0 failed)",
+      "Credential Broker implemented with CredentialBroker + VaultAdapter Protocol + InMemoryVaultAdapter + KeePassAdapter",
+      "14 credential broker tests pass (non-sensitive test entry AETHERIUS-TEST-CREDENTIAL)",
+      "KeePass v2 discovered at C:/Program Files/KeePass Password Safe 2/KeePass.exe",
+      "Credential references supported (e.g. CRED-OPENROUTER-PRIMARY)",
+      "Scoped access levels: NO_VAULT_ACCESS, METADATA_ONLY, READ_SCOPED, READ_WRITE_SCOPED, ROTATION_SCOPED, ADMIN_OWNER_ONLY",
+      "Audit trail implemented — never logs secret values",
+      "90 of 90 tests pass (0 skipped, 0 failed)"
     ]
   },
   "hybrid_cloud_candidates_requiring_live_reverification": {
