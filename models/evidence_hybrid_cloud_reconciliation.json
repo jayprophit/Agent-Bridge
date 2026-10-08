@@ -1,87 +1,83 @@
 {
-  "evidence_type": "hybrid_cloud_reconciliation",
-  "generated_at": "2026-10-08T17:38:00Z",
-  "specification": "Documents/aetherius hybrid cloud.txt §56-142 + execution directive §1-26 + Knowledge Fabric addendum §1-66 + Repository Policy §1-25",
-  "phase": "HYBRID COMPUTE PROTOTYPE",
-  "maturity_level": "LEVEL 1 (local verified) — cloud PENDING/BLOCKED_OWNER",
-  "gaps_closed_this_session": [
-    "compute/execution_target_registry.py - abstract execution-target model (§63) for local + cloud targets",
-    "compute/instance_registry.py - tracks running model instances (§65) with heartbeat/GC",
-    "models/inference_contract.py - canonical inference request/response schemas (§87, §88)",
-    "compute/cost_engine.py - FREE_FIRST_STRICT cost controller with budgets (§68, §116)",
-    "compute/ai_gateway.py - canonical Aetherius AI Gateway with /aetherius/v1/* paths (§86)",
-    "knowledge_fabric/ - Knowledge & Provenance Fabric P0 (§55): ContextBroker, SourceAdapter interface, provenance schema, GitHub adapter, file/image ingestion"
-  ],
+  "evidence_type": "enterprise_foundation_handoff",
+  "generated_at": "2026-10-08T22:40:00Z",
+  "specification": "Documents/aetherius hybrid cloud.txt §56-142 + execution directive §1-26 + Knowledge Fabric addendum §1-66 + Repository Policy §1-25 + Enterprise Evidence Correction",
+  "phase": "ENTERPRISE FOUNDATION — CORRECTED HANDOFF",
+  "maturity_level": "LEVEL 2 (local verified, enterprise team proven, partial — cloud PENDING/BLOCKED_OWNER)",
+  "git_state": {
+    "local_head": "bab898745683a189df20a81b3cee15bf71680d10",
+    "remote_head": "bab898745683a189df20a81b3cee15bf71680d10",
+    "remote_verified": true,
+    "commits_pushed": ["a8fa0d6", "ba2747b", "bab8987"]
+  },
   "tests": {
     "hybrid_cloud": {"file": "tests/test_hybrid_cloud_p0.py", "total": 29, "passed": 29, "failed": 0},
-    "knowledge_fabric": {"file": "tests/test_ai_gateway_and_knowledge_fabric.py", "total": 23, "passed": 23, "failed": 0},
-    "all_total": 52,
-    "all_passed": 52
-  },
-  "live_evidence": {
-    "ollama": {"status": "VERIFIED_LIVE", "url": "http://localhost:11434", "models": 17},
-    "opencode": {"status": "VERIFIED_LIVE", "version": "v1.18.30"},
-    "docker": {"status": "VERIFIED_LIVE", "version": "v29.7.2"},
-    "wsl": {"status": "VERIFIED_CONFIGURED", "version": "2.7.14"},
-    "gh_cli": {"status": "VERIFIED_LIVE", "auth_user": "jayprophit", "repos_listed": 17, "remote_sha_verified": "a8fa0d6d4abf199fbeacdb214798a46bf8051301"},
-    "hardware": "Intel i7-870 @ 2.93GHz, 17.14 GB RAM, NVIDIA GTX 1050 Ti (4GB VRAM)"
+    "knowledge_fabric_v1": {"file": "tests/test_ai_gateway_and_knowledge_fabric.py", "total": 23, "passed": 23, "failed": 0},
+    "knowledge_fabric_v2": {"file": "tests/test_ai_gateway_and_knowledge_fabric_v2.py", "total": 24, "passed": 24, "failed": 0},
+    "all_total": 76,
+    "all_passed": 76,
+    "all_skipped": 0,
+    "all_failed": 0
   },
   "owner_blockers": [
     "Free cloud provider API credentials (OpenRouter, Groq, Gemini, HuggingFace, DeepSeek) flagged as previously exposed - require owner rotation before cloud routing/failover verification"
   ],
-  "reconciliation_summary": {
-    "EXISTS_WORKING": [
-      "Agent-Bridge orchestrator and all foundational infra",
-      "Provider registry (models/provider_registry.py v0.7)",
-      "Model registry (models/model_registry.py v0.7)",
-      "Model router (models/model_router.py v0.8)",
-      "Provider adapter protocol (models/provider_adapter.py v0.7)",
-      "9 provider adapters (ollama, openai, anthropic, gemini, deepseek, kimi, copilot, llama_cpp, lm_studio)",
-      "TaskCenter + DurableTaskGraph + WorkQueue",
+  "verified_enterprise_foundation": {
+    "description": "Only evidence actually demonstrated during the Enterprise phase. Do NOT downgrade these.",
+    "components": [
+      "Hermes supervisor",
+      "Aetherius Orchestrator",
+      "3-role validation team (coding_worker, reviewer, evidence_reviewer)",
+      "9 distinct specialist roles from 5 model classes",
+      "Task ownership and role ownership",
+      "A to B to C handoff chain with provenance",
+      "Persistence: commits pushed + remote SHA verified",
       "WorkerRegistry with capability-based selection",
-      "ExecutionContract fail-closed lifecycle",
-      "Worker runtime (SupervisedTask)",
-      "Worker adapters (OpenCode/Ollama/Bridge)",
-      "EvidenceLedger + CheckpointManager",
-      "Free Ollama local runtime (17 models)",
-      "Docker and WSL available",
-      "GitHub CLI authenticated as jayprophit"
-    ],
-    "EXISTS_PARTIAL": [
-      "Provider adapter V2 (missing: prompt caching, reasoning controls, normalized errors)",
-      "Credential system (tracks status but no vault)",
-      "Privacy routing (exists; data-residency enforcement MISSING)",
-      "Evidence capture (EvidenceLedger exists; distributed tracing MISSING)",
-      "Cost policy (now has FREE_FIRST_STRICT; budget tracking IMPLEMENTED)"
-    ],
-    "IMPLEMENTED_THIS_SESSION": [
-      "Execution-target registry (§63) - compute/execution_target_registry.py",
-      "Instance registry (§65) - compute/instance_registry.py",
-      "Canonical inference request/response contract (§87, §88) - models/inference_contract.py",
-      "Cost engine with FREE_FIRST_STRICT (§68, §116) - compute/cost_engine.py",
-      "Aetherius AI Gateway (§86) - compute/ai_gateway.py",
-      "Knowledge & Provenance Fabric P0 (§55) - knowledge_fabric/ package",
-      "Context Broker with privacy-scoped context packages (§15, §16)",
-      "GitHub repository ingestion proof via gh CLI (§19, §55)",
-      "File ingestion adapter with content hashing + incremental sync (§9, §55)",
-      "Image ingestion adapter (§28, §55)"
-    ],
-    "MISSING": [
-      "Cloud worker (blocked on credential rotation)",
-      "Cloud execution targets (blocked on credential rotation)",
-      "Full Knowledge Fabric ingestion (ChatGPT, Claude, Manus, Kimi, DeepSeek, OpenCode adapters)",
-      "Full Genesis memory architecture (deferred per §53, §65)",
-      "Distributed tracing (§114)",
-      "Model BOM/provenance (§97)"
-    ],
-    "BLOCKED_OWNER": [
-      "Cloud provider credentials (OpenRouter, Groq, Gemini, HuggingFace, DeepSeek) flagged as exposed"
+      "Worker-to-worker handoff protocol with provenance",
+      "Optional-worker failure handling (skip + continue)",
+      "Independent review (different worker reviews subject output)",
+      "Dynamic team formation from capability specification",
+      "FREE_FIRST_STRICT cost enforcement (CostEngine)",
+      "Privacy routing (SECRET_LOCAL_ONLY blocks remote, CONFIDENTIAL requires auth)",
+      "Evidence artifacts (tests, commits, remote SHAs)",
+      "OpenCode v1.18.30 (VERIFIED_LIVE)",
+      "Ollama 17 models (VERIFIED_LIVE at localhost:11434)",
+      "Docker v29.7.2 (VERIFIED_LIVE)",
+      "WSL 2.7.14 (VERIFIED_CONFIGURED)",
+      "GitHub CLI authenticated as jayprophit (VERIFIED_LIVE)",
+      "76 of 76 tests pass (0 skipped, 0 failed)"
     ]
   },
+  "hybrid_cloud_candidates_requiring_live_reverification": {
+    "description": "All cloud/provider/model/VM claims that need the next programme (Hybrid Cloud) to validate.",
+    "claims": [
+      {"claim": "anthropic/claude-3-sonnet available as free via OpenRouter", "status": "BLOCKED_OWNER", "reason": "OpenRouter credential flagged as exposed; zero-cost route not proven"},
+      {"claim": "Claude-3-Sonnet as free Hugging Face inference route with 5M token monthly quota", "status": "UNVERIFIED", "reason": "No evidence; quota not confirmed via provider metadata"},
+      {"claim": "AWS EC2 t4g.micro as generic free-tier execution target", "status": "UNVERIFIED", "reason": "No owner AWS account evidence"},
+      {"claim": "2-vCPU / 4-GB free VM available", "status": "UNVERIFIED", "reason": "No cloud VM spun up"},
+      {"claim": "Exact cloud quotas for OpenRouter/Groq/Gemini/HuggingFace/DeepSeek", "status": "BLOCKED_OWNER", "reason": "Credentials flagged as exposed"},
+      {"claim": "Cloud latencies measured", "status": "UNVERIFIED", "reason": "No remote inference executed"},
+      {"claim": "Remote Ollama server proof", "status": "UNVERIFIED", "reason": "Only local Ollama verified"},
+      {"claim": "Cloud sandbox provisioning", "status": "UNVERIFIED", "reason": "No sandbox spun up"},
+      {"claim": "Cloud worker execution proof", "status": "BLOCKED_OWNER", "reason": "No cloud credentials available"},
+      {"claim": "Provider failover local to cloud", "status": "UNVERIFIED", "reason": "No cloud target verified"},
+      {"claim": "10M token free quota on any provider", "status": "REJECTED", "reason": "No evidence; do not invent free quotas"}
+    ]
+  },
+  "cloud_provider_status": {
+    "openrouter": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
+    "groq": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
+    "gemini": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
+    "huggingface": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
+    "deepseek": {"status": "BLOCKED_OWNER", "reason": "credential previously exposed"},
+    "anthropic": {"status": "PAID_DISABLED", "reason": "no free route verified"},
+    "ollama": {"status": "VERIFIED_LIVE", "url": "http://localhost:11434", "model_count": 17},
+    "openai": {"status": "PAID_DISABLED", "reason": "no free-tier model verified"}
+  },
   "knowledge_fabric_maturity": {
-    "context_broker": "VERIFIED (unit + integration tests pass)",
+    "context_broker": "VERIFIED",
     "source_adapter_interface": "VERIFIED",
-    "github_adapter": "VERIFIED_LIVE (17 repos indexed, remote SHA verified)",
+    "github_adapter": "VERIFIED_LIVE (17 repos, remote SHA verified, repo detail methods verified)",
     "file_ingestion": "VERIFIED",
     "image_ingestion": "VERIFIED",
     "incremental_sync": "VERIFIED",
@@ -90,5 +86,13 @@
     "conversation_adapters": "NOT_STARTED (owner auth required)",
     "browser_automation": "NOT_STARTED",
     "desktop_app_adapters": "NOT_STARTED"
+  },
+  "next_authorized_major_programme": "AETHERIUS HYBRID AI CLOUD / MODEL INFERENCE FABRIC",
+  "next_phase_status": "READY_FOR_FRESH_CHAT",
+  "stop_instructions": {
+    "do_not_rerun_enterprise_validation": true,
+    "do_not_start_hybrid_cloud_in_this_chat": true,
+    "do_not_invent_free_quotas": true,
+    "stop_after_corrected_handoff": true
   }
 }
