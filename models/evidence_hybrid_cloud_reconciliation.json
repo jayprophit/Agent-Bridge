@@ -16,8 +16,9 @@
     "knowledge_fabric_v2": {"file": "tests/test_ai_gateway_and_knowledge_fabric_v2.py", "total": 24, "passed": 24, "failed": 0},
     "credential_broker": {"file": "tests/test_credential_broker.py", "total": 14, "passed": 14, "failed": 0},
     "team_execution_fabric": {"file": "tests/test_team_execution_fabric.py", "total": 23, "passed": 23, "failed": 0},
-    "all_total": 113,
-    "all_passed": 113,
+    "data_service_registry": {"file": "tests/test_data_service_registry.py", "total": 30, "passed": 30, "failed": 0},
+    "all_total": 143,
+    "all_passed": 143,
     "all_skipped": 0,
     "all_failed": 0
   },
@@ -62,7 +63,11 @@
       "Agent Communication Protocol with 20 message types, structured metadata + provenance",
       "Cloud/HYBRID/Federated team architectures represented (full cloud execution BLOCKED_OWNER)",
       "Failover with context handoff (§30), team autoscaling (§29), critical-path DAG scheduling (§11)",
-      "113 of 113 tests pass (0 skipped, 0 failed)"
+      "Data Service Registry implemented with 30+ pre-registered §53 services",
+      "DataServiceAdapter protocol + LocalFileAdapter (read/write/search/backup/restore)",
+      "Data Policy Engine with default-deny, BROKER_ONLY for credentials, cloud restrictions",
+      "ProtonPassAdapter + BitwardenAdapter for future agent credential access (§8)",
+      "143 of 143 tests pass (0 skipped, 0 failed)"
     ]
   },
   "hybrid_cloud_candidates_requiring_live_reverification": {
@@ -129,7 +134,13 @@
     "scoped_access_levels": "VERIFIED (6 levels enforced)",
     "audit_trail": "VERIFIED (never logs secrets)",
     "rotation_workflow": "VERIFIED (REVOKE + re-store)",
-    "non_sensitive_test_entry": "VERIFIED (AETHERIUS-TEST-CREDENTIAL)"
+    "non_sensitive_test_entry": "VERIFIED (AETHERIUS-TEST-CREDENTIAL)",
+    "data_service_registry": "VERIFIED (30+ services pre-registered from §53)",
+    "data_service_adapter_protocol": "VERIFIED (DataServiceAdapter + LocalFileAdapter)",
+    "data_policy_engine": "VERIFIED (default-deny, specificity-based rule resolution)",
+    "proton_pass_adapter": "VERIFIED (adapter registered, CLI not installed, OWNER_ACTION_REQUIRED)",
+    "bitwarden_adapter": "VERIFIED (adapter registered, CLI not installed, OWNER_ACTION_REQUIRED)",
+    "live_inventory": "VERIFIED (KeePass + Docker found installed; others NOT_INSTALLED)"
   },
   "next_authorized_major_programme": "AETHERIUS HYBRID AI CLOUD / MODEL INFERENCE FABRIC",
   "next_phase_status": "READY_FOR_FRESH_CHAT",
