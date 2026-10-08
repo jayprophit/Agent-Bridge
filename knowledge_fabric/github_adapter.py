@@ -223,6 +223,132 @@ class GitHubAdapter(KnowledgeSourceAdapter):
             },
         )
 
+    def get_repository_branches(self, source_id: str, limit: int = 20) -> list[dict]:
+        """List repository branches (§19, §55 test: repository detail)."""
+        if not self._check_auth():
+            return []
+        repo_path = self._extract_repo_path(source_id)
+        try:
+            result = subprocess.run(
+                ["gh", "api", f"/repos/{repo_path}/branches",
+                 "--jq", "[.[] | {name, commit: {sha: .commit.sha}, protected: .protected}]",
+                 "--page", "1"],
+                capture_output=True, text=True, timeout=30,
+            )
+            if result.returncode == 0 and result.stdout.strip() and result.stdout.strip() != "null":
+                return json.loads(result.stdout)[:limit]
+        except Exception:
+            pass
+        return []
+
+    def get_repository_commits(self, source_id: str, limit: int = 20) -> list[dict]:
+        """List repository commits (§19, §55 test: repository detail)."""
+        if not self._check_auth():
+            return []
+        repo_path = self._extract_repo_path(source_id)
+        try:
+            result = subprocess.run(
+                ["gh", "api", f"/repos/{repo_path}/commits",
+                 "--jq", "[.[] | {sha: (.sha[:12]), message: (.commit.message | split(\"\\n\" | \"\")[0]), author: .commit.author.name, date: .commit.author.date}]",
+                 "--per-page", str(limit)],
+                capture_output=True, text=True, timeout=30,
+            )
+            if result.returncode == 0 and result.stdout.strip() and result.stdout.strip() != "null":
+                return json.loads(result.stdout)[:limit]
+        except Exception:
+            pass
+        return []
+
+    def get_repository_issues(self, source_id: str, limit: int = 20) -> list[dict]:
+        """List repository issues (§19, §55 test: repository detail)."""
+        if not self._check_auth():
+            return []
+        repo_path = self._extract_repo_path(source_id)
+        try:
+            result = subprocess.run(
+                ["gh", "api", f"/repos/{repo_path}/issues",
+                 "--jq", "[.[] | select(.pull_request == null) | {number, title, state, author: .user.login, created_at}]",
+                 "--per-page", str(limit)],
+                capture_output=True, text=True, timeout=30,
+            )
+            if result.returncode == 0 and result.stdout.strip() and result.stdout.strip() != "null":
+                return json.loads(result.stdout)[:limit]
+        except Exception:
+            pass
+        return []
+
+    def get_repository_prs(self, source_id: str, limit: int = 20) -> list[dict]:
+        """List repository pull requests (§19, §55 test: repository detail)."""
+        if not self._check_auth():
+            return []
+        repo_path = self._extract_repo_path(source_id)
+        try:
+            result = subprocess.run(
+                ["gh", "api", f"/repos/{repo_path}/pulls",
+                 "--jq", "[.[] | {number, title, state, author: .user.login, created_at}]",
+                 "--per-page", str(limit)],
+                capture_output=True, text=True, timeout=30,
+            )
+            if result.returncode == 0 and result.stdout.strip() and result.stdout.strip() != "null":
+                return json.loads(result.stdout)[:limit]
+        except Exception:
+            pass
+        return []
+
+    def search_code(self, query: str, limit: int = 10) -> list[dict]:
+        """Search code in owned repositories (§19, §55 test: repository search)."""
+        if not self._check_auth():
+            return []
+        q = f"user:{self.owner} {query}"
+        try:
+            result = subprocess.run(
+                ["gh", "api", f"/search/code",
+                 "-H", "Accept: application/vnd.github+json",
+                 "--jq", "[.items[] | {path, repository: .repository.full_name, html_url: .html_url}]",
+                 "--search", q],
+                capture_output=True, text=True, timeout=30,
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                data = json.loads(result.stdout)
+                if isinstance(data, list):
+                    return data[:limit]
+        except Exception:
+            pass
+        # Fallback: use gh search code
+        try:
+            result = subprocess.run(
+                ["gh", "search", "code", query, "--owner", self.owner,
+                 "--json", "name,repository,path,url", "--limit", str(limit)],
+                capture_output=True, text=True, timeout=30,
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return json.loads(result.stdout)[:limit]
+        except Exception:
+            pass
+        return []
+
+    def get_fork_info(self, source_id: str) -> dict:
+        """Get fork/parent relationship for a repository (§20, §55)."""
+        if not self._check_auth():
+            return {}
+        repo_path = self._extract_repo_path(source_id)
+        try:
+            result = subprocess.run(
+                ["gh", "api", f"/repos/{repo_path}",
+                 "--jq", "{fork: .fork, parent: (.parent.full_name if .parent else null), parent_url: (.parent.html_url if .parent else null), is_archived: .archived}"],
+                capture_output=True, text=True, timeout=30,
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return json.loads(result.stdout)
+        except Exception:
+            pass
+        return {}
+
+    def _extract_repo_path(self, source_id: str) -> str:
+        """Extract 'owner/repo' from a source_id."""
+        parts = source_id.replace("SRC-GITHUB-", "").replace("SRC-github-", "")
+        return parts
+
     def read_content(self, source_id: str) -> str:
         """Read README content for a repository."""
         if not self._check_auth():

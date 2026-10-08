@@ -7,6 +7,28 @@ generic contract, enabling hot-swappable providers.
 from __future__ import annotations
 
 from typing import Any
+from dataclasses import dataclass, field
+from typing import Optional
+
+
+@dataclass
+class RateLimitInfo:
+    """Rate limit state for a provider (§88)."""
+    remaining: int
+    reset_at: float
+    limit_per_minute: int
+    limit_per_hour: int
+
+
+@dataclass
+class ProviderResponse:
+    """Provider inference response (backwards-compatible V1 shape)."""
+    model: str
+    content: str
+    usage: dict = field(default_factory=dict)
+    provider: str = ""
+    finish_reason: str = "stop"
+    rate_limit: Optional[RateLimitInfo] = None
 
 
 class ProviderAdapter:
@@ -14,6 +36,7 @@ class ProviderAdapter:
     
     provider_id: str = ""
     provider_family: str = ""
+    _rate_limit_info: Optional[RateLimitInfo] = None
     
     # -- discovery ---------------------------------------------------------
     def discover(self) -> dict[str, Any]:
