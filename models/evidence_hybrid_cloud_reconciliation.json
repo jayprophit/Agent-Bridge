@@ -1,30 +1,33 @@
 {
   "evidence_type": "hybrid_cloud_reconciliation",
   "generated_at": "2026-10-08T17:38:00Z",
-  "specification": "Documents/aetherius hybrid cloud.txt §56-142 + execution directive §1-26",
+  "specification": "Documents/aetherius hybrid cloud.txt §56-142 + execution directive §1-26 + Knowledge Fabric addendum §1-66 + Repository Policy §1-25",
   "phase": "HYBRID COMPUTE PROTOTYPE",
-  "maturity_level": "LEVEL 3 (partial) - HYBRID_VERIFIED in progress",
+  "maturity_level": "LEVEL 1 (local verified) — cloud PENDING/BLOCKED_OWNER",
   "gaps_closed_this_session": [
     "compute/execution_target_registry.py - abstract execution-target model (§63) for local + cloud targets",
     "compute/instance_registry.py - tracks running model instances (§65) with heartbeat/GC",
     "models/inference_contract.py - canonical inference request/response schemas (§87, §88)",
-    "compute/cost_engine.py - FREE_FIRST_STRICT cost controller with budgets (§68, §116)"
+    "compute/cost_engine.py - FREE_FIRST_STRICT cost controller with budgets (§68, §116)",
+    "compute/ai_gateway.py - canonical Aetherius AI Gateway with /aetherius/v1/* paths (§86)",
+    "knowledge_fabric/ - Knowledge & Provenance Fabric P0 (§55): ContextBroker, SourceAdapter interface, provenance schema, GitHub adapter, file/image ingestion"
   ],
   "tests": {
-    "file": "tests/test_hybrid_cloud_p0.py",
-    "total": 29,
-    "passed": 29,
-    "failed": 0
+    "hybrid_cloud": {"file": "tests/test_hybrid_cloud_p0.py", "total": 29, "passed": 29, "failed": 0},
+    "knowledge_fabric": {"file": "tests/test_ai_gateway_and_knowledge_fabric.py", "total": 23, "passed": 23, "failed": 0},
+    "all_total": 52,
+    "all_passed": 52
   },
   "live_evidence": {
     "ollama": {"status": "VERIFIED_LIVE", "url": "http://localhost:11434", "models": 17},
     "opencode": {"status": "VERIFIED_LIVE", "version": "v1.18.30"},
     "docker": {"status": "VERIFIED_LIVE", "version": "v29.7.2"},
     "wsl": {"status": "VERIFIED_CONFIGURED", "version": "2.7.14"},
+    "gh_cli": {"status": "VERIFIED_LIVE", "auth_user": "jayprophit", "repos_listed": 17, "remote_sha_verified": "a8fa0d6d4abf199fbeacdb214798a46bf8051301"},
     "hardware": "Intel i7-870 @ 2.93GHz, 17.14 GB RAM, NVIDIA GTX 1050 Ti (4GB VRAM)"
   },
   "owner_blockers": [
-    "Free cloud provider API credentials flagged as previously exposed - require owner rotation"
+    "Free cloud provider API credentials (OpenRouter, Groq, Gemini, HuggingFace, DeepSeek) flagged as previously exposed - require owner rotation before cloud routing/failover verification"
   ],
   "reconciliation_summary": {
     "EXISTS_WORKING": [
@@ -33,7 +36,7 @@
       "Model registry (models/model_registry.py v0.7)",
       "Model router (models/model_router.py v0.8)",
       "Provider adapter protocol (models/provider_adapter.py v0.7)",
-      "9 provider adapters (ollama, openai, anthropic, gemini, deepseek, etc.)",
+      "9 provider adapters (ollama, openai, anthropic, gemini, deepseek, kimi, copilot, llama_cpp, lm_studio)",
       "TaskCenter + DurableTaskGraph + WorkQueue",
       "WorkerRegistry with capability-based selection",
       "ExecutionContract fail-closed lifecycle",
@@ -41,32 +44,51 @@
       "Worker adapters (OpenCode/Ollama/Bridge)",
       "EvidenceLedger + CheckpointManager",
       "Free Ollama local runtime (17 models)",
-      "Docker and WSL available"
+      "Docker and WSL available",
+      "GitHub CLI authenticated as jayprophit"
     ],
     "EXISTS_PARTIAL": [
       "Provider adapter V2 (missing: prompt caching, reasoning controls, normalized errors)",
       "Credential system (tracks status but no vault)",
-      "Cost policy (FREE_FIRST_STRICT exists; no budget tracking until now)",
-      "Privacy routing (exists but no data-residency enforcement)",
-      "Evidence capture (EvidenceLedger exists; distributed tracing MISSING)"
+      "Privacy routing (exists; data-residency enforcement MISSING)",
+      "Evidence capture (EvidenceLedger exists; distributed tracing MISSING)",
+      "Cost policy (now has FREE_FIRST_STRICT; budget tracking IMPLEMENTED)"
     ],
     "IMPLEMENTED_THIS_SESSION": [
-      "Execution-target registry (§63)",
-      "Instance registry (§65)",
-      "Canonical inference request/response contract (§87, §88)",
-      "Cost engine with FREE_FIRST_STRICT (§68, §116)"
+      "Execution-target registry (§63) - compute/execution_target_registry.py",
+      "Instance registry (§65) - compute/instance_registry.py",
+      "Canonical inference request/response contract (§87, §88) - models/inference_contract.py",
+      "Cost engine with FREE_FIRST_STRICT (§68, §116) - compute/cost_engine.py",
+      "Aetherius AI Gateway (§86) - compute/ai_gateway.py",
+      "Knowledge & Provenance Fabric P0 (§55) - knowledge_fabric/ package",
+      "Context Broker with privacy-scoped context packages (§15, §16)",
+      "GitHub repository ingestion proof via gh CLI (§19, §55)",
+      "File ingestion adapter with content hashing + incremental sync (§9, §55)",
+      "Image ingestion adapter (§28, §55)"
     ],
     "MISSING": [
-      "AI Gateway (§86) - ModelRouter v0.8 is partial gateway",
       "Cloud worker (blocked on credential rotation)",
       "Cloud execution targets (blocked on credential rotation)",
+      "Full Knowledge Fabric ingestion (ChatGPT, Claude, Manus, Kimi, DeepSeek, OpenCode adapters)",
+      "Full Genesis memory architecture (deferred per §53, §65)",
       "Distributed tracing (§114)",
-      "Model BOM/provenance (§97)",
-      "Credential vault (§70)",
-      "Data residency enforcement (§119)"
+      "Model BOM/provenance (§97)"
     ],
     "BLOCKED_OWNER": [
       "Cloud provider credentials (OpenRouter, Groq, Gemini, HuggingFace, DeepSeek) flagged as exposed"
     ]
+  },
+  "knowledge_fabric_maturity": {
+    "context_broker": "VERIFIED (unit + integration tests pass)",
+    "source_adapter_interface": "VERIFIED",
+    "github_adapter": "VERIFIED_LIVE (17 repos indexed, remote SHA verified)",
+    "file_ingestion": "VERIFIED",
+    "image_ingestion": "VERIFIED",
+    "incremental_sync": "VERIFIED",
+    "privacy_scoping": "VERIFIED",
+    "adapter_failure_graceful": "VERIFIED",
+    "conversation_adapters": "NOT_STARTED (owner auth required)",
+    "browser_automation": "NOT_STARTED",
+    "desktop_app_adapters": "NOT_STARTED"
   }
 }
