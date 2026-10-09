@@ -51,8 +51,8 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 367,
-    "all_passed": 367,
+    "all_total": 419,
+    "all_passed": 419,
     "all_skipped": 0,
     "all_failed": 0,
     "keepass_bridge": {
@@ -91,6 +91,13 @@
       "file": "tests/test_distributed_tracing.py",
       "total": 27,
       "passed": 27,
+      "failed": 0,
+      "skipped": 0
+    },
+    "conversation_and_ollama_v2": {
+      "file": "tests/test_conversation_and_ollama_v2.py",
+      "total": 52,
+      "passed": 52,
       "failed": 0,
       "skipped": 0
     }
@@ -365,5 +372,58 @@
     "rationale": "No second MAT exists to merge, migrate, or delete. The premise of the reconciliation question is already satisfied — MAT is not fragmented.",
     "action_taken": "None. Nothing was created, forked, or deleted.",
     "open_gap": "Canonical MAT has license=None. Must be identified before any code is reused (§6). Recorded as unknown, not assumed."
+  },
+  "ollama_provider_v2": {
+    "file": "compute/ollama_provider_v2.py",
+    "state": "VERIFIED_LIVE",
+    "models_installed": 15,
+    "discovery_method": "/api/show `capabilities` array + model_info.<arch>.context_length",
+    "provider_vs_model": "PRESERVED — provider-level report carries no per-model vision claim; discovery is per (provider, model)",
+    "pinned_unsupported": [
+      "logprobs",
+      "prompt_caching",
+      "batch",
+      "audio"
+    ],
+    "discovered_capabilities": {
+      "llama3.2:1b-instruct-q4_K_M": "tools=True vision=False reasoning=False ctx=131072",
+      "moondream:latest": "vision=True tools=False ctx=2048",
+      "hhao/qwen2.5-coder-tools:3b": "tools=True ctx=32768",
+      "qwen3:0.6b": "tools=True reasoning=True ctx=40960",
+      "nomic-embed-text:latest": "embeddings only, ctx=2048"
+    },
+    "live_proof": "infer() on llama3.2:1b returned 'TRACED' with usage {prompt:32, completion:4, total:36}; unsupported tools on moondream raised UNSUPPORTED_CAPABILITY (failover_eligible=False)",
+    "correction_made": "Initial name-based capability inference was WRONG: it reported tools=False for llama3.2, which /api/show declares as ['completion','tools']. Replaced with the runtime's own declaration.",
+    "bugs_fixed": [
+      "isinstance(exc, QUOTA_EXHAUSTED) — a string constant used as a type; TypeError at runtime",
+      "OllamaUnavailableError normalized to PROVIDER_INTERNAL via the alias, not PROVIDER_UNAVAILABLE; test asserted the alias string",
+      "error_taxonomy import sat at the bottom of the file but class bodies needed it at import time -> NameError; moved to top"
+    ]
+  },
+  "conversation_adapters": {
+    "file": "knowledge_fabric/conversation_adapters.py",
+    "state": "INTERFACE_READY (no platform LIVE_VERIFIED)",
+    "framework": "ONE canonical interface + one registry; no per-provider ingestors (§15)",
+    "generic_export_adapter": "IMPLEMENTED — ingests owner-authorized JSON/Markdown/TXT/ZIP incl. ChatGPT nested mapping form",
+    "platforms": {
+      "chatgpt": "OFFICIAL_API / AUTH_REQUIRED",
+      "claude": "USER_EXPORT / AUTH_REQUIRED",
+      "manus": "UNSUPPORTED",
+      "kimi": "UNSUPPORTED",
+      "deepseek": "UNSUPPORTED",
+      "hermes": "LOCAL_DATABASE / AUTH_REQUIRED",
+      "opencode": "LOCAL_FILE / AUTH_REQUIRED",
+      "openclaw": "UNSUPPORTED"
+    },
+    "honesty_guarantee": "Live adapters advertise NO data capabilities, so list_conversations() raises rather than returning an empty list that looks like real data. A test asserts this for all 8.",
+    "privacy": "Raw message content is hashed and length-counted, not copied into the fabric; a test injects a password and asserts it never appears in the serialized record",
+    "incremental_sync": "VERIFIED — unchanged conversations SKIP by content hash; changed content re-ingests"
+  },
+  "end_to_end_trace_proof": {
+    "state": "VERIFIED_LIVE",
+    "proof": "3 linked spans (request -> router -> provider_adapter) around a real local inference; latency 3816.893ms; 0 errors; secret scan CLEAN",
+    "correlation": "trace_id shared across all spans; provider span carries provider_id=ollama and model_id",
+    "cost_class": "FREE_LOCAL",
+    "quota_state": "UNLIMITED_LOCAL"
   }
 }
