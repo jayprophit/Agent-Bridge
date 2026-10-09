@@ -5,9 +5,6 @@ cloud, Genesis-native) implement ModelProvider without touching the bridge.
 """
 from __future__ import annotations
 
-import json
-import urllib.error
-import urllib.request
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -40,48 +37,32 @@ class OllamaProvider(ModelProvider):
                  model: str = "hhao/qwen2.5-coder-tools:3b", timeout_s: int = 120):
         super().__init__(model, timeout_s)
         self.host = host.rstrip("/")
-
-    def _post(self, path: str, payload: dict[str, Any]) -> dict[str, Any]:
-        data = json.dumps(payload).encode("utf-8")
-        req = urllib.request.Request(self.host + path, data=data,
-                                     headers={"Content-Type": "application/json"},
-                                     method="POST")
-        try:
-            with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
-                body = resp.read().decode("utf-8")
-        except urllib.error.HTTPError as e:
-            detail = e.read().decode("utf-8", "replace")[:2000]
-            raise ProviderError(f"HTTP {e.code} {path}: {detail}")
-        except urllib.error.URLError as e:
-            raise ProviderError(f"cannot reach Ollama at {self.host}: {e.reason}")
-        except TimeoutError:
-            raise ProviderError("Ollama request timed out")
-        try:
-            return json.loads(body)
-        except json.JSONDecodeError:
-            raise ProviderError(f"non-JSON response: {body[:500]!r}")
-
-    def _get(self, path: str) -> dict[str, Any]:
-        try:
-            with urllib.request.urlopen(self.host + path, timeout=15) as resp:
-                return json.loads(resp.read().decode("utf-8"))
-        except urllib.error.URLError as e:
-            raise ProviderError(f"cannot reach Ollama at {self.host}: {e.reason}")
+        # Canonical lease-aware transport. This class no longer speaks Ollama
+        # HTTP directly: it delegates every model-touching call to
+        # OllamaProviderV2 so there is exactly ONE place that decides keep_alive,
+        # residency and error vocabulary. The public contract (chat()->str,
+        # list_models(), ProviderError) is preserved for every existing caller.
+        from compute.ollama_provider_v2 import OllamaProviderV2
+        self._v2 = OllamaProviderV2(base_url=self.host, timeout=float(timeout_s))
 
     def list_models(self) -> list[str]:
-        data = self._get("/api/tags")
-        return [m.get("name", "") for m in data.get("models", [])]
+        try:
+            return self._v2.list_models()
+        except Exception as e:  # preserve ProviderError contract
+            raise ProviderError(f"cannot reach Ollama at {self.host}: {e}")
 
     def chat(self, messages: list[dict[str, str]], temperature: float = 0.1,
              num_predict: int = 640) -> str:
-        data = self._post("/api/chat", {
-            "model": self.model, "messages": messages, "stream": False,
-            "options": {"temperature": temperature, "num_predict": num_predict},
-        })
-        text = (data.get("message") or {}).get("content", "")
+        try:
+            data = self._v2.chat(self.model, messages,
+                                 temperature=temperature, num_predict=num_predict)
+        except Exception as e:  # V2 normalized errors → ProviderError
+            raise ProviderError(f"Ollama chat failed: {e}")
+        text = data.get("content", "")
         if not text:
-            raise ProviderError(f"empty chat response: {str(data)[:500]}")
+            raise ProviderError(f"empty chat response: {str(dict(data))[:500]}")
         return text
+
 
 
 def create_provider(kind: str, **kwargs: Any) -> ModelProvider:

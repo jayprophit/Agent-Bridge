@@ -769,6 +769,167 @@ class OllamaProviderV2:
                 self.release(lease)
         return list(data.get("embedding", []))
 
+    def chat(self, model: str, messages: list[dict[str, Any]],
+             temperature: float | None = None,
+             num_predict: int | None = None,
+             tools: list[dict] | None = None,
+             think: bool | None = None,
+             stream: bool = False,
+             policy: LeasePolicy = DEFAULT_LEASE_POLICY,
+             task_id: str = "", worker_id: str = "") -> dict[str, Any]:
+        """Messages-based completion via /api/chat, leased like infer().
+
+        This is the canonical home for the /api/chat (conversation) endpoint
+        that the legacy adapters used directly. Same lease/keep_alive
+        discipline and error taxonomy as infer(): the difference is only the
+        payload shape — messages rather than a single prompt, and the
+        response lives under ``message`` rather than ``response``.
+
+        ``think`` is forwarded ONLY when explicitly passed (never blindly:
+        older models reject unknown fields). It lets reasoning models such as
+        qwen3 answer in ``content`` for tool use, which is the behaviour the
+        legacy adapters depended on.
+        """
+        caps = self.discover(model)
+        if tools and not caps.supports(CAP_TOOLS):
+            raise OllamaUnsupportedCapabilityError(
+                model, CAP_TOOLS, f"model '{model}' has no tool calling")
+        if temperature is not None and not caps.supports(CAP_TEMPERATURE):
+            raise OllamaUnsupportedCapabilityError(
+                model, CAP_TEMPERATURE, f"model '{model}' has no temperature")
+
+        options: dict[str, Any] = {}
+        if temperature is not None:
+            options["temperature"] = temperature
+        if num_predict is not None:
+            options["num_predict"] = num_predict
+
+        base: dict[str, Any] = {"messages": messages, "stream": stream}
+        if options:
+            base["options"] = options
+        if tools:
+            base["tools"] = tools
+        if think is not None:
+            base["think"] = bool(think)
+
+        lease = self.acquire(model, policy=policy,
+                             task_id=task_id, worker_id=worker_id)
+        failed = False
+        try:
+            payload = self._inference_payload(model, base, policy)
+            data = self._get("/api/chat", payload)
+        except BaseException:
+            failed = True
+            raise
+        finally:
+            if policy is LeasePolicy.EPHEMERAL or failed:
+                self.release(lease)
+
+        message = data.get("message") or {}
+        return OrderedDict([
+            ("model", model),
+            ("provider", self.provider_id),
+            ("content", message.get("content", "")),
+            ("thinking", message.get("thinking") or ""),
+            ("tool_calls", message.get("tool_calls", [])),
+            ("done", data.get("done", True)),
+            ("usage", OrderedDict([
+                ("prompt_tokens", data.get("prompt_eval_count", 0)),
+                ("completion_tokens", data.get("eval_count", 0)),
+                ("total_tokens", (data.get("prompt_eval_count", 0)
+                                  + data.get("eval_count", 0))),
+            ])),
+            ("lifecycle", lease.to_dict()),
+        ])
+
+    def infer_stream(self, model: str, prompt: str,
+                     max_tokens: int | None = None,
+                     temperature: float | None = None,
+                     policy: LeasePolicy = DEFAULT_LEASE_POLICY,
+                     task_id: str = "", worker_id: str = ""):
+        """Stream a /api/generate completion, yielding (text_chunk, meta).
+
+        Yields tuples of (chunk, meta): every non-final chunk is raw response
+        text with meta=None; the final yield carries the accumulated text and
+        timing under meta (``done``, ``text``, ``ttft_s``, ``wall_s``,
+        ``eval_count``, ``tokens_per_sec``, ``usage``, ``lifecycle``). This is
+        the canonical streaming path (§15): true token streaming with TTFT
+        measurement, leased like infer() so weights are released per policy.
+
+        Callers that need realtime latency (time-to-first-token) consume the
+        chunks as they arrive; the lease is released once the stream completes
+        or raises, exactly as infer() releases after a single call.
+        """
+        caps = self.discover(model)
+        if temperature is not None and not caps.supports(CAP_TEMPERATURE):
+            raise OllamaUnsupportedCapabilityError(
+                model, CAP_TEMPERATURE, f"model '{model}' has no temperature")
+
+        options: dict[str, Any] = {}
+        if temperature is not None:
+            options["temperature"] = temperature
+        if max_tokens is not None:
+            options["num_predict"] = max_tokens
+
+        base: dict[str, Any] = {"prompt": prompt, "stream": True}
+        if options:
+            base["options"] = options
+
+        lease = self.acquire(model, policy=policy,
+                             task_id=task_id, worker_id=worker_id)
+        t0 = time.monotonic()
+        ttft = None
+        text_parts: list[str] = []
+        eval_count = 0
+        eval_ns = 0
+        url = f"{self.base_url}/api/generate"
+        payload = json.dumps(self._inference_payload(model, base, policy)).encode("utf-8")
+        req = urllib.request.Request(
+            url, data=payload, headers={"Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                for raw in resp:
+                    line = raw.decode("utf-8", "replace").strip()
+                    if not line:
+                        continue
+                    try:
+                        obj = json.loads(line)
+                    except ValueError:
+                        continue
+                    if obj.get("response"):
+                        if ttft is None:
+                            ttft = time.monotonic() - t0
+                        text_parts.append(obj["response"])
+                        yield obj["response"], None
+                    if obj.get("done"):
+                        eval_count = int(obj.get("eval_count") or 0)
+                        eval_ns = int(obj.get("eval_duration") or 0)
+                        break
+        except BaseException as e:
+            # A failure always drops the lease (§9-H), regardless of policy.
+            self.release(lease)
+            raise normalize_ollama_error(e) if isinstance(
+                e, (urllib.error.URLError, TimeoutError)) else e
+        else:
+            if policy is LeasePolicy.EPHEMERAL:
+                self.release(lease)
+
+        wall = time.monotonic() - t0
+        text = "".join(text_parts)
+        tok_s = (eval_count / (eval_ns / 1e9)) if eval_ns > 0 else 0.0
+        yield text, OrderedDict([
+            ("done", True),
+            ("text", text),
+            ("ttft_s", round(ttft or wall, 3)),
+            ("wall_s", round(wall, 3)),
+            ("eval_count", eval_count),
+            ("tokens_per_sec", round(tok_s, 2)),
+            ("usage", OrderedDict([
+                ("completion_tokens", eval_count),
+            ])),
+            ("lifecycle", lease.to_dict()),
+        ])
+
 
 # --------------------------------------------------------------------------
 # Normalized Ollama errors (§29)

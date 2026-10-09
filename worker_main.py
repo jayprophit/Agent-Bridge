@@ -126,17 +126,22 @@ def main(task_dir: str) -> int:
 
 
 def _query_model(endpoint: str, model: str, prompt: str, timeout_s: float) -> str:
-    """Ask the model backend one question. The backend is an external program
-    (Ollama server + model weights); this function is only the transport."""
-    body = json.dumps({"model": model, "prompt": prompt, "stream": False}).encode("utf-8")
-    req = urllib.request.Request(endpoint.rstrip("/") + "/api/generate", data=body,
-                                 headers={"Content-Type": "application/json"})
+    """Ask the model backend one question through the canonical provider.
+
+    The weights are leased EPHEMERAL: this worker is a short-lived process
+    that must not leave a model resident when it exits, so the lease is
+    released the moment the call returns (§consolidation). The backend is an
+    external program (Ollama server + model weights); residency of that
+    program is the provider layer's responsibility, not the worker's.
+    """
+    from compute.ollama_provider_v2 import LeasePolicy, OllamaProviderV2
+    provider = OllamaProviderV2(base_url=endpoint.rstrip("/"),
+                                timeout=timeout_s)
     try:
-        with urllib.request.urlopen(req, timeout=timeout_s) as resp:
-            payload = json.loads(resp.read().decode("utf-8"))
+        data = provider.infer(model, prompt, policy=LeasePolicy.EPHEMERAL)
     except Exception as e:  # noqa: BLE001 -- transport failure is a task failure
         raise RuntimeError(f"model backend unreachable: {e}")
-    answer = payload.get("response", "")
+    answer = data.get("response", "")
     if not isinstance(answer, str):
         raise RuntimeError("model backend returned a malformed response")
     return answer.strip()

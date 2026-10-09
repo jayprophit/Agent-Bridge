@@ -48,38 +48,32 @@ OLLAMA_TIMEOUT_S = 180
 
 
 def _ollama_stream(prompt: str, max_tokens: int = 32) -> dict:
-    """One bounded streaming inference. Returns TTFT, tokens, timing."""
-    import urllib.request
-    payload = {"model": OLLAMA_MODEL, "prompt": prompt, "stream": True,
-               "options": {"num_predict": max_tokens, "temperature": 0.0}}
-    req = urllib.request.Request(
-        OLLAMA_URL + "/api/generate", data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json"})
-    t0 = time.monotonic()
+    """One bounded streaming inference. Returns TTFT, tokens, timing.
+
+    Routes through the canonical lease-aware streaming provider (§consolidation);
+    true streaming and per-token TTFT are preserved because this acceptance
+    test measures them (§15).
+    """
+    from compute.ollama_provider_v2 import LeasePolicy, OllamaProviderV2
+    provider = OllamaProviderV2(timeout=OLLAMA_TIMEOUT_S)
     ttft = None
     text_parts: list[str] = []
     eval_count = 0
-    eval_ns = 0
-    with urllib.request.urlopen(req, timeout=OLLAMA_TIMEOUT_S) as r:
-        for raw in r:
-            line = raw.decode("utf-8", "replace").strip()
-            if not line:
-                continue
-            try:
-                obj = json.loads(line)
-            except ValueError:
-                continue
-            if obj.get("response") and ttft is None:
+    tok_s = 0.0
+    wall = 0.0
+    t0 = time.monotonic()
+    for _chunk, meta in provider.infer_stream(prompt, max_tokens=max_tokens,
+                                              temperature=0.0,
+                                              policy=LeasePolicy.EPHEMERAL):
+        if meta is None:
+            if ttft is None:
                 ttft = time.monotonic() - t0
-            if obj.get("response"):
-                text_parts.append(obj["response"])
-            if obj.get("done"):
-                eval_count = int(obj.get("eval_count") or 0)
-                eval_ns = int(obj.get("eval_duration") or 0)
-                break
-    wall = time.monotonic() - t0
+            text_parts.append(_chunk)
+        else:
+            eval_count = meta.get("eval_count", 0)
+            tok_s = meta.get("tokens_per_sec", 0.0)
+            wall = meta.get("wall_s", round(time.monotonic() - t0, 3))
     text = "".join(text_parts)
-    tok_s = (eval_count / (eval_ns / 1e9)) if eval_ns > 0 else 0.0
     return {"ok": True, "model": OLLAMA_MODEL, "ttft_s": round(ttft or wall, 3),
             "wall_s": round(wall, 3), "chars": len(text),
             "eval_count": eval_count, "tokens_per_sec": round(tok_s, 2),

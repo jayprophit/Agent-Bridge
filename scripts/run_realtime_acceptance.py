@@ -33,26 +33,19 @@ OLLAMA_MODEL = "hhao/qwen2.5-coder-tools:3b"
 
 
 def ollama_token_stream(prompt: str, max_tokens: int = 48):
-    """Yield real model text chunks (stream=true). First yield = TTFT."""
-    import urllib.request
-    payload = {"model": OLLAMA_MODEL, "prompt": prompt, "stream": True,
-               "options": {"num_predict": max_tokens, "temperature": 0.2}}
-    req = urllib.request.Request(
-        OLLAMA_URL + "/api/generate", data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=180) as r:
-        for raw in r:
-            line = raw.decode("utf-8", "replace").strip()
-            if not line:
-                continue
-            try:
-                obj = json.loads(line)
-            except ValueError:
-                continue
-            if obj.get("response"):
-                yield obj["response"]
-            if obj.get("done"):
-                break
+    """Yield real model text chunks (stream=true). First yield = TTFT.
+
+    Routes through the canonical lease-aware streaming provider so residency
+    is owned in one place (§consolidation) while preserving true token
+    streaming — the realtime acceptance test measures TTFT, so this must not
+    be degraded to a non-streaming call (§15).
+    """
+    from compute.ollama_provider_v2 import LeasePolicy, OllamaProviderV2
+    provider = OllamaProviderV2()
+    for chunk, _meta in provider.infer_stream(prompt, max_tokens=max_tokens,
+                                              temperature=0.2,
+                                              policy=LeasePolicy.EPHEMERAL):
+        yield chunk
 
 
 def real_tts_first_audio(text: str, workdir: str) -> dict:

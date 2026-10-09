@@ -74,15 +74,19 @@ class LocalGenesisRuntime(GenesisBridge):
 
     @staticmethod
     def _default_ping(model: str) -> bool:
-        payload = {"model": model, "prompt": "ok", "stream": False,
-                   "options": {"num_predict": 2, "temperature": 0}}
-        req = urllib.request.Request(
-            "http://127.0.0.1:11434/api/generate",
-            data=json.dumps(payload).encode(),
-            headers={"Content-Type": "application/json"})
+        """Cheap liveness probe: does the model execute at all?
+
+        Runs through the canonical provider with an EPHEMERAL lease so the
+        probe never leaves the model resident (§consolidation). A 2-token,
+        zero-temperature generate is the honest minimum that proves weights
+        loaded and inference ran.
+        """
+        from compute.ollama_provider_v2 import LeasePolicy, OllamaProviderV2
         try:
-            with urllib.request.urlopen(req, timeout=90) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
+            provider = OllamaProviderV2(timeout=90.0)
+            data = provider.infer(model, "ok",
+                                  max_tokens=2, temperature=0.0,
+                                  policy=LeasePolicy.EPHEMERAL)
             return bool(data.get("done", True)) or "response" in data
         except Exception:
             return False

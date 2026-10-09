@@ -22,15 +22,16 @@ MODELS = ["qwen3:0.6b", "qwen3:1.7b", "hhao/qwen2.5-coder-tools:3b"]
 
 
 def _ollama_generate(model: str, prompt: str, max_tokens: int = 128) -> str:
-    import urllib.request
-    payload = {"model": model, "prompt": prompt, "stream": False,
-               "options": {"num_predict": max_tokens, "temperature": 0.1}}
-    req = urllib.request.Request(
-        "http://127.0.0.1:11434/api/generate",
-        data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        return json.loads(r.read().decode()).get("response", "")
+    """One completion through the canonical lease-aware provider.
+
+    EPHEMERAL: an acceptance probe loads weights only to ask its question,
+    then releases them (§consolidation).
+    """
+    from compute.ollama_provider_v2 import LeasePolicy, OllamaProviderV2
+    provider = OllamaProviderV2()
+    data = provider.infer(model, prompt, max_tokens=max_tokens,
+                          temperature=0.1, policy=LeasePolicy.EPHEMERAL)
+    return data.get("response", "")
 
 
 def main() -> int:

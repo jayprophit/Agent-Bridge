@@ -228,18 +228,29 @@ class ModelCapabilityProfiler:
     def _ollama_generate(model: str, prompt: str,
                          options: dict[str, Any] | None = None,
                          timeout: float = 120.0) -> dict[str, Any]:
-        payload = {"model": model, "prompt": prompt, "stream": False,
-                   "options": options or {}}
+        """Live generate through the canonical lease-aware provider.
+
+        EPHEMERAL: a capability probe loads weights only to ask one question,
+        then must release them (§consolidation). The callable is still
+        injectable via __init__ so tests can substitute a fake; this default
+        is the real live path.
+        """
+        from compute.ollama_provider_v2 import LeasePolicy, OllamaProviderV2
+        opts = options or {}
         t0 = time.monotonic()
         try:
-            data = _http_json("http://127.0.0.1:11434/api/generate",
-                              payload, timeout=timeout)
+            provider = OllamaProviderV2(timeout=timeout)
+            data = provider.infer(
+                model, prompt,
+                max_tokens=opts.get("num_predict"),
+                temperature=opts.get("temperature"),
+                policy=LeasePolicy.EPHEMERAL)
         except Exception as e:  # noqa: BLE001 - record, don't raise
             return {"ok": False, "error": str(e)[:200],
                     "latency_s": round(time.monotonic() - t0, 2)}
         return {"ok": True, "text": str(data.get("response", "")),
-                "eval_count": data.get("eval_count", 0),
-                "eval_duration_ns": data.get("eval_duration", 0),
+                "eval_count": data.get("usage", {}).get("completion_tokens", 0),
+                "eval_duration_ns": 0,
                 "latency_s": round(time.monotonic() - t0, 2)}
 
     def quick_ping(self, model: str) -> BenchmarkResult:

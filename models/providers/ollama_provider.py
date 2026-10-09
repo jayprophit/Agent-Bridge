@@ -27,7 +27,12 @@ class OllamaProvider(ProviderAdapter):
     def __init__(self, endpoint: str = "http://localhost:11434"):
         self.endpoint = endpoint.rstrip("/")
         self._cached_models: list[dict] = []
-    
+        # Canonical lease-aware transport for every model-touching call.
+        # Read-only discovery (/api/tags, /api/show, /api/version) still uses
+        # the lightweight _ollama_request below, which never loads weights.
+        from compute.ollama_provider_v2 import OllamaProviderV2
+        self._v2 = OllamaProviderV2(base_url=self.endpoint)
+
     def discover(self) -> dict[str, Any]:
         """Discover available models from Ollama."""
         try:
@@ -132,114 +137,70 @@ class OllamaProvider(ProviderAdapter):
         """Generate a completion using Ollama.
 
         think=True/False is forwarded ONLY when explicitly passed (never
-        blindly: older models reject unknown fields). think=False keeps
-        reasoning models (e.g. qwen3) answering in content for tool use.
+        blindly: older models reject unknown fields). Delegates to the
+        canonical lease-aware OllamaProviderV2 transport; the return shape
+        (ok/content/metadata) is preserved for existing callers.
         """
         try:
             think = kwargs.pop("think", None)
-            payload = {
-                "model": model_id,
-                "messages": messages,
-                "stream": False,
-                **kwargs
-            }
-            if think is not None:
-                payload["think"] = bool(think)
-            response = self._ollama_request("POST", "/api/chat", payload)
-
-            if response and "message" in response:
-                return {
-                    "ok": True,
-                    "content": response["message"].get("content", ""),
-                    "model": model_id,
-                    "done": response.get("done", False),
-                    "think_requested": think,
-                    "metadata": {
-                        "total_duration": response.get("total_duration"),
-                        "load_duration": response.get("load_duration"),
-                        "prompt_eval_count": response.get("prompt_eval_count"),
-                        "eval_count": response.get("eval_count"),
-                        "thinking_chars": len(
-                            response["message"].get("thinking") or ""),
-                    }
-                }
+            data = self._v2.chat(model_id, messages, tools=kwargs.pop("tools", None),
+                                 think=think, **kwargs)
             return {
-                "ok": False,
-                "error": "invalid response from Ollama",
-                "response": response
+                "ok": True,
+                "content": data.get("content", ""),
+                "model": model_id,
+                "done": data.get("done", False),
+                "think_requested": think,
+                "metadata": {
+                    "total_duration": None,
+                    "prompt_eval_count": data.get("usage", {}).get("prompt_tokens"),
+                    "eval_count": data.get("usage", {}).get("completion_tokens"),
+                    "thinking_chars": len(data.get("thinking") or ""),
+                },
             }
         except Exception as e:
-            return {
-                "ok": False,
-                "error": f"Ollama generation failed: {e}"
-            }
-    
+            return {"ok": False, "error": f"Ollama generation failed: {e}"}
+
     def stream(self, model_id: str, messages: list[dict[str, Any]],
-                **kwargs):
+               **kwargs):
         """Stream a completion from Ollama (generator). think= is
-        forwarded only when explicitly passed (see generate)."""
+        forwarded only when explicitly passed (see generate).
+
+        The canonical transport is non-streaming at the frame boundary, so
+        this yields the single completion the same way the v0.7 adapter did
+        (it also issued one /api/chat request and yielded its content).
+        """
         try:
             think = kwargs.pop("think", None)
-            payload = {
-                "model": model_id,
-                "messages": messages,
-                "stream": True,
-                **kwargs
-            }
-            if think is not None:
-                payload["think"] = bool(think)
-            
-            # For streaming, we'd need to handle streaming HTTP
-            # This is a simplified version
-            response = self._ollama_request("POST", "/api/chat", payload)
-            
-            if response and "message" in response:
-                yield response["message"].get("content", "")
-            else:
-                yield ""
+            data = self._v2.chat(model_id, messages, think=think, **kwargs)
+            yield data.get("content", "")
         except Exception as e:
             yield f"Error: {e}"
-    
+
     def tool_call(self, model_id: str, messages: list[dict[str, Any]],
                   tools: list[dict[str, Any]], **kwargs) -> dict[str, Any]:
-        """Generate a tool-calling completion using Ollama."""
-        # Ollama supports tool calling through the 'tools' parameter
+        """Generate a tool-calling completion using Ollama.
+
+        Delegates to the canonical lease-aware transport with tools attached;
+        return shape preserved for existing callers.
+        """
         try:
             think = kwargs.pop("think", None)
-            payload = {
-                "model": model_id,
-                "messages": messages,
-                "tools": tools,
-                "stream": False,
-                **kwargs
-            }
-            if think is not None:
-                payload["think"] = bool(think)
-            response = self._ollama_request("POST", "/api/chat", payload)
-            
-            if response and "message" in response:
-                message = response["message"]
-                return {
-                    "ok": True,
-                    "content": message.get("content", ""),
-                    "tool_calls": message.get("tool_calls", []),
-                    "model": model_id,
-                    "metadata": {
-                        "total_duration": response.get("total_duration"),
-                        "eval_count": response.get("eval_count")
-                    }
-                }
+            data = self._v2.chat(model_id, messages, tools=tools, think=think,
+                                 **kwargs)
             return {
-                "ok": False,
-                "error": "invalid response from Ollama",
-                "response": response
+                "ok": True,
+                "content": data.get("content", ""),
+                "tool_calls": data.get("tool_calls", []),
+                "model": model_id,
+                "metadata": {
+                    "total_duration": None,
+                    "eval_count": data.get("usage", {}).get("completion_tokens"),
+                },
             }
         except Exception as e:
-            return {
-                "ok": False,
-                "error": f"Ollama tool call failed: {e}"
-            }
-    
+            return {"ok": False, "error": f"Ollama tool call failed: {e}"}
+
     def cancel(self, request_id: str) -> dict[str, Any]:
         """Cancel an in-progress Ollama request."""
         # Ollama doesn't have a built-in cancel API
@@ -270,9 +231,22 @@ class OllamaProvider(ProviderAdapter):
     
     def _ollama_request(self, method: str, path: str,
                        data: dict[str, Any] | None = None) -> dict[str, Any]:
-        """Make an HTTP request to Ollama."""
+        """READ-ONLY Ollama discovery transport. Never loads model weights.
+
+        This remains only for the lightweight read-only endpoints used by
+        discovery/health/metadata: GET /api/tags, /api/show, /api/version.
+        It deliberately does NOT serve /api/generate, /api/chat or
+        /api/embeddings — every weight-loading call goes through the canonical
+        lease-aware OllamaProviderV2 (self._v2) so residency is owned in one
+        place. If a future caller needs to load weights, it must use self._v2.
+        """
+        if method == "POST" and path in ("/api/generate", "/api/chat",
+                                         "/api/embeddings"):
+            raise RuntimeError(
+                f"_ollama_request is read-only discovery; {path} loads model "
+                f"weights and must go through OllamaProviderV2 (§consolidation)")
         url = f"{self.endpoint}{path}"
-        
+
         if method == "GET":
             req = urllib.request.Request(url)
             timeout = 30  # Short timeout for discovery/health checks

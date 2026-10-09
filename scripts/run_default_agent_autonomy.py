@@ -71,17 +71,19 @@ def ollama_tags() -> list[str]:
 
 
 def ollama_generate(model: str, prompt: str, max_tokens: int = 512) -> dict:
-    import urllib.request
-    payload = {"model": model, "prompt": prompt, "stream": False,
-               "options": {"num_predict": max_tokens, "temperature": 0.1}}
-    req = urllib.request.Request(
-        OLLAMA_URL + "/api/generate", data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json"})
+    """One completion through the canonical lease-aware provider.
+
+    EPHEMERAL: an acceptance run loads weights only to ask its question, then
+    releases them (§consolidation). Return shape (text/eval_count/duration_s)
+    is preserved for the acceptance report.
+    """
+    from compute.ollama_provider_v2 import LeasePolicy, OllamaProviderV2
+    provider = OllamaProviderV2(timeout=300.0)
     t0 = time.monotonic()
-    with urllib.request.urlopen(req, timeout=300) as r:
-        obj = json.loads(r.read().decode())
+    obj = provider.infer(model, prompt, max_tokens=max_tokens,
+                         temperature=0.1, policy=LeasePolicy.EPHEMERAL)
     return {"text": obj.get("response", ""),
-            "eval_count": obj.get("eval_count", 0),
+            "eval_count": obj.get("usage", {}).get("completion_tokens", 0),
             "duration_s": round(time.monotonic() - t0, 2)}
 
 
