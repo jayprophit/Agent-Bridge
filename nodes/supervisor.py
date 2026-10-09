@@ -211,6 +211,49 @@ def read_ollama_state(base_url: str = "http://127.0.0.1:11434",
     return facts
 
 
+def read_team_registry(registry: Any) -> dict[str, SourceFact]:
+    """Real worker/team identity from a TeamRegistry. Read-only.
+
+    Uses list_workers()/list_teams(). Each worker is rendered with the fields
+    the dashboard needs; counts are LIVE_VERIFIED because we just read them.
+    An empty registry is honest (empty list), never a fabricated roster.
+    """
+    try:
+        workers = registry.list_workers()
+        teams = registry.list_teams()
+    except Exception as e:  # noqa: BLE001
+        return {"registry": fact(None, DEGRADED, "team_registry",
+                                 note=f"list failed: {type(e).__name__}")}
+    worker_rows = []
+    for w in workers:
+        worker_rows.append({
+            "worker_id": getattr(w, "worker_id", None),
+            "role_id": getattr(w, "role_id", None),
+            "department": getattr(w, "department", None),
+            "model_id": getattr(w, "model_id", None),
+            "provider_id": getattr(w, "provider_id", None),
+            "execution_target": getattr(w, "execution_target", None),
+            "career_state": getattr(w, "career_state", None),
+            "success_count": getattr(w, "success_count", None),
+            "failure_count": getattr(w, "failure_count", None),
+        })
+    team_rows = []
+    for t in teams:
+        team_rows.append({
+            "team_id": getattr(t, "team_id", None),
+            "team_name": getattr(t, "team_name", None),
+            "members": getattr(t, "members", []),
+            "team_size": getattr(t, "team_size", None),
+            "active_concurrency_limit": getattr(t, "active_concurrency_limit", None),
+        })
+    return {
+        "worker_count": fact(len(workers), LIVE_VERIFIED, "team_registry"),
+        "team_count": fact(len(teams), LIVE_VERIFIED, "team_registry"),
+        "workers": fact(worker_rows, LIVE_VERIFIED, "team_registry"),
+        "teams": fact(team_rows, LIVE_VERIFIED, "team_registry"),
+    }
+
+
 # --- normaliser -------------------------------------------------------------
 class SupervisorState:
     """The normalised read-model. Holds the latest snapshot and an event ring.
@@ -280,12 +323,12 @@ class SupervisorState:
 
 # --- refresh wiring ---------------------------------------------------------
 def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
-                     ollama_url: str = "http://127.0.0.1:11434") -> None:
+                     ollama_url: str = "http://127.0.0.1:11434",
+                     team_registry: Any = None) -> None:
     """Pull real adapter data into the snapshot. Call on a timer or per-request.
 
-    `repos` maps a project label -> absolute repo path. This is read-only.
-    TeamRegistry workers are read via an optional injected reader (see
-    build_supervisor_server) to avoid a hard import cycle.
+    `repos` maps a project label -> absolute repo path. `team_registry` is an
+    optional TeamRegistry instance (read-only). All adapters are read-only.
     """
     git_section: dict[str, Any] = {}
     for label, path in repos.items():
@@ -295,16 +338,21 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
     oll = {k: v.to_dict() for k, v in read_ollama_state(ollama_url).items()}
     state.set_section("local_models", oll)
 
-    workers_reader: Any = getattr(state, "_workers_reader", None)
-    if callable(workers_reader):
-        try:
-            state.set_section("workers", workers_reader())
-        except Exception as e:  # noqa: BLE001
-            state.set_section("workers", {"error": fact(str(e), DEGRADED, "team_registry").to_dict()})
+    if team_registry is not None:
+        reg = {k: v.to_dict() for k, v in read_team_registry(team_registry).items()}
+        state.set_section("team_registry", reg)
     else:
-        state.set_section("workers", {
-            "note": fact("team_registry reader not wired", NOT_EXPOSED,
-                         "team_registry").to_dict()})
+        # Optional injection also still supported for a custom reader.
+        workers_reader: Any = getattr(state, "_workers_reader", None)
+        if callable(workers_reader):
+            try:
+                state.set_section("workers", workers_reader())
+            except Exception as e:  # noqa: BLE001
+                state.set_section("workers", {"error": fact(str(e), DEGRADED, "team_registry").to_dict()})
+        else:
+            state.set_section("workers", {
+                "note": fact("team_registry not wired", NOT_EXPOSED,
+                             "team_registry").to_dict()})
 
 
 # --- loopback HTTP + SSE server (mirrors node_server framing) ---------------

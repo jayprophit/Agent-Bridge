@@ -516,6 +516,14 @@ class TeamRegistry:
     def get_worker(self, worker_id: str) -> Optional[WorkerCareerRecord]:
         return self._workers.get(worker_id)
 
+    def list_workers(self) -> list[WorkerCareerRecord]:
+        """All registered workers (enumeration for the supervisor read-model)."""
+        return list(self._workers.values())
+
+    def list_teams(self) -> list["TeamRecord"]:
+        """All registered teams (enumeration for the supervisor read-model)."""
+        return list(self._teams.values())
+
     def workers_by_role(self, role_id: str) -> list[WorkerCareerRecord]:
         return [w for w in self._workers.values() if w.role_id == role_id]
 

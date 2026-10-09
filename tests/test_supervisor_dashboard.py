@@ -212,5 +212,59 @@ class TestRefresh:
             sup.LIVE_VERIFIED, sup.LIVE)
         # ollama pointed at a dead port -> honest OFFLINE, not a fake version
         assert snap["sections"]["local_models"]["ollama"]["state"] == sup.OFFLINE
-        # no workers reader wired -> honest NOT_EXPOSED, not a fabricated roster
+        # no team registry wired -> honest NOT_EXPOSED, not a fabricated roster
         assert snap["sections"]["workers"]["note"]["state"] == sup.NOT_EXPOSED
+
+
+# --- team registry adapter --------------------------------------------------
+class TestTeamRegistryAdapter:
+    def _make_registry(self):
+        from compute.team_registry import TeamRegistry, WorkerCareerRecord
+        reg = TeamRegistry()
+        reg.register_worker(WorkerCareerRecord(
+            worker_id="w-hermes", role_id="supervisor", department="orchestration",
+            model_id=None, provider_id=None, execution_target="hermes-host",
+            career_state="ACTIVE"))
+        reg.register_worker(WorkerCareerRecord(
+            worker_id="w-opencode", role_id="implementer", department="engineering",
+            model_id="claude", provider_id="anthropic", execution_target="opencode-cli",
+            career_state="ACTIVE"))
+        return reg
+
+    def test_list_workers_and_teams_exist(self):
+        reg = self._make_registry()
+        assert len(reg.list_workers()) == 2
+        assert reg.list_teams() == []
+
+    def test_adapter_reports_real_counts_live_verified(self):
+        reg = self._make_registry()
+        facts = sup.read_team_registry(reg)
+        assert facts["worker_count"].effective_state() == sup.LIVE_VERIFIED
+        assert facts["worker_count"].value == 2
+        rows = facts["workers"].value
+        ids = {r["worker_id"] for r in rows}
+        assert ids == {"w-hermes", "w-opencode"}
+        oc = next(r for r in rows if r["worker_id"] == "w-opencode")
+        assert oc["execution_target"] == "opencode-cli"
+        assert oc["career_state"] == "ACTIVE"
+
+    def test_empty_registry_is_honest_not_fabricated(self):
+        from compute.team_registry import TeamRegistry
+        facts = sup.read_team_registry(TeamRegistry())
+        assert facts["worker_count"].value == 0
+        assert facts["workers"].value == []
+        assert facts["worker_count"].effective_state() == sup.LIVE_VERIFIED
+
+    def test_refresh_with_registry_populates_section(self):
+        import os
+        repo = os.path.dirname(os.path.dirname(os.path.abspath(sup.__file__)))
+        reg = self._make_registry()
+        st = sup.SupervisorState()
+        sup.refresh_snapshot(st, {"self": repo}, ollama_url="http://127.0.0.1:1",
+                             team_registry=reg)
+        snap = st.snapshot()
+        assert "team_registry" in snap["sections"]
+        assert snap["sections"]["team_registry"]["worker_count"]["value"] == 2
+        assert snap["sections"]["team_registry"]["worker_count"]["state"] == sup.LIVE_VERIFIED
+        # the honest NOT_EXPOSED gap is closed once a registry is wired
+        assert "workers" not in snap["sections"]
