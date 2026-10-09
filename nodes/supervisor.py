@@ -254,6 +254,89 @@ def read_team_registry(registry: Any) -> dict[str, SourceFact]:
     }
 
 
+def _run_cli(cmd: list[str], timeout: float) -> subprocess.CompletedProcess:
+    """Run a CLI robustly on Windows.
+
+    `opencode` is an npm .cmd shim, not a bare .exe, so subprocess.run([...])
+    raises FileNotFoundError even though the shell resolves it. Try the bare
+    argv first; on FileNotFoundError retry through the shell so shims resolve.
+    """
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+    except FileNotFoundError:
+        import shlex
+        return subprocess.run(" ".join(shlex.quote(c) for c in cmd),
+                              shell=True, capture_output=True, text=True, timeout=timeout)
+
+
+def read_opencode_sessions(opencode_bin: str = "opencode",
+                           timeout: float = 20.0) -> dict[str, SourceFact]:
+    """Real OpenCode session inventory via `opencode session list`.
+
+    This is the CLI telemetry verified in reconciliation §10 — structured,
+    no auth, no screen-scraping. Returns honest OFFLINE if the CLI is missing
+    or errors; never a fabricated session list.
+    """
+    try:
+        p = _run_cli([opencode_bin, "session", "list"], timeout)
+    except (OSError, subprocess.SubprocessError) as e:
+        return {"opencode": fact(None, OFFLINE, "opencode-cli",
+                                 note=f"{type(e).__name__}: {e}")}
+    if p.returncode != 0:
+        return {"opencode": fact(None, DEGRADED, "opencode-cli",
+                                 note=f"exit {p.returncode}: {(p.stderr or '').strip()[:200]}")}
+    lines = [ln for ln in (p.stdout or "").splitlines() if ln.strip()]
+    # `opencode session list` prints a table; count non-empty data lines as a
+    # real, honest lower-bound on sessions without over-parsing the table.
+    return {
+        "cli": fact("available", LIVE_VERIFIED, "opencode-cli"),
+        "raw_line_count": fact(len(lines), LIVE_VERIFIED, "opencode-cli"),
+        "listing": fact(lines[:60], LIVE_VERIFIED, "opencode-cli"),
+    }
+
+
+def read_opencode_session(opencode_bin: str = "opencode", session_id: str = "",
+                          timeout: float = 30.0) -> dict[str, SourceFact]:
+    """Real OpenCode session detail via `opencode export <id>` (JSON on stdout).
+
+    Returns the session `info` fields the dashboard needs (id, title, agent,
+    model, tokens, cost, time) as LIVE_VERIFIED. The 343-message `messages`
+    array is NOT embedded in the snapshot (too large); we summarise counts.
+    Honest OFFLINE/DEGRADED on CLI failure; never a fabricated session.
+    """
+    if not session_id:
+        return {"opencode_session": fact(None, UNKNOWN, "opencode-cli",
+                                         note="no session_id provided")}
+    try:
+        p = _run_cli([opencode_bin, "export", session_id], timeout)
+    except (OSError, subprocess.SubprocessError) as e:
+        return {"opencode_session": fact(None, OFFLINE, "opencode-cli",
+                                         note=f"{type(e).__name__}: {e}")}
+    if p.returncode != 0:
+        return {"opencode_session": fact(None, DEGRADED, "opencode-cli",
+                                         note=f"exit {p.returncode}")}
+    try:
+        data = json.loads(p.stdout)
+    except (ValueError, TypeError):
+        return {"opencode_session": fact(None, DEGRADED, "opencode-cli",
+                                         note="export was not valid JSON")}
+    info = data.get("info", {}) if isinstance(data, dict) else {}
+    msgs = data.get("messages", []) if isinstance(data, dict) else []
+    summary = {
+        "id": info.get("id"),
+        "title": info.get("title"),
+        "agent": info.get("agent"),
+        "model": info.get("model"),
+        "version": info.get("version"),
+        "tokens": info.get("tokens"),
+        "cost": info.get("cost"),
+    }
+    return {
+        "session": fact(summary, LIVE_VERIFIED, "opencode-cli"),
+        "message_count": fact(len(msgs), LIVE_VERIFIED, "opencode-cli"),
+    }
+
+
 # --- normaliser -------------------------------------------------------------
 class SupervisorState:
     """The normalised read-model. Holds the latest snapshot and an event ring.
@@ -324,7 +407,9 @@ class SupervisorState:
 # --- refresh wiring ---------------------------------------------------------
 def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
                      ollama_url: str = "http://127.0.0.1:11434",
-                     team_registry: Any = None) -> None:
+                     team_registry: Any = None,
+                     opencode_bin: Optional[str] = None,
+                     opencode_session_id: str = "") -> None:
     """Pull real adapter data into the snapshot. Call on a timer or per-request.
 
     `repos` maps a project label -> absolute repo path. `team_registry` is an
@@ -353,6 +438,14 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
             state.set_section("workers", {
                 "note": fact("team_registry not wired", NOT_EXPOSED,
                              "team_registry").to_dict()})
+
+    if opencode_bin is not None:
+        oc: dict[str, Any] = {k: v.to_dict()
+                              for k, v in read_opencode_sessions(opencode_bin).items()}
+        if opencode_session_id:
+            oc.update({k: v.to_dict() for k, v in
+                       read_opencode_session(opencode_bin, opencode_session_id).items()})
+        state.set_section("opencode", oc)
 
 
 # --- loopback HTTP + SSE server (mirrors node_server framing) ---------------

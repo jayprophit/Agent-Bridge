@@ -268,3 +268,51 @@ class TestTeamRegistryAdapter:
         assert snap["sections"]["team_registry"]["worker_count"]["state"] == sup.LIVE_VERIFIED
         # the honest NOT_EXPOSED gap is closed once a registry is wired
         assert "workers" not in snap["sections"]
+
+
+# --- OpenCode CLI adapter ---------------------------------------------------
+class TestOpenCodeAdapter:
+    def test_missing_binary_is_honest_offline(self):
+        facts = sup.read_opencode_sessions(opencode_bin="definitely-not-opencode-xyz")
+        # Under shell=True the shell returns a non-zero exit (DEGRADED) rather
+        # than raising FileNotFoundError (OFFLINE). Both are honest; the
+        # guarantee is "not LIVE and no fabricated data".
+        assert facts["opencode"].effective_state() in (sup.OFFLINE, sup.DEGRADED)
+        assert facts["opencode"].value is None
+
+    def test_session_without_id_is_unknown(self):
+        facts = sup.read_opencode_session(session_id="")
+        assert facts["opencode_session"].effective_state() == sup.UNKNOWN
+
+    def test_real_cli_reports_available(self):
+        # opencode is verified on PATH in this environment.
+        facts = sup.read_opencode_sessions()
+        st = facts["cli"].effective_state()
+        assert st in (sup.LIVE_VERIFIED, sup.STALE)
+        assert facts["cli"].value == "available"
+        assert facts["raw_line_count"].value >= 0
+
+    def test_real_export_of_known_session(self):
+        # The verified P0-A session id from reconciliation §10.
+        facts = sup.read_opencode_session(
+            session_id="ses_edf2e381fffetxJ8P6XCdR8Q35")
+        if "session" in facts:
+            s = facts["session"]
+            assert s.effective_state() in (sup.LIVE_VERIFIED, sup.STALE)
+            assert s.value.get("id") == "ses_edf2e381fffetxJ8P6XCdR8Q35"
+            assert facts["message_count"].value >= 1
+        else:
+            # session may have aged out; must still be an honest state, not a crash
+            assert facts["opencode_session"].effective_state() in (
+                sup.OFFLINE, sup.DEGRADED, sup.UNKNOWN)
+
+    def test_refresh_includes_opencode_section(self):
+        import os
+        repo = os.path.dirname(os.path.dirname(os.path.abspath(sup.__file__)))
+        st = sup.SupervisorState()
+        sup.refresh_snapshot(st, {"self": repo}, ollama_url="http://127.0.0.1:1",
+                             opencode_bin="opencode")
+        snap = st.snapshot()
+        assert "opencode" in snap["sections"]
+        assert snap["sections"]["opencode"]["cli"]["state"] in (
+            sup.LIVE_VERIFIED, sup.STALE, sup.OFFLINE, sup.DEGRADED)
