@@ -319,6 +319,15 @@ heavy models. Caveat: `WorkerPool.acquire()` (team_execution_fabric.py:175-183) 
 artifact from a stray carriage return; `compile()` parses the file cleanly. Verified and
 excluded so it is not carried forward as a false finding.
 
+> **DISPROVED / FALSE POSITIVE (byte-level evidence).** A subagent reported a syntax error
+> at `comms/fabric.py:143`. Independent validation rejected it: `python -m py_compile
+> comms/fabric.py` exits 0; `import comms.fabric` succeeds; `compile(open(...).read())`
+> parses OK; and `od -c` of line 143 shows the real bytes are
+> `requires_authorization: bool *** False` (a valid field default). The `***`
+> some readers displayed is a CRLF rendering artifact, not source. **Finding disproven and
+> excluded.** Retained here as provenance that subagent claims are independently validated
+> before promotion to fact — never auto-promoted.
+
 ## 20. RECOMMENDED NEXT BUILD UNIT
 
 **Not a large build.** Per the reconciliation mandate, specify the next bounded unit:
@@ -365,3 +374,40 @@ live. Cloud providers are not called usable because an adapter exists; they are
 BLOCKED_OWNER. Local execution is LIVE_VERIFIED because tests demonstrate it. The four
 cluster audits were independently spot-verified by the orchestrator (one claimed defect —
 a comms/fabric.py syntax error — was disproven and excluded).
+
+---
+
+## 21. RESOLUTION — BOUNDED RUNTIME-SAFETY UNIT (executed on this branch)
+
+**Branch:** `unit/runtime-safety-fixes` · **Fix commit:** `56d1b6d` ·
+**Baseline:** `d0219ea` (merged audit) · **Tests:** 199 passed across
+node/team/policy/routing (0 failed). **Not yet merged to `main`; owner merge gate.**
+
+This section lives on the fix branch (beside the code) so `main` never claims a fix it
+does not yet contain. On merge, this RESOLUTION and the code land together.
+
+All six items from Bounded unit A are **DONE**. Fixed vs remaining:
+
+| Gap | Disposition | Evidence |
+|---|---|---|
+| G4 `privacy_allows_send` fail-open | **FIXED** | fail-closed; reconciled with `node_router` `PRIVACY_*` (single source, no 3rd engine); unknown/unlisted policy → DENY; SPECIFIC_PROVIDER needs named+allow-listed provider. +15 tests (`PrivacyFailClosedTests`). |
+| G6 `WorkerPool.acquire()` bypass | **FIXED** | unknown worker denied; double-acquire denied; capacity enforced for registered workers. +4 tests. |
+| G5 `form_team_hybrid` split discarded | **FIXED** | per-role execution targets preserved; cloud worker honestly **BLOCKED** (never silently run) when `cloud_available=False`. +3 tests. |
+| G13 `OWNER_NODE` NameError | **FIXED** | import added to `node_registry`; `trusted_nodes()` verified. +1 test. |
+| G2 DataPolicyEngine / ContextBroker 0 call sites | **WIRED** | DataPolicyEngine enforced in delegation send path (DENY/BROKER_ONLY/REQUIRES_OWNER block when `data_class` declared); ContextBroker via `NodeServerState.request_scoped_context()` (minimum-necessary, privacy-ceiling-enforced, remote-disclosure surfaced). Back-compat `None`. +6 tests. |
+| comms/fabric.py "syntax error" | **DISPROVED** | rendering artifact; byte-level evidence above. Excluded. |
+
+**Remaining PARTIAL/BLOCKED (unchanged by this unit):**
+- Cloud authenticated execution: **BLOCKED_OWNER** (5 `MISSING_ROTATION` creds). No creds
+  rotated/invented. Cloud/hybrid LIVE: **NOT VERIFIED**.
+- Non-Ollama runtimes (vLLM/sglang/llama-server): **DESIGNED/BLOCKED** — unchanged.
+- VM-A/VM-B identity boundary: **PARTIAL** (VM-B only) — unchanged.
+- Avatar T0–T4 tiers: **MISSING** — adopt UI-scaffold `registerAvatarRenderer` seam
+  (separate unit).
+- `test_realtime.py:143` TTFT==0.0 (G14): pre-existing clock-granularity test bug,
+  passes in isolation, unrelated to this unit.
+
+**Honesty:** no runtime installed, no model pulled, no cloud path claimed live. This unit
+tightened the LOCAL execution core's correctness/privacy and wired the two unwired
+policy/context components into real enforcement paths. It did **not** and does not claim
+cloud/hybrid LIVE verification — that remains gated on credential rotation (owner).
