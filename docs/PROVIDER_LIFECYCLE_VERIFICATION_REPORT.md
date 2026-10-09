@@ -113,6 +113,10 @@ models without a lease. These are separate legacy adapters predating
 Provider V2, recorded in the callsite matrix rather than silently ignored.
 Consolidating them onto Provider V2 is the follow-up migration task.
 
+> **UPDATE 2026-10-09:** this follow-up migration is **DONE** — see §10
+> (Provider V2 Consolidation, closed at `2cdfaaa` / `b87b412`). All five
+> legacy adapters now route through the canonical V2 transport.
+
 ---
 
 ## 3. Full suite
@@ -269,6 +273,12 @@ before any code port (§18).
 |---|---|---|
 | `5cb60bb` | provider-level model lifecycle (§3–§10) | verified identical |
 | `58c630e` | compute-runtime audit (§19–§25) | verified identical |
+| `a841e4d` | lease callsite corrections | verified identical |
+| `527e52e` | lifecycle leak class closed | verified identical |
+| `744cd57` | enterprise team durable registry | verified identical |
+| `0af0230` | RACI accountability refinement | verified identical |
+| `2cdfaaa` | **Provider V2 consolidation** — all 9 load paths migrated (§10) | verified identical |
+| `b87b412` | **5 full-suite regressions repaired + chat() lease coverage** (§10) | verified identical |
 
 Every bounded unit: IMPLEMENT → TEST → EVIDENCE → COMMIT → PUSH → FETCH →
 VERIFY REMOTE SHA.
@@ -291,10 +301,11 @@ VERIFY REMOTE SHA.
 
 **Consolidate the five legacy Ollama adapters onto Provider V2**
 (`genesis_runtime.py`, `worker_main.py`, `providers.py`,
-`models/providers/ollama_provider.py`, `model_lifecycle.py`). Each still
-loads models without a lease; the canonical path is now safe, and these are
-the remaining leakage surfaces. Requires tracing each caller's usage before
-switching it over.
+`models/providers/ollama_provider.py`, `model_lifecycle.py`).
+
+> **STATUS: DONE** — closed at `2cdfaaa` (migration) + `b87b412` (repairs).
+> See §10 for the full checkpoint. This task list is retained as the record
+> of what was required before the consolidation existed.
 
 ---
 
@@ -308,3 +319,129 @@ PASSED WITH OWNER/EXTERNAL BLOCKERS
 Cloud credentials remain OWNER_BLOCKER. Provider-level local model
 leakage — which may not remain — is closed at the canonical boundary and
 pinned by 29 tests, two of which fail if a run leaves weights resident.
+
+---
+
+## 10. Provider V2 Consolidation — FINAL CHECKPOINT (CLOSED / VERIFIED)
+
+Directive: RECONCILE / CONSOLIDATE / MIGRATE / TEST / PROVE / PUSH.
+Purpose: make lifecycle correctness **STRUCTURAL** — no production-capable
+path may load an Ollama model without the canonical lease policy, unless
+explicitly classified `LOW_LEVEL_RUNTIME_TEST` or
+`INTENTIONAL_EXTERNAL_RUNTIME_ACCESS`.
+
+### 10.1 Result
+
+| Field | Value |
+|---|---|
+| Status | **CLOSED / VERIFIED** |
+| Consolidation SHA | `2cdfaaa` |
+| Repair SHA (this checkpoint) | `b87b412` |
+| Local SHA | `b87b412` |
+| Remote SHA (`origin/main`) | `b87b412` — **IDENTICAL**, tree clean |
+| Full suite | **2079 passed / 1 skipped / 0 failed**, 47 warnings, 49 subtests |
+| Suite duration | **3380.83s (0:56:20)**, PYTEST_EXIT=0 |
+| Run provenance | clean tree at HEAD; no source edits during run |
+
+### 10.2 Model residency — before / after (no new leak)
+
+| | Resident models |
+|---|---|
+| Before | `['qwen3:1.7b', 'nomic-embed-text:latest']` |
+| After | `['nomic-embed-text:latest']` |
+
+After-set is a **subset** of before-set: nothing the suite acquired was left
+resident. `nomic-embed-text` is the persistent embedding baseline
+(pre-existing); `qwen3:1.7b`, transiently resident before the run, was
+evicted. Residency returned to baseline — RAM clean.
+
+### 10.3 Nine original load paths — disposition (all migrated → V2)
+
+| Callsite | Disposition |
+|---|---|
+| `providers.OllamaProvider.chat()` | delegates to V2 `chat()` |
+| `models/providers/ollama_provider.py` generate/tool_call | delegate to V2 `chat()` |
+| `worker_main._query_model` | V2 `infer()`, EPHEMERAL lease |
+| `genesis_runtime._default_ping` | V2, EPHEMERAL lease |
+| `model_lifecycle._ollama_generate` (profiler) | V2 |
+| `scripts/run_compat_acceptance.py`, `run_default_agent_autonomy.py` | V2 EPHEMERAL |
+| `scripts/run_realtime_acceptance.py`, `run_real_resource_acceptance.py` | V2 `infer_stream()` |
+| `local_team_executor.py` | already on V2 (unchanged) |
+
+Full matrix: `docs/model_lifecycle_callsite_matrix.md` (rewritten,
+post-consolidation).
+
+### 10.4 Remaining raw-HTTP exceptions (all approved / legitimate)
+
+Repo-wide, **zero production load-triggering calls remain outside V2.** The
+only production references:
+
+- `models/providers/ollama_provider.py::_ollama_request` — **read-only
+  discovery** (`/api/tags`, `/api/show`, `/api/version`); **raises if asked
+  to load weights**. A deliberate `LOW_LEVEL_RUNTIME_TEST`-class access,
+  allowlisted by the guard.
+- `providers.OllamaProvider._get` — read-only `/api/tags` passthrough for
+  `runtime.AgentRuntime.model_inventory()` (needs full payload: size,
+  modified_at, details). Routes through V2; never loads weights. Restored at
+  `b87b412` after the consolidation inadvertently removed it.
+
+Everything else is in `tests/` exercising the canonical provider's own
+`_get`/leasing, or the release hook (`keep_alive=0`).
+
+### 10.5 Bypass guard (structural enforcement)
+
+`tests/test_ollama_bypass_guard.py` (3/3) — static scan of tracked
+production `.py`; fails CI on any new direct Ollama load call. Allowlist:
+`CANONICAL_TRANSPORT` + `READ_ONLY_DISCOVERY`. Scans production only; skips
+tests, release hooks, and label strings.
+
+### 10.6 Duplicate-client retirement
+
+- **Before:** 3 independent Ollama HTTP clients / 9 unleased load paths / V2
+  used by 1 production consumer.
+- **After:** **1 canonical** (`OllamaProviderV2`) + 1 guarded read-only
+  discovery client / all production consumers lease-aware / 0 unexplained
+  production bypasses.
+
+### 10.7 Lease / release evidence
+
+- `test_model_lifecycle_leases.py` 29/29 (27 deterministic fake-transport +
+  2 bounded live) + 4 new `ChatLeaseTests` (ephemeral release, `keep_alive=0`,
+  think-forwarding only when explicit, failure-drops-lease). EPHEMERAL for
+  probes/workers/acceptance; SESSION default unchanged.
+
+### 10.8 The 5 regressions the gate caught (repaired, not carried forward)
+
+The clean full suite at `2cdfaaa` surfaced 5 failures — all real, all from
+this consolidation, repaired at `b87b412`:
+
+1. **Removed a depended-on private method** (2 failures: `test_runtime_v05`
+   `test_inventory_shape`, `test_service_v05` `test_models_sessions_schema`).
+   `runtime.py:858` does `prov._get("/api/tags") if hasattr(prov, "_get")`.
+   Removing `_get` made `hasattr` False and `model_inventory()` silently
+   returned an empty model list. Restored `_get` as a V2 passthrough.
+2. **Moved a transport seam out from under a test** (3 failures:
+   `test_maintenance_v081` `ThinkControlTests`). The test stubbed
+   `p._ollama_request`; `generate()` now routes through `self._v2.chat()`, so
+   the stub stopped intercepting and the tests hit live network. Restubbed at
+   the new seam (`p._v2._get`); every original assertion unchanged.
+3. **Coverage gap closed:** `chat()` had no lease test — added `ChatLeaseTests`.
+
+**Lesson reaffirmed:** the gate is the control. A green suite is not assumed;
+it is proven, and it caught real defects this time.
+
+### 10.9 Cloud credential blockers (unchanged)
+
+Five providers remain `MISSING_ROTATION` (owner must rotate into KeePass; old
+keys not recovered from history): CRED-OPENROUTER-PRIMARY, CRED-GROQ-PRIMARY,
+CRED-GEMINI-PRIMARY, CRED-HUGGINGFACE-PRIMARY, CRED-DEEPSEEK-PRIMARY. These
+gate only *live* cloud claims, not the local Provider V2 work above.
+
+### 10.10 Gate
+
+```
+AETHERIUS PROVIDER V2 CONSOLIDATION GATE:
+CLOSED / VERIFIED — 2079 passed / 1 skipped / 0 failed
+residency returned to baseline · local == remote b87b412
+1 canonical transport · all consumers lease-aware · 0 unexplained bypasses
+```
