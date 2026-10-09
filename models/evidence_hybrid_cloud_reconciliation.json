@@ -51,8 +51,8 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 242,
-    "all_passed": 242,
+    "all_total": 268,
+    "all_passed": 268,
     "all_skipped": 0,
     "all_failed": 0,
     "keepass_bridge": {
@@ -65,6 +65,12 @@
       "file": "tests/test_migration_provenance.py",
       "total": 55,
       "passed": 55,
+      "failed": 0
+    },
+    "estate_reconciliation": {
+      "file": "tests/test_estate_reconciliation.py",
+      "total": 26,
+      "passed": 26,
       "failed": 0
     }
   },
@@ -263,18 +269,33 @@
     "stop_after_corrected_handoff": true
   },
   "migration_programme_status": {
-    "phase": "LIVE AUDIT IN PROGRESS - ZERO DELETIONS AUTHORISED",
-    "inventory_basis": "Aetherius_GitHub_Repository_Inventory_2026-10-02.csv: 394 repos = 44 ORIGINAL + 350 FORK_CANDIDATE",
-    "catalog_ingested": "350 rows, 18 categories, 233 HIGH / 107 MEDIUM / 10 LOW confidence",
-    "gate_enforcement": "VERIFIED (11 strictly-ordered gates; skipping raises GateError; enforced in code not convention)",
-    "deletion_authority": "VERIFIED (requires all gates + deletable disposition + known unique-commit status + preservation ref + REMOTE-verified destination commit; local commit is not sufficient)",
-    "provenance_permanence": "VERIFIED (record survives fork deletion; never keyed on repository existence; append-only)",
-    "live_audit_batch_1": "10/10 VERIFY_UPSTREAM rows resolved to real upstreams with zero unique commits",
-    "forks_audited": 10,
-    "forks_remaining_not_checked": 340,
+    "phase": "LIVE ESTATE RECONCILED — §40 REPORTS GENERATED",
+    "programme_mode": "AUDIT / RECONCILE / EXTRACT / MIGRATE / TEST / PUSH / VERIFY / RETIRE",
+    "live_total_repos": 396,
+    "live_originals": 44,
+    "live_forks": 352,
+    "forks_with_resolved_upstream": 352,
+    "forks_without_upstream": 0,
+    "catalog_rows": 350,
+    "catalog_rows_matched_live": 350,
+    "catalog_rows_not_live": 0,
+    "live_repos_uncatalogued": 46,
+    "inventory_discrepancy": "October inventory said 394; live count is 396",
+    "predecessors_classified": 9,
+    "predecessors_exist_live": 9,
+    "unique_commit_audit": "384 audited: 349 CLEAN, 3 HAS_UNIQUE, 0 errors",
+    "preservation_required": 3,
+    "preservation_detail": [
+      "IsaacLab +154 commits (upstream isaac-sim/IsaacLab)",
+      "neo4j +7 commits (includes Java source: PackstreamValueWriter.java)",
+      "devops-directive-docker-course +2 commits (Dockerfiles/Makefile)"
+    ],
+    "license_warning": "97 NOASSERTION + 50 UNKNOWN + None = 147 repos need manual license identification before code use (§6)",
+    "safe_delete_gate": "§34 — 15 conditions, all mandatory; 0 repos pass",
     "deletions_authorised": 0,
-    "dispositions": "all 10 records PENDING_AUDIT at GATE_1",
-    "auditor_is_read_only": "VERIFIED (no delete/archive/mutation verb in migration/auditor.py; asserted by test)",
-    "next_action": "continue bounded live audits 10-25 repos per run, then assign canonical owner + strategy per verified fork"
+    "safe_to_delete_queue": "EMPTY BY DESIGN",
+    "reports_generated": "A-J (10 artefacts in migration/reports/)",
+    "dependency_ready_tasks": 347,
+    "next_action": "P0 Hybrid Compute audit: evaluate llama.cpp/ollama/vllm/ggml against the execution-target abstraction"
   }
 }

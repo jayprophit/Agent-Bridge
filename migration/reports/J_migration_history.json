@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-10-09T04:56:21.663713+00:00",
+  "events": [
+    {
+      "at": "2026-10-09T04:56:21.663713+00:00",
+      "event": "LIVE_ESTATE_FETCHED",
+      "detail": "396 repositories via REST API"
+    },
+    {
+      "at": "2026-10-09T04:56:21.663713+00:00",
+      "event": "UPSTREAMS_RESOLVED",
+      "detail": "352/352 forks linked"
+    },
+    {
+      "at": "2026-10-09T04:56:21.663713+00:00",
+      "event": "CATALOG_RECONCILED",
+      "detail": "350 catalog rows matched live"
+    },
+    {
+      "at": "2026-10-09T04:56:21.663713+00:00",
+      "event": "PREDECESSORS_CLASSIFIED",
+      "detail": "9 predecessors, all live"
+    },
+    {
+      "at": "2026-10-09T04:56:21.663713+00:00",
+      "event": "UNIQUE_COMMIT_AUDIT",
+      "detail": "396 forks audited, 3 require preservation"
+    },
+    {
+      "at": "2026-10-09T04:56:21.663713+00:00",
+      "event": "DELETIONS",
+      "detail": "ZERO \u2014 none authorised"
+    }
+  ]
+}

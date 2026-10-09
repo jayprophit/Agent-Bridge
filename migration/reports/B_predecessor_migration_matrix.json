@@ -1,0 +1,270 @@
+{
+  "generated_at": "2026-10-09T04:39:17.331894+00:00",
+  "basis": "\u00a79/\u00a742/\u00a743 owner-authoritative classification + LIVE evidence",
+  "note": "migration_state=NOT_STARTED means no source inspection has happened. This matrix records WHAT to mine and WHERE it goes; capability extraction (\u00a710) is downstream work.",
+  "predecessors": [
+    {
+      "repository": "aetherium",
+      "exists_live": true,
+      "classification": "PREDECESSOR",
+      "gate": "AETHERIUS_OS_PREDECESSOR",
+      "owner_directed_destination": "Aetherius OS",
+      "capabilities_to_mine": [
+        "platform concepts",
+        "settings",
+        "identity",
+        "service boundaries",
+        "reusable code"
+      ],
+      "caution": null,
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/aetherium",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": "MIT",
+        "last_push": "2026-02-20T20:16:52Z",
+        "size_kb": null,
+        "language": "Python",
+        "archived": false,
+        "stars": 1
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    },
+    {
+      "repository": "Aetherial",
+      "exists_live": true,
+      "classification": "PREDECESSOR",
+      "gate": "AETHERIUS_OS_PREDECESSOR",
+      "owner_directed_destination": "Aetherius OS",
+      "capabilities_to_mine": [
+        "platform architecture",
+        "UI/runtime assumptions",
+        "service boundaries",
+        "abandoned requirements"
+      ],
+      "caution": null,
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/Aetherial",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": "GPL-3.0",
+        "last_push": "2026-09-11T07:53:22Z",
+        "size_kb": null,
+        "language": "Python",
+        "archived": false,
+        "stars": 1
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    },
+    {
+      "repository": "aetherial-platform",
+      "exists_live": true,
+      "classification": "PREDECESSOR",
+      "gate": "AETHERIUS_OS_PREDECESSOR",
+      "owner_directed_destination": "Aetherius OS + shared platform services",
+      "capabilities_to_mine": [
+        "platform/web/service architecture",
+        "cross-device/product concepts",
+        "schemas"
+      ],
+      "caution": null,
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/aetherial-platform",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": null,
+        "last_push": "2026-03-27T04:05:01Z",
+        "size_kb": null,
+        "language": "TypeScript",
+        "archived": false,
+        "stars": 1
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    },
+    {
+      "repository": "Niche_platform",
+      "exists_live": true,
+      "classification": "PREDECESSOR",
+      "gate": "AETHERIUS_OS_PREDECESSOR",
+      "owner_directed_destination": "Aetherius OS / First-Party App Ecosystem",
+      "capabilities_to_mine": [
+        "marketplace/community/application-platform ideas",
+        "reusable workflows"
+      ],
+      "caution": null,
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/Niche_platform",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": null,
+        "last_push": "2026-09-19T10:52:38Z",
+        "size_kb": null,
+        "language": "JavaScript",
+        "archived": false,
+        "stars": 1
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    },
+    {
+      "repository": "Quantum-OS",
+      "exists_live": true,
+      "classification": "PREDECESSOR",
+      "gate": "AETHERIUS_OS_PREDECESSOR",
+      "owner_directed_destination": "Aetherius OS + VM-B",
+      "capabilities_to_mine": [
+        "binary/ternary/quantum compute abstractions",
+        "HAL/VM ideas",
+        "scheduling",
+        "interface concepts"
+      ],
+      "caution": "preserve real-vs-simulated distinction",
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/Quantum-OS",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": "MIT",
+        "last_push": "2025-11-07T14:38:25Z",
+        "size_kb": null,
+        "language": null,
+        "archived": false,
+        "stars": 1
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    },
+    {
+      "repository": "Crossplatform---multiplatform",
+      "exists_live": true,
+      "classification": "PREDECESSOR",
+      "gate": "AETHERIUS_OS_PREDECESSOR",
+      "owner_directed_destination": "Aetherius OS SDK/runtime + first-party app framework",
+      "capabilities_to_mine": [
+        "cross-device/cross-platform packaging",
+        "UI and runtime abstraction"
+      ],
+      "caution": null,
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/Crossplatform---multiplatform",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": "CC0-1.0",
+        "last_push": "2024-12-19T21:42:22Z",
+        "size_kb": null,
+        "language": null,
+        "archived": false,
+        "stars": 1
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    },
+    {
+      "repository": "QVA-merged",
+      "exists_live": true,
+      "classification": "PREDECESSOR",
+      "gate": "AETHERIUS_OS_PREDECESSOR",
+      "owner_directed_destination": "SPLIT: Aetherius OS / Agent Bridge / Genesis",
+      "capabilities_to_mine": [
+        "OS/platform/runtime concepts -> Aetherius OS",
+        "model/tool access -> Agent Bridge + Hybrid Compute",
+        "assistant/avatar/identity -> Genesis"
+      ],
+      "caution": "must be DECOMPOSED (\u00a712), not migrated wholesale",
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/QVA-merged",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": null,
+        "last_push": "2025-05-13T13:02:54Z",
+        "size_kb": null,
+        "language": "Python",
+        "archived": false,
+        "stars": 1
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    },
+    {
+      "repository": "Veyra",
+      "exists_live": true,
+      "classification": "PREDECESSOR",
+      "gate": "AETHERIUS_OS_PREDECESSOR",
+      "owner_directed_destination": "Aetherius OS / Agent Bridge / Hybrid Compute / Knowledge Fabric; finance -> future Aetherius Finance app",
+      "capabilities_to_mine": [
+        "model/inference architecture",
+        "memory architecture",
+        "agent orchestration lessons",
+        "API gateway patterns",
+        "event-driven architecture",
+        "cross-device frontends",
+        "Docker/Kubernetes/Terraform",
+        "observability/security patterns",
+        "finance-specific functionality"
+      ],
+      "caution": "do NOT migrate Veyra finance logic into OS kernel (\u00a711); finance-specific features do not define the new OS",
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/Veyra",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": "MIT",
+        "last_push": "2026-05-23T14:58:29Z",
+        "size_kb": null,
+        "language": "Python",
+        "archived": false,
+        "stars": 0
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    },
+    {
+      "repository": "VirtualAssistant",
+      "exists_live": true,
+      "classification": "GENESIS_PREDECESSOR",
+      "gate": "GENESIS_AVATAR_DIGITAL_TWIN",
+      "owner_directed_destination": "Genesis Master Implementation",
+      "capabilities_to_mine": [
+        "avatar",
+        "voice",
+        "interaction",
+        "digital-twin",
+        "assistant UX",
+        "continuity ideas"
+      ],
+      "caution": "ONE Genesis identity \u2014 do not create another assistant",
+      "live_evidence": {
+        "url": "https://api.github.com/repos/jayprophit/VirtualAssistant",
+        "fork": false,
+        "upstream": null,
+        "default_branch": "main",
+        "license": "MIT",
+        "last_push": "2025-01-13T10:01:42Z",
+        "size_kb": null,
+        "language": null,
+        "archived": false,
+        "stars": 1
+      },
+      "migration_state": "NOT_STARTED",
+      "safe_to_delete": false,
+      "provenance_recorded": false
+    }
+  ]
+}

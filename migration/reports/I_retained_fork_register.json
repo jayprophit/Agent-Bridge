@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-10-09T04:56:21.663713+00:00",
+  "retained": [
+    {
+      "repo": "IsaacLab",
+      "reason": "\u00a734 gate not passed",
+      "unique_class": "UNKNOWN"
+    },
+    {
+      "repo": "devops-directive-docker-course",
+      "reason": "\u00a734 gate not passed",
+      "unique_class": "EXPERIMENTAL"
+    },
+    {
+      "repo": "neo4j",
+      "reason": "\u00a734 gate not passed",
+      "unique_class": "UNKNOWN"
+    }
+  ],
+  "count": 3,
+  "note": "Every fork is retained until it passes \u00a734."
+}

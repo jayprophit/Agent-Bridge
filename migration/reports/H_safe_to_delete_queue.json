@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-10-09T04:56:21.663713+00:00",
+  "gate": "\u00a734 \u2014 15 conditions, all mandatory",
+  "safe_to_delete": [],
+  "count": 0,
+  "blocked_reasons": {
+    "no_source_inspection": "migration_state=NOT_STARTED",
+    "no_implementation": "replacement not implemented",
+    "no_remote_verification": "no replacement commit exists",
+    "unique_work_unpreserved": 3
+  },
+  "note": "EMPTY BY DESIGN. No repository has passed the \u00a734 gate. Nothing may be deleted."
+}

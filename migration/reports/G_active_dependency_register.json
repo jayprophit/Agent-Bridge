@@ -1,0 +1,6 @@
+{
+  "generated_at": "2026-10-09T04:56:21.663713+00:00",
+  "basis": "no capability has been migrated yet",
+  "active_dependencies": [],
+  "note": "This register is empty because migration_state is NOT_STARTED for every source. It is reported empty rather than populated speculatively."
+}
