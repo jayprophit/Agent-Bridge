@@ -51,6 +51,21 @@ class OllamaProvider(ModelProvider):
         except Exception as e:  # preserve ProviderError contract
             raise ProviderError(f"cannot reach Ollama at {self.host}: {e}")
 
+    def _get(self, path: str) -> dict[str, Any]:
+        """Read-only discovery passthrough to the canonical transport.
+
+        runtime.AgentRuntime.model_inventory() calls this to fetch the FULL
+        /api/tags payload — size, modified_at, details — which list_models()'
+        name-only list does not carry. Removing it during consolidation broke
+        that caller (hasattr(prov, "_get") silently degraded to an empty
+        inventory). It is read-only (never loads weights) and routes through
+        V2 so transport stays canonical; ProviderError contract preserved.
+        """
+        try:
+            return self._v2._get(path)
+        except Exception as e:
+            raise ProviderError(f"cannot reach Ollama at {self.host}: {e}")
+
     def chat(self, messages: list[dict[str, str]], temperature: float = 0.1,
              num_predict: int = 640) -> str:
         try:

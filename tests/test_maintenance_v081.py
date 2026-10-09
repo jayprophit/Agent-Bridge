@@ -16,13 +16,26 @@ class ThinkControlTests(unittest.TestCase):
         from models.providers.ollama_provider import OllamaProvider
         p = OllamaProvider()
         seen = {}
-        fake = {"message": {"content": reply.get("content", ""),
-                            "thinking": reply.get("thinking", "")},
-                "done": True, "eval_count": 3, "eval_duration": 100000000}
-        def _req(method, path, payload=None):
-            seen.update(payload or {})
-            return fake
-        p._ollama_request = _req
+        fake_chat = {"message": {"content": reply.get("content", ""),
+                                 "thinking": reply.get("thinking", "")},
+                     "done": True, "eval_count": 3, "eval_duration": 100000000}
+
+        # The adapter now delegates generate() to the canonical OllamaProviderV2
+        # transport (self._v2), not its own _ollama_request. Stub at the new
+        # seam so the test still exercises the real adapter→V2.chat→/api/chat
+        # chain with NO network: capture the /api/chat payload (which carries
+        # think) while answering discovery (tags/show) for capability gating.
+        # The assertions below are unchanged from the pre-consolidation test.
+        def _get(path, payload=None):
+            if path == "/api/chat":
+                seen.update(payload or {})
+                return fake_chat
+            if path == "/api/tags":
+                return {"models": [{"name": "m"}]}
+            if path == "/api/show":
+                return {"capabilities": ["completion"], "details": {}}
+            return {}
+        p._v2._get = _get
         return p, seen
 
     def test_capability_advertised(self):

@@ -78,6 +78,16 @@ class FakeTransport:
                 self.resident.add(model)
             return {"response": "ok", "done": True,
                     "prompt_eval_count": 3, "eval_count": 1}
+        if path == "/api/chat":
+            model = payload.get("model", "")
+            # Same residency model as /api/generate: the /api/chat endpoint
+            # loads weights too, so a lease test for chat() must see it.
+            if payload.get("keep_alive") == 0:
+                self.resident.discard(model)
+            else:
+                self.resident.add(model)
+            return {"message": {"content": "ok", "thinking": "", "role": "assistant"},
+                    "done": True, "prompt_eval_count": 3, "eval_count": 1}
         if path == "/api/embeddings":
             return {"embedding": [0.1, 0.2, 0.3]}
         return {}
@@ -166,6 +176,60 @@ class EphemeralReleaseTests(unittest.TestCase):
         self.assertEqual(lifecycle["task_id"], "task-1")
         self.assertEqual(lifecycle["worker_id"], "worker-a")
         self.assertEqual(lifecycle["model"], MODEL)
+
+
+# --------------------------------------------------------------------------
+# A2. chat() (the /api/chat endpoint) obeys the same lease discipline (§19)
+# --------------------------------------------------------------------------
+class ChatLeaseTests(unittest.TestCase):
+    """chat() is the canonical /api/chat path the legacy adapters delegate to.
+    It loads weights just like infer(), so it must lease identically (§19-K).
+    """
+
+    def test_ephemeral_chat_releases_model(self):
+        provider, fake = make_provider()
+        result = provider.chat(MODEL, [{"role": "user", "content": "hi"}],
+                               policy=LeasePolicy.EPHEMERAL)
+        self.assertEqual(result["content"], "ok")
+        self.assertNotIn(MODEL, provider.resident_models(),
+                         "EPHEMERAL chat left the model resident")
+
+    def test_ephemeral_chat_sends_keep_alive_zero(self):
+        provider, fake = make_provider()
+        provider.chat(MODEL, [{"role": "user", "content": "hi"}],
+                      policy=LeasePolicy.EPHEMERAL)
+        chats = fake.calls_to("/api/chat")
+        self.assertEqual(chats[0].get("keep_alive"), 0,
+                         "EPHEMERAL chat must send keep_alive=0")
+
+    def test_chat_forwards_think_only_when_explicitly_passed(self):
+        """think must appear in the payload only when a caller passes it."""
+        provider, fake = make_provider()
+        # Not passed → absent from the payload (older models reject it).
+        provider.chat(MODEL, [{"role": "user", "content": "hi"}],
+                      policy=LeasePolicy.EPHEMERAL)
+        self.assertNotIn("think", fake.calls_to("/api/chat")[0])
+        # Passed False → present and False (lets reasoning models answer).
+        provider.chat(MODEL, [{"role": "user", "content": "hi"}],
+                      think=False, policy=LeasePolicy.EPHEMERAL)
+        self.assertIs(fake.calls_to("/api/chat")[1].get("think"), False)
+
+    def test_chat_failure_drops_the_lease(self):
+        """A failed chat has no session to keep warm (§9-H)."""
+        provider, _ = make_provider()
+
+        def boom(path, payload=None):
+            if path == "/api/chat":
+                raise RuntimeError("chat blew up")
+            return {"models": []}
+
+        provider._get = boom  # type: ignore[method-assign]
+        with self.assertRaises(RuntimeError):
+            provider.chat(MODEL, [{"role": "user", "content": "hi"}],
+                          policy=LeasePolicy.SESSION)
+        self.assertFalse(any(l.active
+                             for l in provider._lease_records.values()),
+                         "a failed chat left its lease live")
 
 
 # --------------------------------------------------------------------------
