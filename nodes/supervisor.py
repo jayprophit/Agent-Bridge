@@ -404,6 +404,22 @@ class SupervisorState:
             }
 
 
+def create_supervisor_state(bus: Any = None, session_id: str = "",
+                            event_ring: int = 500) -> SupervisorState:
+    """Canonical factory for a supervisor read-model bound to a live EventBus.
+
+    Pass the runtime/session `EventBus` (the one `runtime.py` creates and
+    emits execution./task./gate./approval. events onto) and the supervisor
+    subscribes "*" — the same pattern runtime.py itself uses for its history.
+    With `bus=None` you get an isolated state you can `ingest()` into manually
+    (used by tests and the acceptance demo). Never fabricates events.
+    """
+    st = SupervisorState(bus=bus, event_ring=event_ring)
+    if session_id:
+        st.session_id = session_id
+    return st
+
+
 # --- refresh wiring ---------------------------------------------------------
 def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
                      ollama_url: str = "http://127.0.0.1:11434",

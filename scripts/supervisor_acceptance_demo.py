@@ -45,7 +45,7 @@ sup.refresh_snapshot(
 # Fold a couple of synthetic lifecycle events onto the (empty) bus ring so the
 # SSE stream has something to show in the demo. In production these come from
 # the real EventBus; here we ingest honestly-labelled demo events.
-state.ingest({"name": "execution.started", "task": "dashboard-acceptance", "source": "demo"})
+state.ingest({"event": "execution.started", "task": "dashboard-acceptance", "source": "demo"})
 
 srv = sup.build_supervisor_server(state, host="127.0.0.1", port=0)
 threading.Thread(target=srv.serve_forever, daemon=True).start()

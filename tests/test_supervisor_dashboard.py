@@ -135,6 +135,23 @@ class TestNormaliser:
         # JSON-serialisable (the API relies on this)
         json.dumps(snap)
 
+    def test_create_supervisor_state_factory_binds_bus(self):
+        bus = EventBus()
+        st = sup.create_supervisor_state(bus=bus, session_id="sess-1")
+        assert st.session_id == "sess-1"
+        bus.emit("task.started", {"task_id": "t1"})
+        assert st.last_seq == 1
+        # EventBus.emit passes {"event": <name>, "timestamp": ..., **payload}
+        rec = st.events_since(0)[0]
+        assert rec["event"]["event"] == "task.started"
+        assert rec["event"]["task_id"] == "t1"
+
+    def test_create_supervisor_state_without_bus_is_isolated(self):
+        st = sup.create_supervisor_state()
+        st.ingest({"name": "execution.started"})
+        assert st.last_seq == 1
+        assert st.session_id == ""
+
 
 # --- loopback API -----------------------------------------------------------
 class TestSupervisorAPI:
