@@ -522,6 +522,111 @@ def test_privacy_scoping_in_teams():
         assert spec.privacy_class == PRIVACY_SECRET_LOCAL_ONLY
 
 
+def test_worker_pool_unknown_worker_cannot_acquire():
+    """WorkerPool.acquire must FAIL CLOSED for an unregistered worker.
+
+    Regression: the old acquire() returned True for an unknown worker_id
+    without incrementing active_workers, silently bypassing concurrency and
+    resource accounting.
+    """
+    pool = WorkerPool(pool_id="p", worker_class="local", max_workers=2)
+    assert pool.acquire("ghost-worker") is False
+    assert pool.active_workers == 0
+
+
+def test_worker_pool_double_acquire_denied():
+    """A worker already active cannot be acquired a second time."""
+    pool = WorkerPool(pool_id="p", worker_class="local", max_workers=2)
+    pool.register_worker("w1", "coder")
+    assert pool.acquire("w1") is True
+    assert pool.active_workers == 1
+    assert pool.acquire("w1") is False
+    assert pool.active_workers == 1
+
+
+def test_worker_pool_capacity_enforced_for_registered():
+    """Capacity limit binds for registered workers; release frees a slot."""
+    pool = WorkerPool(pool_id="p", worker_class="local", max_workers=2)
+    pool.register_worker("w1", "coder")
+    pool.register_worker("w2", "coder")
+    pool.register_worker("w3", "coder")
+    assert pool.acquire("w1") is True
+    assert pool.acquire("w2") is True
+    assert pool.acquire("w3") is False
+    assert pool.active_workers == 2
+    pool.release("w1")
+    assert pool.active_workers == 1
+    assert pool.acquire("w3") is True
+    assert pool.active_workers == 2
+
+
+def test_worker_pool_unknown_worker_release_is_noop():
+    """Releasing an unknown/never-acquired worker must not go negative."""
+    pool = WorkerPool(pool_id="p", worker_class="local", max_workers=2)
+    pool.release("never-registered")
+    assert pool.active_workers == 0
+
+
+def test_hybrid_preserves_local_cloud_split():
+    """form_team_hybrid must preserve the role→execution-target split.
+
+    Regression: the old form_team_hybrid flattened local_roles + cloud_roles
+    and placed every role on the single team-wide target, discarding the split.
+    """
+    team = form_team_hybrid(
+        "hybrid task",
+        ["coding_worker", "research_worker", "test_runner"],
+        local_roles=["coding_worker", "test_runner"],
+        cloud_roles=["research_worker"],
+    )
+    # local roles stay local
+    assert team.specialists["coding_worker"].execution_target == "local"
+    assert team.specialists["test_runner"].execution_target == "local"
+    # cloud role stays cloud-designated
+    assert team.specialists["research_worker"].execution_target == "cloud"
+    # the team is exactly the union of local + cloud roles
+    assert set(team.specialists) == {"coding_worker", "research_worker", "test_runner"}
+    # and each landed in the matching pool
+    local_ids = set(team.worker_pools["local"].worker_specs)
+    cloud_ids = set(team.worker_pools["cloud"].worker_specs)
+    assert team.specialists["coding_worker"].worker_id in local_ids
+    assert team.specialists["test_runner"].worker_id in local_ids
+    assert team.specialists["research_worker"].worker_id in cloud_ids
+
+
+def test_hybrid_cloud_blocked_is_honest_not_silent():
+    """A cloud-designated worker with cloud_available=False must be honestly
+    BLOCKED — never silently run locally and never reported as success."""
+    team = form_team_hybrid(
+        "hybrid task",
+        ["coding_worker", "research_worker"],
+        local_roles=["coding_worker"],
+        cloud_roles=["research_worker"],
+        cloud_available=False,  # BLOCKED_OWNER
+    )
+    # Local role executes normally.
+    local_res = team.run_role("coding_worker", lambda spec: "local-ok")
+    assert local_res.status == WorkerStatus.COMPLETED
+    # Cloud role is BLOCKED, not run, not silently local.
+    cloud_res = team.run_role("research_worker", lambda spec: "should-not-run")
+    assert cloud_res.status == WorkerStatus.BLOCKED
+    assert "BLOCKED" in (cloud_res.error or "").upper()
+
+
+def test_hybrid_cloud_runs_when_available():
+    """With cloud_available=True the cloud-designated worker executes."""
+    team = form_team_hybrid(
+        "hybrid task",
+        ["coding_worker", "research_worker"],
+        local_roles=["coding_worker"],
+        cloud_roles=["research_worker"],
+        cloud_available=True,
+    )
+    cloud_res = team.run_role("research_worker", lambda spec: "cloud-ok")
+    assert cloud_res.status == WorkerStatus.COMPLETED
+    assert cloud_res.result == "cloud-ok"
+
+
 if __name__ == "__main__":
     tests = [
         ("test_solo_mode", test_solo_mode),
@@ -547,6 +652,13 @@ if __name__ == "__main__":
         ("test_audit_messages_completeness", test_audit_messages_completeness),
         ("test_team_execution_mode_enum", test_team_execution_mode_enum),
         ("test_privacy_scoping_in_teams", test_privacy_scoping_in_teams),
+        ("test_worker_pool_unknown_worker_cannot_acquire", test_worker_pool_unknown_worker_cannot_acquire),
+        ("test_worker_pool_double_acquire_denied", test_worker_pool_double_acquire_denied),
+        ("test_worker_pool_capacity_enforced_for_registered", test_worker_pool_capacity_enforced_for_registered),
+        ("test_worker_pool_unknown_worker_release_is_noop", test_worker_pool_unknown_worker_release_is_noop),
+        ("test_hybrid_preserves_local_cloud_split", test_hybrid_preserves_local_cloud_split),
+        ("test_hybrid_cloud_blocked_is_honest_not_silent", test_hybrid_cloud_blocked_is_honest_not_silent),
+        ("test_hybrid_cloud_runs_when_available", test_hybrid_cloud_runs_when_available),
     ]
 
     passed = failed = 0

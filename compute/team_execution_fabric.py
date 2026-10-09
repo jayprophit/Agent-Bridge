@@ -173,13 +173,26 @@ class WorkerPool:
         }
 
     def acquire(self, worker_id: str) -> bool:
-        """Acquire a worker slot. Returns False if capacity exceeded."""
+        """Acquire a worker slot. Returns False if the worker is unknown,
+        already active, or capacity is exceeded.
+
+        Fail-closed: an unregistered worker_id can NEVER acquire a slot.
+        Previously an unknown worker returned True without incrementing
+        active_workers, silently bypassing concurrency/resource accounting.
+        """
+        spec = self.worker_specs.get(worker_id)
+        if spec is None:
+            # Unknown/unregistered worker: deny. Do not count it, do not
+            # let it bypass the pool's concurrency accounting.
+            return False
+        if spec.get("status") == "active":
+            # Already active: a second acquire of the same worker is a bug
+            # in the caller and must not double-count capacity.
+            return False
         if self.active_workers >= self.max_workers:
             return False
-        spec = self.worker_specs.get(worker_id)
-        if spec:
-            spec["status"] = "active"
-            self.active_workers += 1
+        spec["status"] = "active"
+        self.active_workers += 1
         return True
 
     def release(self, worker_id: str) -> None:

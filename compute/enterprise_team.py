@@ -146,6 +146,7 @@ class WorkerStatus(Enum):
     COMPLETED = "completed"
     FAILED = "failed"
     SKIPPED = "skipped"
+    BLOCKED = "blocked"  # execution-target unavailable (e.g. cloud creds BLOCKED_OWNER)
 
 
 # ---- 5 Model Classes → 9 Specialist Roles (§84, §85) ----
@@ -220,6 +221,14 @@ class TeamConfig:
     budget_class: str = "FREE_ONLY"
     allow_cloud: bool = False
     execution_target: str = "local"
+    # Per-role execution-target override: role_id -> "local" | "cloud".
+    # Lets form_team_hybrid place local_roles on local and cloud_roles on
+    # cloud WITHOUT collapsing them onto a single team-wide target.
+    role_execution_targets: dict = field(default_factory=dict)
+    # Whether cloud execution is actually available. Defaults False
+    # (BLOCKED_OWNER: cloud credentials not rotated). When False, a
+    # cloud-designated worker is honestly BLOCKED, never silently run local.
+    cloud_available: bool = False
     execution_mode: TeamExecutionMode = TeamExecutionMode.TEAM_LOCAL
     worker_pools: dict = field(default_factory=dict)  # pool_name -> config
     team_size: int = 0  # logical team size (§9)
@@ -256,11 +265,14 @@ class EnterpriseTeam:
     def __init__(self, team_id: Optional[str] = None,
                  execution_target: str = "local",
                  execution_mode: TeamExecutionMode = TeamExecutionMode.TEAM_LOCAL,
-                 privacy_class: str = PRIVACY_PROJECT):
+                 privacy_class: str = PRIVACY_PROJECT,
+                 cloud_available: bool = False):
         self.team_id = team_id or f"team-{uuid.uuid4().hex[:8]}"
         self.execution_target = execution_target
         self.execution_mode = execution_mode
         self.privacy_class = privacy_class
+        # Cloud execution availability (BLOCKED_OWNER until creds rotated).
+        self.cloud_available = cloud_available
 
         # Existing state
         self.specialists: dict[str, Specialist] = {}
@@ -326,13 +338,18 @@ class EnterpriseTeam:
             if role_id not in SPECIALIST_ROLES:
                 continue
             spec = SPECIALIST_ROLES[role_id]
+            # Per-role execution target: honour role_execution_targets so a
+            # hybrid team keeps local_roles on local and cloud_roles on cloud
+            # instead of collapsing every role onto one team-wide target.
+            role_target = config.role_execution_targets.get(
+                role_id, config.execution_target)
             spec_worker = Specialist(
                 role_id=role_id,
                 model_class=spec["model_class"],
                 capabilities=spec["caps"],
                 model_id=config.model_class_preference,
-                provider_id=config.execution_target,
-                execution_target=config.execution_target,
+                provider_id=role_target,
+                execution_target=role_target,
                 worker_id=f"worker-{role_id}-{uuid.uuid4().hex[:8]}",
                 team_id=self.team_id,
                 privacy_class=config.privacy_classification,
@@ -340,10 +357,10 @@ class EnterpriseTeam:
             )
             self.specialists[role_id] = spec_worker
             # Register in appropriate pool (§3)
-            pool_name = config.execution_target if config.execution_target in self.worker_pools else "local"
+            pool_name = role_target if role_target in self.worker_pools else "local"
             self.worker_pools[pool_name].register_worker(
                 spec_worker.worker_id, spec["model_class"],
-                config.model_class_preference, config.execution_target,
+                config.model_class_preference, role_target,
                 config.privacy_classification,
             )
 
@@ -444,6 +461,17 @@ class EnterpriseTeam:
         # §30: Acquire worker from pool (resource gating)
         pool = self.worker_pools.get(spec.execution_target, self.worker_pools["local"])
         acquired = pool.acquire(spec.worker_id)
+
+        # Honest cloud gate: a cloud-designated worker whose execution target
+        # is unavailable (cloud creds BLOCKED_OWNER) is marked BLOCKED — never
+        # silently run locally and never reported as a success.
+        if spec.execution_target == "cloud" and not self.cloud_available:
+            if acquired:
+                pool.release(spec.worker_id)
+            spec.status = WorkerStatus.BLOCKED
+            spec.error = "CLOUD_EXECUTION_BLOCKED (credentials not rotated: BLOCKED_OWNER)"
+            self.resource_blocked += 1
+            return spec
 
         if not spec or not fn:
             if not fn:
@@ -922,10 +950,16 @@ def form_team(objective: str, required_roles: list[str],
               privacy: str = PRIVACY_PROJECT,
               allow_cloud: bool = False,
               execution_mode: TeamExecutionMode = TeamExecutionMode.TEAM_LOCAL,
-              concurrency_limit: int = 5) -> EnterpriseTeam:
+              concurrency_limit: int = 5,
+              role_execution_targets: Optional[dict] = None,
+              cloud_available: bool = False) -> EnterpriseTeam:
     """Dynamic team formation from capability specification (§84, §85, §56).
 
     Forms a team with the minimum roles needed for the objective.
+
+    role_execution_targets: optional per-role override (role_id -> "local" |
+    "cloud"). Roles not in the map use the team-wide execution_target. This is
+    how a hybrid team preserves its local/cloud placement split.
     """
     config = TeamConfig(
         objective=objective,
@@ -933,6 +967,8 @@ def form_team(objective: str, required_roles: list[str],
         privacy_classification=privacy,
         allow_cloud=allow_cloud,
         execution_target="cloud" if allow_cloud else "local",
+        role_execution_targets=dict(role_execution_targets or {}),
+        cloud_available=cloud_available,
         execution_mode=execution_mode,
         team_size=len(required_roles),
         concurrency_limit=concurrency_limit,
@@ -941,6 +977,7 @@ def form_team(objective: str, required_roles: list[str],
         execution_target="cloud" if allow_cloud else "local",
         execution_mode=execution_mode,
         privacy_class=privacy,
+        cloud_available=cloud_available,
     )
     return team.configure(config)
 
@@ -972,14 +1009,32 @@ def form_team_cloud(objective: str, required_roles: list[str],
 
 def form_team_hybrid(objective: str, required_roles: list[str],
                      local_roles: list[str], cloud_roles: list[str],
-                     privacy: str = PRIVACY_PROJECT) -> EnterpriseTeam:
+                     privacy: str = PRIVACY_PROJECT,
+                     cloud_available: bool = False) -> EnterpriseTeam:
     """Form a TEAM_HYBRID — local + cloud workers (§7, §59 proof item 7).
 
-    Requires cloud credentials (currently BLOCKED_OWNER).
+    Preserves the explicit role→execution-target placement: every role in
+    ``local_roles`` is placed on the LOCAL pool and every role in
+    ``cloud_roles`` is placed on the CLOUD pool. Previously the split was
+    discarded (local_roles + cloud_roles were flattened and all placed on the
+    single team-wide target).
+
+    Cloud execution requires rotated credentials (currently BLOCKED_OWNER).
+    ``cloud_available`` defaults False: with it False, cloud-designated roles
+    are honestly BLOCKED at execution time rather than silently run locally.
     """
-    return form_team(objective, local_roles + cloud_roles, privacy,
-                     allow_cloud=True,
-                     execution_mode=TeamExecutionMode.TEAM_HYBRID)
+    role_targets: dict[str, str] = {}
+    for r in local_roles:
+        role_targets[r] = "local"
+    for r in cloud_roles:
+        role_targets[r] = "cloud"
+    return form_team(
+        objective, local_roles + cloud_roles, privacy,
+        allow_cloud=True,
+        execution_mode=TeamExecutionMode.TEAM_HYBRID,
+        role_execution_targets=role_targets,
+        cloud_available=cloud_available,
+    )
 
 
 def form_team_federated(objective: str, required_roles: list[str],

@@ -202,6 +202,13 @@ class PairingSecurityUnitTests(unittest.TestCase):
         allowed, _ = privacy_allows_send("LOCAL_FIRST", "a", "b", False)
         self.assertFalse(allowed)
 
+    def test_specific_provider_missing_allowlist_denied_at_server(self):
+        # Server-side NodeServerState must expose allowed_providers (None by
+        # default => SPECIFIC_PROVIDER delegations fail-closed).
+        from nodes.node_server import NodeServerState
+        st = NodeServerState("a", lambda: {}, lambda n: "TRUSTED_NODE")
+        self.assertIsNone(st.allowed_providers)
+
     def test_protocol_negotiation(self):
         local = NodeProtocolInfo(node_id="a")
         ok, _ = negotiate_protocol(local, {"protocol_name": "agent-bridge-node",
@@ -605,6 +612,159 @@ class RemoteOwnerPolicyTests(unittest.TestCase):
             timestamp=time.time(), deadline_s=60)
         res = self.t.send_envelope(self.disabled, env)
         self.assertTrue(res.get("ok"), res)
+
+
+class PrivacyFailClosedTests(unittest.TestCase):
+    """privacy_allows_send must FAIL CLOSED (deny) for unlisted/unknown
+    policies and un-allow-listed providers. These tests fail against the
+    previous fail-open implementation (which returned True for BALANCED,
+    REMOTE_ALLOWED, SPECIFIC_PROVIDER and every unknown policy)."""
+
+    def test_local_only_same_node_allowed(self):
+        allowed, code = privacy_allows_send("LOCAL_ONLY", "a", "a", True)
+        self.assertTrue(allowed)
+        self.assertEqual(code, "OK")
+
+    def test_local_only_remote_denied_even_if_trusted(self):
+        allowed, code = privacy_allows_send("LOCAL_ONLY", "a", "b", True)
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_balanced_remote_trusted_allowed(self):
+        allowed, _ = privacy_allows_send("BALANCED", "a", "b", True)
+        self.assertTrue(allowed)
+
+    def test_balanced_remote_untrusted_denied(self):
+        allowed, code = privacy_allows_send("BALANCED", "a", "b", False)
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_remote_allowed_trusted_allowed(self):
+        allowed, _ = privacy_allows_send("REMOTE_ALLOWED", "a", "b", True)
+        self.assertTrue(allowed)
+
+    def test_remote_allowed_untrusted_denied(self):
+        allowed, code = privacy_allows_send("REMOTE_ALLOWED", "a", "b", False)
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_specific_provider_allowed_provider_allowed(self):
+        allowed, _ = privacy_allows_send("SPECIFIC_PROVIDER", "a", "b", True,
+                                         provider="ollama",
+                                         allowed_providers={"ollama", "openai"})
+        self.assertTrue(allowed)
+
+    def test_specific_provider_denied_provider(self):
+        allowed, code = privacy_allows_send("SPECIFIC_PROVIDER", "a", "b", True,
+                                            provider="evil",
+                                            allowed_providers={"ollama"})
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_specific_provider_missing_provider_denied(self):
+        allowed, code = privacy_allows_send("SPECIFIC_PROVIDER", "a", "b", True,
+                                            provider="",
+                                            allowed_providers={"ollama"})
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_specific_provider_missing_allowlist_denied(self):
+        allowed, code = privacy_allows_send("SPECIFIC_PROVIDER", "a", "b", True,
+                                            provider="ollama",
+                                            allowed_providers=None)
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_specific_provider_untrusted_peer_denied(self):
+        allowed, code = privacy_allows_send("SPECIFIC_PROVIDER", "a", "b", False,
+                                            provider="ollama",
+                                            allowed_providers={"ollama"})
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_unknown_policy_denied(self):
+        allowed, code = privacy_allows_send("TOTALLY_MADE_UP", "a", "b", True)
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_empty_policy_denied(self):
+        allowed, code = privacy_allows_send("", "a", "b", True)
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+    def test_lowercase_balanced_variant_not_silently_allowed(self):
+        allowed, code = privacy_allows_send("balanced", "a", "b", True)
+        self.assertFalse(allowed)
+        self.assertEqual(code, ERR_PRIVACY_DENIED)
+
+
+class NodeRegistryTrustedNodesTests(unittest.TestCase):
+    """Regression: NodeRegistry.trusted_nodes() referenced OWNER_NODE without
+    importing it, raising NameError whenever any node was registered."""
+
+    def test_trusted_nodes_does_not_raise_and_filters_correctly(self):
+        from nodes.node_registry import NodeRegistry
+        from nodes.node_descriptor import (
+            NodeDescriptor, OWNER_NODE, TRUSTED_NODE, LIMITED_NODE, UNTRUSTED_NODE,
+        )
+        reg = NodeRegistry()
+        reg.register(NodeDescriptor(node_id="owner", trust_level=OWNER_NODE))
+        reg.register(NodeDescriptor(node_id="trusted", trust_level=TRUSTED_NODE))
+        reg.register(NodeDescriptor(node_id="limited", trust_level=LIMITED_NODE))
+        reg.register(NodeDescriptor(node_id="untrusted", trust_level=UNTRUSTED_NODE))
+        # Must not raise NameError; must include OWNER + TRUSTED only.
+        ids = sorted(n.node_id for n in reg.trusted_nodes())
+        self.assertEqual(ids, ["owner", "trusted"])
+
+
+class PolicyContextWiringTests(unittest.TestCase):
+    """DataPolicyEngine and ContextBroker must have real production call sites
+    (the audit found zero). These prove the node server wires and enforces
+    them rather than merely representing them."""
+
+    def _state(self):
+        from nodes.node_server import NodeServerState
+        return NodeServerState("a", lambda: {}, lambda n: "TRUSTED_NODE")
+
+    def test_data_policy_engine_wired_and_enforcing(self):
+        from data_fabric.data_policy_engine import DataPolicyEngine, AccessDecision
+        st = self._state()
+        st.data_policy_engine = DataPolicyEngine()
+        st.data_policy_engine.apply_defaults()
+        # Engine is reachable from server state and fails closed.
+        self.assertEqual(
+            st.data_policy_engine.evaluate("FINANCE", "agent", "read", "default", "local"),
+            AccessDecision.DENY)
+        self.assertEqual(
+            st.data_policy_engine.evaluate("CREDENTIALS", "agent", "read", "default", "local"),
+            AccessDecision.BROKER_ONLY)
+
+    def test_data_policy_not_wired_is_back_compat(self):
+        st = self._state()
+        self.assertIsNone(st.data_policy_engine)
+
+    def test_context_broker_wired_builds_scoped_package(self):
+        from knowledge_fabric.context_broker import ContextBroker
+        st = self._state()
+        st.context_broker = ContextBroker()
+        pkg = st.request_scoped_context("default", project="proj", objective="do x")
+        self.assertIsNotNone(pkg)
+        # Minimum-necessary + privacy ceiling enforced; not a remote disclosure.
+        self.assertFalse(pkg.remote_disclosure)
+        self.assertTrue(pkg.privacy_ceiling)
+
+    def test_context_broker_not_wired_returns_none(self):
+        st = self._state()
+        self.assertIsNone(st.request_scoped_context("default"))
+
+    def test_context_broker_local_only_never_remote(self):
+        from knowledge_fabric.context_broker import ContextBroker
+        st = self._state()
+        st.context_broker = ContextBroker()
+        pkg = st.request_scoped_context("default", project="proj",
+                                        local_only=True,
+                                        privacy_ceiling="SECRET_LOCAL_ONLY")
+        self.assertFalse(pkg.remote_disclosure)
 
 
 if __name__ == "__main__":

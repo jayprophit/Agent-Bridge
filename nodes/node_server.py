@@ -47,6 +47,19 @@ class NodeServerState:
         self.heartbeats: dict[str, dict[str, Any]] = {}
         self.capability_advertisement: dict[str, Any] = {}
         self.audit: list[dict[str, Any]] = []
+        # Provider allow-list for SPECIFIC_PROVIDER privacy delegations.
+        # None/empty => SPECIFIC_PROVIDER delegations fail-closed (deny).
+        self.allowed_providers: set[str] | None = None
+        # Canonical data-policy engine (§61). When set, a delegation that
+        # declares a data_class is evaluated here and DENY blocks the send
+        # (enforcement, not representation). None => data-class delegations
+        # are NOT policy-gated (back-compat); set via configure_data_policy().
+        self.data_policy_engine: Any = None
+        # Canonical Context Broker (§15). When set, a delegation may request a
+        # scoped, minimum-necessary, privacy-ceiling-enforced context package
+        # via request_scoped_context(). Preserves the minimum-necessary-context
+        # boundary for future cloud work. None => not wired (back-compat).
+        self.context_broker: Any = None
         self.lock = threading.RLock()
         # Remote owner authorization: local OWNER_FULL_ACCESS never implies
         # remote privileges. Default denies all remote owner-scope requests.
@@ -67,6 +80,32 @@ class NodeServerState:
                 "message": message, "progress": progress,
                 "timestamp": time.time(),
             })
+
+    def request_scoped_context(self, worker_role: str, project: str = "default",
+                               objective: str = "", required_topics=None,
+                               privacy_ceiling: str = "", local_only: bool = False,
+                               max_context_tokens: int = 32000):
+        """Build a scoped, minimum-necessary context package for a worker (§15).
+
+        Production entry point into the canonical ContextBroker. Enforces the
+        worker's privacy ceiling and surfaces remote_disclosure so a caller can
+        refuse to send the package to a remote node. Returns the ContextPackage
+        or None when no broker is wired.
+        """
+        if self.context_broker is None:
+            return None
+        from knowledge_fabric.context_broker import ContextRequest
+        req = ContextRequest(
+            project=project,
+            objective=objective,
+            worker_role=worker_role or "default",
+            required_topics=list(required_topics or []),
+            max_context_tokens=max_context_tokens,
+            local_only=local_only,
+        )
+        if privacy_ceiling:
+            req.privacy_ceiling = privacy_ceiling
+        return self.context_broker.request_context(req)
 
 
 def build_capability_summary(descriptor: dict[str, Any]) -> dict[str, Any]:
@@ -311,10 +350,41 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(403, {"ok": False, "error_code": ERR_PAIRING_REJECTED})
 
         # 4. privacy pre-check (before touching private body further)
-        allowed, pcode = privacy_allows_send(privacy, source, st.node_id,
-                                             trust in ("OWNER_NODE", "TRUSTED_NODE"))
+        #    Fail-closed: unknown policies and un-allow-listed providers deny.
+        #    provider/allowed_providers are forwarded when present so a
+        #    SPECIFIC_PROVIDER delegation can be honoured; absent them it denies.
+        allowed, pcode = privacy_allows_send(
+            privacy, source, st.node_id,
+            trust in ("OWNER_NODE", "TRUSTED_NODE"),
+            provider=str(body.get("provider", "")),
+            allowed_providers=st.allowed_providers,
+        )
         if not allowed:
             return self._send(403, {"ok": False, "error_code": pcode})
+
+        # 4b. data-policy enforcement (§61). When a delegation declares a
+        #     data_class AND a policy engine is configured, evaluate it here.
+        #     This makes privacy/policy decisions ENFORCED, not merely
+        #     representable. Fail-closed: only permissive decisions pass;
+        #     DENY / BROKER_ONLY / REQUIRES_OWNER block the send.
+        if st.data_policy_engine is not None:
+            data_class = str(body.get("data_class", "") or
+                             (body.get("requirements") or {}).get("data_class", ""))
+            if data_class:
+                location = "cloud" if privacy in ("REMOTE_ALLOWED", "BALANCED",
+                                                  "SPECIFIC_PROVIDER") else "local"
+                role = str(body.get("requested_agent", "") or "agent")
+                decision = st.data_policy_engine.evaluate(
+                    data_class=data_class, role=role,
+                    action="read", location=location)
+                if decision.value not in ("ALLOW", "READ_SCOPED", "WRITE_SCOPED",
+                                          "NOT_APPLICABLE"):
+                    st.log({"event": "data_policy_denied", "source_node": source,
+                            "delegation_id": delegation_id,
+                            "data_class": data_class, "decision": decision.value})
+                    return self._send(403, {"ok": False,
+                                            "error_code": ERR_PRIVACY_DENIED,
+                                            "data_policy_decision": decision.value})
 
         # 5. capability check (concise advertisement, no full schemas)
         required_tools = list(body.get("required_tools", []))

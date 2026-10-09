@@ -26,6 +26,18 @@ import urllib.request
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+# Reconcile the privacy vocabulary with node_router._filter_by_privacy so the
+# send-gate and the placement filter share ONE definition (no third engine).
+from nodes.node_router import (
+    PRIVACY_LOCAL_ONLY,
+    PRIVACY_CURRENT_DEVICE_ONLY,
+    PRIVACY_LOCAL_FIRST,
+    PRIVACY_TRUSTED_NODES,
+    PRIVACY_BALANCED,
+    PRIVACY_REMOTE_ALLOWED,
+    PRIVACY_SPECIFIC_PROVIDER,
+)
+
 # -- transport types ---------------------------------------------------------
 TRANSPORT_IN_MEMORY = "IN_MEMORY"
 TRANSPORT_HTTP = "HTTP"
@@ -188,17 +200,47 @@ class ResultEnvelope:
 
 
 def privacy_allows_send(privacy_policy: str, source_node: str,
-                        target_node: str, trusted: bool) -> tuple[bool, str]:
-    """Decide BEFORE serializing private content. Returns (allowed, code)."""
-    if privacy_policy in ("LOCAL_ONLY", "CURRENT_DEVICE_ONLY"):
+                        target_node: str, trusted: bool,
+                        provider: str = "",
+                        allowed_providers: "set[str] | None" = None) -> tuple[bool, str]:
+    """Decide BEFORE serializing private content. Returns (allowed, code).
+
+    FAIL-CLOSED: any policy not explicitly recognised denies. Reconciled with
+    node_router._filter_by_privacy (same PRIVACY_* vocabulary, single source).
+
+    - LOCAL_ONLY / CURRENT_DEVICE_ONLY: never leave the source node.
+    - LOCAL_FIRST / TRUSTED_NODES: cross-node only to a trusted peer.
+    - BALANCED / REMOTE_ALLOWED: remote permitted only to a trusted peer.
+    - SPECIFIC_PROVIDER: remote permitted only to a trusted peer AND the
+      target provider must be explicitly allow-listed (fail-closed on a
+      missing/empty allow-list or a provider not on it).
+    """
+    local_only = privacy_policy in (PRIVACY_LOCAL_ONLY, PRIVACY_CURRENT_DEVICE_ONLY)
+    if local_only:
         if target_node != source_node:
             return False, ERR_PRIVACY_DENIED
         return True, "OK"
-    if privacy_policy in ("LOCAL_FIRST", "TRUSTED_NODES"):
-        if target_node != source_node and not trusted:
+
+    same_node = target_node == source_node
+    if not same_node and not trusted:
+        # Every non-local policy that reaches a *different* node still requires
+        # a trusted peer. This is the fail-closed default.
+        return False, ERR_PRIVACY_DENIED
+
+    if privacy_policy == PRIVACY_SPECIFIC_PROVIDER:
+        # Provider must be explicitly named and allow-listed. A missing
+        # allow-list denies (fail-closed) rather than permitting any provider.
+        if not provider or not allowed_providers or provider not in allowed_providers:
             return False, ERR_PRIVACY_DENIED
         return True, "OK"
-    return True, "OK"
+
+    if privacy_policy in (PRIVACY_LOCAL_FIRST, PRIVACY_TRUSTED_NODES,
+                          PRIVACY_BALANCED, PRIVACY_REMOTE_ALLOWED):
+        return True, "OK"
+
+    # Unknown / unrecognised policy: deny (fail-closed). Previously this fell
+    # through to `return True`, silently allowing every unlisted policy.
+    return False, ERR_PRIVACY_DENIED
 
 
 def ensure_loopback_or_raise(url: str, allow_insecure_dev: bool = False) -> str:

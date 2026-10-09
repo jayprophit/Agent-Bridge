@@ -9,8 +9,8 @@ import time
 from typing import Any
 
 from nodes.node_descriptor import (
-    LIMITED_NODE, NODE_OFFLINE, NODE_ONLINE, TRUSTED_NODE, UNTRUSTED_NODE,
-    NodeDescriptor
+    LIMITED_NODE, NODE_OFFLINE, NODE_ONLINE, OWNER_NODE, TRUSTED_NODE,
+    UNTRUSTED_NODE, NodeDescriptor
 )
 
 
