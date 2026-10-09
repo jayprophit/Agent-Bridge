@@ -305,31 +305,49 @@ class ModelReleaseTests(unittest.TestCase):
     """
 
     def test_release_models_unloads_what_the_run_loaded(self):
+        """A worker run must leave no Aetherius-owned weights resident (§12).
+
+        This test's premise changed when residency ownership moved to the
+        provider boundary. It used to assert "load, observe resident, then
+        release" — but `run_worker` now passes EPHEMERAL, so the provider
+        releases each call's weights itself and there is nothing resident to
+        observe mid-run. Asserting residency here would be asserting the
+        leak the fix removed.
+
+        The contract this pins is the one that actually matters to the host:
+        after a run, the models the run used are NOT resident, and a
+        pre-existing model the runtime already had is untouched. The
+        lease/refcount behaviour itself is covered deterministically in
+        tests/test_model_lifecycle_leases.py.
+        """
         if not _live():
             self.skipTest("Ollama runtime not reachable")
         executor = LocalTeamExecutor()
-        # Load the model FIRST, then snapshot. Snapshotting before the load
-        # and diffing afterwards is wrong when an earlier test already left
-        # the model resident: the model then appears in `after` but not in
-        # `before`, and the test reports a leak that this run did not cause.
+        # Whatever the runtime already holds is not ours and must survive (§5).
+        preexisting = {m["name"] for m in _resident_models()}
+
         executor.run_worker("coder", "w-release-1", "Say ok", max_tokens=8)
         loaded = {r.model for r in executor.results}
-        self.assertTrue(loaded & {m["name"] for m in _resident_models()},
-                        "model did not load — cannot test release")
+        self.assertTrue(loaded, "worker produced no result — cannot test release")
+
         executor.release_models()
-        # Ollama unloads lazily, so /api/ps can lag briefly behind a
-        # keep_alive=0 request. Poll rather than sampling once: a genuine leak
-        # stays resident, a lagging unload clears within a second or two.
+
+        # Ollama unloads lazily; poll so a lagging unload is not a failure,
+        # while a genuine leak still is.
         deadline = time.time() + 15.0
-        leaked = loaded
         while time.time() < deadline:
-            still_resident = {m["name"] for m in _resident_models()}
-            leaked = loaded & still_resident
-            if not leaked:
+            still = loaded & {m["name"] for m in _resident_models()}
+            if not still:
                 break
             time.sleep(1.0)
-        self.assertEqual(leaked, set(),
-                         f"models left resident after release: {leaked}")
+        still = loaded & {m["name"] for m in _resident_models()}
+        self.assertEqual(still, set(),
+                         f"models left resident after release: {still}")
+
+        survivors = {m["name"] for m in _resident_models()}
+        self.assertTrue(preexisting <= survivors,
+                        f"release evicted pre-existing models: "
+                        f"{preexisting - survivors}")
 
     def test_release_models_returns_count(self):
         executor = LocalTeamExecutor()

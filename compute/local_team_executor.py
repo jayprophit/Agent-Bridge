@@ -55,7 +55,7 @@ from compute.enterprise_team import (
     TeamConfig,
     TeamExecutionMode,
 )
-from compute.ollama_provider_v2 import OllamaProviderV2
+from compute.ollama_provider_v2 import LeasePolicy, OllamaProviderV2
 
 # --------------------------------------------------------------------------
 # Resource declarations (§12)
@@ -175,18 +175,17 @@ class LocalTeamExecutor:
 
         Leaving models resident is not a cosmetic issue — it silently breaks
         the next run. Any code that loads a model must release it.
+
+        DELEGATED TO THE PROVIDER (§3)
+
+        This no longer issues keep_alive=0 itself. The provider owns the
+        lease/refcount and knows whether another worker still holds the same
+        weights (§4) or whether the model was resident before we asked (§5).
+        A caller-issued blanket unload would evict a shared model out from
+        under a live worker, so the ownership decision belongs one layer down.
         """
-        released = 0
-        for model in {r.model for r in self.results}:
-            try:
-                self.provider._get("/api/generate",
-                                   {"model": model, "keep_alive": 0})
-                released += 1
-            except Exception:
-                # An unload failure must not mask a real test result; the
-                # caller sees the failure through the worker results instead.
-                pass
-        return released
+        outcomes = self.provider.release_all()
+        return sum(1 for o in outcomes if o.get("unloaded"))
 
     # -- worker execution ---------------------------------------------------
     def run_worker(self, role: str, worker_id: str, prompt: str,
@@ -214,8 +213,16 @@ class LocalTeamExecutor:
         full_prompt = f"{scoped}\n\n{prompt}" if scoped else prompt
 
         try:
+            # EPHEMERAL: a worker's turn is the whole life of these weights.
+            # The team run reuses the model across workers, but each call is
+            # bounded and the run's own release_all() is the session boundary
+            # (§6, §12). Retaining here would leave weights resident after a
+            # test run with no owner to release them.
             result = self.provider.infer(model, full_prompt,
-                                         max_tokens=max_tokens, temperature=0.2)
+                                         max_tokens=max_tokens, temperature=0.2,
+                                         policy=LeasePolicy.EPHEMERAL,
+                                         task_id=trace_id or "",
+                                         worker_id=worker_id)
             artifact = result["response"]
             tokens = result["usage"]["total_tokens"]
             self.tracer.end_span(adapter, status=STATUS_OK,
@@ -386,14 +393,15 @@ def run_solo_baseline(task: str) -> dict[str, Any]:
             break
     started = time.perf_counter()
     try:
-        result = provider.infer(model, task, max_tokens=96, temperature=0.2)
+        # EPHEMERAL: a solo baseline measurement wants the weights gone when
+        # it finishes, so the comparison run below is not measuring a model
+        # that is still resident from this call (§6).
+        result = provider.infer(model, task, max_tokens=96, temperature=0.2,
+                                policy=LeasePolicy.EPHEMERAL)
     finally:
-        # §12 hygiene: release even on failure, or a benchmark run silently
-        # strands a model in RAM for the next test.
-        try:
-            provider._get("/api/generate", {"model": model, "keep_alive": 0})
-        except Exception:
-            pass
+        # Belt-and-braces: infer() releases its own lease, but a failure
+        # between acquire and release must not strand the model (§12).
+        provider.release_all()
     return OrderedDict([
         ("mode", "SOLO_LOCAL"),
         ("model", model),

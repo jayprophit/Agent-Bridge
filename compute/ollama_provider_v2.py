@@ -38,10 +38,13 @@ produced.
 from __future__ import annotations
 
 import json
+import time
+import uuid
 import urllib.error
 import urllib.request
 from collections import OrderedDict
 from dataclasses import dataclass, field
+from enum import Enum
 from typing import Any
 
 # Imported at module scope rather than near the error subclasses because the
@@ -139,6 +142,118 @@ class ModelCapabilities:
         ])
 
 
+# --------------------------------------------------------------------------
+# Model lifecycle ownership (§3–§7)
+#
+# WHY THIS LIVES ON THE PROVIDER
+#
+# Residency is a property of the RUNTIME, not of any one caller. A test that
+# finishes has finished with Ollama's weights only when Ollama says so: by
+# default the runtime keeps a model resident for `keep_alive` minutes after
+# the last call, and on a 16 GB host that idle residency is the difference
+# between a suite that completes and one the OS kills. Patching each caller
+# to remember to unload is the wrong layer — every new call site reintroduces
+# the leak, and a caller has no way to know whether another worker still
+# needs the same weights.
+#
+# So the provider owns the lease. It records what it loaded, whether another
+# active lease still needs it, and whether the model was already resident
+# before Aetherius asked for it.
+#
+# THE FOUR OWNERSHIP CLASSES (§4, §5)
+#
+#   AETHERIUS_LOADED  — loaded because an Aetherius lease asked. Releasable
+#                       when the refcount reaches zero.
+#   PREEXISTING       — resident BEFORE this provider took its baseline.
+#                       Never released. This is Hermes' own llama-server.
+#   SHARED            — a second lease on a model this provider already
+#                       holds. Releasing it on one caller's behalf would
+#                       unload weights another live worker is using.
+#   UNKNOWN           — residency the provider cannot attribute. Fails safe:
+#                       left alone (§5).
+# --------------------------------------------------------------------------
+
+
+class LeasePolicy(str, Enum):
+    """How long a model may stay resident after its last lease (§6).
+
+    Chosen per call, not globally. A unit test wants the weights gone; an
+    interactive Genesis session wants them warm for the next turn; a model
+    reused across a team run wants brief retention under a RAM budget.
+    """
+
+    EPHEMERAL = "EPHEMERAL"      # keep_alive=0 — unload when the lease ends
+    SHORT_LIVED = "SHORT_LIVED"  # keep_alive minutes, then release
+    SESSION = "SESSION"          # retained for the life of the session
+    PERSISTENT = "PERSISTENT"    # never auto-released; owner pins it
+
+
+# keep_alive values Ollama understands, per policy. `-1` is Ollama's own
+# sentinel for "keep loaded until told otherwise"; 0 unloads immediately.
+_POLICY_KEEP_ALIVE: dict[str, int] = {
+    LeasePolicy.EPHEMERAL.value: 0,
+    LeasePolicy.SHORT_LIVED.value: 300,
+    LeasePolicy.SESSION.value: -1,
+    LeasePolicy.PERSISTENT.value: -1,
+}
+
+DEFAULT_LEASE_POLICY = LeasePolicy.SESSION
+
+
+class ModelOwnership(str, Enum):
+    """Who is responsible for a resident model (§4, §5)."""
+
+    AETHERIUS_LOADED = "AETHERIUS_LOADED"
+    PREEXISTING = "PREEXISTING"
+    SHARED = "SHARED"
+    UNKNOWN = "UNKNOWN"
+
+
+@dataclass
+class ModelLease:
+    """One Aetherius claim on one resident model (§3, §4).
+
+    The lease is the unit of ownership. `model_id`/`owner_id`/`task_id`/
+    `worker_id` answer the question "who is keeping these weights resident"
+    without guessing from a process list.
+    """
+
+    lease_id: str
+    model: str
+    owner_id: str
+    policy: LeasePolicy
+    task_id: str = ""
+    worker_id: str = ""
+    created_at: float = field(default_factory=time.time)
+    released_at: float | None = None
+    release_confirmed: bool = False
+    resident_after_call: bool = False
+
+    @property
+    def active(self) -> bool:
+        return self.released_at is None
+
+    def to_dict(self) -> dict[str, Any]:
+        """Non-secret metadata for evidence/provenance (§8).
+
+        Deliberately excludes nothing sensitive because nothing here IS
+        sensitive: no credentials, prompts, or vault content (§5).
+        """
+        return OrderedDict([
+            ("lease_id", self.lease_id),
+            ("model", self.model),
+            ("owner_id", self.owner_id),
+            ("task_id", self.task_id),
+            ("worker_id", self.worker_id),
+            ("policy", self.policy.value),
+            ("keep_alive", _POLICY_KEEP_ALIVE[self.policy.value]),
+            ("created_at", self.created_at),
+            ("released_at", self.released_at),
+            ("release_confirmed", self.release_confirmed),
+            ("resident_after_call", self.resident_after_call),
+        ])
+
+
 class OllamaUnavailableError(NormalizedProviderError):
     """Raised when the Ollama server cannot be reached (§29).
 
@@ -170,10 +285,208 @@ class OllamaProviderV2:
     base_url: str
 
     def __init__(self, base_url: str = DEFAULT_BASE_URL,
-                 timeout: float = 30.0) -> None:
+                 timeout: float = 30.0,
+                 owner_id: str = "aetherius") -> None:
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
+        self.owner_id = owner_id
         self._capability_cache: dict[str, ModelCapabilities] = {}
+        # -- lifecycle ownership (§3) --------------------------------------
+        # `_leases` is the refcount: model -> active lease ids. A model is
+        # released only when this dict has no entry left for it, so a second
+        # worker leasing the same weights cannot evict the first (§4).
+        self._leases: dict[str, list[str]] = {}
+        self._lease_records: dict[str, ModelLease] = {}
+        # Every model this provider has EVER leased. This is what separates
+        # "weights we loaded" from "weights somebody else loaded": at release
+        # time the refcount is already zero, so `_leases` alone would
+        # misclassify our own model as UNKNOWN and refuse to unload it (§5).
+        self._leased_models: set[str] = set()
+        # Residency observed BEFORE this provider asked for anything. This
+        # is the boundary that keeps Hermes' own llama-server alive (§5):
+        # anything resident at baseline is never ours to release.
+        self._baseline_resident: set[str] | None = None
+
+    # -- lifecycle: residency observation (§5) -----------------------------
+    def resident_models(self) -> list[str]:
+        """Model names the runtime currently holds in RAM. Never raises."""
+        try:
+            data = self._get("/api/ps")
+        except Exception:
+            return []
+        models = data.get("models") or []
+        return [m.get("name", "") for m in models if m.get("name")]
+
+    def capture_baseline(self) -> set[str]:
+        """Record current residency as NOT Aetherius's (§5).
+
+        Called once before any leased inference. Anything resident now is
+        pre-existing — including Hermes' own llama-server (PID 2072) — and
+        the release path must never touch it.
+        """
+        if self._baseline_resident is None:
+            self._baseline_resident = set(self.resident_models())
+        return set(self._baseline_resident)
+
+    def classify_ownership(self, model: str) -> ModelOwnership:
+        """Attribute residency for one model (§4, §5). UNKNOWN fails safe.
+
+        ORDER MATTERS. `_leased_models` is consulted before the residency
+        probe because at release time the refcount is already zero: a model
+        we loaded and are about to unload is resident but has no live lease,
+        and treating that as UNKNOWN would make the release path refuse to
+        unload its own weights — a leak that looks like safety.
+        """
+        baseline = self._baseline_resident
+        if baseline is not None and model in baseline:
+            return ModelOwnership.PREEXISTING
+        if self._leases.get(model):
+            return ModelOwnership.SHARED
+        if model in self._leased_models:
+            # We loaded it; the weights are ours to release.
+            return ModelOwnership.AETHERIUS_LOADED
+        if model in (self.resident_models() or []):
+            # Resident, never leased by us: some other component or process
+            # loaded it. Do not claim it (§5).
+            return ModelOwnership.UNKNOWN
+        return ModelOwnership.AETHERIUS_LOADED
+
+    # -- lifecycle: leasing (§3, §4) ---------------------------------------
+    def acquire(self, model: str, policy: LeasePolicy = DEFAULT_LEASE_POLICY,
+                task_id: str = "", worker_id: str = "") -> ModelLease:
+        """Claim a model lease before inference.
+
+        The lease is what makes shared use safe: two workers asking for the
+        same model hold two leases, and the weights stay until both are
+        released (§4).
+        """
+        self.capture_baseline()
+        lease = ModelLease(
+            lease_id=f"lease-{uuid.uuid4().hex[:12]}",
+            model=model,
+            owner_id=self.owner_id,
+            policy=policy,
+            task_id=task_id,
+            worker_id=worker_id,
+        )
+        self._leases.setdefault(model, []).append(lease.lease_id)
+        self._lease_records[lease.lease_id] = lease
+        self._leased_models.add(model)
+        return lease
+
+    def _keep_alive_for(self, policy: LeasePolicy) -> int:
+        return _POLICY_KEEP_ALIVE[policy.value]
+
+    def _inference_payload(self, model: str, base: dict[str, Any],
+                           policy: LeasePolicy) -> dict[str, Any]:
+        """Attach the lease's keep_alive so residency is decided at request
+        time, not left to Ollama's default (§6)."""
+        payload = dict(base)
+        payload["model"] = model
+        payload["keep_alive"] = self._keep_alive_for(policy)
+        return payload
+
+    def release(self, lease: ModelLease | str,
+                timeout: float = 15.0) -> dict[str, Any]:
+        """Release one lease; unload the model only when none remain (§4).
+
+        Bounded polling rather than a single sample (§10): Ollama unloads
+        lazily, so an immediate `/api/ps` read can show a model that is
+        already on its way out. A real leak still fails; a lagging unload
+        does not.
+        """
+        if isinstance(lease, str):
+            lease = self._lease_records.get(lease)
+        if lease is None:
+            return {"released": False, "reason": "unknown lease"}
+        if not lease.active:
+            return {"released": False, "reason": "already released",
+                    "lease": lease.to_dict()}
+
+        lease.released_at = time.time()
+        remaining = [lid for lid in self._leases.get(lease.model, [])
+                     if lid != lease.lease_id]
+        if remaining:
+            # Another live worker still needs these weights (§4).
+            self._leases[lease.model] = remaining
+            return {"released": True, "unloaded": False,
+                    "reason": "other active leases remain",
+                    "lease": lease.to_dict()}
+        self._leases.pop(lease.model, None)
+
+        ownership = self.classify_ownership(lease.model)
+        if ownership in (ModelOwnership.PREEXISTING,
+                         ModelOwnership.UNKNOWN):
+            # §5: never terminate what we cannot attribute.
+            return {"released": True, "unloaded": False,
+                    "reason": f"ownership={ownership.value}",
+                    "lease": lease.to_dict()}
+        if lease.policy is LeasePolicy.PERSISTENT:
+            return {"released": True, "unloaded": False,
+                    "reason": "policy=PERSISTENT",
+                    "lease": lease.to_dict()}
+
+        # Ask the runtime to drop the weights, then confirm rather than
+        # assume (§10).
+        try:
+            self._get("/api/generate",
+                      {"model": lease.model, "keep_alive": 0})
+        except Exception:
+            pass  # best effort; residency check below is the real answer
+
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if lease.model not in self.resident_models():
+                lease.release_confirmed = True
+                return {"released": True, "unloaded": True,
+                        "lease": lease.to_dict()}
+            time.sleep(0.5)
+        lease.resident_after_call = True
+        return {"released": True, "unloaded": False,
+                "reason": "unload not confirmed within timeout",
+                "lease": lease.to_dict()}
+
+    def release_all(self) -> list[dict[str, Any]]:
+        """Release every active lease this provider holds.
+
+        Also sweeps models whose leases already ended under a retaining
+        policy (SESSION): `infer()` releases its own lease on the way out,
+        so a SESSION call leaves weights resident with no live lease. This
+        is the intended behaviour during a session, but when the owner
+        calls `release_all()` they are declaring the session over — so the
+        retained weights must go too (§6, §12).
+        """
+        outcomes = [self.release(lease)
+                    for lease in list(self._lease_records.values())
+                    if lease.active]
+        for model in sorted(self._leased_models):
+            if self._leases.get(model):
+                continue          # still held by a live lease
+            if model not in self.resident_models():
+                continue          # already gone
+            if self.classify_ownership(model) != ModelOwnership.AETHERIUS_LOADED:
+                continue          # PREEXISTING / UNKNOWN — not ours (§5)
+            try:
+                self._get("/api/generate", {"model": model, "keep_alive": 0})
+            except Exception:
+                pass
+            outcomes.append({"released": True, "model": model,
+                             "unloaded": True,
+                             "reason": "retained session weights released"})
+        return outcomes
+
+    def lifecycle_report(self) -> dict[str, Any]:
+        """Non-secret ownership/lease state for evidence (§8)."""
+        return OrderedDict([
+            ("owner_id", self.owner_id),
+            ("baseline_resident", sorted(self._baseline_resident or [])),
+            ("resident_now", self.resident_models()),
+            ("active_leases", [l.to_dict() for l in self._lease_records.values()
+                               if l.active]),
+            ("released_leases", [l.to_dict()
+                                 for l in self._lease_records.values()
+                                 if not l.active]),
+        ])
 
     # -- transport ----------------------------------------------------------
     def _get(self, path: str, payload: dict | None = None) -> Any:
@@ -331,11 +644,20 @@ class OllamaProviderV2:
               temperature: float | None = None,
               max_tokens: int | None = None,
               tools: list[dict] | None = None,
-              stream: bool = False) -> dict[str, Any]:
+              stream: bool = False,
+              policy: LeasePolicy = DEFAULT_LEASE_POLICY,
+              task_id: str = "",
+              worker_id: str = "") -> dict[str, Any]:
         """Generate a completion, enforcing honest capability gating (§2, §28).
 
         Requesting a capability the model does not support FAILS EXPLICITLY
         rather than being silently ignored.
+
+        Every call takes a lease and releases it on the way out (§3), so
+        residency is decided here rather than left to each caller. `policy`
+        controls how long the weights may outlive the call: EPHEMERAL for
+        tests, SESSION for an interactive run, PERSISTENT when the owner
+        pins a hot model.
         """
         caps = self.discover(model)
 
@@ -353,19 +675,44 @@ class OllamaProviderV2:
         if max_tokens is not None:
             options["num_predict"] = max_tokens
 
-        payload: dict[str, Any] = {
-            "model": model,
+        base: dict[str, Any] = {
             "prompt": prompt,
             "stream": stream,
         }
         if system:
-            payload["system"] = system
+            base["system"] = system
         if options:
-            payload["options"] = options
+            base["options"] = options
         if tools:
-            payload["tools"] = tools
+            base["tools"] = tools
 
-        data = self._get("/api/generate", payload)
+        lease = self.acquire(model, policy=policy,
+                             task_id=task_id, worker_id=worker_id)
+        failed = False
+        try:
+            payload = self._inference_payload(model, base, policy)
+            data = self._get("/api/generate", payload)
+        except BaseException:
+            failed = True
+            raise
+        finally:
+            # EPHEMERAL releases here: the weights exist only for this call.
+            #
+            # A RETAINING policy (SESSION/SHORT_LIVED) deliberately does NOT
+            # release on success. Ollama keeps the weights for `keep_alive`
+            # minutes after the last request, which is what a warm model is;
+            # tearing the lease down at the end of every call would make
+            # "SESSION" meaningless and force a reload on the next turn. The
+            # lease stays live until the owner calls
+            # `release()`/`release_all()`, the honest boundary of a session.
+            #
+            # A FAILURE drops the lease regardless of policy (§9-H): weights
+            # stranded by a request that never completed have no live turn to
+            # stay warm for, and keeping them resident turns one bad call
+            # into a memory leak.
+            if policy is LeasePolicy.EPHEMERAL or failed:
+                self.release(lease)
+
         return OrderedDict([
             ("model", model),
             ("provider", self.provider_id),
@@ -379,6 +726,8 @@ class OllamaProviderV2:
                                   + data.get("eval_count", 0))),
             ])),
             ("capabilities_used", self._capabilities_used(tools, temperature)),
+            # Non-secret lifecycle metadata (§8).
+            ("lifecycle", lease.to_dict()),
         ])
 
     def _capabilities_used(self, tools: list[dict] | None,
@@ -390,13 +739,34 @@ class OllamaProviderV2:
             used.append(CAP_TEMPERATURE)
         return used
 
-    def embed(self, model: str, text: str) -> list[float]:
-        """Embeddings, gated on the model actually being an embedder."""
+    def embed(self, model: str, text: str,
+              policy: LeasePolicy = DEFAULT_LEASE_POLICY,
+              task_id: str = "", worker_id: str = "") -> list[float]:
+        """Embeddings, gated on the model actually being an embedder.
+
+        Leased like any other inference path — an embedder holds VRAM as
+        stubbornly as a generator does (§3).
+        """
         caps = self.discover(model)
         if not self.embedding_capable(model):
             raise OllamaUnsupportedCapabilityError(
                 model, CAP_EMBEDDINGS, f"model '{model}' is not an embedding model")
-        data = self._get("/api/embeddings", {"model": model, "prompt": text})
+        lease = self.acquire(model, policy=policy,
+                             task_id=task_id, worker_id=worker_id)
+        failed = False
+        try:
+            data = self._get("/api/embeddings",
+                             self._inference_payload(
+                                 model, {"prompt": text}, policy))
+        except BaseException:
+            failed = True
+            raise
+        finally:
+            # Same rule as infer(): EPHEMERAL frees the weights now, a
+            # retaining policy keeps them for the session's owner to
+            # release, and a failure always drops the lease (§9-H).
+            if policy is LeasePolicy.EPHEMERAL or failed:
+                self.release(lease)
         return list(data.get("embedding", []))
 
 
