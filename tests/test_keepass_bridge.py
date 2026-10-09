@@ -96,7 +96,10 @@ def seeded_db(blank_db, interpreter):
 
 def test_interpreter_discovery_finds_local_venv(interpreter):
     """A pykeepass interpreter is discoverable on this machine."""
-    assert interpreter is not None, "expected .venv-kdbx to exist"
+    assert interpreter is not None, (
+        "expected a pykeepass interpreter to be discoverable via "
+        "AETHERIUS_KEEPASS_PY or ~/.aetherius/venvs/kdbx313"
+    )
     assert os.path.isfile(interpreter)
 
 
