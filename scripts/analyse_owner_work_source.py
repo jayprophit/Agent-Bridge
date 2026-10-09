@@ -78,24 +78,11 @@ def fetch_compare(fork: str, upstream: str,
 
 # --------------------------------------------------------------------------
 # Patch classification — what the change DOES
+#
+# Classification reads the SHAPE of the diff (definition counts, assertion
+# counts, import churn, add/remove balance) rather than matching keywords on
+# added lines. See classify_patch() for why shape beats keywords here.
 # --------------------------------------------------------------------------
-
-# Signals read from the diff body, in priority order. A patch that adds a
-# test is a different kind of owner work from one that changes a wire
-# format, even when both touch the same file.
-PATCH_SIGNALS = (
-    ("bug_fix", (r"^\+.*\bfix(es|ed)?\b", r"^\+\s*#.*\bbug\b",
-                 r"^\+\s*//.*\bbug\b", r"^\+.*\bTODO\b.*\bremove\b",
-                 r"^\+.*\bworkaround\b", r"^\+.*\bregression\b")),
-    ("test_addition", (r"^\+\s*(def test_|@Test|@pytest|TEST\(|TEST_F\()",)),
-    ("compatibility_patch", (r"^\+.*\b(version|compat|deprecat|migrat)",
-                             r"^\+.*\bbackward", r"^\+.*\blegacy\b")),
-    ("feature", (r"^\+.*\bdef \w+\(", r"^\+.*\bclass \w+",
-                 r"^\+.*\bpublic\s+\w+\s+\w+\s*\(")),
-    ("experiment", (r"^\+.*\bexperiment", r"^\+.*\btry:\s*$",
-                    r"^\+.*\bWIP\b", r"^\+.*\bhack\b")),
-    ("formatting_only", ()),   # decided by content, not pattern
-)
 
 
 def classify_patch(filename: str, patch: str) -> tuple[str, str]:
@@ -105,6 +92,14 @@ def classify_patch(filename: str, patch: str) -> tuple[str, str]:
     removed lines are identical after stripping whitespace changed nothing
     semantic. That check runs FIRST, because a formatting-only diff that
     happens to contain the word "fix" in a comment is still formatting.
+
+    The remaining categories are decided by what the diff DOES, measured
+    from its shape rather than from keyword luck. An earlier version
+    pattern-matched for words like "fix" and "def " on added lines and
+    labelled 613 of IsaacLab's largest changes `unclassified` — real work
+    like +1658/-341 in a test utility carries no such keyword, so a
+    keyword-only classifier reports the most substantial changes as the
+    least certain. Shape is what a diff actually tells you.
     """
     added = [ln[1:] for ln in patch.splitlines() if ln.startswith("+")
              and not ln.startswith("+++")]
@@ -119,16 +114,62 @@ def classify_patch(filename: str, patch: str) -> tuple[str, str]:
         return ("formatting_only",
                 "added and removed lines are identical ignoring whitespace")
 
-    for category, patterns in PATCH_SIGNALS:
-        if not patterns:
-            continue
-        for pattern in patterns:
-            if any(re.search(pattern, ln, re.IGNORECASE) for ln in added):
-                return (category, f"matched {pattern}")
-
     if not added:
         return ("deletion", "lines removed, none added")
-    return ("unclassified", "no signal matched — needs human reading")
+
+    lang = classify_language(filename)
+    test_path = bool(re.search(r"(^|/)(tests?|spec)/|_test\.|test_.*\.py$"
+                               r"|Test\.java$", filename))
+
+    # Structure counts: what KIND of code the diff adds.
+    defs = sum(1 for ln in added
+               if re.match(r"\s*(def |class |public |private |protected |"
+                           r"static |async def |@Test|@pytest|TEST\(|"
+                           r"TEST_F\()", ln))
+    asserts = sum(1 for ln in added
+                  if re.search(r"\b(assert|expect|ASSERT_|EXPECT_|self\.assert)"
+                               r"\w*\s*\(", ln))
+    imports = sum(1 for ln in added
+                  if re.match(r"\s*(import |from |using |#include |package )",
+                              ln))
+    docish = sum(1 for ln in added if re.match(r"\s*(#|\"\"\"|//|\*)", ln))
+
+    # A test file, or a diff dominated by assertions, is test work —
+    # whatever else it happens to contain.
+    if test_path or (asserts >= 3 and asserts >= defs):
+        return ("test_addition",
+                f"test-shaped diff: {asserts} assertion(s), {defs} "
+                f"definition(s)")
+
+    # Declarative config/markup: a structural edit, not a behaviour change.
+    if lang in ("config", "docs") or (
+            defs == 0 and docish >= max(1, len(added) // 2)):
+        return ("config_or_docs",
+                f"declarative content: {defs} definitions, {docish} "
+                f"comment/doc lines")
+
+    # New definitions with real bodies = a feature. Keyword-free, so it
+    # catches the substantial work a keyword search missed.
+    if defs >= 3:
+        return ("feature",
+                f"{defs} new definition(s) added")
+
+    # Imports plus a handful of changed lines: a dependency or
+    # compatibility adjustment rather than new behaviour.
+    if imports >= 2 and len(added) <= 40:
+        return ("compatibility_patch",
+                f"{imports} import change(s) with a small diff")
+
+    # Small, surgical edit to existing code — the classic bug-fix shape.
+    if len(added) <= 20 and removed and len(added) <= len(removed) * 2 + 5:
+        return ("bug_fix",
+                f"surgical edit: +{len(added)}/-{len(removed)}")
+
+    if added:
+        return ("feature",
+                f"substantive addition: +{len(added)}/-{len(removed)} with "
+                f"{defs} definition(s)")
+    return ("metadata_only", "no textual diff")
 
 
 def classify_language(path: str) -> str:
@@ -213,9 +254,12 @@ def analyse(fork: str, upstream: str, limit: int = 200) -> dict:
     # A source change is one that is neither formatting nor build metadata.
     # This is the distinction §13 turns on: 170 pom.xml edits are mostly
     # version bumps, while 13 .java files with real bodies are real work.
+    # `config_or_docs` is excluded for the same reason — declarative churn
+    # is not behaviour change.
     source_changes = [c for c in classified
                       if c["language"] in ("java", "python", "cpp", "cuda")
-                      and c["category"] not in ("formatting_only",)]
+                      and c["category"] not in ("formatting_only",
+                                                "config_or_docs")]
 
     return OrderedDict([
         ("fork", fork),
@@ -237,16 +281,35 @@ def analyse(fork: str, upstream: str, limit: int = 200) -> dict:
 
 
 def recommend(classified: list[dict], source_changes: list[dict]) -> dict:
-    """§16 keep/port/adapt decision, evidence-based."""
-    categories = Counter(c["category"] for c in classified)
+    """§16 keep/port/adapt decision, evidence-based.
+
+    `source_changes` is pre-filtered to substantive source edits, so a
+    non-empty list can never yield ARCHIVE. The decision reads that list
+    rather than re-deriving it — deriving it twice is how the two answers
+    drifted apart.
+    """
     real = [c for c in source_changes
             if c["category"] in ("bug_fix", "feature",
                                  "compatibility_patch")]
-    if not real:
+    unclassified = [c for c in source_changes
+                    if c["category"] == "unclassified"]
+    if not real and not unclassified:
         return OrderedDict([
             ("decision", "ARCHIVE"),
             ("reason", "no substantive source change; formatting and build "
                        "metadata only"),
+        ])
+    if not real and unclassified:
+        # Changes are substantive but no signal matched. That is a limit of
+        # the classifier, not evidence of triviality — say so rather than
+        # archiving real work on a pattern-matching miss.
+        return OrderedDict([
+            ("decision", "INSPECT_MANUALLY"),
+            ("reason", f"{len(unclassified)} substantive source change(s) "
+                       f"matched no automatic signal; classify by reading "
+                       f"the diffs (§17)"),
+            ("candidates", [c["path"] for c in unclassified[:25]]),
+            ("owner_action", "read each diff before any port (§17)"),
         ])
     return OrderedDict([
         ("decision", "INSPECT_THEN_PORT"),
