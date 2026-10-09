@@ -51,10 +51,10 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 474,
-    "all_passed": 474,
-    "all_skipped": 0,
-    "all_failed": 0,
+    "all_total": 2393,
+    "all_passed": 2389,
+    "all_skipped": 1,
+    "all_failed": 3,
     "keepass_bridge": {
       "file": "tests/test_keepass_bridge.py",
       "total": 44,
@@ -114,6 +114,13 @@
       "passed": 37,
       "failed": 0,
       "skipped": 0
+    },
+    "full_suite": {
+      "file": "tests/ (all)",
+      "total": 1919,
+      "passed": 1915,
+      "failed": 3,
+      "skipped": 1
     }
   },
   "owner_blockers": [
@@ -582,5 +589,23 @@
     "team.config.allow_cloud - configure() flattens config onto the team and retains execution_target/execution_mode, not allow_cloud",
     "release test snapshotted /api/ps BEFORE loading, then diffed after. When an earlier test left the model resident it appeared in 'after' but not 'before', so the test reported a leak the current run did not cause. Fixed by loading first, then asserting release.",
     "release test sampled /api/ps once after keep_alive=0, but Ollama unloads lazily. Now polls for up to 15 s, so a genuine leak still fails while a lagging unload passes."
-  ]
+  ],
+  "full_suite_baseline": {
+    "state": "COMPLETED — first full-suite run to finish this session",
+    "command": "pytest tests/ (no timeout wrapper)",
+    "duration_s": 4490.84,
+    "result": "1915 passed / 3 failed / 1 skipped / 47 subtests passed",
+    "failures": {
+      "hygiene": "tests/test_secret_hygiene.py::test_no_hardcoded_secrets — FIXED in ac06679 follow-up. Cause: my own tracing test passed a realistic-looking fake key literal, which the hygiene scanner correctly flagged. The scanner cannot distinguish a fake key in a test from a real one, and weakening it to accommodate a test would be the wrong trade. Fixed in the TEST by building the value at runtime and keeping it short; the §5 assertion still proves the kwarg is rejected.",
+      "dependency_lock_iniconfig": "PRE-EXISTING, untouched by any of this session's commits. requirements-lock.txt pins iniconfig==2.3.0; the verification venv has 2.3.1 (pulled in by pytest 9.1.1).",
+      "dependency_lock_pyyaml": "PRE-EXISTING, untouched. Lockfile pins PyYAML==6.0.3; PyYAML is NOT INSTALLED in the verification venv at all."
+    },
+    "pre_existing_proof": "git diff --stat cb9c38e..HEAD touches neither requirements-lock.txt nor tests/test_dependency_lock.py, so these two SUBFAILs predate this session's work.",
+    "security_adjacent": "test_dependency_lock is a supply-chain gate. Two remedies exist: scope the assertion to a declared verification venv (skip otherwise, ~5 lines) or build a dedicated venv with the pinned closure. NOT modified unilaterally — owner decision."
+  },
+  "resolved_diagnostics": {
+    "exit_124_timeouts": "RESOLVED — two independent causes, neither a crash. (1) The 2400s wrapper was shorter than the suite's real 74:50 runtime. (2) Ollama models stayed resident because runs never released them; release_models() now unloads on all four run paths.",
+    "process_kill_theory": "DISPROVEN. A faulthandler-instrumented run reached 100% with EXIT=0 and zero native crash markers (no segfault, no fatal exception, no OMP abort). The suite was never being killed.",
+    "oom_theory": "DISPROVEN. Windows event log shows no recent OOM event (last was 24 Sept, two weeks earlier). Symptom was performance collapse from resource starvation, not an OS kill."
+  }
 }
