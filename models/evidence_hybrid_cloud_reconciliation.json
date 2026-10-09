@@ -51,8 +51,8 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 340,
-    "all_passed": 340,
+    "all_total": 367,
+    "all_passed": 367,
     "all_skipped": 0,
     "all_failed": 0,
     "keepass_bridge": {
@@ -84,6 +84,13 @@
       "file": "tests/test_provider_v2_and_ingestion.py",
       "total": 45,
       "passed": 45,
+      "failed": 0,
+      "skipped": 0
+    },
+    "distributed_tracing": {
+      "file": "tests/test_distributed_tracing.py",
+      "total": 27,
+      "passed": 27,
       "failed": 0,
       "skipped": 0
     }
@@ -326,5 +333,37 @@
     "ingestion_limitation": "head_sha is None for every record because the REST list endpoint omits it. Recorded as unknown, not guessed. Per-repo SHA lookup would close this.",
     "maturity": "LEVEL 2 — local verified, enterprise team proven, partial",
     "deletions": "ZERO authorised; §34 gate unchanged, 0 of 396 repos pass"
+  },
+  "distributed_tracing": {
+    "file": "compute/distributed_tracing.py",
+    "state": "IMPLEMENTED + TESTED (local)",
+    "span_path": "request -> ai_gateway -> authorization -> privacy_check -> cost_engine -> model_router -> execution_target -> provider_adapter -> response -> evidence",
+    "tracked": "trace_id, span_id, parent_span_id, request_id, task_id, team_id, worker_id, model_id, provider_id, target_id, latency_ms, status, error_class, cost_class, quota_state",
+    "hosted_service_required": false,
+    "privacy_enforcement": "STRUCTURAL: start_span has a closed attribute set and no **kwargs, so a secret has no field to travel in. Passing api_key= raises TypeError.",
+    "privacy_scan": "assert_no_secrets() scans serialized spans for key/token patterns; a test injects a fake leak and requires detection",
+    "propagation": "W3C-style traceparent; a cloud worker continues the same trace",
+    "error_classes": "normalized §3 taxonomy — spans record RATE_LIMIT/TIMEOUT/etc, never provider wording",
+    "opentelemetry_note": "OTel-COMPATIBLE CONCEPTS only. Not an OTel SDK; no OTLP exporter. Claiming the standard would be false evidence.",
+    "bugs_found_in_own_code": "to_dict() dropped non-empty detail (empty-string falsy check) and end_span() overwrote detail with None — together they made the §5 secret scan unable to ever see a leak. Both fixed."
+  },
+  "mat_reconciliation": {
+    "question": "Is jayprophit/Materials-Atlas-Table-Codex a fork/predecessor/duplicate of canonical Materials-Atlas-Table-Codex---MAT?",
+    "finding": "jayprophit/Materials-Atlas-Table-Codex does NOT exist (HTTP 404, confirmed live). Only the canonical repo exists.",
+    "verification": "gh api repos/jayprophit/Materials-Atlas-Table-Codex -> 404; gh api repos/...---MAT -> is_fork=false, parent=null; GitHub search user:jayprophit 'Materials-Atlas-Table' -> total_count=1, the canonical repo only",
+    "canonical_repo": {
+      "full_name": "jayprophit/Materials-Atlas-Table-Codex---MAT",
+      "is_fork": false,
+      "parent": null,
+      "license": null,
+      "default_branch": "main",
+      "archived": false,
+      "pushed_at": "2026-09-29T07:07:02Z",
+      "size_kb": 151123
+    },
+    "decision": "EXTEND_CANONICAL",
+    "rationale": "No second MAT exists to merge, migrate, or delete. The premise of the reconciliation question is already satisfied — MAT is not fragmented.",
+    "action_taken": "None. Nothing was created, forked, or deleted.",
+    "open_gap": "Canonical MAT has license=None. Must be identified before any code is reused (§6). Recorded as unknown, not assumed."
   }
 }
