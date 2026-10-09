@@ -113,19 +113,48 @@ RACI_ASSIGNMENTS = (
 )
 
 
+# Accountability MODE (§P, refined): how shared responsibility is expressed.
+#
+# §O's protection — "there is always exactly one owner responsible for
+# completing a task" — is retained by TASK.execution_accountable being exactly
+# one identity. But real organisations contain boards, committees, co-parents,
+# partnerships and statutory shared responsibilities, so "exactly one
+# accountable entity" must NOT be universal across the ontology. The mode says
+# which shape this task's accountability takes:
+ACCOUNTABILITY_SINGLE = "SINGLE"          # one accountable worker
+ACCOUNTABILITY_JOINT = "JOINT"            # e.g. co-parents, partners
+ACCOUNTABILITY_COLLECTIVE = "COLLECTIVE"  # e.g. a board or committee
+ACCOUNTABILITY_HUMAN_OWNER = "HUMAN_OWNER"  # accountable sits with the owner
+
+ACCOUNTABILITY_MODES = (
+    ACCOUNTABILITY_SINGLE,
+    ACCOUNTABILITY_JOINT,
+    ACCOUNTABILITY_COLLECTIVE,
+    ACCOUNTABILITY_HUMAN_OWNER,
+)
+
+
 @dataclass
 class RaciAssignment:
     """RACI for one task (§P).
 
-    Exactly one worker is ACCOUNTABLE — enforced by the registry, not by
-    convention. Multiple workers may be RESPONSIBLE, CONSULTED or INFORMED;
-    none may be ACCOUNTABLE but one.
+    ``accountable`` is the single execution owner (§O): exactly one identity is
+    answerable for the task completing. That invariant never changes.
+
+    ``accountability_mode`` says whether OTHER identities share ultimate
+    accountability — a board, both parents, a partnership — which is distinct
+    from who must get the work done. ``collective_accountable`` names those
+    shared holders when the mode is JOINT/COLLECTIVE. This is what lets the
+    system model a family or a board without weakening the guarantee that a
+    task always has exactly one execution owner.
     """
     task_id: str
     responsible: list[str] = field(default_factory=list)
     accountable: Optional[str] = None
     consulted: list[str] = field(default_factory=list)
     informed: list[str] = field(default_factory=list)
+    accountability_mode: str = ACCOUNTABILITY_SINGLE
+    collective_accountable: list[str] = field(default_factory=list)
     recorded_at: float = field(default_factory=time.time)
 
     def as_map(self) -> dict[str, list[str]]:
@@ -135,6 +164,7 @@ class RaciAssignment:
             RACI_CONSULTED: list(self.consulted),
             RACI_INFORMED: list(self.informed),
         }
+
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -699,24 +729,40 @@ class TeamRegistry:
         return self._task_owners.get(task_id)
 
     def record_raci(self, raci: RaciAssignment) -> RaciAssignment:
-        """§P — record RACI, enforcing exactly one ACCOUNTABLE.
+        """§P — record RACI. ``accountable`` is the single execution owner.
 
-        Zero accountable owners is the bug §O exists to prevent. More than
-        one is the other half of it: shared accountability is no
-        accountability.
+        The invariant that never relaxes: exactly one identity is answerable
+        for the task completing (§O). What the ``accountability_mode`` adds is
+        the ability to say that other identities — a board, both parents, a
+        partnership — share ultimate accountability, without implying any of
+        them is the one who must get the work done.
+
+        Zero accountable owners is the bug §O exists to prevent; that stays a
+        hard error in every mode.
         """
+        if raci.accountability_mode not in ACCOUNTABILITY_MODES:
+            raise ValueError(
+                f"accountability_mode {raci.accountability_mode!r} is not one "
+                f"of {ACCOUNTABILITY_MODES}")
         if not raci.accountable:
             raise ValueError(
                 f"task {raci.task_id} has no ACCOUNTABLE worker; every task "
-                f"needs exactly one (§O, §P)")
+                f"needs exactly one execution owner (§O, §P)")
         if raci.accountable not in self._workers:
             raise ValueError(
                 f"accountable worker {raci.accountable} is not registered")
-        for worker_id in (raci.responsible + raci.consulted + raci.informed):
+        for worker_id in (raci.responsible + raci.consulted + raci.informed
+                          + raci.collective_accountable):
             if worker_id not in self._workers:
                 raise ValueError(f"{worker_id} is not a registered worker")
+        if raci.accountability_mode in (ACCOUNTABILITY_JOINT,
+                                        ACCOUNTABILITY_COLLECTIVE) \
+                and not raci.collective_accountable:
+            raise ValueError(
+                f"accountability_mode {raci.accountability_mode} requires at "
+                f"least one collective accountable holder (§P)")
         if raci.task_id not in self._task_owners:
-            # RACI accountability implies task ownership (§O).
+            # The single execution owner owns the task (§O).
             self.set_task_owner(raci.task_id, raci.accountable)
         self._raci[raci.task_id] = raci
         self._append_event(EVENT_RACI_RECORDED, raci=raci.to_dict())

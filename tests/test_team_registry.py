@@ -22,6 +22,9 @@ import tempfile
 import unittest
 
 from compute.team_registry import (
+    ACCOUNTABILITY_COLLECTIVE,
+    ACCOUNTABILITY_JOINT,
+    ACCOUNTABILITY_MODES,
     CAREER_SPECIALIST,
     CAREER_VERIFIED,
     DEPARTMENT_ENGINEERING,
@@ -445,6 +448,72 @@ class ProvenanceLayerTests(unittest.TestCase):
         # mutation appended, it did not rewrite what came before.
         self.assertIn("worker.registered", lines[0])
         self.assertIn("team.formed", lines[first_count - 1])
+
+    def test_accountability_mode_records_shared_accountability_without_breaking_single_owner(self):
+        """§P refinement: a task can have JOINT/COLLECTIVE shared accountability
+        while still having exactly ONE execution owner.
+
+        This is the co-parent / board case: ultimate accountability is shared,
+        but someone specific must get the work done. The registry records both
+        without either weakening the other.
+        """
+        reg = TeamRegistry()
+        parent_a = WorkerCareerRecord(worker_id="parent-a",
+                                      role_id="family_worker")
+        parent_b = WorkerCareerRecord(worker_id="parent-b",
+                                      role_id="family_worker")
+        reg.register_worker(parent_a)
+        reg.register_worker(parent_b)
+        raci = RaciAssignment(
+            task_id="task-school-run",
+            accountable="parent-a",                 # the one who must do it
+            accountability_mode=ACCOUNTABILITY_JOINT,
+            collective_accountable=["parent-b"],    # shares responsibility
+        )
+        reg.record_raci(raci)
+        # Exactly one execution owner is still enforced.
+        self.assertEqual(reg.task_owner("task-school-run"), "parent-a")
+        stored = reg.raci_for("task-school-run")
+        self.assertEqual(stored.accountability_mode, ACCOUNTABILITY_JOINT)
+        self.assertEqual(stored.collective_accountable, ["parent-b"])
+
+    def test_collective_mode_without_shared_holders_is_rejected(self):
+        """JOINT/COLLECTIVE with no shared holder is a contradiction."""
+        reg = TeamRegistry()
+        w = WorkerCareerRecord(worker_id="w1", role_id="reviewer")
+        reg.register_worker(w)
+        with self.assertRaises(ValueError):
+            reg.record_raci(RaciAssignment(
+                task_id="task-board",
+                accountable="w1",
+                accountability_mode=ACCOUNTABILITY_COLLECTIVE,
+                collective_accountable=[]))
+
+    def test_invalid_accountability_mode_is_rejected(self):
+        reg = TeamRegistry()
+        w = WorkerCareerRecord(worker_id="w1", role_id="reviewer")
+        reg.register_worker(w)
+        with self.assertRaises(ValueError):
+            reg.record_raci(RaciAssignment(
+                task_id="task-x",
+                accountable="w1",
+                accountability_mode="WING_IT"))
+
+    def test_accountability_mode_survives_provenance_replay(self):
+        """The refinement is durable: shared accountability reads back intact."""
+        reg = TeamRegistry(provenance_path=self.path)
+        w = WorkerCareerRecord(worker_id="w1", role_id="reviewer")
+        reg.register_worker(w)
+        reg.record_raci(RaciAssignment(
+            task_id="task-joint",
+            accountable="w1",
+            accountability_mode=ACCOUNTABILITY_JOINT,
+            collective_accountable=["w1"]))
+        rebuilt = TeamRegistry(provenance_path=self.path)
+        rebuilt.rebuild_from_provenance()
+        stored = rebuilt.raci_for("task-joint")
+        self.assertEqual(stored.accountability_mode, ACCOUNTABILITY_JOINT)
+        self.assertEqual(stored.collective_accountable, ["w1"])
 
     def test_unreadable_provenance_raises_rather_than_losing_the_trail(self):
         """A registry that cannot persist must not pretend it did.
