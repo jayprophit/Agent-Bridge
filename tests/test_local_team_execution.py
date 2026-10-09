@@ -344,10 +344,43 @@ class ModelReleaseTests(unittest.TestCase):
         self.assertEqual(still, set(),
                          f"models left resident after release: {still}")
 
+    def test_release_never_evicts_models_it_did_not_load(self):
+        """§5 — the provider must not unload weights it cannot attribute.
+
+        This is the assertion that protects Hermes' own llama-server. It is
+        written as its own test rather than folded into the release test
+        above because the two answer different questions: that one asks
+        "did our run clean up", this one asks "did we touch anything that
+        was not ours".
+
+        A model the executor never used is loaded here to stand in for an
+        unrelated resident, and must still be resident afterwards.
+        """
+        if not _live():
+            self.skipTest("Ollama runtime not reachable")
+        executor = LocalTeamExecutor()
+        installed = set(executor.provider.list_models())
+        used = {r.model for r in executor.results}
+        others = sorted(installed - used)
+        if not others:
+            self.skipTest("no second installed model to use as a bystander")
+
+        bystander = others[0]
+        # Make the bystander resident so there is something to protect.
+        executor.provider._get("/api/generate",
+                               {"model": bystander, "keep_alive": -1})
+        self.assertIn(bystander, {m["name"] for m in _resident_models()},
+                      "bystander model did not load — cannot test protection")
+
+        executor.run_worker("coder", "w-bystander", "Say ok", max_tokens=8)
+        executor.release_models()
+
         survivors = {m["name"] for m in _resident_models()}
-        self.assertTrue(preexisting <= survivors,
-                        f"release evicted pre-existing models: "
-                        f"{preexisting - survivors}")
+        self.assertIn(bystander, survivors,
+                      "release evicted a model this executor never used (§5)")
+        # Clean up the bystander we loaded for this test.
+        executor.provider._get("/api/generate",
+                               {"model": bystander, "keep_alive": 0})
 
     def test_release_models_returns_count(self):
         executor = LocalTeamExecutor()

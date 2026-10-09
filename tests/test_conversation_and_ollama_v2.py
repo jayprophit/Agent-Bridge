@@ -505,6 +505,52 @@ class OllamaLiveInferenceTests(unittest.TestCase):
         # 0.81 GB — the smallest model on this 16 GB host, so this proof does
         # not evict anything the owner is using (§30).
         cls.model = "llama3.2:1b-instruct-q4_K_M"
+        cls.embedder = "nomic-embed-text:latest"
+        # Whatever the runtime already holds is not ours and must survive
+        # these tests (§5). Captured once, asserted in tearDownClass.
+        cls.preexisting = set(cls.provider.resident_models()) \
+            if cls.available else set()
+
+    @classmethod
+    def tearDownClass(cls):
+        """§12 — a live test must leave no Aetherius-owned weights resident.
+
+        WHY THIS IS AT CLASS SCOPE
+
+        Every inference in this class deliberately exercises the provider's
+        DEFAULT lease policy, because that default is a product decision and
+        an unstated policy is what production code will use. SESSION retains
+        weights until the session owner releases them, so the tests must be
+        that owner: without this teardown each run leaves llama3.2 and
+        nomic-embed resident with keep_alive=-1, and on a 16 GB host that is
+        ~1.8 GB the next run does not get back.
+
+        release_all() also proves the release path works when the caller
+        passed no policy at all — the bypass case §9-I is about.
+        """
+        if not cls.available:
+            return
+        cls.provider.release_all()
+
+        # Bounded poll: Ollama unloads lazily, so a single sample would
+        # report a leak that is already clearing (§10).
+        import time
+        deadline = time.time() + 20.0
+        while time.time() < deadline:
+            ours = set(cls.provider.resident_models()) - cls.preexisting
+            if not ours:
+                break
+            time.sleep(0.5)
+        leaked = set(cls.provider.resident_models()) - cls.preexisting
+        if leaked:
+            raise AssertionError(
+                f"live Ollama tests left models resident: {sorted(leaked)}")
+        survivors = set(cls.provider.resident_models())
+        missing = cls.preexisting - survivors
+        if missing:
+            raise AssertionError(
+                f"live Ollama tests evicted pre-existing models: "
+                f"{sorted(missing)}")
 
     def test_bounded_inference_returns_response_and_usage(self):
         if not self.available:
@@ -527,9 +573,9 @@ class OllamaLiveInferenceTests(unittest.TestCase):
     def test_embeddings_work_on_embedding_model(self):
         if not self.available:
             self.skipTest("Ollama runtime not reachable")
-        if "nomic-embed-text:latest" not in self.provider.list_models():
+        if self.embedder not in self.provider.list_models():
             self.skipTest("embedding model not installed")
-        vec = self.provider.embed("nomic-embed-text:latest", "hello world")
+        vec = self.provider.embed(self.embedder, "hello world")
         self.assertGreater(len(vec), 0)
 
 
