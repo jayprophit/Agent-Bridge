@@ -361,11 +361,18 @@ class ModelReleaseTests(unittest.TestCase):
         executor = LocalTeamExecutor()
         installed = set(executor.provider.list_models())
         used = {r.model for r in executor.results}
-        others = sorted(installed - used)
-        if not others:
+        # Pick a SMALL bystander. Sorting alphabetically once landed on a
+        # multi-GB model and the load itself timed out on a busy 16 GB host —
+        # the test then failed for a reason that had nothing to do with what
+        # it was checking. Prefer the tiny instruct models.
+        preferred = ("qwen3:0.6b", "llama3.2:1b-instruct-q4_K_M",
+                     "granite3.3:2b")
+        candidates = [m for m in preferred if m in installed and m not in used]
+        candidates += sorted(installed - used - set(candidates))
+        if not candidates:
             self.skipTest("no second installed model to use as a bystander")
 
-        bystander = others[0]
+        bystander = candidates[0]
         # Make the bystander resident so there is something to protect.
         executor.provider._get("/api/generate",
                                {"model": bystander, "keep_alive": -1})

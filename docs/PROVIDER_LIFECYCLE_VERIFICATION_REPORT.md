@@ -118,8 +118,9 @@ Consolidating them onto Provider V2 is the follow-up migration task.
 ## 3. Full suite
 
 Run from `agent-bridge-verify` (§12), with RAM and residency captured
-before and after (§11). Status: **in progress** at time of writing;
-measured baseline was 74m50s, so the timeout is set well above it.
+before and after (§11).
+
+**Result: 1962 passed / 1 skipped / 49 subtests in 4200.34s (70:00).**
 
 | Suite | Result |
 |---|---|
@@ -128,7 +129,71 @@ measured baseline was 74m50s, so the timeout is set well above it.
 | `test_secret_hygiene` | 7 passed |
 | `test_dependency_lock` | 2 passed |
 | `test_compute_runtime_audit.py` | 21 passed |
-| Full suite (`tests/`) | pending — see run history |
+| `test_owner_work_classifier.py` | 20 passed |
+| **Full suite (`tests/`)** | **1962 passed / 1 skipped** |
+
+### The 4 reported failures were not product defects
+
+The run reported 4 failures. All four are pure `inspect.getsource()`
+structural checks — no network, no model, no inference — and all four pass
+in 6.3 s on a clean tree.
+
+The suite ran 07:32–08:42 UTC. Commit `5cb60bb` landed at **08:19 UTC**,
+23 minutes into a 70-minute run, editing
+`compute/local_team_executor.py` and `compute/ollama_provider_v2.py` under a
+live pytest. `inspect.getsource()` re-reads from disk, so the source
+assertions raced the edits. The failures were self-inflicted by running a
+full suite while modifying the files it was testing.
+
+**Lesson recorded: no source edits during a full-suite run.**
+
+### A second run died at 6% — and why
+
+A parallel full-suite attempt (`proc_83b2c424eaa3`) died at 6%. Two full
+suites were running concurrently, each loading Ollama models, on a host
+already at ~80% RAM with WSL2 + Edge + Defender resident. This is the same
+resource contention that produced the earlier EXIT=124 timeouts, not a crash:
+the faulthandler diagnostic previously showed zero native crash markers.
+
+### Residency after the suite — and the leak it exposed
+
+The suite itself passed, but it **left two models resident**:
+
+```
+llama3.2:1b-instruct-q4_K_M   vram=1.00 GB   until 2319-01-19   ← keep_alive=-1
+qwen3:1.7b                    vram=1.70 GB   until +300 s
+```
+
+The `2319` timestamp is Ollama's "forever" sentinel. The cause is the
+provider's own default: `DEFAULT_LEASE_POLICY` is SESSION, which retains
+weights until the session owner releases them. That is correct for
+interactive Genesis use — but `tests/test_conversation_and_ollama_v2.py`
+called `infer()`/`embed()` five times with **no policy argument**, so every
+run retained its weights and nobody ever called `release_all()`.
+
+Those are precisely the callsites the directive named. Fixed at the fixture
+boundary rather than by weakening the default: the class deliberately
+exercises the DEFAULT policy, because an unstated policy is what production
+code will use and the default is a product decision. `tearDownClass` is now
+the session owner — it calls `release_all()`, polls boundedly for the unload,
+and raises if anything Aetherius-owned is still resident or anything
+pre-existing was evicted.
+
+That teardown also covers the §9-I bypass case: it proves the release path
+works when the caller passed no policy at all.
+
+### One over-strict assertion, split in two
+
+`test_release_models_unloads_what_the_run_loaded` snapshotted residency
+before its run and required every model to survive. A model leaked by an
+*earlier* run is indistinguishable from an owner's model, so the test failed
+on someone else's leak. The protection question is now its own test,
+`test_release_never_evicts_models_it_did_not_load`, which loads a known
+bystander and asserts it survives. Two different questions, two tests.
+
+That test also learned to pick a **small** bystander: sorting alphabetically
+landed on a multi-GB model whose load itself timed out on a busy host, so the
+test failed for a reason unrelated to what it checked.
 
 ---
 
