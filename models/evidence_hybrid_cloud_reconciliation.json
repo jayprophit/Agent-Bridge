@@ -51,8 +51,8 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 2393,
-    "all_passed": 2389,
+    "all_total": 2408,
+    "all_passed": 2404,
     "all_skipped": 1,
     "all_failed": 3,
     "keepass_bridge": {
@@ -121,6 +121,21 @@
       "passed": 1915,
       "failed": 3,
       "skipped": 1
+    },
+    "evidence_path_separation": {
+      "file": "tests/test_evidence_path_separation.py",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    "dependency_lock": {
+      "file": "tests/test_dependency_lock.py",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "environment": "dedicated verification venv agent-bridge-verify"
     }
   },
   "owner_blockers": [
@@ -607,5 +622,32 @@
     "exit_124_timeouts": "RESOLVED — two independent causes, neither a crash. (1) The 2400s wrapper was shorter than the suite's real 74:50 runtime. (2) Ollama models stayed resident because runs never released them; release_models() now unloads on all four run paths.",
     "process_kill_theory": "DISPROVEN. A faulthandler-instrumented run reached 100% with EXIT=0 and zero native crash markers (no segfault, no fatal exception, no OMP abort). The suite was never being killed.",
     "oom_theory": "DISPROVEN. Windows event log shows no recent OOM event (last was 24 Sept, two weeks earlier). Symptom was performance collapse from resource starvation, not an OS kill."
+  },
+  "dependency_lock_closure": {
+    "owner_decision": "OPTION 2 — do not weaken or skip the supply-chain gate; build a dedicated verification environment whose closure matches the lockfile.",
+    "environment_id": "aetherius-agent-bridge-verify-1",
+    "path": "~/.aetherius/venvs/agent-bridge-verify",
+    "python": "3.13.14",
+    "kept_separate_from": "~/.aetherius/venvs/kdbx313 (specialist KeePass bridge/tooling environment, NOT the canonical project verification environment)",
+    "lockfile": "requirements-lock.txt (8 exact pins)",
+    "install_method": "pip install -r requirements-lock.txt — installs FROM the lockfile, so the closure matches by construction rather than by a hand-maintained list that can drift",
+    "verified": "8 pins checked, 0 missing, 0 mismatched",
+    "dependency_lock_test": "PASS — 2/2 in the dedicated environment",
+    "test_unchanged": true,
+    "lockfile_unchanged": true,
+    "scanner_unchanged": true,
+    "canonical_command": "<venv>/Scripts/python.exe -m pytest tests/ -p no:cacheprovider --tb=line -q -rf  (explicit interpreter, no PATH reliance)",
+    "venv_committed": false,
+    "committed_instead": "scripts/create_verification_env.py, verification/verification_environment.json (manifest with python version, lockfile hash, pins, command, timestamp)"
+  },
+  "evidence_pipeline_split": {
+    "hazard": "fetch_live_estate.py and resolve_upstreams.py both wrote migration/evidence/live_estate.json. The REST list endpoint omits `parent`, so raw data makes every fork look unlinkable. Re-running the fetch alone overwrote resolved upstream evidence with unresolved data, and 7 downstream consumers silently read the degraded version.",
+    "prior_fix": "A clearer warning message. A warning is not a fix — the next person to re-run the fetch for a quick count would corrupt the evidence again.",
+    "structural_fix": "migration/evidence_paths.py defines two DISTINCT paths: live_estate_raw.json (enumeration only) and live_estate_resolved.json (canonical). Raw writes can only touch raw; resolution reads raw and writes resolved. They no longer share a filename, so they cannot clobber each other.",
+    "legacy_handling": "live_estate.json is still READ for backwards compatibility but never written again.",
+    "invariant": "assert_not_degraded() raises when the resolved dataset has forks but none carry an upstream — the exact signature of raw data overwriting it.",
+    "tests": "13 new, including one that simulates the accident: run the raw writer, then assert the resolved dataset is byte-identical to before. Verified live: resolved stats unchanged after a raw write.",
+    "current_state": "396 total / 352 forks / 44 originals / 0 unresolved — fully resolved",
+    "real_bug_found": "resolved_stats() reported fully_resolved=False for an EMPTY estate, which would misread 'nothing resolved yet' as 'data is broken'. Degradation requires forks that lack an upstream, not merely an absence of forks."
   }
 }

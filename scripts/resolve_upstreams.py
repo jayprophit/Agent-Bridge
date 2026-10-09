@@ -5,8 +5,12 @@ classify forks. This resolves parents individually via `repos/<owner>/<repo>`,
 which does return it.
 
 Runs concurrently and is bounded: fork count is fixed by the estate, and
-each lookup is a cheap REST call. Writes parent data back into
-live_estate.json so the classification stage never re-hits the network.
+each lookup is a cheap REST call.
+
+Writes resolved data to live_estate_resolved.json, which is a SEPARATE file
+from the raw enumeration (§17). Before this split both stages wrote
+live_estate.json, so re-running the fetch alone silently replaced resolved
+upstream data with raw data that has no `parent` field at all.
 """
 
 import json
@@ -16,7 +20,13 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-ESTATE = REPO_ROOT / "migration" / "evidence" / "live_estate.json"
+sys.path.insert(0, str(REPO_ROOT))
+from migration.evidence_paths import (
+    LEGACY_ESTATE, RAW_ESTATE, RESOLVED_ESTATE,
+)
+
+# §17 — reads raw, writes resolved. Never the reverse.
+ESTATE = RESOLVED_ESTATE
 JQ = ("{parent: (if .parent then .parent.full_name else null end),"
       " parent_branch: (if .parent then .parent.default_branch else null end),"
       " license: .license.spdx_id}")
@@ -41,7 +51,14 @@ def resolve(repo: dict) -> dict:
 
 
 def main() -> int:
-    repos = json.loads(ESTATE.read_text(encoding="utf-8"))
+    # §17 read the RAW enumeration, write the RESOLVED dataset. Reading and
+    # writing the same file is what allowed one stage to clobber the other.
+    if RAW_ESTATE.exists():
+        repos = json.loads(RAW_ESTATE.read_text(encoding="utf-8"))
+    else:
+        # Backwards compatibility: no raw file yet, so fall back to the legacy
+        # path rather than failing on an estate that predates the split.
+        repos = json.loads(LEGACY_ESTATE.read_text(encoding="utf-8"))
     forks = [r for r in repos if r["fork"]]
     print(f"resolving upstream for {len(forks)} forks...")
 

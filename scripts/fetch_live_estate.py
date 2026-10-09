@@ -15,7 +15,10 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUT = REPO_ROOT / "migration" / "evidence" / "live_estate.json"
+sys.path.insert(0, str(REPO_ROOT))
+from migration.evidence_paths import RAW_ESTATE, RESOLVED_ESTATE
+
+OUT = RAW_ESTATE  # §17 — raw enumeration writes ONLY the raw path
 JQ = (
     "[.[] | {name, full_name, private, visibility, fork, archived,"
     " default_branch, license: .license.spdx_id,"
