@@ -283,7 +283,7 @@
     "inventory_discrepancy": "October inventory said 394; live count is 396",
     "predecessors_classified": 9,
     "predecessors_exist_live": 9,
-    "unique_commit_audit": "384 audited: 349 CLEAN, 3 HAS_UNIQUE, 0 errors",
+    "unique_commit_audit": "352 forks audited: 349 CLEAN, 3 HAS_UNIQUE, 0 errors (44 originals skipped, not forks)",
     "preservation_required": 3,
     "preservation_detail": [
       "IsaacLab +154 commits (upstream isaac-sim/IsaacLab)",
@@ -296,6 +296,7 @@
     "safe_to_delete_queue": "EMPTY BY DESIGN",
     "reports_generated": "A-J (10 artefacts in migration/reports/)",
     "dependency_ready_tasks": 347,
-    "next_action": "P0 Hybrid Compute audit: evaluate llama.cpp/ollama/vllm/ggml against the execution-target abstraction"
+    "next_action": "P0 Hybrid Compute audit: evaluate llama.cpp/ollama/vllm/ggml against the execution-target abstraction",
+    "unique_commit_correction": "Earlier evidence and commit message stated '384 audited'; that was the per-run batch size, not the audited count. The cache holds 396 entries = 352 forks audited + 44 originals marked SKIPPED_NOT_FORK."
   }
 }

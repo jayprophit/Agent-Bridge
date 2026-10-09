@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-10-09T04:56:21.663713+00:00",
   "basis": "fork-vs-upstream compare via GitHub API",
-  "audited": 396,
+  "audited": 352,
   "clean": [
     "7zip",
     "9front",
@@ -4877,5 +4877,7 @@
       "classification": "NONE",
       "preservation_required": false
     }
-  ]
+  ],
+  "skipped_not_forks": 44,
+  "note": "audited counts forks only; 44 originals are recorded as SKIPPED_NOT_FORK"
 }

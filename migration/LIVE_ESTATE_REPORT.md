@@ -81,7 +81,7 @@ The 10 catalog rows marked `VERIFY_UPSTREAM` are all confirmed real forks:
 mine and where it goes*; capability extraction (§10) requires actual source
 inspection and is downstream work. Nothing is marked `safe_to_delete`.
 
-## 4. Unique-commit audit (§5) — 384 audited, 0 errors
+## 4. Unique-commit audit (§5) — 352 forks audited, 0 errors
 
 **349 CLEAN · 3 HOLD OWNER WORK**
 
