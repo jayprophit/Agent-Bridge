@@ -29,6 +29,13 @@ Scanned the repository for every path capable of making a model resident:
 40 matches across 16 files. The 8 paths below are those that actually
 trigger a model load.
 
+A later, wider scan found **four acceptance scripts** that also load models
+directly — `scripts/run_compat_acceptance.py`, `scripts/run_default_agent_autonomy.py`,
+`scripts/run_realtime_acceptance.py` and `scripts/run_real_resource_acceptance.py`
+(each `POST /api/generate`). The original count of 5 remaining legacy adapters
+was therefore an undercount: the true figure is **9 unleased load paths**, and
+all 9 are live import paths, not dead code.
+
 ## Callsites
 
 | # | File | Function / line | Loads model | Owned lifecycle | Released before | Released after |
@@ -63,10 +70,21 @@ the ownership class.
 ## Honest limitation
 
 `genesis_runtime.py`, `worker_main.py`, `providers.py`,
-`models/providers/ollama_provider.py` and `model_lifecycle.py` still load
-models without a lease. This change closes the canonical path and adds a
-failing test if anything regresses on it; it does not claim those five legacy
-adapters are now safe.
+`models/providers/ollama_provider.py`, `model_lifecycle.py` and the four
+acceptance scripts still load models without a lease. This change closes the
+canonical path and adds a failing test if anything regresses on it; it does
+not claim those nine legacy paths are now safe.
+
+**A structural note, not just a lifecycle one:** the repository contains
+**three independent Ollama HTTP clients** — `compute/ollama_provider_v2.py`
+(leases, taxonomy, tracing), `models/providers/ollama_provider.py`
+(`_ollama_request`, `/api/chat` x3) and `providers.py`
+(`_post`, `/api/chat`) — plus raw `urllib` calls in `genesis_runtime.py`,
+`worker_main.py`, `model_lifecycle.py` and the four scripts. That is §57's
+"do not create a duplicate model router" showing up in the transport layer:
+each client has its own timeout, error handling and (absent) lifecycle. The
+next unit should consolidate them onto Provider V2 rather than bolt leases
+onto each one.
 
 ## Lease policy (§6)
 
@@ -95,8 +113,24 @@ boundary is what keeps Hermes' own llama-server (PID 2072) alive.
 ## Verification
 
     tests/test_model_lifecycle_leases.py
-      24 passed  (22 deterministic fake-transport + 2 bounded live)
+      29 passed  (27 deterministic fake-transport + 2 bounded live)
 
 Covering §9 A–J: ephemeral release, intentional retention, shared-model
 safety, final-lease release, pre-existing protection, failure/timeout/
 exception paths, no bypass, hygiene.
+
+## Post-fix full-suite baseline
+
+    verify venv (Python 3.13.14), no source edits during the run
+    2037 passed, 1 skipped, 49 subtests, 0 failed in 3497.31s (58:17)
+
+This is the trustworthy baseline. An earlier full-suite run reported 4
+failures that were `inspect.getsource()` structural checks racing commits
+landing 23 minutes into a 70-minute run; all 4 passed in 6.29 s in isolation.
+The green run above had no concurrent edits.
+
+Its residency evidence found one more leak this document had not accounted
+for: `RealLocalTeamTests` in `tests/test_local_team_execution.py` loaded
+weights in `setUpClass` and had no `tearDownClass`, so the class-level run
+left `qwen3:1.7b` resident. Fixed at the fixture boundary, matching the
+`test_conversation_and_ollama_v2.py` fix.

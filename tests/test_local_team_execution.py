@@ -51,6 +51,37 @@ class RealLocalTeamTests(unittest.TestCase):
                     "in a Python module")
         cls.summary = cls.executor.run_bounded_team_task(cls.task)
 
+    @classmethod
+    def tearDownClass(cls):
+        """§12 — the class-level run must not outlive this class.
+
+        `setUpClass` loads real Ollama weights through `run_bounded_team_task`
+        and nothing else in the file owns that executor, so without this the
+        weights stay resident until they expire on their own. A full-suite run
+        was measured leaving `qwen3:1.7b` behind that was not resident when the
+        suite started — the lease layer cannot clean up a run whose owner was
+        never told to release.
+        """
+        if not _live():
+            return
+        preexisting = {m["name"] for m in _resident_models()}
+        cls.executor.release_models()
+        deadline = time.time() + 15.0
+        while time.time() < deadline:
+            loaded = {r.model for r in cls.executor.results}
+            if not (loaded & {m["name"] for m in _resident_models()}):
+                break
+            time.sleep(1.0)
+        leaked = {r.model for r in cls.executor.results} & {
+            m["name"] for m in _resident_models()}
+        if leaked:
+            raise AssertionError(
+                f"models left resident after team run: {leaked}")
+        evicted = preexisting - {m["name"] for m in _resident_models()}
+        if evicted:
+            raise AssertionError(
+                f"release evicted a pre-existing model: {evicted}")
+
     def test_team_ran_locally(self):
         self.assertEqual(self.summary["state"], "VERIFIED_LOCAL")
 
