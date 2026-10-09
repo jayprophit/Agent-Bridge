@@ -51,8 +51,8 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 419,
-    "all_passed": 419,
+    "all_total": 437,
+    "all_passed": 437,
     "all_skipped": 0,
     "all_failed": 0,
     "keepass_bridge": {
@@ -98,6 +98,13 @@
       "file": "tests/test_conversation_and_ollama_v2.py",
       "total": 52,
       "passed": 52,
+      "failed": 0,
+      "skipped": 0
+    },
+    "rotation_refs": {
+      "file": "tests/test_rotation_refs.py",
+      "total": 18,
+      "passed": 18,
       "failed": 0,
       "skipped": 0
     }
@@ -425,5 +432,24 @@
     "correlation": "trace_id shared across all spans; provider span carries provider_id=ollama and model_id",
     "cost_class": "FREE_LOCAL",
     "quota_state": "UNLIMITED_LOCAL"
+  },
+  "credential_broker_rotation": {
+    "state": "BLOCKED_OWNER",
+    "script": "scripts/prepare_rotation_refs.py",
+    "gap_closed": "§36 required the five CRED-* references to be PREPARED before secrets exist. They previously existed only as docstring examples; nothing registered MISSING_ROTATION.",
+    "registered": [
+      "CRED-OPENROUTER-PRIMARY",
+      "CRED-GROQ-PRIMARY",
+      "CRED-GEMINI-PRIMARY",
+      "CRED-HUGGINGFACE-PRIMARY",
+      "CRED-DEEPSEEK-PRIMARY"
+    ],
+    "status": "MISSING_ROTATION for all five",
+    "values_populated": false,
+    "permissions": "read-only; write denied so cloud spend cannot be triggered silently",
+    "vault_paths": "Aetherius/Cloud/<service>/primary",
+    "owner_action": "Rotate in provider console, then enter the new value directly into KeePass",
+    "master_password": "Human-controlled; never in code, chat, or logs",
+    "tests": "18 new, incl. a negative assertion that CredentialReference exposes no field capable of holding a secret"
   }
 }
