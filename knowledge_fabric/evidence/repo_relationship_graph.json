@@ -1,0 +1,4949 @@
+{
+  "generated_at": "2026-10-09T05:15:30.313969+00:00",
+  "nodes": [
+    {
+      "repo_id": "repo-3b3234cd26227332",
+      "name": "7zip",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ip7z/7zip"
+    },
+    {
+      "repo_id": "repo-2e14bf50cda97545",
+      "name": "9front",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "9front/9front"
+    },
+    {
+      "repo_id": "repo-cd5aab9a18476dba",
+      "name": "A2A",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "a2aproject/A2A"
+    },
+    {
+      "repo_id": "repo-294a0af458a3b82f",
+      "name": "accelerate",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "huggingface/accelerate"
+    },
+    {
+      "repo_id": "repo-1be90425fde05c60",
+      "name": "acoustic-representation-toolbox",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/acoustic-representation-toolbox"
+    },
+    {
+      "repo_id": "repo-55aea28bdab16405",
+      "name": "Aetherial",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-8c5286c2a4e395fb",
+      "name": "aetherial-platform",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-4b7727f1345982c3",
+      "name": "aetherium",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-7fd2526a41897a13",
+      "name": "Aetherius-OS",
+      "status": "ACTIVE_CANONICAL",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-f251586b0a26b240",
+      "name": "Agent-Bridge",
+      "status": "ACTIVE_CANONICAL",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-00097de9a118efee",
+      "name": "agent-framework",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/agent-framework"
+    },
+    {
+      "repo_id": "repo-79c27a62bd915ab2",
+      "name": "aiida-core",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "aiidateam/aiida-core"
+    },
+    {
+      "repo_id": "repo-360e5fe8ade0d985",
+      "name": "Airflow",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-0afd996506470fbd",
+      "name": "AliceVision",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "alicevision/AliceVision"
+    },
+    {
+      "repo_id": "repo-27f07c954dbfb2ba",
+      "name": "alp-data",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/alp-data"
+    },
+    {
+      "repo_id": "repo-6c9a392a3ee4eb93",
+      "name": "analytics-examples",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-e00a1623abecf7f6",
+      "name": "animalsynth",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/animalsynth"
+    },
+    {
+      "repo_id": "repo-441027575aaaaa40",
+      "name": "anoncreds-rs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "anoncreds/anoncreds-rs"
+    },
+    {
+      "repo_id": "repo-09c6725b7f5b8cab",
+      "name": "ansible",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ansible/ansible"
+    },
+    {
+      "repo_id": "repo-1e1f009593fcddf7",
+      "name": "antigravity-sdk-python",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "google-antigravity/antigravity-sdk-python"
+    },
+    {
+      "repo_id": "repo-5564b9e61ce1f6b7",
+      "name": "Arduino",
+      "status": "ARCHIVED",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-02f9834b4f64f24c",
+      "name": "ardupilot",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ArduPilot/ardupilot"
+    },
+    {
+      "repo_id": "repo-8563c1afddc66d44",
+      "name": "arrow",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "apache/arrow"
+    },
+    {
+      "repo_id": "repo-b7042ac0adb93579",
+      "name": "aubio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "aubio/aubio"
+    },
+    {
+      "repo_id": "repo-705337fdd9cd3738",
+      "name": "audio-embeddings",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/audio-embeddings"
+    },
+    {
+      "repo_id": "repo-bd78a1f2cca9736c",
+      "name": "audiocraft",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "facebookresearch/audiocraft"
+    },
+    {
+      "repo_id": "repo-6a166a08e0e7ec38",
+      "name": "autogen",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/autogen"
+    },
+    {
+      "repo_id": "repo-58753b8198ef7671",
+      "name": "automerge",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "automerge/automerge"
+    },
+    {
+      "repo_id": "repo-3ef03afd13201e57",
+      "name": "avex",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/avex"
+    },
+    {
+      "repo_id": "repo-d1eecb8ccc266535",
+      "name": "Azure",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-5fbb247b9de2eef0",
+      "name": "basic-pitch",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "spotify/basic-pitch"
+    },
+    {
+      "repo_id": "repo-80abcec23897ed08",
+      "name": "bazel",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "bazelbuild/bazel"
+    },
+    {
+      "repo_id": "repo-4be1ac63ba385035",
+      "name": "beans-next",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/beans-next"
+    },
+    {
+      "repo_id": "repo-aabe6acf8cadacbe",
+      "name": "BEBE",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/BEBE"
+    },
+    {
+      "repo_id": "repo-851c58cdfba834f7",
+      "name": "BEBE-datasets",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/BEBE-datasets"
+    },
+    {
+      "repo_id": "repo-3f2e3d377ee298e7",
+      "name": "bioacoustic-ssl",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/bioacoustic-ssl"
+    },
+    {
+      "repo_id": "repo-be18904b366d339e",
+      "name": "bioacoustics-model-zoo",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "kitzeslab/bioacoustics-model-zoo"
+    },
+    {
+      "repo_id": "repo-b63e8a92730c88a2",
+      "name": "biodenoising",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/biodenoising"
+    },
+    {
+      "repo_id": "repo-20e0f4c0cc4aefe1",
+      "name": "biopython",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "biopython/biopython"
+    },
+    {
+      "repo_id": "repo-0cc4ce89335d7ec9",
+      "name": "BirdNET-Analyzer",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "birdnet-team/BirdNET-Analyzer"
+    },
+    {
+      "repo_id": "repo-c9e1decfebde0118",
+      "name": "BitNet",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/BitNet"
+    },
+    {
+      "repo_id": "repo-50f5db54ac9fcfe0",
+      "name": "blender",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "blender/blender"
+    },
+    {
+      "repo_id": "repo-56a33c17af353101",
+      "name": "bootc",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "bootc-dev/bootc"
+    },
+    {
+      "repo_id": "repo-d6d54eb406934478",
+      "name": "brainflow",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "brainflow-dev/brainflow"
+    },
+    {
+      "repo_id": "repo-76bfad524e7009af",
+      "name": "brian2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "brian-team/brian2"
+    },
+    {
+      "repo_id": "repo-55e15a2d8d97efc7",
+      "name": "browser-use",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "browser-use/browser-use"
+    },
+    {
+      "repo_id": "repo-66a248ea4c2af680",
+      "name": "buildkit",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "moby/buildkit"
+    },
+    {
+      "repo_id": "repo-b28f1beb84fe2a80",
+      "name": "bullet3",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "bulletphysics/bullet3"
+    },
+    {
+      "repo_id": "repo-829694a8d41548cf",
+      "name": "c2pa-rs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "contentauth/c2pa-rs"
+    },
+    {
+      "repo_id": "repo-a33a56cce75bec8f",
+      "name": "cantera",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Cantera/cantera"
+    },
+    {
+      "repo_id": "repo-36539d879e320ca6",
+      "name": "Carla",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "falkTX/Carla"
+    },
+    {
+      "repo_id": "repo-8bda86291cd01fbe",
+      "name": "cellpose",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "MouseLand/cellpose"
+    },
+    {
+      "repo_id": "repo-adec2a362b3febda",
+      "name": "ceph",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ceph/ceph"
+    },
+    {
+      "repo_id": "repo-5e4e386104775eb3",
+      "name": "cesium",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "CesiumGS/cesium"
+    },
+    {
+      "repo_id": "repo-37ead69d826e1a00",
+      "name": "cFS",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "nasa/cFS"
+    },
+    {
+      "repo_id": "repo-788710cec3fad7ea",
+      "name": "chisel",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "chipsalliance/chisel"
+    },
+    {
+      "repo_id": "repo-792b037c8ae68b80",
+      "name": "circom",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "iden3/circom"
+    },
+    {
+      "repo_id": "repo-bce78f01b2e1d6ae",
+      "name": "circt",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "llvm/circt"
+    },
+    {
+      "repo_id": "repo-1674c6d762b8fa91",
+      "name": "clap",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "free-audio/clap"
+    },
+    {
+      "repo_id": "repo-e7a83d51ff9d7207",
+      "name": "cloud-ops-home-lab",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-9c4e3b38995592db",
+      "name": "CMake",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Kitware/CMake"
+    },
+    {
+      "repo_id": "repo-07366a0cc893a217",
+      "name": "cockroach",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "cockroachdb/cockroach"
+    },
+    {
+      "repo_id": "repo-6220b70e8090a146",
+      "name": "cocotb",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "cocotb/cocotb"
+    },
+    {
+      "repo_id": "repo-b074a9afcf7bb910",
+      "name": "code-server",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "coder/code-server"
+    },
+    {
+      "repo_id": "repo-ab996ef2df1d6826",
+      "name": "colmap",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "colmap/colmap"
+    },
+    {
+      "repo_id": "repo-0b921445395cac00",
+      "name": "ComfyUI",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Comfy-Org/ComfyUI"
+    },
+    {
+      "repo_id": "repo-8fe136c935964aaa",
+      "name": "compose",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "docker/compose"
+    },
+    {
+      "repo_id": "repo-a2835886c61c4ae7",
+      "name": "conan",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "conan-io/conan"
+    },
+    {
+      "repo_id": "repo-0645175a134493ad",
+      "name": "connectedhomeip",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "project-chip/connectedhomeip"
+    },
+    {
+      "repo_id": "repo-e83d490bc2abd38f",
+      "name": "containerd",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "containerd/containerd"
+    },
+    {
+      "repo_id": "repo-34f7791638998996",
+      "name": "core",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "home-assistant/core"
+    },
+    {
+      "repo_id": "repo-53e23ddd9d4a2630",
+      "name": "coreboot",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "coreboot/coreboot"
+    },
+    {
+      "repo_id": "repo-902179dcb22c4d8f",
+      "name": "cosign",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "sigstore/cosign"
+    },
+    {
+      "repo_id": "repo-f2a1eabc3ccf1b04",
+      "name": "cr-sqlite",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "vlcn-io/cr-sqlite"
+    },
+    {
+      "repo_id": "repo-255febdc49f4d241",
+      "name": "crewAI",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "crewAIInc/crewAI"
+    },
+    {
+      "repo_id": "repo-01895e9bb79f7281",
+      "name": "CRISPResso2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pinellolab/CRISPResso2"
+    },
+    {
+      "repo_id": "repo-92b51b645a110bc6",
+      "name": "crm",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "trycompai/crm"
+    },
+    {
+      "repo_id": "repo-76b9cff91ea0a938",
+      "name": "Crossplatform---multiplatform",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-3027a2c66b131ac2",
+      "name": "cs50-Python",
+      "status": "ARCHIVED",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-947a3896ebdcbd6d",
+      "name": "csound",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "csound/csound"
+    },
+    {
+      "repo_id": "repo-a34b0199b71452ff",
+      "name": "CuraEngine",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Ultimaker/CuraEngine"
+    },
+    {
+      "repo_id": "repo-02e8e8112447c150",
+      "name": "cva6",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "openhwfoundation/cva6"
+    },
+    {
+      "repo_id": "repo-5712be680a02c624",
+      "name": "dagster",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "dagster-io/dagster"
+    },
+    {
+      "repo_id": "repo-5d3c3cfd29a4cdc0",
+      "name": "dask",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "dask/dask"
+    },
+    {
+      "repo_id": "repo-20042a7eaef52d0e",
+      "name": "DBT",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-d57ebb098dd2e06c",
+      "name": "DeepLabCut",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "DeepLabCut/DeepLabCut"
+    },
+    {
+      "repo_id": "repo-606bb2ad48808a5c",
+      "name": "demucs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "adefossez/demucs"
+    },
+    {
+      "repo_id": "repo-9e62b3152a84b5fa",
+      "name": "Depth-Anything-V2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "DepthAnything/Depth-Anything-V2"
+    },
+    {
+      "repo_id": "repo-a923b1c41bec6807",
+      "name": "depthai-core",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "luxonis/depthai-core"
+    },
+    {
+      "repo_id": "repo-be134b43edef716a",
+      "name": "detectron2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "facebookresearch/detectron2"
+    },
+    {
+      "repo_id": "repo-288338272af30795",
+      "name": "devops-directive-docker-course",
+      "status": "ARCHIVED",
+      "is_fork": true,
+      "upstream": "sidpalas/devops-directive-docker-course"
+    },
+    {
+      "repo_id": "repo-8a97f210070ca19a",
+      "name": "diffusers",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "huggingface/diffusers"
+    },
+    {
+      "repo_id": "repo-5c92995a85f18dee",
+      "name": "ditto",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "eclipse-ditto/ditto"
+    },
+    {
+      "repo_id": "repo-5b4907f991fa3bb6",
+      "name": "dolfinx",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "FEniCS/dolfinx"
+    },
+    {
+      "repo_id": "repo-b2e5c0ac0dbbc97c",
+      "name": "drake",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "RobotLocomotion/drake"
+    },
+    {
+      "repo_id": "repo-a86b6a999c834365",
+      "name": "DuckDB",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-b4c0fe8375cd3be9",
+      "name": "duckdb---community",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "duckdb/duckdb"
+    },
+    {
+      "repo_id": "repo-3d983f1ce2b16a79",
+      "name": "edk2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "tianocore/edk2"
+    },
+    {
+      "repo_id": "repo-2d24ac46d5e38476",
+      "name": "electric",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "electric-sql/electric"
+    },
+    {
+      "repo_id": "repo-794d2a794170f059",
+      "name": "emscripten",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "emscripten-core/emscripten"
+    },
+    {
+      "repo_id": "repo-f42fb94bc6fe8164",
+      "name": "EnergyPlus",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "NatLabRockies/EnergyPlus"
+    },
+    {
+      "repo_id": "repo-b335010da712b04f",
+      "name": "esphome",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "esphome/esphome"
+    },
+    {
+      "repo_id": "repo-1424069c7073190d",
+      "name": "essentia",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "MTG/essentia"
+    },
+    {
+      "repo_id": "repo-4086b1acef96a26d",
+      "name": "Excel",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-12c1c43f9cda389a",
+      "name": "executorch",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pytorch/executorch"
+    },
+    {
+      "repo_id": "repo-e427d3b2f078e322",
+      "name": "F5-TTS",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "SWivid/F5-TTS"
+    },
+    {
+      "repo_id": "repo-8cb33a0251e979f6",
+      "name": "FAST_LIO",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "hku-mars/FAST_LIO"
+    },
+    {
+      "repo_id": "repo-a2594ffab60a4663",
+      "name": "fastapi",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "fastapi/fastapi"
+    },
+    {
+      "repo_id": "repo-a1da8c769a64240b",
+      "name": "faster-whisper",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "SYSTRAN/faster-whisper"
+    },
+    {
+      "repo_id": "repo-9f514f24cba641f6",
+      "name": "FFmpeg",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "FFmpeg/FFmpeg"
+    },
+    {
+      "repo_id": "repo-3cb8222a9da98662",
+      "name": "firecracker",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "firecracker-microvm/firecracker"
+    },
+    {
+      "repo_id": "repo-a49b8d9826c57fd5",
+      "name": "fluidsynth",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "FluidSynth/fluidsynth"
+    },
+    {
+      "repo_id": "repo-def3ca60852f7ba1",
+      "name": "football-card-game",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-0ca689c99b9255d0",
+      "name": "FreeCAD",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "FreeCAD/FreeCAD"
+    },
+    {
+      "repo_id": "repo-0a0245bf1b0dce77",
+      "name": "FreeRTOS-Kernel",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "FreeRTOS/FreeRTOS-Kernel"
+    },
+    {
+      "repo_id": "repo-fe341c6650f1d657",
+      "name": "Friang",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-fe5b6290ddbdfb19",
+      "name": "gatk",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "broadinstitute/gatk"
+    },
+    {
+      "repo_id": "repo-3b5bf62dc9c8b65a",
+      "name": "gdal",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "OSGeo/gdal"
+    },
+    {
+      "repo_id": "repo-bd641f8080945f6c",
+      "name": "Genesis",
+      "status": "ACTIVE_CANONICAL",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-4c6da713974cd757",
+      "name": "genesis-world",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Genesis-Embodied-AI/genesis-world"
+    },
+    {
+      "repo_id": "repo-6503b1a42c15fed7",
+      "name": "ggml",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ggml-org/ggml"
+    },
+    {
+      "repo_id": "repo-e5cdeedba56fae15",
+      "name": "Git",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-9a368d9cb3948835",
+      "name": "git-lfs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "git-lfs/git-lfs"
+    },
+    {
+      "repo_id": "repo-1bd752de699bdcd6",
+      "name": "GitHub-Markdown-Syntax",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-44d4c6ae10a0302d",
+      "name": "gnuradio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "gnuradio/gnuradio"
+    },
+    {
+      "repo_id": "repo-f2ce3a483d6364ae",
+      "name": "godot-official",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "godotengine/godot"
+    },
+    {
+      "repo_id": "repo-472da70319c6ba5f",
+      "name": "gods-eye-view",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "bilawalsidhu/gods-eye-view"
+    },
+    {
+      "repo_id": "repo-41f1e1b3b86b759e",
+      "name": "gqrx",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "gqrx-sdr/gqrx"
+    },
+    {
+      "repo_id": "repo-fbcdd5583fbf45d2",
+      "name": "grafana",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "grafana/grafana"
+    },
+    {
+      "repo_id": "repo-8143a793f361786d",
+      "name": "graphiti",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "getzep/graphiti"
+    },
+    {
+      "repo_id": "repo-a5ff981b768a3046",
+      "name": "grpc",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "grpc/grpc"
+    },
+    {
+      "repo_id": "repo-4453911ecdb0f2da",
+      "name": "gtsam",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "borglab/gtsam"
+    },
+    {
+      "repo_id": "repo-efa57f023a154a96",
+      "name": "gvisor",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "google/gvisor"
+    },
+    {
+      "repo_id": "repo-14406228e2c8c741",
+      "name": "gz-sim",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "gazebosim/gz-sim"
+    },
+    {
+      "repo_id": "repo-cdf854b61a86f9ea",
+      "name": "habitat-lab",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "facebookresearch/habitat-lab"
+    },
+    {
+      "repo_id": "repo-b861d01783fa4405",
+      "name": "hello-world-1",
+      "status": "ARCHIVED",
+      "is_fork": true,
+      "upstream": "G1ne/hello-world"
+    },
+    {
+      "repo_id": "repo-a3b5244bdc85b733",
+      "name": "helm",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "helm/helm"
+    },
+    {
+      "repo_id": "repo-46e77f9cb3f802d4",
+      "name": "hidapi",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "libusb/hidapi"
+    },
+    {
+      "repo_id": "repo-0cf8e533178f9afd",
+      "name": "ibex",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "lowRISC/ibex"
+    },
+    {
+      "repo_id": "repo-44b145d33fa88f31",
+      "name": "IDE-Workspace",
+      "status": "ACTIVE_CANONICAL",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-c1a59b73dbd9fb6f",
+      "name": "IfcOpenShell",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "IfcOpenShell/IfcOpenShell"
+    },
+    {
+      "repo_id": "repo-5121c0e1f418ad4c",
+      "name": "in-toto",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "in-toto/in-toto"
+    },
+    {
+      "repo_id": "repo-be8ab2c84da16906",
+      "name": "influxdb",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "influxdata/influxdb"
+    },
+    {
+      "repo_id": "repo-96a69862f302f3f5",
+      "name": "inspector",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "modelcontextprotocol/inspector"
+    },
+    {
+      "repo_id": "repo-32c1af7337e48b37",
+      "name": "iree",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "iree-org/iree"
+    },
+    {
+      "repo_id": "repo-d05142da93cc5784",
+      "name": "IsaacLab",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "isaac-sim/IsaacLab"
+    },
+    {
+      "repo_id": "repo-ca02cfa13ac524f4",
+      "name": "jack2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "jackaudio/jack2"
+    },
+    {
+      "repo_id": "repo-0d169f00f623e85b",
+      "name": "jayprophit",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-b8ecde12a6e9ea2c",
+      "name": "JUCE",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "juce-framework/JUCE"
+    },
+    {
+      "repo_id": "repo-1da15fbbf4b94dae",
+      "name": "juicefs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "juicedata/juicefs"
+    },
+    {
+      "repo_id": "repo-10b0ac06a0a2b9e5",
+      "name": "k3s",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "k3s-io/k3s"
+    },
+    {
+      "repo_id": "repo-c5f95597179b50ad",
+      "name": "kalibr",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ethz-asl/kalibr"
+    },
+    {
+      "repo_id": "repo-3482d7ac98c03f84",
+      "name": "keycloak",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "keycloak/keycloak"
+    },
+    {
+      "repo_id": "repo-81a6cd9a2d661f68",
+      "name": "kicad-source-mirror",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "KiCad/kicad-source-mirror"
+    },
+    {
+      "repo_id": "repo-1e08495227614407",
+      "name": "kind",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "kubernetes-sigs/kind"
+    },
+    {
+      "repo_id": "repo-89b67596a5bccf78",
+      "name": "kokkos",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "kokkos/kokkos"
+    },
+    {
+      "repo_id": "repo-d7d78f331fe13614",
+      "name": "kubo",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ipfs/kubo"
+    },
+    {
+      "repo_id": "repo-1ce224caebb46f82",
+      "name": "lammps",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "lammps/lammps"
+    },
+    {
+      "repo_id": "repo-e5924f030266155f",
+      "name": "langgraph",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "langchain-ai/langgraph"
+    },
+    {
+      "repo_id": "repo-d4a08851ddb6c9a0",
+      "name": "LeetCode-SQL-repos",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-7df415207c0b4acd",
+      "name": "lerobot",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "huggingface/lerobot"
+    },
+    {
+      "repo_id": "repo-e2f76ea81db82c6f",
+      "name": "libarchive",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "libarchive/libarchive"
+    },
+    {
+      "repo_id": "repo-ee404c69fe882f6b",
+      "name": "liblo",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "radarsat1/liblo"
+    },
+    {
+      "repo_id": "repo-5a30c604b062c2e3",
+      "name": "liblsl",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "sccn/liblsl"
+    },
+    {
+      "repo_id": "repo-3982c06efb96b88f",
+      "name": "libpd",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "libpd/libpd"
+    },
+    {
+      "repo_id": "repo-179bd0f034059522",
+      "name": "libremidi",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "celtera/libremidi"
+    },
+    {
+      "repo_id": "repo-889512fe03d02c3a",
+      "name": "librosa",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "librosa/librosa"
+    },
+    {
+      "repo_id": "repo-b756ebdc91a81617",
+      "name": "libsamplerate",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "libsndfile/libsamplerate"
+    },
+    {
+      "repo_id": "repo-9681caa3d9519674",
+      "name": "libsigrok",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "sigrokproject/libsigrok"
+    },
+    {
+      "repo_id": "repo-716084d6a8054702",
+      "name": "libsndfile",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "libsndfile/libsndfile"
+    },
+    {
+      "repo_id": "repo-4fa03a1436be50ae",
+      "name": "libusb",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "libusb/libusb"
+    },
+    {
+      "repo_id": "repo-edf703eda457f87a",
+      "name": "lilv",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "lv2/lilv"
+    },
+    {
+      "repo_id": "repo-254dc688a9c5e059",
+      "name": "link",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Ableton/link"
+    },
+    {
+      "repo_id": "repo-1d3e168f04aa26cc",
+      "name": "Linux",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-1aa55073aa1e3901",
+      "name": "liquid-dsp",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "jgaeddert/liquid-dsp"
+    },
+    {
+      "repo_id": "repo-3d65a51d59f5491d",
+      "name": "litellm",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "BerriAI/litellm"
+    },
+    {
+      "repo_id": "repo-19703c0aee19c882",
+      "name": "litex",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "enjoy-digital/litex"
+    },
+    {
+      "repo_id": "repo-3e04dc8ef5a630ee",
+      "name": "livekit",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "livekit/livekit"
+    },
+    {
+      "repo_id": "repo-1468e7a08852a495",
+      "name": "llama.cpp",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ggml-org/llama.cpp"
+    },
+    {
+      "repo_id": "repo-12689760d3fa48d9",
+      "name": "llama_index",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "run-llama/llama_index"
+    },
+    {
+      "repo_id": "repo-c39ec3de50e23351",
+      "name": "llvm-project",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "llvm/llvm-project"
+    },
+    {
+      "repo_id": "repo-8b9f6c10b40d2b1c",
+      "name": "lv2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "lv2/lv2"
+    },
+    {
+      "repo_id": "repo-7ed6feb284d18d0b",
+      "name": "Materials-Atlas-Table-Codex---MAT",
+      "status": "ACTIVE_CANONICAL",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-ccc92f2a893d8ab3",
+      "name": "matminer",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "hackingmaterials/matminer"
+    },
+    {
+      "repo_id": "repo-bee5bdacfb91cb9e",
+      "name": "mavlink",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "mavlink/mavlink"
+    },
+    {
+      "repo_id": "repo-1180b0e0a23db6b8",
+      "name": "mediapipe",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "google-ai-edge/mediapipe"
+    },
+    {
+      "repo_id": "repo-fbf2715c7d7111ec",
+      "name": "mem0",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "mem0ai/mem0"
+    },
+    {
+      "repo_id": "repo-dde790d345001436",
+      "name": "meson",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "mesonbuild/meson"
+    },
+    {
+      "repo_id": "repo-a7396ada9226e20a",
+      "name": "mfem",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "mfem/mfem"
+    },
+    {
+      "repo_id": "repo-cf0e0d263a8011cb",
+      "name": "miniaudio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "mackron/miniaudio"
+    },
+    {
+      "repo_id": "repo-de83ea4153bfad79",
+      "name": "mlc-llm",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "mlc-ai/mlc-llm"
+    },
+    {
+      "repo_id": "repo-374aabfd1a0fbc5d",
+      "name": "mmpose",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "open-mmlab/mmpose"
+    },
+    {
+      "repo_id": "repo-0b2c37d00f9389a3",
+      "name": "mne-python",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "mne-tools/mne-python"
+    },
+    {
+      "repo_id": "repo-1c06af98b6d4dc6d",
+      "name": "moby",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "moby/moby"
+    },
+    {
+      "repo_id": "repo-49affd87709a3178",
+      "name": "monaco-editor",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/monaco-editor"
+    },
+    {
+      "repo_id": "repo-997008c22bfd1ad4",
+      "name": "moose",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "idaholab/moose"
+    },
+    {
+      "repo_id": "repo-ba4babc48e72a63d",
+      "name": "moveit2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "moveit/moveit2"
+    },
+    {
+      "repo_id": "repo-a1e953aa46b327d6",
+      "name": "mujoco",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "google-deepmind/mujoco"
+    },
+    {
+      "repo_id": "repo-90da8364efffd3b6",
+      "name": "multiband-audio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/multiband-audio"
+    },
+    {
+      "repo_id": "repo-ba2b497a54ea4f8d",
+      "name": "n8n",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "n8n-io/n8n"
+    },
+    {
+      "repo_id": "repo-39bd7b1b23504554",
+      "name": "napari",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "napari/napari"
+    },
+    {
+      "repo_id": "repo-f478643de2a59f48",
+      "name": "nats-server",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "nats-io/nats-server"
+    },
+    {
+      "repo_id": "repo-3cd3bffb9349a61e",
+      "name": "NatureLM-audio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/NatureLM-audio"
+    },
+    {
+      "repo_id": "repo-f51b76e924a09172",
+      "name": "navigation2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ros-navigation/navigation2"
+    },
+    {
+      "repo_id": "repo-a5b89a26d8b044db",
+      "name": "nengo",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "nengo/nengo"
+    },
+    {
+      "repo_id": "repo-5d2d65af2e7820cf",
+      "name": "neo4j",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "neo4j/neo4j"
+    },
+    {
+      "repo_id": "repo-4498b2f5bdc1961d",
+      "name": "nest-simulator",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "nest/nest-simulator"
+    },
+    {
+      "repo_id": "repo-e0d72e99f0660c89",
+      "name": "nextflow",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "nextflow-io/nextflow"
+    },
+    {
+      "repo_id": "repo-7f19c65f040ed8a9",
+      "name": "nextpnr",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "YosysHQ/nextpnr"
+    },
+    {
+      "repo_id": "repo-ba95636815e8437c",
+      "name": "Niche_platform",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-7c82f59ee9297893",
+      "name": "ninja",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ninja-build/ninja"
+    },
+    {
+      "repo_id": "repo-bb49100639f3ae0c",
+      "name": "no-ai-slop",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "petergyang/no-ai-slop"
+    },
+    {
+      "repo_id": "repo-2b8293d30712c11e",
+      "name": "nrn",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "neuronsimulator/nrn"
+    },
+    {
+      "repo_id": "repo-a8ed4a14877449c5",
+      "name": "OCCT",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Open-Cascade-SAS/OCCT"
+    },
+    {
+      "repo_id": "repo-1dcb074a8d2041e3",
+      "name": "ollama",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ollama/ollama"
+    },
+    {
+      "repo_id": "repo-8f48a951a3aa0d2c",
+      "name": "onnxruntime",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/onnxruntime"
+    },
+    {
+      "repo_id": "repo-f79059a652273811",
+      "name": "opa",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "open-policy-agent/opa"
+    },
+    {
+      "repo_id": "repo-5e52d753d6f8b900",
+      "name": "open-webui",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "open-webui/open-webui"
+    },
+    {
+      "repo_id": "repo-48793e81799cce81",
+      "name": "Open3D",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "isl-org/Open3D"
+    },
+    {
+      "repo_id": "repo-d82b6593cec5906b",
+      "name": "open_vins",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "rpng/open_vins"
+    },
+    {
+      "repo_id": "repo-fa6846b438beffdc",
+      "name": "openbabel",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "openbabel/openbabel"
+    },
+    {
+      "repo_id": "repo-02e6dc239d2900a8",
+      "name": "openbao",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "openbao/openbao"
+    },
+    {
+      "repo_id": "repo-b7148bef5a0fc1bd",
+      "name": "opencv",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "opencv/opencv"
+    },
+    {
+      "repo_id": "repo-d62bb43808f9c7d7",
+      "name": "openfhe-development",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "openfheorg/openfhe-development"
+    },
+    {
+      "repo_id": "repo-e2779541e81b372b",
+      "name": "openfx",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "AcademySoftwareFoundation/openfx"
+    },
+    {
+      "repo_id": "repo-3dfa585087efe0fa",
+      "name": "OpenHands",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "OpenHands/OpenHands"
+    },
+    {
+      "repo_id": "repo-ab03d32707f75e81",
+      "name": "openmm",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "openmm/openmm"
+    },
+    {
+      "repo_id": "repo-f19b133b80f6fdee",
+      "name": "openMVG",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "openMVG/openMVG"
+    },
+    {
+      "repo_id": "repo-e4d634f363ef7e67",
+      "name": "OpenROAD",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "The-OpenROAD-Project/OpenROAD"
+    },
+    {
+      "repo_id": "repo-18134bbd2de0b947",
+      "name": "openscad",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "openscad/openscad"
+    },
+    {
+      "repo_id": "repo-3fddcbc69dd3c68d",
+      "name": "opensim-core",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "opensim-org/opensim-core"
+    },
+    {
+      "repo_id": "repo-0da9877a8776217a",
+      "name": "opensoundscape",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "kitzeslab/opensoundscape"
+    },
+    {
+      "repo_id": "repo-c60d4ebca7a5145d",
+      "name": "opentelemetry-collector",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "open-telemetry/opentelemetry-collector"
+    },
+    {
+      "repo_id": "repo-00166e83ac32134c",
+      "name": "openthread",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "openthread/openthread"
+    },
+    {
+      "repo_id": "repo-5b32b0243df5e674",
+      "name": "OpenTimelineIO",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "AcademySoftwareFoundation/OpenTimelineIO"
+    },
+    {
+      "repo_id": "repo-4bac3de71901ff11",
+      "name": "opentitan",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "lowRISC/opentitan"
+    },
+    {
+      "repo_id": "repo-cab67afefdd724ce",
+      "name": "opentofu",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "opentofu/opentofu"
+    },
+    {
+      "repo_id": "repo-1908788fd4b3b451",
+      "name": "OpenUSD",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "PixarAnimationStudios/OpenUSD"
+    },
+    {
+      "repo_id": "repo-c7feb1037e6ef1b7",
+      "name": "OpenVoice",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "myshell-ai/OpenVoice"
+    },
+    {
+      "repo_id": "repo-0743b4bae8a0b175",
+      "name": "OpenVoiceOS",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "OpenVoiceOS/OpenVoiceOS"
+    },
+    {
+      "repo_id": "repo-923d98678d43aea0",
+      "name": "openvsx",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "eclipse-openvsx/openvsx"
+    },
+    {
+      "repo_id": "repo-a3d0dc40e111d6a0",
+      "name": "OpenXR-SDK-Source",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "KhronosGroup/OpenXR-SDK-Source"
+    },
+    {
+      "repo_id": "repo-d2f0bfd80f61b3ab",
+      "name": "operations-kpi-dashboard-powerbi",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-54e118be104bcc9f",
+      "name": "oras",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "oras-project/oras"
+    },
+    {
+      "repo_id": "repo-b3a2750687de250e",
+      "name": "ORB_SLAM3",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "UZ-SLAMLab/ORB_SLAM3"
+    },
+    {
+      "repo_id": "repo-c14788d69c2d4bce",
+      "name": "Orekit",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "CS-SI/Orekit"
+    },
+    {
+      "repo_id": "repo-8e3f5c674611468b",
+      "name": "Pandas",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-0ff7d3d8580f2280",
+      "name": "pcl",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "PointCloudLibrary/pcl"
+    },
+    {
+      "repo_id": "repo-3084b42a8b48c8fc",
+      "name": "PDAL",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "PDAL/PDAL"
+    },
+    {
+      "repo_id": "repo-fa0afadf63508ccc",
+      "name": "pedalboard",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "spotify/pedalboard"
+    },
+    {
+      "repo_id": "repo-d88a3f42559bcefb",
+      "name": "peft",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "huggingface/peft"
+    },
+    {
+      "repo_id": "repo-a3a1b2db324fb927",
+      "name": "pennylane",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "PennyLaneAI/pennylane"
+    },
+    {
+      "repo_id": "repo-64f95c6d2e3b87e8",
+      "name": "petsc",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "petsc/petsc"
+    },
+    {
+      "repo_id": "repo-5ddc394d4b1e9672",
+      "name": "pglite",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "electric-sql/pglite"
+    },
+    {
+      "repo_id": "repo-158c323ea4027800",
+      "name": "phone-harness",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ShawnPana/phone-harness"
+    },
+    {
+      "repo_id": "repo-87dcad18bff441ff",
+      "name": "pinocchio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "stack-of-tasks/pinocchio"
+    },
+    {
+      "repo_id": "repo-dc44c0119f73c04d",
+      "name": "pipewire",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "PipeWire/pipewire"
+    },
+    {
+      "repo_id": "repo-0f73172ba1ab58ee",
+      "name": "PlasmaPy",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "PlasmaPy/PlasmaPy"
+    },
+    {
+      "repo_id": "repo-a7657ff199843620",
+      "name": "playwright",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/playwright"
+    },
+    {
+      "repo_id": "repo-eb815a8997ad812a",
+      "name": "plugin-GUI",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "open-ephys/plugin-GUI"
+    },
+    {
+      "repo_id": "repo-6aae8f35dba353b1",
+      "name": "Poietek",
+      "status": "ACTIVE_CANONICAL",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-c17f56da27d67aa2",
+      "name": "portaudio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "PortAudio/portaudio"
+    },
+    {
+      "repo_id": "repo-daeffea259db643d",
+      "name": "Power-Bi",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-1ed74f3e6df85f90",
+      "name": "Power-BI-community-tools",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-e09c921da0ad48c8",
+      "name": "powershell-ops-scripts",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-00d3e29eb00f214b",
+      "name": "PROJ",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "OSGeo/PROJ"
+    },
+    {
+      "repo_id": "repo-90f992f347e58567",
+      "name": "prometheus",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "prometheus/prometheus"
+    },
+    {
+      "repo_id": "repo-425dd72ee134046b",
+      "name": "protobuf",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "protocolbuffers/protobuf"
+    },
+    {
+      "repo_id": "repo-12541fc4bddf945d",
+      "name": "PrusaSlicer",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "prusa3d/PrusaSlicer"
+    },
+    {
+      "repo_id": "repo-a462b57de73b92ba",
+      "name": "pulseview",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "sigrokproject/pulseview"
+    },
+    {
+      "repo_id": "repo-9c4c2785f2e304d3",
+      "name": "pure-data",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pure-data/pure-data"
+    },
+    {
+      "repo_id": "repo-d830034c06bb5bd8",
+      "name": "PX4-Autopilot",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "PX4/PX4-Autopilot"
+    },
+    {
+      "repo_id": "repo-70ea552ce08582ad",
+      "name": "pydantic-ai",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pydantic/pydantic-ai"
+    },
+    {
+      "repo_id": "repo-9a4457308baf64e1",
+      "name": "pyinstaller",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pyinstaller/pyinstaller"
+    },
+    {
+      "repo_id": "repo-8f8c4ecd2268fef5",
+      "name": "pymatgen",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "materialsproject/pymatgen"
+    },
+    {
+      "repo_id": "repo-f7625f35800a2092",
+      "name": "pymatgen-core",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "materialsproject/pymatgen-core"
+    },
+    {
+      "repo_id": "repo-4126d7b2232376ca",
+      "name": "pymeasure",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pymeasure/pymeasure"
+    },
+    {
+      "repo_id": "repo-af197d96781143ec",
+      "name": "pyOCD",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pyocd/pyOCD"
+    },
+    {
+      "repo_id": "repo-0dade76b4e624208",
+      "name": "pysam",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pysam-developers/pysam"
+    },
+    {
+      "repo_id": "repo-b048c5117fa8f0c7",
+      "name": "pyscf",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pyscf/pyscf"
+    },
+    {
+      "repo_id": "repo-2ba203221b085f9f",
+      "name": "pyserial",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pyserial/pyserial"
+    },
+    {
+      "repo_id": "repo-5a98ef32a8ab77be",
+      "name": "python-etl-quality-checks",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-1609cbb88c20eed1",
+      "name": "python-rtmidi",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "SpotlightKid/python-rtmidi"
+    },
+    {
+      "repo_id": "repo-5c7c74c3e1fcbfb3",
+      "name": "python-sdk",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "modelcontextprotocol/python-sdk"
+    },
+    {
+      "repo_id": "repo-9e35b31b6572fa13",
+      "name": "pyusb",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pyusb/pyusb"
+    },
+    {
+      "repo_id": "repo-cb01dc5e373b1739",
+      "name": "pyvisa",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pyvisa/pyvisa"
+    },
+    {
+      "repo_id": "repo-91e7d91f0c393400",
+      "name": "q-e",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "QEF/q-e"
+    },
+    {
+      "repo_id": "repo-a15e24a0c17cef46",
+      "name": "qdrant",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "qdrant/qdrant"
+    },
+    {
+      "repo_id": "repo-458d9b21053bdec2",
+      "name": "qemu",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "qemu/qemu"
+    },
+    {
+      "repo_id": "repo-7fbae9deec5c2d0f",
+      "name": "qiskit",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Qiskit/qiskit"
+    },
+    {
+      "repo_id": "repo-85fb1590164623f7",
+      "name": "Quantum-OS",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-82113885672f4155",
+      "name": "QVA-merged",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-8a4f241e431dfd06",
+      "name": "ray",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ray-project/ray"
+    },
+    {
+      "repo_id": "repo-f285032b55ba95d8",
+      "name": "rclone",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "rclone/rclone"
+    },
+    {
+      "repo_id": "repo-cef7f92a8d55e6f5",
+      "name": "rdkit",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "rdkit/rdkit"
+    },
+    {
+      "repo_id": "repo-76c01fcccc14a4f5",
+      "name": "redox",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "redox-os/redox"
+    },
+    {
+      "repo_id": "repo-0e4576a5612ee6e7",
+      "name": "renode",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "renode/renode"
+    },
+    {
+      "repo_id": "repo-a0c1807c26737af6",
+      "name": "restic",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "restic/restic"
+    },
+    {
+      "repo_id": "repo-7bf4333eec6b2b32",
+      "name": "risc0",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "risc0/risc0"
+    },
+    {
+      "repo_id": "repo-b2ce6953b9850764",
+      "name": "riscv-gnu-toolchain",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "riscv-collab/riscv-gnu-toolchain"
+    },
+    {
+      "repo_id": "repo-dd7155e0df578618",
+      "name": "riscv-isa-sim",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "riscv-software-src/riscv-isa-sim"
+    },
+    {
+      "repo_id": "repo-0f85fcc31679a2f2",
+      "name": "rnnoise",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "xiph/rnnoise"
+    },
+    {
+      "repo_id": "repo-8a90107deb10adce",
+      "name": "robot_localization",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "cra-ros-pkg/robot_localization"
+    },
+    {
+      "repo_id": "repo-4249760297c3ae67",
+      "name": "rocket-chip",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "chipsalliance/rocket-chip"
+    },
+    {
+      "repo_id": "repo-664398a34f670016",
+      "name": "ros2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ros2/ros2"
+    },
+    {
+      "repo_id": "repo-a1fa9aa66d66e860",
+      "name": "ros2_control",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ros-controls/ros2_control"
+    },
+    {
+      "repo_id": "repo-3273f54c507792cc",
+      "name": "rtabmap",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "introlab/rtabmap"
+    },
+    {
+      "repo_id": "repo-7a3c2ccd6c8a3b11",
+      "name": "rtaudio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "thestk/rtaudio"
+    },
+    {
+      "repo_id": "repo-044685bf8f34d5bd",
+      "name": "rtl-sdr",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "osmocom/rtl-sdr"
+    },
+    {
+      "repo_id": "repo-58f6b5921e509a55",
+      "name": "rtmidi",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "thestk/rtmidi"
+    },
+    {
+      "repo_id": "repo-0b918f0433490c63",
+      "name": "ruff",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "astral-sh/ruff"
+    },
+    {
+      "repo_id": "repo-8f1de41a369d182e",
+      "name": "runc",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "opencontainers/runc"
+    },
+    {
+      "repo_id": "repo-1d54313e1cd5b4f5",
+      "name": "rust-libp2p",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "libp2p/rust-libp2p"
+    },
+    {
+      "repo_id": "repo-435a1c887da72717",
+      "name": "rxdb",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pubkey/rxdb"
+    },
+    {
+      "repo_id": "repo-b1ec5ae7562bf613",
+      "name": "sam2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "facebookresearch/sam2"
+    },
+    {
+      "repo_id": "repo-ca220a8bd79a4c02",
+      "name": "samtools",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "samtools/samtools"
+    },
+    {
+      "repo_id": "repo-fb9b8ebed363e4b8",
+      "name": "SatDump",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "SatDump/SatDump"
+    },
+    {
+      "repo_id": "repo-8630a1aa6e2e99f3",
+      "name": "scanpy",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "scverse/scanpy"
+    },
+    {
+      "repo_id": "repo-0d77a14bef15e7ba",
+      "name": "scikit-bio",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "scikit-bio/scikit-bio"
+    },
+    {
+      "repo_id": "repo-bedf68cd9d8c9b4b",
+      "name": "scipy-community",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "scipy/scipy"
+    },
+    {
+      "repo_id": "repo-85288e3fddd62f02",
+      "name": "scylladb",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "scylladb/scylladb"
+    },
+    {
+      "repo_id": "repo-bc6c33d9e1896b24",
+      "name": "SEAL",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/SEAL"
+    },
+    {
+      "repo_id": "repo-68ef4844c22010cb",
+      "name": "seaweedfs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "seaweedfs/seaweedfs"
+    },
+    {
+      "repo_id": "repo-535fcfef27721608",
+      "name": "seL4",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "seL4/seL4"
+    },
+    {
+      "repo_id": "repo-7f3eaad2a59e1eb8",
+      "name": "self-building-ai",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-16cd0ffab19b8514",
+      "name": "servers",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "modelcontextprotocol/servers"
+    },
+    {
+      "repo_id": "repo-3cd6ee1527d30517",
+      "name": "sfizz",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "sfztools/sfizz"
+    },
+    {
+      "repo_id": "repo-abcac600069ba42c",
+      "name": "sherpa-onnx",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "k2-fsa/sherpa-onnx"
+    },
+    {
+      "repo_id": "repo-2a5945c38771f7b0",
+      "name": "SigMF",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "sigmf/SigMF"
+    },
+    {
+      "repo_id": "repo-d9cd74b155f4fee7",
+      "name": "SkillSpector",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "NVIDIA/SkillSpector"
+    },
+    {
+      "repo_id": "repo-b8320bb2acbb66e9",
+      "name": "sleap",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "talmolab/sleap"
+    },
+    {
+      "repo_id": "repo-d72b0f81274505f0",
+      "name": "smolagents",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "huggingface/smolagents"
+    },
+    {
+      "repo_id": "repo-dc1a96ef2276f24e",
+      "name": "snarkjs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "iden3/snarkjs"
+    },
+    {
+      "repo_id": "repo-0daa0dab946f1dc7",
+      "name": "snntorch",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "jeshraghian/snntorch"
+    },
+    {
+      "repo_id": "repo-9733bf90d4b82e89",
+      "name": "SoapySDR",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "pothosware/SoapySDR"
+    },
+    {
+      "repo_id": "repo-43731bab7346cead",
+      "name": "sofa",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "sofa-framework/sofa"
+    },
+    {
+      "repo_id": "repo-16e40c0bb1bd0b8b",
+      "name": "sound-event-detection",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/sound-event-detection"
+    },
+    {
+      "repo_id": "repo-bff2a26cb80f07fa",
+      "name": "sound-separation",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/sound-separation"
+    },
+    {
+      "repo_id": "repo-c23c76869c36d970",
+      "name": "sp1",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "succinctlabs/sp1"
+    },
+    {
+      "repo_id": "repo-d913899c1654a668",
+      "name": "sperm-whale-clan-and-coda-detection",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/sperm-whale-clan-and-coda-detection"
+    },
+    {
+      "repo_id": "repo-3f4fca2aa1a46c27",
+      "name": "spikeinterface",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "SpikeInterface/spikeinterface"
+    },
+    {
+      "repo_id": "repo-d82aa177a9413d79",
+      "name": "SQL-engines-Postgres-SQLite-",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-73560d3449e84e3d",
+      "name": "sql-operations-analytics",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-4254920ccf6f8297",
+      "name": "sqlite",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "sqlite/sqlite"
+    },
+    {
+      "repo_id": "repo-ff09af935cd53cc1",
+      "name": "stable-baselines3",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "DLR-RM/stable-baselines3"
+    },
+    {
+      "repo_id": "repo-1df7462a1ffadce7",
+      "name": "SU2",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "su2code/SU2"
+    },
+    {
+      "repo_id": "repo-dc64b6f40fd5af42",
+      "name": "supercollider",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "supercollider/supercollider"
+    },
+    {
+      "repo_id": "repo-e4f0d7e318129559",
+      "name": "surrealdb",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "surrealdb/surrealdb"
+    },
+    {
+      "repo_id": "repo-b7f74975b0460172",
+      "name": "syncthing",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "syncthing/syncthing"
+    },
+    {
+      "repo_id": "repo-bcf489813b15935e",
+      "name": "systemd",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "systemd/systemd"
+    },
+    {
+      "repo_id": "repo-fb997e120261ff63",
+      "name": "tauri",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "tauri-apps/tauri"
+    },
+    {
+      "repo_id": "repo-ed14186caf372d77",
+      "name": "temporal",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "temporalio/temporal"
+    },
+    {
+      "repo_id": "repo-dcef461d3c088eec",
+      "name": "tfhe-rs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "zama-ai/tfhe-rs"
+    },
+    {
+      "repo_id": "repo-fa93fc0e5944d1bc",
+      "name": "THE-ARCHITECTURE-OF-SHADOWS",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-816987f6de76fd65",
+      "name": "The-Odin-Project",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-2a34d431e2898cb2",
+      "name": "theia",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "eclipse-theia/theia"
+    },
+    {
+      "repo_id": "repo-e4f652fdf4ce503e",
+      "name": "tikv",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "tikv/tikv"
+    },
+    {
+      "repo_id": "repo-86481c0b1e7eb0dc",
+      "name": "timescaledb",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "timescale/timescaledb"
+    },
+    {
+      "repo_id": "repo-dcf8d3b47e4d19d8",
+      "name": "tock",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "tock/tock"
+    },
+    {
+      "repo_id": "repo-d57a06a1e9048d83",
+      "name": "tracktion_engine",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "Tracktion/tracktion_engine"
+    },
+    {
+      "repo_id": "repo-a34444816af177ee",
+      "name": "transformers",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "huggingface/transformers"
+    },
+    {
+      "repo_id": "repo-f89247c6c4889e08",
+      "name": "tree-sitter",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "tree-sitter/tree-sitter"
+    },
+    {
+      "repo_id": "repo-955a6c92ac920e0a",
+      "name": "tvb-root",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "the-virtual-brain/tvb-root"
+    },
+    {
+      "repo_id": "repo-5aa8d09e34de0345",
+      "name": "tvm",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "apache/tvm"
+    },
+    {
+      "repo_id": "repo-bd0ed52afa870f6d",
+      "name": "typescript-sdk",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "modelcontextprotocol/typescript-sdk"
+    },
+    {
+      "repo_id": "repo-87663303ffe1dfbe",
+      "name": "u-boot",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "u-boot/u-boot"
+    },
+    {
+      "repo_id": "repo-32142fc5c06c5509",
+      "name": "uhd",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "EttusResearch/uhd"
+    },
+    {
+      "repo_id": "repo-18dd28e21be9172b",
+      "name": "ultralytics",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ultralytics/ultralytics"
+    },
+    {
+      "repo_id": "repo-4b4bcd19e1e67814",
+      "name": "Universal-Bridge",
+      "status": "ACTIVE_CANONICAL",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-dec409b79b29bd30",
+      "name": "unsupervised-speech-translation",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/unsupervised-speech-translation"
+    },
+    {
+      "repo_id": "repo-6e188fe66fcba626",
+      "name": "uv",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "astral-sh/uv"
+    },
+    {
+      "repo_id": "repo-248cce7cc3d4423e",
+      "name": "valkey",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "valkey-io/valkey"
+    },
+    {
+      "repo_id": "repo-3373c679c3b565c1",
+      "name": "vcpkg",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/vcpkg"
+    },
+    {
+      "repo_id": "repo-bc9253b963955cfd",
+      "name": "verible",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "chipsalliance/verible"
+    },
+    {
+      "repo_id": "repo-fa1191ca4b339c7c",
+      "name": "verilator",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "verilator/verilator"
+    },
+    {
+      "repo_id": "repo-e16eec6bc1a32504",
+      "name": "Veyra",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-2701dfd62be8472d",
+      "name": "VibeVoice",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/VibeVoice"
+    },
+    {
+      "repo_id": "repo-5a0de3b91bc3cffe",
+      "name": "VibeVoice-community",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "vibevoice-community/VibeVoice"
+    },
+    {
+      "repo_id": "repo-d0b68a23c1425951",
+      "name": "video-use",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "browser-use/video-use"
+    },
+    {
+      "repo_id": "repo-28abfe6f8ab67ba7",
+      "name": "VirtualAssistant",
+      "status": "PREDECESSOR",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-0915195dc28a00a0",
+      "name": "vllm",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "vllm-project/vllm"
+    },
+    {
+      "repo_id": "repo-5908733fd63d90b8",
+      "name": "voxaboxen",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "earthspecies/voxaboxen"
+    },
+    {
+      "repo_id": "repo-45c8478a659964ee",
+      "name": "vscode",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "microsoft/vscode"
+    },
+    {
+      "repo_id": "repo-7fa1f347926f09ae",
+      "name": "vst3sdk",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "steinbergmedia/vst3sdk"
+    },
+    {
+      "repo_id": "repo-ef4dc1d67d3bcdbf",
+      "name": "warpx",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "BLAST-WarpX/warpx"
+    },
+    {
+      "repo_id": "repo-6f05640207d1226a",
+      "name": "wasmtime",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "bytecodealliance/wasmtime"
+    },
+    {
+      "repo_id": "repo-8ebc639e2a3bf9af",
+      "name": "Web-platform-with-E-commerce-E-learning-social-media-job-hunting-post-articles-blockchain-ai",
+      "status": "UNKNOWN",
+      "is_fork": false,
+      "upstream": null
+    },
+    {
+      "repo_id": "repo-c11593cebc850925",
+      "name": "webots",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "cyberbotics/webots"
+    },
+    {
+      "repo_id": "repo-514b1f980f5b3b55",
+      "name": "whisper.cpp",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "ggml-org/whisper.cpp"
+    },
+    {
+      "repo_id": "repo-1f0355f0c11495c0",
+      "name": "xls",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "google/xls"
+    },
+    {
+      "repo_id": "repo-38fa4ee509feccfe",
+      "name": "xterm.js",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "xtermjs/xterm.js"
+    },
+    {
+      "repo_id": "repo-8ea58f97108a14c0",
+      "name": "yjs",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "yjs/yjs"
+    },
+    {
+      "repo_id": "repo-f15829f32eefd585",
+      "name": "yosys",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "YosysHQ/yosys"
+    },
+    {
+      "repo_id": "repo-a81e1a853b0df71e",
+      "name": "yugabyte-db",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "yugabyte/yugabyte-db"
+    },
+    {
+      "repo_id": "repo-6e2221146de975a0",
+      "name": "zenoh",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "eclipse-zenoh/zenoh"
+    },
+    {
+      "repo_id": "repo-ca4191ad8a87b547",
+      "name": "zephyr",
+      "status": "FORK",
+      "is_fork": true,
+      "upstream": "zephyrproject-rtos/zephyr"
+    }
+  ],
+  "edges": [
+    {
+      "from": "repo-3b3234cd26227332",
+      "to": "ext:ip7z/7zip",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-2e14bf50cda97545",
+      "to": "ext:9front/9front",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-cd5aab9a18476dba",
+      "to": "ext:a2aproject/A2A",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-294a0af458a3b82f",
+      "to": "ext:huggingface/accelerate",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1be90425fde05c60",
+      "to": "ext:earthspecies/acoustic-representation-toolbox",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-55aea28bdab16405",
+      "to": "Aetherius-OS",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-8c5286c2a4e395fb",
+      "to": "Aetherius-OS",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-4b7727f1345982c3",
+      "to": "Aetherius-OS",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-00097de9a118efee",
+      "to": "ext:microsoft/agent-framework",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-79c27a62bd915ab2",
+      "to": "ext:aiidateam/aiida-core",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0afd996506470fbd",
+      "to": "ext:alicevision/AliceVision",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-27f07c954dbfb2ba",
+      "to": "ext:earthspecies/alp-data",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e00a1623abecf7f6",
+      "to": "ext:earthspecies/animalsynth",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-441027575aaaaa40",
+      "to": "ext:anoncreds/anoncreds-rs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-09c6725b7f5b8cab",
+      "to": "ext:ansible/ansible",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1e1f009593fcddf7",
+      "to": "ext:google-antigravity/antigravity-sdk-python",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-02f9834b4f64f24c",
+      "to": "ext:ArduPilot/ardupilot",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8563c1afddc66d44",
+      "to": "ext:apache/arrow",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b7042ac0adb93579",
+      "to": "ext:aubio/aubio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-705337fdd9cd3738",
+      "to": "ext:earthspecies/audio-embeddings",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bd78a1f2cca9736c",
+      "to": "ext:facebookresearch/audiocraft",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-6a166a08e0e7ec38",
+      "to": "ext:microsoft/autogen",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-58753b8198ef7671",
+      "to": "ext:automerge/automerge",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3ef03afd13201e57",
+      "to": "ext:earthspecies/avex",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5fbb247b9de2eef0",
+      "to": "ext:spotify/basic-pitch",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-80abcec23897ed08",
+      "to": "ext:bazelbuild/bazel",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4be1ac63ba385035",
+      "to": "ext:earthspecies/beans-next",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-aabe6acf8cadacbe",
+      "to": "ext:earthspecies/BEBE",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-851c58cdfba834f7",
+      "to": "ext:earthspecies/BEBE-datasets",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3f2e3d377ee298e7",
+      "to": "ext:earthspecies/bioacoustic-ssl",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-be18904b366d339e",
+      "to": "ext:kitzeslab/bioacoustics-model-zoo",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b63e8a92730c88a2",
+      "to": "ext:earthspecies/biodenoising",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-20e0f4c0cc4aefe1",
+      "to": "ext:biopython/biopython",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0cc4ce89335d7ec9",
+      "to": "ext:birdnet-team/BirdNET-Analyzer",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c9e1decfebde0118",
+      "to": "ext:microsoft/BitNet",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-50f5db54ac9fcfe0",
+      "to": "ext:blender/blender",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-56a33c17af353101",
+      "to": "ext:bootc-dev/bootc",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d6d54eb406934478",
+      "to": "ext:brainflow-dev/brainflow",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-76bfad524e7009af",
+      "to": "ext:brian-team/brian2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-55e15a2d8d97efc7",
+      "to": "ext:browser-use/browser-use",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-66a248ea4c2af680",
+      "to": "ext:moby/buildkit",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b28f1beb84fe2a80",
+      "to": "ext:bulletphysics/bullet3",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-829694a8d41548cf",
+      "to": "ext:contentauth/c2pa-rs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a33a56cce75bec8f",
+      "to": "ext:Cantera/cantera",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-36539d879e320ca6",
+      "to": "ext:falkTX/Carla",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8bda86291cd01fbe",
+      "to": "ext:MouseLand/cellpose",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-adec2a362b3febda",
+      "to": "ext:ceph/ceph",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5e4e386104775eb3",
+      "to": "ext:CesiumGS/cesium",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-37ead69d826e1a00",
+      "to": "ext:nasa/cFS",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-788710cec3fad7ea",
+      "to": "ext:chipsalliance/chisel",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-792b037c8ae68b80",
+      "to": "ext:iden3/circom",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bce78f01b2e1d6ae",
+      "to": "ext:llvm/circt",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1674c6d762b8fa91",
+      "to": "ext:free-audio/clap",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9c4e3b38995592db",
+      "to": "ext:Kitware/CMake",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-07366a0cc893a217",
+      "to": "ext:cockroachdb/cockroach",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-6220b70e8090a146",
+      "to": "ext:cocotb/cocotb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b074a9afcf7bb910",
+      "to": "ext:coder/code-server",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ab996ef2df1d6826",
+      "to": "ext:colmap/colmap",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0b921445395cac00",
+      "to": "ext:Comfy-Org/ComfyUI",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8fe136c935964aaa",
+      "to": "ext:docker/compose",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a2835886c61c4ae7",
+      "to": "ext:conan-io/conan",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0645175a134493ad",
+      "to": "ext:project-chip/connectedhomeip",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e83d490bc2abd38f",
+      "to": "ext:containerd/containerd",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-34f7791638998996",
+      "to": "ext:home-assistant/core",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-53e23ddd9d4a2630",
+      "to": "ext:coreboot/coreboot",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-902179dcb22c4d8f",
+      "to": "ext:sigstore/cosign",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f2a1eabc3ccf1b04",
+      "to": "ext:vlcn-io/cr-sqlite",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-255febdc49f4d241",
+      "to": "ext:crewAIInc/crewAI",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-01895e9bb79f7281",
+      "to": "ext:pinellolab/CRISPResso2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-92b51b645a110bc6",
+      "to": "ext:trycompai/crm",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-76b9cff91ea0a938",
+      "to": "Aetherius-OS",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-947a3896ebdcbd6d",
+      "to": "ext:csound/csound",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a34b0199b71452ff",
+      "to": "ext:Ultimaker/CuraEngine",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-02e8e8112447c150",
+      "to": "ext:openhwfoundation/cva6",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5712be680a02c624",
+      "to": "ext:dagster-io/dagster",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5d3c3cfd29a4cdc0",
+      "to": "ext:dask/dask",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d57ebb098dd2e06c",
+      "to": "ext:DeepLabCut/DeepLabCut",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-606bb2ad48808a5c",
+      "to": "ext:adefossez/demucs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9e62b3152a84b5fa",
+      "to": "ext:DepthAnything/Depth-Anything-V2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a923b1c41bec6807",
+      "to": "ext:luxonis/depthai-core",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-be134b43edef716a",
+      "to": "ext:facebookresearch/detectron2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-288338272af30795",
+      "to": "ext:sidpalas/devops-directive-docker-course",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8a97f210070ca19a",
+      "to": "ext:huggingface/diffusers",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5c92995a85f18dee",
+      "to": "ext:eclipse-ditto/ditto",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5b4907f991fa3bb6",
+      "to": "ext:FEniCS/dolfinx",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b2e5c0ac0dbbc97c",
+      "to": "ext:RobotLocomotion/drake",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b4c0fe8375cd3be9",
+      "to": "ext:duckdb/duckdb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3d983f1ce2b16a79",
+      "to": "ext:tianocore/edk2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-2d24ac46d5e38476",
+      "to": "ext:electric-sql/electric",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-794d2a794170f059",
+      "to": "ext:emscripten-core/emscripten",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f42fb94bc6fe8164",
+      "to": "ext:NatLabRockies/EnergyPlus",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b335010da712b04f",
+      "to": "ext:esphome/esphome",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1424069c7073190d",
+      "to": "ext:MTG/essentia",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-12c1c43f9cda389a",
+      "to": "ext:pytorch/executorch",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e427d3b2f078e322",
+      "to": "ext:SWivid/F5-TTS",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8cb33a0251e979f6",
+      "to": "ext:hku-mars/FAST_LIO",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a2594ffab60a4663",
+      "to": "ext:fastapi/fastapi",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a1da8c769a64240b",
+      "to": "ext:SYSTRAN/faster-whisper",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9f514f24cba641f6",
+      "to": "ext:FFmpeg/FFmpeg",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3cb8222a9da98662",
+      "to": "ext:firecracker-microvm/firecracker",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a49b8d9826c57fd5",
+      "to": "ext:FluidSynth/fluidsynth",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0ca689c99b9255d0",
+      "to": "ext:FreeCAD/FreeCAD",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0a0245bf1b0dce77",
+      "to": "ext:FreeRTOS/FreeRTOS-Kernel",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-fe5b6290ddbdfb19",
+      "to": "ext:broadinstitute/gatk",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3b5bf62dc9c8b65a",
+      "to": "ext:OSGeo/gdal",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4c6da713974cd757",
+      "to": "ext:Genesis-Embodied-AI/genesis-world",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-6503b1a42c15fed7",
+      "to": "ext:ggml-org/ggml",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9a368d9cb3948835",
+      "to": "ext:git-lfs/git-lfs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-44d4c6ae10a0302d",
+      "to": "ext:gnuradio/gnuradio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f2ce3a483d6364ae",
+      "to": "ext:godotengine/godot",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-472da70319c6ba5f",
+      "to": "ext:bilawalsidhu/gods-eye-view",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-41f1e1b3b86b759e",
+      "to": "ext:gqrx-sdr/gqrx",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-fbcdd5583fbf45d2",
+      "to": "ext:grafana/grafana",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8143a793f361786d",
+      "to": "ext:getzep/graphiti",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a5ff981b768a3046",
+      "to": "ext:grpc/grpc",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4453911ecdb0f2da",
+      "to": "ext:borglab/gtsam",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-efa57f023a154a96",
+      "to": "ext:google/gvisor",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-14406228e2c8c741",
+      "to": "ext:gazebosim/gz-sim",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-cdf854b61a86f9ea",
+      "to": "ext:facebookresearch/habitat-lab",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b861d01783fa4405",
+      "to": "ext:G1ne/hello-world",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a3b5244bdc85b733",
+      "to": "ext:helm/helm",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-46e77f9cb3f802d4",
+      "to": "ext:libusb/hidapi",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0cf8e533178f9afd",
+      "to": "ext:lowRISC/ibex",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c1a59b73dbd9fb6f",
+      "to": "ext:IfcOpenShell/IfcOpenShell",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5121c0e1f418ad4c",
+      "to": "ext:in-toto/in-toto",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-be8ab2c84da16906",
+      "to": "ext:influxdata/influxdb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-96a69862f302f3f5",
+      "to": "ext:modelcontextprotocol/inspector",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-32c1af7337e48b37",
+      "to": "ext:iree-org/iree",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d05142da93cc5784",
+      "to": "ext:isaac-sim/IsaacLab",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ca02cfa13ac524f4",
+      "to": "ext:jackaudio/jack2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b8ecde12a6e9ea2c",
+      "to": "ext:juce-framework/JUCE",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1da15fbbf4b94dae",
+      "to": "ext:juicedata/juicefs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-10b0ac06a0a2b9e5",
+      "to": "ext:k3s-io/k3s",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c5f95597179b50ad",
+      "to": "ext:ethz-asl/kalibr",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3482d7ac98c03f84",
+      "to": "ext:keycloak/keycloak",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-81a6cd9a2d661f68",
+      "to": "ext:KiCad/kicad-source-mirror",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1e08495227614407",
+      "to": "ext:kubernetes-sigs/kind",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-89b67596a5bccf78",
+      "to": "ext:kokkos/kokkos",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d7d78f331fe13614",
+      "to": "ext:ipfs/kubo",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1ce224caebb46f82",
+      "to": "ext:lammps/lammps",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e5924f030266155f",
+      "to": "ext:langchain-ai/langgraph",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-7df415207c0b4acd",
+      "to": "ext:huggingface/lerobot",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e2f76ea81db82c6f",
+      "to": "ext:libarchive/libarchive",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ee404c69fe882f6b",
+      "to": "ext:radarsat1/liblo",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5a30c604b062c2e3",
+      "to": "ext:sccn/liblsl",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3982c06efb96b88f",
+      "to": "ext:libpd/libpd",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-179bd0f034059522",
+      "to": "ext:celtera/libremidi",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-889512fe03d02c3a",
+      "to": "ext:librosa/librosa",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b756ebdc91a81617",
+      "to": "ext:libsndfile/libsamplerate",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9681caa3d9519674",
+      "to": "ext:sigrokproject/libsigrok",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-716084d6a8054702",
+      "to": "ext:libsndfile/libsndfile",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4fa03a1436be50ae",
+      "to": "ext:libusb/libusb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-edf703eda457f87a",
+      "to": "ext:lv2/lilv",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-254dc688a9c5e059",
+      "to": "ext:Ableton/link",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1aa55073aa1e3901",
+      "to": "ext:jgaeddert/liquid-dsp",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3d65a51d59f5491d",
+      "to": "ext:BerriAI/litellm",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-19703c0aee19c882",
+      "to": "ext:enjoy-digital/litex",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3e04dc8ef5a630ee",
+      "to": "ext:livekit/livekit",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1468e7a08852a495",
+      "to": "ext:ggml-org/llama.cpp",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-12689760d3fa48d9",
+      "to": "ext:run-llama/llama_index",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c39ec3de50e23351",
+      "to": "ext:llvm/llvm-project",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8b9f6c10b40d2b1c",
+      "to": "ext:lv2/lv2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ccc92f2a893d8ab3",
+      "to": "ext:hackingmaterials/matminer",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bee5bdacfb91cb9e",
+      "to": "ext:mavlink/mavlink",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1180b0e0a23db6b8",
+      "to": "ext:google-ai-edge/mediapipe",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-fbf2715c7d7111ec",
+      "to": "ext:mem0ai/mem0",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-dde790d345001436",
+      "to": "ext:mesonbuild/meson",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a7396ada9226e20a",
+      "to": "ext:mfem/mfem",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-cf0e0d263a8011cb",
+      "to": "ext:mackron/miniaudio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-de83ea4153bfad79",
+      "to": "ext:mlc-ai/mlc-llm",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-374aabfd1a0fbc5d",
+      "to": "ext:open-mmlab/mmpose",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0b2c37d00f9389a3",
+      "to": "ext:mne-tools/mne-python",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1c06af98b6d4dc6d",
+      "to": "ext:moby/moby",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-49affd87709a3178",
+      "to": "ext:microsoft/monaco-editor",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-997008c22bfd1ad4",
+      "to": "ext:idaholab/moose",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ba4babc48e72a63d",
+      "to": "ext:moveit/moveit2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a1e953aa46b327d6",
+      "to": "ext:google-deepmind/mujoco",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-90da8364efffd3b6",
+      "to": "ext:earthspecies/multiband-audio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ba2b497a54ea4f8d",
+      "to": "ext:n8n-io/n8n",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-39bd7b1b23504554",
+      "to": "ext:napari/napari",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f478643de2a59f48",
+      "to": "ext:nats-io/nats-server",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3cd3bffb9349a61e",
+      "to": "ext:earthspecies/NatureLM-audio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f51b76e924a09172",
+      "to": "ext:ros-navigation/navigation2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a5b89a26d8b044db",
+      "to": "ext:nengo/nengo",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5d2d65af2e7820cf",
+      "to": "ext:neo4j/neo4j",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4498b2f5bdc1961d",
+      "to": "ext:nest/nest-simulator",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e0d72e99f0660c89",
+      "to": "ext:nextflow-io/nextflow",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-7f19c65f040ed8a9",
+      "to": "ext:YosysHQ/nextpnr",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ba95636815e8437c",
+      "to": "Aetherius-OS",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-7c82f59ee9297893",
+      "to": "ext:ninja-build/ninja",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bb49100639f3ae0c",
+      "to": "ext:petergyang/no-ai-slop",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-2b8293d30712c11e",
+      "to": "ext:neuronsimulator/nrn",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a8ed4a14877449c5",
+      "to": "ext:Open-Cascade-SAS/OCCT",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1dcb074a8d2041e3",
+      "to": "ext:ollama/ollama",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8f48a951a3aa0d2c",
+      "to": "ext:microsoft/onnxruntime",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f79059a652273811",
+      "to": "ext:open-policy-agent/opa",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5e52d753d6f8b900",
+      "to": "ext:open-webui/open-webui",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-48793e81799cce81",
+      "to": "ext:isl-org/Open3D",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d82b6593cec5906b",
+      "to": "ext:rpng/open_vins",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-fa6846b438beffdc",
+      "to": "ext:openbabel/openbabel",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-02e6dc239d2900a8",
+      "to": "ext:openbao/openbao",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b7148bef5a0fc1bd",
+      "to": "ext:opencv/opencv",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d62bb43808f9c7d7",
+      "to": "ext:openfheorg/openfhe-development",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e2779541e81b372b",
+      "to": "ext:AcademySoftwareFoundation/openfx",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3dfa585087efe0fa",
+      "to": "ext:OpenHands/OpenHands",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ab03d32707f75e81",
+      "to": "ext:openmm/openmm",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f19b133b80f6fdee",
+      "to": "ext:openMVG/openMVG",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e4d634f363ef7e67",
+      "to": "ext:The-OpenROAD-Project/OpenROAD",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-18134bbd2de0b947",
+      "to": "ext:openscad/openscad",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3fddcbc69dd3c68d",
+      "to": "ext:opensim-org/opensim-core",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0da9877a8776217a",
+      "to": "ext:kitzeslab/opensoundscape",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c60d4ebca7a5145d",
+      "to": "ext:open-telemetry/opentelemetry-collector",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-00166e83ac32134c",
+      "to": "ext:openthread/openthread",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5b32b0243df5e674",
+      "to": "ext:AcademySoftwareFoundation/OpenTimelineIO",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4bac3de71901ff11",
+      "to": "ext:lowRISC/opentitan",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-cab67afefdd724ce",
+      "to": "ext:opentofu/opentofu",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1908788fd4b3b451",
+      "to": "ext:PixarAnimationStudios/OpenUSD",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c7feb1037e6ef1b7",
+      "to": "ext:myshell-ai/OpenVoice",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0743b4bae8a0b175",
+      "to": "ext:OpenVoiceOS/OpenVoiceOS",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-923d98678d43aea0",
+      "to": "ext:eclipse-openvsx/openvsx",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a3d0dc40e111d6a0",
+      "to": "ext:KhronosGroup/OpenXR-SDK-Source",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-54e118be104bcc9f",
+      "to": "ext:oras-project/oras",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b3a2750687de250e",
+      "to": "ext:UZ-SLAMLab/ORB_SLAM3",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c14788d69c2d4bce",
+      "to": "ext:CS-SI/Orekit",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0ff7d3d8580f2280",
+      "to": "ext:PointCloudLibrary/pcl",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3084b42a8b48c8fc",
+      "to": "ext:PDAL/PDAL",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-fa0afadf63508ccc",
+      "to": "ext:spotify/pedalboard",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d88a3f42559bcefb",
+      "to": "ext:huggingface/peft",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a3a1b2db324fb927",
+      "to": "ext:PennyLaneAI/pennylane",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-64f95c6d2e3b87e8",
+      "to": "ext:petsc/petsc",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5ddc394d4b1e9672",
+      "to": "ext:electric-sql/pglite",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-158c323ea4027800",
+      "to": "ext:ShawnPana/phone-harness",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-87dcad18bff441ff",
+      "to": "ext:stack-of-tasks/pinocchio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-dc44c0119f73c04d",
+      "to": "ext:PipeWire/pipewire",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0f73172ba1ab58ee",
+      "to": "ext:PlasmaPy/PlasmaPy",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a7657ff199843620",
+      "to": "ext:microsoft/playwright",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-eb815a8997ad812a",
+      "to": "ext:open-ephys/plugin-GUI",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c17f56da27d67aa2",
+      "to": "ext:PortAudio/portaudio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-00d3e29eb00f214b",
+      "to": "ext:OSGeo/PROJ",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-90f992f347e58567",
+      "to": "ext:prometheus/prometheus",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-425dd72ee134046b",
+      "to": "ext:protocolbuffers/protobuf",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-12541fc4bddf945d",
+      "to": "ext:prusa3d/PrusaSlicer",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a462b57de73b92ba",
+      "to": "ext:sigrokproject/pulseview",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9c4c2785f2e304d3",
+      "to": "ext:pure-data/pure-data",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d830034c06bb5bd8",
+      "to": "ext:PX4/PX4-Autopilot",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-70ea552ce08582ad",
+      "to": "ext:pydantic/pydantic-ai",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9a4457308baf64e1",
+      "to": "ext:pyinstaller/pyinstaller",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8f8c4ecd2268fef5",
+      "to": "ext:materialsproject/pymatgen",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f7625f35800a2092",
+      "to": "ext:materialsproject/pymatgen-core",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4126d7b2232376ca",
+      "to": "ext:pymeasure/pymeasure",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-af197d96781143ec",
+      "to": "ext:pyocd/pyOCD",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0dade76b4e624208",
+      "to": "ext:pysam-developers/pysam",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b048c5117fa8f0c7",
+      "to": "ext:pyscf/pyscf",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-2ba203221b085f9f",
+      "to": "ext:pyserial/pyserial",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1609cbb88c20eed1",
+      "to": "ext:SpotlightKid/python-rtmidi",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5c7c74c3e1fcbfb3",
+      "to": "ext:modelcontextprotocol/python-sdk",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9e35b31b6572fa13",
+      "to": "ext:pyusb/pyusb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-cb01dc5e373b1739",
+      "to": "ext:pyvisa/pyvisa",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-91e7d91f0c393400",
+      "to": "ext:QEF/q-e",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a15e24a0c17cef46",
+      "to": "ext:qdrant/qdrant",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-458d9b21053bdec2",
+      "to": "ext:qemu/qemu",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-7fbae9deec5c2d0f",
+      "to": "ext:Qiskit/qiskit",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-85fb1590164623f7",
+      "to": "Aetherius-OS",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-82113885672f4155",
+      "to": "Aetherius-OS",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-8a4f241e431dfd06",
+      "to": "ext:ray-project/ray",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f285032b55ba95d8",
+      "to": "ext:rclone/rclone",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-cef7f92a8d55e6f5",
+      "to": "ext:rdkit/rdkit",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-76c01fcccc14a4f5",
+      "to": "ext:redox-os/redox",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0e4576a5612ee6e7",
+      "to": "ext:renode/renode",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a0c1807c26737af6",
+      "to": "ext:restic/restic",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-7bf4333eec6b2b32",
+      "to": "ext:risc0/risc0",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b2ce6953b9850764",
+      "to": "ext:riscv-collab/riscv-gnu-toolchain",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-dd7155e0df578618",
+      "to": "ext:riscv-software-src/riscv-isa-sim",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0f85fcc31679a2f2",
+      "to": "ext:xiph/rnnoise",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8a90107deb10adce",
+      "to": "ext:cra-ros-pkg/robot_localization",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4249760297c3ae67",
+      "to": "ext:chipsalliance/rocket-chip",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-664398a34f670016",
+      "to": "ext:ros2/ros2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a1fa9aa66d66e860",
+      "to": "ext:ros-controls/ros2_control",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3273f54c507792cc",
+      "to": "ext:introlab/rtabmap",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-7a3c2ccd6c8a3b11",
+      "to": "ext:thestk/rtaudio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-044685bf8f34d5bd",
+      "to": "ext:osmocom/rtl-sdr",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-58f6b5921e509a55",
+      "to": "ext:thestk/rtmidi",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0b918f0433490c63",
+      "to": "ext:astral-sh/ruff",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8f1de41a369d182e",
+      "to": "ext:opencontainers/runc",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1d54313e1cd5b4f5",
+      "to": "ext:libp2p/rust-libp2p",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-435a1c887da72717",
+      "to": "ext:pubkey/rxdb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b1ec5ae7562bf613",
+      "to": "ext:facebookresearch/sam2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ca220a8bd79a4c02",
+      "to": "ext:samtools/samtools",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-fb9b8ebed363e4b8",
+      "to": "ext:SatDump/SatDump",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8630a1aa6e2e99f3",
+      "to": "ext:scverse/scanpy",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0d77a14bef15e7ba",
+      "to": "ext:scikit-bio/scikit-bio",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bedf68cd9d8c9b4b",
+      "to": "ext:scipy/scipy",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-85288e3fddd62f02",
+      "to": "ext:scylladb/scylladb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bc6c33d9e1896b24",
+      "to": "ext:microsoft/SEAL",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-68ef4844c22010cb",
+      "to": "ext:seaweedfs/seaweedfs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-535fcfef27721608",
+      "to": "ext:seL4/seL4",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-16cd0ffab19b8514",
+      "to": "ext:modelcontextprotocol/servers",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3cd6ee1527d30517",
+      "to": "ext:sfztools/sfizz",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-abcac600069ba42c",
+      "to": "ext:k2-fsa/sherpa-onnx",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-2a5945c38771f7b0",
+      "to": "ext:sigmf/SigMF",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d9cd74b155f4fee7",
+      "to": "ext:NVIDIA/SkillSpector",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b8320bb2acbb66e9",
+      "to": "ext:talmolab/sleap",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d72b0f81274505f0",
+      "to": "ext:huggingface/smolagents",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-dc1a96ef2276f24e",
+      "to": "ext:iden3/snarkjs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-0daa0dab946f1dc7",
+      "to": "ext:jeshraghian/snntorch",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-9733bf90d4b82e89",
+      "to": "ext:pothosware/SoapySDR",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-43731bab7346cead",
+      "to": "ext:sofa-framework/sofa",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-16e40c0bb1bd0b8b",
+      "to": "ext:earthspecies/sound-event-detection",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bff2a26cb80f07fa",
+      "to": "ext:earthspecies/sound-separation",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c23c76869c36d970",
+      "to": "ext:succinctlabs/sp1",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d913899c1654a668",
+      "to": "ext:earthspecies/sperm-whale-clan-and-coda-detection",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3f4fca2aa1a46c27",
+      "to": "ext:SpikeInterface/spikeinterface",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-4254920ccf6f8297",
+      "to": "ext:sqlite/sqlite",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ff09af935cd53cc1",
+      "to": "ext:DLR-RM/stable-baselines3",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1df7462a1ffadce7",
+      "to": "ext:su2code/SU2",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-dc64b6f40fd5af42",
+      "to": "ext:supercollider/supercollider",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e4f0d7e318129559",
+      "to": "ext:surrealdb/surrealdb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-b7f74975b0460172",
+      "to": "ext:syncthing/syncthing",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bcf489813b15935e",
+      "to": "ext:systemd/systemd",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-fb997e120261ff63",
+      "to": "ext:tauri-apps/tauri",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ed14186caf372d77",
+      "to": "ext:temporalio/temporal",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-dcef461d3c088eec",
+      "to": "ext:zama-ai/tfhe-rs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-2a34d431e2898cb2",
+      "to": "ext:eclipse-theia/theia",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e4f652fdf4ce503e",
+      "to": "ext:tikv/tikv",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-86481c0b1e7eb0dc",
+      "to": "ext:timescale/timescaledb",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-dcf8d3b47e4d19d8",
+      "to": "ext:tock/tock",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d57a06a1e9048d83",
+      "to": "ext:Tracktion/tracktion_engine",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a34444816af177ee",
+      "to": "ext:huggingface/transformers",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f89247c6c4889e08",
+      "to": "ext:tree-sitter/tree-sitter",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-955a6c92ac920e0a",
+      "to": "ext:the-virtual-brain/tvb-root",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5aa8d09e34de0345",
+      "to": "ext:apache/tvm",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bd0ed52afa870f6d",
+      "to": "ext:modelcontextprotocol/typescript-sdk",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-87663303ffe1dfbe",
+      "to": "ext:u-boot/u-boot",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-32142fc5c06c5509",
+      "to": "ext:EttusResearch/uhd",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-18dd28e21be9172b",
+      "to": "ext:ultralytics/ultralytics",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-dec409b79b29bd30",
+      "to": "ext:earthspecies/unsupervised-speech-translation",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-6e188fe66fcba626",
+      "to": "ext:astral-sh/uv",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-248cce7cc3d4423e",
+      "to": "ext:valkey-io/valkey",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-3373c679c3b565c1",
+      "to": "ext:microsoft/vcpkg",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-bc9253b963955cfd",
+      "to": "ext:chipsalliance/verible",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-fa1191ca4b339c7c",
+      "to": "ext:verilator/verilator",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-e16eec6bc1a32504",
+      "to": "Aetherius-OS",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-2701dfd62be8472d",
+      "to": "ext:microsoft/VibeVoice",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5a0de3b91bc3cffe",
+      "to": "ext:vibevoice-community/VibeVoice",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-d0b68a23c1425951",
+      "to": "ext:browser-use/video-use",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-28abfe6f8ab67ba7",
+      "to": "Genesis",
+      "type": "PREDECESSOR_OF",
+      "external": false
+    },
+    {
+      "from": "repo-0915195dc28a00a0",
+      "to": "ext:vllm-project/vllm",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-5908733fd63d90b8",
+      "to": "ext:earthspecies/voxaboxen",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-45c8478a659964ee",
+      "to": "ext:microsoft/vscode",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-7fa1f347926f09ae",
+      "to": "ext:steinbergmedia/vst3sdk",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ef4dc1d67d3bcdbf",
+      "to": "ext:BLAST-WarpX/warpx",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-6f05640207d1226a",
+      "to": "ext:bytecodealliance/wasmtime",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-c11593cebc850925",
+      "to": "ext:cyberbotics/webots",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-514b1f980f5b3b55",
+      "to": "ext:ggml-org/whisper.cpp",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-1f0355f0c11495c0",
+      "to": "ext:google/xls",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-38fa4ee509feccfe",
+      "to": "ext:xtermjs/xterm.js",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-8ea58f97108a14c0",
+      "to": "ext:yjs/yjs",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-f15829f32eefd585",
+      "to": "ext:YosysHQ/yosys",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-a81e1a853b0df71e",
+      "to": "ext:yugabyte/yugabyte-db",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-6e2221146de975a0",
+      "to": "ext:eclipse-zenoh/zenoh",
+      "type": "FORK_OF",
+      "external": true
+    },
+    {
+      "from": "repo-ca4191ad8a87b547",
+      "to": "ext:zephyrproject-rtos/zephyr",
+      "type": "FORK_OF",
+      "external": true
+    }
+  ],
+  "edge_counts": {
+    "FORK_OF": 352,
+    "PREDECESSOR_OF": 9
+  }
+}

@@ -124,15 +124,27 @@ class GitHubAdapter(KnowledgeSourceAdapter):
             repos = []
 
         sources = []
+        seen_ids: set[str] = set()
         for repo in repos:
             name = repo.get("name", "")
+            if not name:
+                continue
             full_name = f"{self.owner}/{name}"
             created = self._parse_ts(repo.get("createdAt"))
             updated = self._parse_ts(repo.get("updatedAt"))
             pushed = self._parse_ts(repo.get("pushedAt"))
 
+            source_id = stable_source_id("github", full_name)
+            # GitHub can emit the same repository more than once across
+            # paginated responses. A duplicate source_id would corrupt the
+            # incremental-sync state (§11) by double-counting a repository,
+            # so duplicates are collapsed here rather than downstream.
+            if source_id in seen_ids:
+                continue
+            seen_ids.add(source_id)
+
             src = SourceMetadata(
-                source_id=stable_source_id("github", full_name),
+                source_id=source_id,
                 source_type=SOURCE_TYPE_REPOSITORY,
                 platform="github",
                 remote_id=full_name,

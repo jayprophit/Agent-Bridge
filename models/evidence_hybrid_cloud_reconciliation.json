@@ -51,8 +51,8 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 268,
-    "all_passed": 268,
+    "all_total": 340,
+    "all_passed": 340,
     "all_skipped": 0,
     "all_failed": 0,
     "keepass_bridge": {
@@ -72,6 +72,20 @@
       "total": 26,
       "passed": 26,
       "failed": 0
+    },
+    "github_adapter_mocked": {
+      "file": "tests/test_github_adapter_mocked.py",
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0
+    },
+    "provider_v2_and_ingestion": {
+      "file": "tests/test_provider_v2_and_ingestion.py",
+      "total": 45,
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0
     }
   },
   "owner_blockers": [
@@ -298,5 +312,19 @@
     "dependency_ready_tasks": 347,
     "next_action": "P0 Hybrid Compute audit: evaluate llama.cpp/ollama/vllm/ggml against the execution-target abstraction",
     "unique_commit_correction": "Earlier evidence and commit message stated '384 audited'; that was the per-run batch size, not the audited count. The cache holds 396 entries = 352 forks audited + 44 originals marked SKIPPED_NOT_FORK."
+  },
+  "local_infrastructure_continuation": {
+    "pasted_report_ingested": true,
+    "sha_reconciliation": "pasted report named 9e8e15b/c3f7a2d; NEITHER EXISTS in this repo. Live HEAD 515e315 is authoritative per §15 (live repo > pasted report). a8fa0d6 and ba2747b DO exist and are preserved.",
+    "skipped_github_tests": "RESOLVED: 5 tests were skipping on missing auth; gh IS authenticated here so they pass. Root gap was non-determinism, not auth.",
+    "github_test_fix": "Added tests/test_github_adapter_mocked.py — 27 deterministic mocked tests per §19, replacing live-API dependence",
+    "adapter_bug_found_and_fixed": "list_sources() did not deduplicate repositories; a repo repeated across paginated pages produced duplicate source_ids, which would corrupt incremental-sync state (§11). Fixed in source.",
+    "provider_adapter_v2": "compute/error_taxonomy.py + compute/provider_adapters.py: §3 normalized taxonomy as strict superset of existing §88 classes (no caller broken); §2 honest capability advertising where unsupported FAILS EXPLICITLY",
+    "cloud_provider_states": "BLOCKED_OWNER for openrouter/groq/gemini/huggingface/deepseek — no provider claims VERIFIED_LIVE",
+    "full_estate_ingestion": "396 repositories ingested as §10 records; 352 FORK_OF edges, 9 PREDECESSOR_OF edges; no hard-coded 17-repo limit",
+    "incremental_sync": "VERIFIED: re-run gives 396 UNCHANGED / 0 CHANGED; metadata change correctly detected as CHANGED",
+    "ingestion_limitation": "head_sha is None for every record because the REST list endpoint omits it. Recorded as unknown, not guessed. Per-repo SHA lookup would close this.",
+    "maturity": "LEVEL 2 — local verified, enterprise team proven, partial",
+    "deletions": "ZERO authorised; §34 gate unchanged, 0 of 396 repos pass"
   }
 }
