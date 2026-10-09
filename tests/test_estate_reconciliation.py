@@ -128,8 +128,16 @@ class LiveEstateTests(unittest.TestCase):
         forks = [r for r in self.repos if r["fork"]]
         self.assertGreater(len(forks), 200)
         unlinked = [r["name"] for r in forks if not r.get("parent")]
-        self.assertEqual(unlinked, [],
-                         f"forks without upstream: {unlinked[:10]}")
+        self.assertEqual(
+            unlinked, [],
+            "forks without upstream: "
+            f"{unlinked[:10]}\n\n"
+            "This usually means fetch_live_estate.py was re-run WITHOUT the "
+            "following resolve_upstreams.py step, overwriting the resolved "
+            "evidence with raw REST data (which omits `parent`).\n"
+            "Restore the committed evidence, or re-run the full pipeline:\n"
+            "  python scripts/fetch_live_estate.py && "
+            "python scripts/resolve_upstreams.py")
 
     def test_originals_are_not_mislabelled_as_forks(self):
         originals = [r for r in self.repos if not r["fork"]]

@@ -451,5 +451,23 @@
     "owner_action": "Rotate in provider console, then enter the new value directly into KeePass",
     "master_password": "Human-controlled; never in code, chat, or logs",
     "tests": "18 new, incl. a negative assertion that CredentialReference exposes no field capable of holding a secret"
+  },
+  "workstream_status": {
+    "A_full_github_enumeration": "VERIFIED_LIVE — 396 repositories enumerated by pagination; all public; 4 archived; 0 private",
+    "A_historical_vs_live": "§6: historical inventory claimed 394; live is 396 (+2). No MISSING_FROM_LIVE. Fork detection requires per-repo resolution because the REST list endpoint omits `parent`.",
+    "A_actual_fork_count": "352 forks with resolved upstreams, 0 orphans (from the resolved cache, NOT the raw list)",
+    "B_conversation_adapters": "INTERFACE_READY / IMPLEMENTED — 8 platforms registered, none LIVE_VERIFIED",
+    "C_end_to_end_tracing": "VERIFIED_LIVE — 3 linked spans around a real local inference, 3816.893ms, secret scan clean",
+    "D_ollama_provider_v2": "VERIFIED_LIVE — 15 models, capabilities discovered from /api/show",
+    "E_credential_broker_keepass": "COMPLETE — broker + KeePass bridge verified earlier (44/44); §36 five rotation refs now registered MISSING_ROTATION",
+    "enterprise_team_regression": "PASS — instantiated with team_id, all 9 §31 capabilities present; not rebuilt"
+  },
+  "self_inflicted_regression": {
+    "what_happened": "Re-running scripts/fetch_live_estate.py for §5 verification overwrote migration/evidence/live_estate.json with raw REST data, which omits `parent`. The resolved-upstream evidence was replaced by unresolved data.",
+    "detected_by": "tests/test_estate_reconciliation.py::test_every_fork_has_a_resolved_upstream — 352 forks reported without upstream",
+    "fixed_by": "git checkout -- migration/evidence/live_estate.json (restored committed resolved evidence); 26/26 pass again",
+    "root_cause": "The fetch and resolve steps are separate scripts, so running one alone silently regresses the evidence the other produces.",
+    "guard_added": "The failure message now names the cause and the correct two-step pipeline, so the next person does not have to rediscover it.",
+    "lesson": "A read-only script is not automatically safe: it can still destroy derived evidence by overwriting it."
   }
 }
