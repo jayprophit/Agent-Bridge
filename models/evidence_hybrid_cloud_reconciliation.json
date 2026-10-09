@@ -51,9 +51,9 @@
       "passed": 30,
       "failed": 0
     },
-    "all_total": 470,
-    "all_passed": 470,
-    "all_skipped": 1,
+    "all_total": 474,
+    "all_passed": 474,
+    "all_skipped": 0,
     "all_failed": 0,
     "keepass_bridge": {
       "file": "tests/test_keepass_bridge.py",
@@ -110,11 +110,10 @@
     },
     "local_team_execution": {
       "file": "tests/test_local_team_execution.py",
-      "total": 33,
-      "passed": 33,
+      "total": 37,
+      "passed": 37,
       "failed": 0,
-      "skipped": 1,
-      "skip_reason": "test_configured_team_is_local_only path: team not yet formed guard retained; live model tests skip when Ollama is unreachable"
+      "skipped": 0
     }
   },
   "owner_blockers": [
@@ -568,5 +567,20 @@
   "orchestrator_overlap_check": {
     "result": "NO OVERLAP INTRODUCED",
     "local_team_executor": "Composition only - instantiates the existing EnterpriseTeam and calls the existing Ollama provider. It registers no scheduling authority, no durable task state, and no new orchestration entry point."
-  }
+  },
+  "model_leak_root_cause": {
+    "symptom": "Repeated EXIT=124 timeouts and a 30-second latency stall in a worker call. Looked like a flaky suite.",
+    "actual_cause": "Ollama keeps models RESIDENT in RAM until they expire or are explicitly unloaded. My team runs never released them, so llama-server processes accumulated to ~1.3 GB on a 16 GB host (81% used, 3.3 GB free).",
+    "not_oom": "Checked the Windows event log: no recent OOM events (last was 24 Sept, two weeks earlier). This was resource starvation degrading performance, not an OS kill.",
+    "evidence": "One worker call took 30037.91 ms where normal calls take ~2 s, then failed UNKNOWN_PROVIDER_ERROR. Ollama answered /api/tags in 1.2-1.6 s when probed separately, proving the runtime was healthy and the stall was local contention.",
+    "fix": "release_models() unloads every model a run loaded; called on run_bounded_team_task, run_parallel_branches, run_solo_baseline and compare_solo_vs_team (the last two in finally blocks so a failure cannot strand a model).",
+    "recovered": "Unloaded a stale 1.09 GB server by hand -> 4.46 GB free (73.9%). Only Hermes' own llama-server (PID 2072) was left untouched, as it is not ours to manage.",
+    "result": "Full team suite 37/37 pass in 288.87 s with 0 skips - the first complete clean run of the file."
+  },
+  "test_bugs_of_my_own_found": [
+    "assertIn(...) or True - can never fail, so the test proved nothing",
+    "team.config.allow_cloud - configure() flattens config onto the team and retains execution_target/execution_mode, not allow_cloud",
+    "release test snapshotted /api/ps BEFORE loading, then diffed after. When an earlier test left the model resident it appeared in 'after' but not 'before', so the test reported a leak the current run did not cause. Fixed by loading first, then asserting release.",
+    "release test sampled /api/ps once after keep_alive=0, but Ollama unloads lazily. Now polls for up to 15 s, so a genuine leak still fails while a lagging unload passes."
+  ]
 }

@@ -17,6 +17,8 @@ Two properties are asserted that could easily regress:
 
 from __future__ import annotations
 
+import json
+import time
 import sys
 import unittest
 from pathlib import Path
@@ -286,6 +288,86 @@ class SoloVsTeamTests(unittest.TestCase):
         self.assertGreater(result["team"]["latency_ms"],
                            result["solo"]["latency_ms"])
         self.assertGreater(result["team"]["tokens"], result["solo"]["tokens"])
+
+
+class ModelReleaseTests(unittest.TestCase):
+    """§12 — a run must not leave models resident in RAM.
+
+    WHY THIS TEST EXISTS
+
+    Test runs that load Ollama models LEAK RAM: each model stays resident
+    until it expires or is explicitly unloaded. Three runs left ~1.3 GB of
+    llama-server processes behind, which on a 16 GB host pushed the machine to
+    ~81% and caused the OS to kill long pytest runs mid-flight (EXIT=124).
+
+    The failure looked like a flaky test suite. It was resource exhaustion
+    caused by the tests themselves.
+    """
+
+    def test_release_models_unloads_what_the_run_loaded(self):
+        if not _live():
+            self.skipTest("Ollama runtime not reachable")
+        executor = LocalTeamExecutor()
+        # Load the model FIRST, then snapshot. Snapshotting before the load
+        # and diffing afterwards is wrong when an earlier test already left
+        # the model resident: the model then appears in `after` but not in
+        # `before`, and the test reports a leak that this run did not cause.
+        executor.run_worker("coder", "w-release-1", "Say ok", max_tokens=8)
+        loaded = {r.model for r in executor.results}
+        self.assertTrue(loaded & {m["name"] for m in _resident_models()},
+                        "model did not load — cannot test release")
+        executor.release_models()
+        # Ollama unloads lazily, so /api/ps can lag briefly behind a
+        # keep_alive=0 request. Poll rather than sampling once: a genuine leak
+        # stays resident, a lagging unload clears within a second or two.
+        deadline = time.time() + 15.0
+        leaked = loaded
+        while time.time() < deadline:
+            still_resident = {m["name"] for m in _resident_models()}
+            leaked = loaded & still_resident
+            if not leaked:
+                break
+            time.sleep(1.0)
+        self.assertEqual(leaked, set(),
+                         f"models left resident after release: {leaked}")
+
+    def test_release_models_returns_count(self):
+        executor = LocalTeamExecutor()
+        executor.results.append(WorkerResult(
+            worker_id="w", role="coder", model="fake-model-not-installed"))
+
+        def failing_get(path, payload=None):
+            raise RuntimeError("not reachable")
+
+        executor.provider._get = failing_get
+        # An unload failure must not raise — it must not mask a real result.
+        self.assertEqual(executor.release_models(), 0)
+
+    def test_run_bounded_task_releases_models(self):
+        """The public run path must release, not just expose the helper."""
+        import inspect
+        from compute import local_team_executor as mod
+        src = inspect.getsource(mod.LocalTeamExecutor.run_bounded_team_task)
+        self.assertIn("release_models", src,
+                      "run_bounded_team_task must release models (§12)")
+
+    def test_parallel_branches_release_models(self):
+        import inspect
+        from compute import local_team_executor as mod
+        src = inspect.getsource(mod.LocalTeamExecutor.run_parallel_branches)
+        self.assertIn("release_models", src,
+                      "run_parallel_branches must release models (§12)")
+
+
+def _resident_models() -> list[dict]:
+    """Models currently held in RAM by the local Ollama runtime."""
+    import urllib.request
+    try:
+        with urllib.request.urlopen(
+                "http://localhost:11434/api/ps", timeout=10) as resp:
+            return json.loads(resp.read().decode("utf-8")).get("models", [])
+    except Exception:
+        return []
 
 
 class NoCloudClaimTests(unittest.TestCase):

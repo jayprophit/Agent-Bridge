@@ -162,6 +162,32 @@ class LocalTeamExecutor:
                 return name
         raise RuntimeError("no installed Ollama model available")
 
+    def release_models(self) -> int:
+        """Unload every model this executor loaded (§12 hygiene).
+
+        WHY THIS EXISTS
+
+        Each Ollama model stays resident in RAM after use until it expires or
+        is explicitly unloaded. Test runs that load models therefore LEAK RAM:
+        three runs left ~1.3 GB of llama-server processes behind, which on a
+        16 GB host pushed the machine to ~81% and got the OS to kill long
+        pytest runs mid-flight (EXIT=124).
+
+        Leaving models resident is not a cosmetic issue — it silently breaks
+        the next run. Any code that loads a model must release it.
+        """
+        released = 0
+        for model in {r.model for r in self.results}:
+            try:
+                self.provider._get("/api/generate",
+                                   {"model": model, "keep_alive": 0})
+                released += 1
+            except Exception:
+                # An unload failure must not mask a real test result; the
+                # caller sees the failure through the worker results instead.
+                pass
+        return released
+
     # -- worker execution ---------------------------------------------------
     def run_worker(self, role: str, worker_id: str, prompt: str,
                    model: str | None = None,
@@ -284,6 +310,7 @@ class LocalTeamExecutor:
             scoped_context=["[REVIEWER CONTEXT: artifact + constraint only]"])
 
         self.tracer.end_span(supervisor_span, status=STATUS_OK)
+        self.release_models()   # §12 — do not leak resident models
 
         approved = "APPROVED" in reviewer.artifact.upper()
         return self._summary(task, trace_id, [arch, coder, reviewer], approved)
@@ -310,6 +337,7 @@ class LocalTeamExecutor:
             f"A: {branch_a.artifact[:120]}\nB: {branch_b.artifact[:120]}",
             trace_id=root.trace_id, parent_span_id=root.span_id, max_tokens=64)
         self.tracer.end_span(root, status=STATUS_OK)
+        self.release_models()   # §12 — do not leak resident models
         return OrderedDict([
             ("state", "VERIFIED_LOCAL"),
             ("branches", [b.to_dict() for b in (branch_a, branch_b)]),
@@ -357,7 +385,15 @@ def run_solo_baseline(task: str) -> dict[str, Any]:
             model = candidate
             break
     started = time.perf_counter()
-    result = provider.infer(model, task, max_tokens=96, temperature=0.2)
+    try:
+        result = provider.infer(model, task, max_tokens=96, temperature=0.2)
+    finally:
+        # §12 hygiene: release even on failure, or a benchmark run silently
+        # strands a model in RAM for the next test.
+        try:
+            provider._get("/api/generate", {"model": model, "keep_alive": 0})
+        except Exception:
+            pass
     return OrderedDict([
         ("mode", "SOLO_LOCAL"),
         ("model", model),
@@ -372,7 +408,12 @@ def compare_solo_vs_team(task: str) -> dict[str, Any]:
     """§13 — measured comparison. Does NOT assume team mode is superior."""
     solo = run_solo_baseline(task)
     executor = LocalTeamExecutor()
-    team = executor.run_bounded_team_task(task)
+    try:
+        team = executor.run_bounded_team_task(task)
+    finally:
+        # §12 hygiene: this helper is called directly by scripts and tests, so
+        # it must release even when the comparison raises.
+        executor.release_models()
     if team.get("state") != "VERIFIED_LOCAL":
         return {"state": team.get("state"), "reason": team.get("reason")}
     return OrderedDict([
