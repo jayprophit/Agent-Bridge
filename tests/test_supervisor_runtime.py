@@ -222,3 +222,27 @@ class TestRealAdapters:
         st = a.status()
         assert st["verdict"] == OFFLINE
         assert st["evidence"]
+
+
+class TestAdapterHonesty:
+    """§15/§24: a failed delivery is reported as failed. A fabricated
+    'delivered=True' would make the supervisor lie to itself."""
+
+    def test_failed_delivery_is_not_pending_verification(self, rt):
+        class FailingAdapter(FakeAdapter):
+            def send_instruction(self, instruction, continue_task=False):
+                return {"delivered": False,
+                        "evidence": ["Cannot connect to API"]}
+        a = FailingAdapter(script=[IDLE])
+        rt.register_adapter(a)
+        out = rt.run_cycle()
+        ci = out["workers"]["fake-1"]["check_in"]
+        assert ci["delivered"] is False
+        # honest: an undelivered instruction must NOT claim resumption pending
+        assert "fake-1" not in rt._pending_verification
+
+    def test_delivered_instruction_requires_verification(self, rt):
+        a = FakeAdapter(script=[IDLE])
+        rt.register_adapter(a)
+        rt.run_cycle()
+        assert "fake-1" in rt._pending_verification   # awaiting §45.8 proof
