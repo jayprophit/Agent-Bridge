@@ -15,6 +15,7 @@ import json
 import subprocess
 import os
 import sys
+from datetime import datetime
 
 import pytest
 
@@ -297,16 +298,73 @@ class TestCodexCooldownReallocation:
         p.write_text(line, encoding="utf-8")
         return p
 
-    def test_parse_cooldown_reads_live_reset_time(self, tmp_path):
+    def test_parse_cooldown_reads_live_reset_time(self, tmp_path, monkeypatch):
+        monkeypatch.setattr("compute.supervisor_runtime._now",
+                            lambda: datetime(2026, 10, 12, 14).timestamp())
         p = self._rollout(tmp_path, json.dumps({
+            "timestamp": "2026-10-12T14:00:00",
             "payload": {"type": "task_complete", "error": {
                 "codex_error_info": "usage_limit_exceeded",
                 "message": "hit your usage limit ... try again at 2:59 PM"}}}
         ) + "\n")
         cd = parse_codex_cooldown(p)
         assert cd is not None
-        assert cd["reset_at"] == "02:59" or cd["reset_at"] == "14:59"
-        assert cd["resets_in_s"] is not None and cd["resets_in_s"] > 0
+        assert cd["reset_at"] == "14:59"
+        assert cd["resets_in_s"] == 3540
+
+    @pytest.mark.parametrize("now", ["2026-10-12T14:59:00",
+                                     "2026-10-13T14:00:00"])
+    def test_elapsed_reset_does_not_roll_forward(self, tmp_path, monkeypatch, now):
+        p = self._rollout(tmp_path, json.dumps({
+            "timestamp": "2026-10-12T14:00:00", "type": "event_msg",
+            "payload": {"type": "task_complete", "error": {
+                "message": "usage_limit_exceeded try again at 2:59 PM"}}}))
+        monkeypatch.setattr("compute.supervisor_runtime._now",
+                            lambda: datetime.fromisoformat(now).timestamp())
+        assert parse_codex_cooldown(p) is None
+
+    def test_midnight_reset_is_anchored_to_error_date(self, tmp_path, monkeypatch):
+        p = self._rollout(tmp_path, json.dumps({
+            "timestamp": "2026-10-12T23:50:00", "type": "event_msg",
+            "payload": {"type": "task_complete", "error": {
+                "message": "usage_limit_exceeded try again at 12:15 AM"}}}))
+        monkeypatch.setattr("compute.supervisor_runtime._now",
+                            lambda: datetime(2026, 10, 13, 0, 5).timestamp())
+        assert parse_codex_cooldown(p) == {"reset_at": "00:15", "resets_in_s": 600}
+
+    @pytest.mark.parametrize("new_type", ["task_started", "task_complete"])
+    def test_new_turn_supersedes_cooldown(self, tmp_path, new_type):
+        p = self._rollout(tmp_path, json.dumps({"payload": {
+            "type": "task_complete", "error": "usage_limit_exceeded"}})
+            + "\n" + json.dumps({"type": "event_msg", "payload": {
+                "type": new_type, "error": None}}))
+        assert parse_codex_cooldown(p) is None
+
+    def test_quoted_error_is_not_a_cooldown_event(self, tmp_path):
+        p = self._rollout(tmp_path, json.dumps({"type": "response_item",
+            "payload": {"type": "message", "text":
+                        "usage_limit_exceeded try again at 2:59 PM"}}))
+        assert parse_codex_cooldown(p) is None
+
+    @pytest.mark.parametrize("message", ["usage_limit_exceeded",
+        "usage_limit_exceeded try again at 99:99 PM"])
+    def test_adapter_handles_unknown_reset(self, tmp_path, message):
+        sessions = tmp_path / "sessions"
+        sessions.mkdir()
+        self._rollout(sessions, json.dumps({"type": "event_msg", "payload": {
+            "type": "task_complete", "error": {"message": message}}}))
+        status = CodexAdapter(codex_home=str(tmp_path)).status()
+        assert status["verdict"] == WAITING_FOR_QUOTA
+        assert status["quota"]["resets_in_s"] is None
+        assert "reset time unknown" in status["evidence"][0]
+
+    @pytest.mark.parametrize("verdict", [RUNNING, IDLE])
+    def test_resumed_worker_clears_quota_display(self, rt, verdict):
+        rt.register_adapter(FakeAdapter(script=[verdict]))
+        rt.supervisor.heartbeat("fake-1", status=WAITING_FOR_QUOTA,
+                                quota_state={"reset_at": "14:59"})
+        rt.run_cycle()
+        assert rt.supervisor.worker("fake-1").quota_state == {}
 
     def test_no_cooldown_when_session_healthy(self, tmp_path):
         p = self._rollout(tmp_path, json.dumps({

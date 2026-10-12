@@ -48,6 +48,7 @@ import sys
 import threading
 import time
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Callable, Optional
 
@@ -125,28 +126,59 @@ def parse_codex_cooldown(rollout_path: Path) -> Optional[dict[str, Any]]:
     task_complete error. Returns None when the session is not in cooldown.
     Honesty: only reports a reset the model itself actually printed."""
     try:
-        tail = rollout_path.read_text(encoding="utf-8")[-4000:]
+        lines = rollout_path.read_text(encoding="utf-8").splitlines()
+        observed_at = rollout_path.stat().st_mtime
     except OSError:
         return None
-    if not _USAGE_LIMIT_RE.search(tail):
+    # Inspect lifecycle events, not quoted errors in prompts/tool output. A
+    # resumed or successfully completed turn supersedes the earlier cooldown.
+    event = None
+    for line in reversed(lines):
+        try:
+            candidate = json.loads(line)
+        except (ValueError, TypeError):
+            continue
+        if not isinstance(candidate, dict):
+            continue
+        payload = candidate.get("payload")
+        if (candidate.get("type") not in (None, "event_msg") or
+                not isinstance(payload, dict)):
+            continue
+        if payload.get("type") == "task_started":
+            return None
+        if payload.get("type") == "task_complete":
+            event = candidate
+            break
+    if event is None:
         return None
-    m = _COOLDOWN_TIME_RE.search(tail)
+    error = json.dumps(event["payload"].get("error"))
+    if not _USAGE_LIMIT_RE.search(error):
+        return None
+    m = _COOLDOWN_TIME_RE.search(error)
     if not m:
         return {"reset_at": None, "resets_in_s": None}
     hh, mm, ampm = int(m.group(1)), int(m.group(2)), m.group(3).upper()
+    if not 1 <= hh <= 12 or not 0 <= mm <= 59:
+        return {"reset_at": None, "resets_in_s": None}
     if ampm == "PM" and hh != 12:
         hh += 12
     if ampm == "AM" and hh == 12:
         hh = 0
-    now = time.localtime()
-    reset = time.struct_time((now.tm_year, now.tm_mon, now.tm_mday,
-                              hh, mm, 0, now.tm_wday, now.tm_yday,
-                              now.tm_isdst))
-    reset_ts = time.mktime(reset)
-    if reset_ts <= _now():          # reset already passed -> not cooling down
-        reset_ts += 86400.0
+    try:
+        observed_at = datetime.fromisoformat(
+            event["timestamp"].replace("Z", "+00:00")).timestamp()
+    except (KeyError, TypeError, ValueError, AttributeError):
+        pass  # Legacy records have only the rollout's modification time.
+    observed = datetime.fromtimestamp(observed_at)
+    reset = observed.replace(hour=hh, minute=mm, second=0, microsecond=0)
+    if reset < observed:
+        reset += timedelta(days=1)
+    reset_ts = reset.timestamp()
+    remaining = reset_ts - _now()
+    if remaining <= 0:
+        return None
     return {"reset_at": time.strftime("%H:%M", time.localtime(reset_ts)),
-            "resets_in_s": reset_ts - _now()}
+            "resets_in_s": remaining}
 
 
 @dataclass
@@ -283,10 +315,13 @@ class CodexAdapter(WorkerAdapter):
         # error text ('try again at 2:59 PM'), never a remembered limit.
         cooldown = parse_codex_cooldown(newest)
         if cooldown:
+            remaining = cooldown["resets_in_s"]
+            reset_evidence = (f"{remaining:.0f}s" if remaining is not None
+                              else "reset time unknown")
             return {"verdict": WAITING_FOR_QUOTA,
                     "evidence": [f"usage_limit_exceeded; resets "
                                  f"{cooldown['reset_at']} "
-                                 f"({cooldown['resets_in_s']:.0f}s) "
+                                 f"({reset_evidence}) "
                                  f"[{newest.name}]"],
                     "quota": {"pool": "five_hour",
                               "reset_at": cooldown["reset_at"],
@@ -400,7 +435,7 @@ class SupervisorRuntime:
             if rec is None:
                 continue
             if verdict == RUNNING:
-                self.supervisor.heartbeat(wid, status="IMPLEMENTING")
+                self.supervisor.heartbeat(wid, status="IMPLEMENTING", quota_state={})
                 self.idle_reasons.pop(wid, None)
                 # §45.8: resumption verified — clear the pending flag
                 if wid in self._pending_verification:
@@ -408,6 +443,7 @@ class SupervisorRuntime:
                     actions["workers"][wid]["resumption_verified"] = True
                     self._emit("worker.resumption_verified", worker=wid)
             elif verdict == IDLE:
+                rec.quota_state = {}
                 # §6 WORKER COMPLETION EVENT -> SUPERVISOR_CHECKIN (§45)
                 self._check_in(wid, adapter, actions)
             elif verdict == WAITING_FOR_QUOTA:
