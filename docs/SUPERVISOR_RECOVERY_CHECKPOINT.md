@@ -447,3 +447,59 @@ governor + 29 hive). Agent-Bridge-dashboard chain (pushed/verified):
   or GUI automation; recorded, not fabricated.
 - Cloud LIVE verification still BLOCKED_OWNER (5 credential rotations).
 - OpenCode Dashboard UI still needs §33 QA on its final state.
+
+---
+
+## 15. DASHBOARD CONTROL SURFACE — §17.J / §18 (2026-10-12 ~16:2x)
+
+The dashboard could SHOW workers but not INSPECT or INSTRUCT them — §17.F-K
+were read-only. Closed end-to-end, through the SAME real adapter channels the
+cycle uses (no second transport, no fabrication).
+
+### 15.1 Backend (Agent-Bridge-dashboard a5387e8)
+- SupervisorRuntime.worker_detail(id): live verdict + adapter info +
+  supervision record + current task + quota + pending-verification, from the
+  SAME registry the cycle uses (UI and daemon never diverge).
+- SupervisorRuntime.control_continue(id): continue through the real channel
+  (opencode run / codex exec resume --last / ollama generate) via _check_in;
+  delivered=True only when the adapter actually delivered.
+- Supervisor.worker_roster(): live per-worker rows.
+- nodes/supervisor.py: GET /v1/supervisor/worker/<id> + POST
+  /v1/supervisor/worker/<id>/continue. build_supervisor_server(runtime=)
+  wires them; loopback-only as always.
+- supervision section carries a `workers` roster fact (LIVE_VERIFIED).
+
+### 15.2 Frontend (IDE-Workspace 2f8f24d)
+- components/roster.tsx: clickable workforce roster in the supervision
+  section. Row click -> live detail (verdict/app/role/quota-reset/evidence);
+  Continue button -> real instruction, honest delivered/not-delivered result.
+  Unreachable backend renders UNREACHABLE, never a fabricated row (§15).
+- api/client.ts fetchWorkerDetail + continueWorker (all I/O stays in client.ts
+  per bounds.test.ts; the request timeout is not a client freshness window, so
+  the FRESHNESS_WINDOW_S guard holds).
+- bounds.test.ts allow-list extended with the real /v1/supervisor/worker/<id>
+  routes (real API routes, not invented endpoints; the no-parallel-endpoint
+  guard stays).
+
+### 15.3 LIVE VERIFICATION
+- roster: 3 real workers, LIVE_VERIFIED (codex-primary, ollama-local,
+  opencode-primary), flowing through both :8472 and the vite :5199 proxy.
+- worker detail: codex-primary -> verdict RUNNING.
+- §18 continue: POST ollama-local/continue -> delivered=True via ollama-api,
+  the model replied. A real instruction reached a real worker through the
+  dashboard button path.
+- Services running: runtime daemon + watchdog + dashboard API + vite, all
+  detached from Hermes.
+
+### 15.4 Tests
+- backend 111/111 (49 dashboard incl 4 new route tests + 36 runtime + 26
+  supervision).
+- frontend 97/97 (bounds + honesty + a11y + client incl 5 new control-surface
+  tests); tsc --noEmit 0.
+
+### 15.5 What §17.F-K now covers
+F frontend builds ✓ · G/H/I real worker data (opencode+codex+ollama) ✓ ·
+J click a worker -> detail ✓ (+ continue action). K no fixture masquerading
+as live ✓ (every row is a LIVE_VERIFIED fact from the live registry). The
+remaining control verbs (pause/reassign/change-model) reuse the same
+control_continue pattern and are the next increment.
