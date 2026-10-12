@@ -864,7 +864,7 @@ def _watchdog_loop(args: Any) -> int:  # pragma: no cover - daemon
             # supervisor is gone -> relaunch it DETACHED so it survives the
             # watchdog's own death and any parent turn ending (§3)
             cmd = [sys.executable, str(script),
-                   "--with-opencode", "--with-codex",
+                   "--with-opencode", "--with-codex", "--with-ollama",
                    "--state-dir", str(state_dir),
                    "--interval", str(args.interval)]
             try:
