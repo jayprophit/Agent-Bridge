@@ -313,3 +313,65 @@ Codex verified ACTIVE (rollout mtime 12:56, MAT) — left alone (read-only).
 SUPERVISION STATE: both external workers RUNNING. No idle workers, no unread
 handoffs, no uncorrected failures. Hermes continues the §33 loop: QA OpenCode
 on its next completion, QA Codex on MAT completion.
+
+---
+
+## 13. PERSISTENT SUPERVISOR RUNTIME — the chat no longer hosts the loop (2026-10-12 ~14:4x)
+
+THE CHAT MAY END. THE SUPERVISOR MUST NOT. (§runtime directive)
+
+Delivered on Agent-Bridge-dashboard `unit/external-worker-telemetry`, pushed
++ remote-verified: aa41dc0 (runtime + quota pools) -> ed317ab (honesty
+contract + logon launcher).
+
+### 13.1 compute/supervisor_runtime.py — the durable process
+- §33 cycle: adapters observe workers -> heartbeats -> idle/stall detect ->
+  handoff review -> fast gap -> watchdogs -> atomic checkpoint -> sleep.
+- §9 Universal ExternalWorkerAdapter: status() / send_instruction() /
+  current_task() / quota_state(). Real adapters, both live-verified:
+  * OpenCodeAdapter — `opencode db` telemetry; `opencode run` headless
+    instruction. GUI-composer clipboard limitation recorded, not hidden.
+  * CodexAdapter — rollout-JSONL newest-by-mtime (a resumed old session
+    writing NOW is correctly RUNNING); `codex exec resume --last` = the
+    session-preserving CONTINUE channel (§36).
+- §45.8: idle -> automatic check-in (CONTINUE THE CURRENT BOUNDED TASK) ->
+  _pending_verification until the worker verifiably RUNS again. One honest
+  continuation computation.
+- §11-§14 watchdogs: unread handoffs / idle-without-reason (SUPERVISOR
+  DEFECT) / ready-work-with-idle-workers; scans ALL supervised workers so a
+  vanished adapter never drops a worker (§32).
+- §18/§32: atomic checkpoint (tmp+replace); recover() reloads state, marks
+  stale heartbeats INTERRUPTED. continuation_required computed FRESH at
+  persist — a power-cut checkpoint is always truthful (§27).
+- CLI: --once / --status / daemon; --with-opencode --with-codex.
+
+### 13.2 Quota pools — compute/hive_scheduler.py (§quota directive)
+Independent windows, never one number (§2): SHORT_WINDOW (Codex five-hour) /
+WEEKLY / MONTHLY / CREDIT_PERIOD / MODEL_SPECIFIC / REQUEST_RATE /
+CONCURRENCY / BANKED_RESET / PROMOTIONAL. QuotaLedgerEntry gains pool /
+pool_id (shared pools, §15) / paid_option_available (recorded, NEVER acted
+on, §10). worker_capacity() = MOST RESTRICTIVE known pool (§4: 80%
+five-hour + 18% weekly is an 18% worker); any known-empty pool = hard skip;
+UNKNOWN never treated as exhausted (§38). record_plan() = full PlanProfile.
+New OWNED_PAID_ENTITLEMENT tier for the owner's existing Codex/ChatGPT sub.
+
+### 13.3 LIVE EVIDENCE (§30/§32 acceptance)
+- Daemon RUNNING as a background process (pid 22072, 120s cycles,
+  checkpointing). Started WITHOUT elevation — no chat turn required.
+- Single-cycle run against the REAL workers: both detected IDLE past their
+  windows -> automatic check-in fired for BOTH without any chat message.
+- Headless delivery verified end-to-end: runtime sent an instruction via
+  `opencode run`; the model replied exactly RUNTIME-CHECK-OK ->
+  delivered=True with real response evidence. §30 D/E proven.
+- Honest failure captured earlier in the session: with Ollama down, both
+  headless deliveries returned delivered=False ('Cannot connect to API' —
+  opencode run defaults to the local qwen model). The runtime did NOT
+  fabricate success; Ollama was restarted (0.34.4 UP) and delivery then
+  worked. The honesty contract is test-pinned (17/17 runtime tests).
+
+### 13.4 OWNER GATE (the one unavoidable gate, §20/§27)
+`schtasks /Create` needs an elevated shell (Access denied otherwise). The
+single owner action is documented in
+docs/SUPERVISOR_RUNTIME_STARTUP.md (one elevated PowerShell command). It
+blocks ONLY auto-start-at-logon; the runtime is built, tested, live-verified
+and RUNNING without it. Start-now/status/uninstall need no elevation.
