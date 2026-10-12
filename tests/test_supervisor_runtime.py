@@ -20,8 +20,8 @@ import pytest
 
 from compute.supervisor_runtime import (
     IDLE, NO_COMPATIBLE_READY_WORK, OFFLINE, RUNNING, SUPERVISOR_DEFECT,
-    UNKNOWN_VERDICT, CodexAdapter, OpenCodeAdapter, SupervisorRuntime,
-    WorkerAdapter)
+    UNKNOWN_VERDICT, WAITING_FOR_QUOTA, CodexAdapter, OpenCodeAdapter,
+    SupervisorRuntime, WorkerAdapter, parse_codex_cooldown)
 from compute.supervision import ACCEPT, Gap, Handoff
 
 
@@ -215,7 +215,8 @@ class TestRealAdapters:
     def test_codex_adapter_returns_a_verdict(self):
         a = CodexAdapter(liveness_window_s=900.0)
         st = a.status()
-        assert st["verdict"] in (RUNNING, IDLE, OFFLINE, UNKNOWN_VERDICT)
+        assert st["verdict"] in (RUNNING, IDLE, OFFLINE, UNKNOWN_VERDICT,
+                                 WAITING_FOR_QUOTA)
         assert st["evidence"]
 
     def test_adapters_report_unknown_not_fake(self, tmp_path):
@@ -285,3 +286,48 @@ class TestInstanceLock:
         other.release_instance_lock()   # not ours — must NOT free it
         assert (rt.state_dir / "supervisor.lock").exists()
         rt.release_instance_lock()
+
+
+class TestCodexCooldownReallocation:
+    """§4/§5: Codex hitting its usage limit -> WAITING_FOR_QUOTA + a
+    worker.capacity_unavailable event. The programme must NOT stall."""
+
+    def _rollout(self, tmp_path: Path, line: str) -> Path:
+        p = tmp_path / "rollout-test.jsonl"
+        p.write_text(line, encoding="utf-8")
+        return p
+
+    def test_parse_cooldown_reads_live_reset_time(self, tmp_path):
+        p = self._rollout(tmp_path, json.dumps({
+            "payload": {"type": "task_complete", "error": {
+                "codex_error_info": "usage_limit_exceeded",
+                "message": "hit your usage limit ... try again at 2:59 PM"}}}
+        ) + "\n")
+        cd = parse_codex_cooldown(p)
+        assert cd is not None
+        assert cd["reset_at"] == "02:59" or cd["reset_at"] == "14:59"
+        assert cd["resets_in_s"] is not None and cd["resets_in_s"] > 0
+
+    def test_no_cooldown_when_session_healthy(self, tmp_path):
+        p = self._rollout(tmp_path, json.dumps({
+            "payload": {"type": "task_complete", "error": None}}) + "\n")
+        assert parse_codex_cooldown(p) is None
+
+    def test_cooldown_emits_capacity_unavailable_not_stall(self, rt):
+        class CooldownCodex(FakeAdapter):
+            def status(self):
+                return {"verdict": WAITING_FOR_QUOTA,
+                        "evidence": ["usage_limit_exceeded"],
+                        "quota": {"pool": "five_hour",
+                                  "reset_at": "14:59",
+                                  "resets_in_s": 3600.0}}
+        rt.register_adapter(CooldownCodex(worker_id="codex-primary"))
+        out = rt.run_cycle()
+        w = out["workers"]["codex-primary"]
+        assert w["verdict"] == WAITING_FOR_QUOTA
+        assert w["capacity_unavailable"]["reset_at"] == "14:59"
+        # the programme keeps going: the cooldown worker is NOT reassigned
+        # mid-write-set, but its quota state is recorded for the dashboard
+        rec = rt.supervisor.worker("codex-primary")
+        assert rec.status == WAITING_FOR_QUOTA
+        assert rec.quota_state["reset_at"] == "14:59"

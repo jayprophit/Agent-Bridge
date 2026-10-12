@@ -41,6 +41,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -69,6 +70,7 @@ IDLE = "IDLE"
 OFFLINE = "OFFLINE"
 STALLED = "STALLED"
 UNKNOWN_VERDICT = "UNKNOWN"
+WAITING_FOR_QUOTA = "WAITING_FOR_QUOTA"   # §4: usage-limit cooldown
 
 # --- idle reasons (§12: an idle worker with NO idle_reason is a DEFECT) --------
 NO_COMPATIBLE_READY_WORK = "NO_COMPATIBLE_READY_WORK"
@@ -109,6 +111,42 @@ def _pid_alive(pid: int) -> bool:
         return str(pid) in (r.stdout or "")
     except (subprocess.TimeoutExpired, OSError):
         return False
+
+
+_COOLDOWN_TIME_RE = re.compile(
+    r"try again at\s+(\d{1,2}):(\d{2})\s*(AM|PM)", re.IGNORECASE)
+_USAGE_LIMIT_RE = re.compile(r"usage_limit_exceeded|usage limit|"
+                             r"hit your usage", re.IGNORECASE)
+
+
+def parse_codex_cooldown(rollout_path: Path) -> Optional[dict[str, Any]]:
+    """§4: read the LIVE five-hour reset time from the newest rollout.
+    Codex writes 'usage_limit_exceeded ... try again at 2:59 PM' into the
+    task_complete error. Returns None when the session is not in cooldown.
+    Honesty: only reports a reset the model itself actually printed."""
+    try:
+        tail = rollout_path.read_text(encoding="utf-8")[-4000:]
+    except OSError:
+        return None
+    if not _USAGE_LIMIT_RE.search(tail):
+        return None
+    m = _COOLDOWN_TIME_RE.search(tail)
+    if not m:
+        return {"reset_at": None, "resets_in_s": None}
+    hh, mm, ampm = int(m.group(1)), int(m.group(2)), m.group(3).upper()
+    if ampm == "PM" and hh != 12:
+        hh += 12
+    if ampm == "AM" and hh == 12:
+        hh = 0
+    now = time.localtime()
+    reset = time.struct_time((now.tm_year, now.tm_mon, now.tm_mday,
+                              hh, mm, 0, now.tm_wday, now.tm_yday,
+                              now.tm_isdst))
+    reset_ts = time.mktime(reset)
+    if reset_ts <= _now():          # reset already passed -> not cooling down
+        reset_ts += 86400.0
+    return {"reset_at": time.strftime("%H:%M", time.localtime(reset_ts)),
+            "resets_in_s": reset_ts - _now()}
 
 
 @dataclass
@@ -240,6 +278,19 @@ class CodexAdapter(WorkerAdapter):
         if newest is None:
             return {"verdict": OFFLINE, "evidence": ["no rollout files"]}
         age_s = _now() - newest_m
+        # §4/§5: a usage-limit task_complete in the newest rollout means
+        # Codex is in QUOTA COOLDOWN — read the LIVE reset time from the
+        # error text ('try again at 2:59 PM'), never a remembered limit.
+        cooldown = parse_codex_cooldown(newest)
+        if cooldown:
+            return {"verdict": WAITING_FOR_QUOTA,
+                    "evidence": [f"usage_limit_exceeded; resets "
+                                 f"{cooldown['reset_at']} "
+                                 f"({cooldown['resets_in_s']:.0f}s) "
+                                 f"[{newest.name}]"],
+                    "quota": {"pool": "five_hour",
+                              "reset_at": cooldown["reset_at"],
+                              "resets_in_s": cooldown["resets_in_s"]}}
         verdict = RUNNING if age_s <= self.liveness_window_s else IDLE
         return {"verdict": verdict,
                 "evidence": [f"newest rollout {newest.name} "
@@ -359,6 +410,20 @@ class SupervisorRuntime:
             elif verdict == IDLE:
                 # §6 WORKER COMPLETION EVENT -> SUPERVISOR_CHECKIN (§45)
                 self._check_in(wid, adapter, actions)
+            elif verdict == WAITING_FOR_QUOTA:
+                # §4/§5: Codex cooldown is NOT a programme stop. Emit the
+                # capacity event, checkpoint its task/write ownership
+                # (KEEP RESERVED — do not reassign mid-write-set), and let
+                # the rest of the workforce keep producing. Codex re-enters
+                # the pool automatically when its reset arrives.
+                quota = st.get("quota", {})
+                self.supervisor.heartbeat(wid, status="WAITING_FOR_QUOTA",
+                                          quota_state=quota)
+                actions["workers"][wid]["capacity_unavailable"] = quota
+                self._emit("worker.capacity_unavailable", worker=wid,
+                           pool=quota.get("pool", "unknown"),
+                           reset_at=quota.get("reset_at"),
+                           resets_in_s=quota.get("resets_in_s"))
             elif verdict == STALLED:
                 self.supervisor.heartbeat(wid, status="INTERRUPTED")
             # OFFLINE / UNKNOWN: record honestly, do not fabricate health

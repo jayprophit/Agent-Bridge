@@ -126,6 +126,9 @@ class WorkerRecord:
     handoff_state: str = ""
     review_state: str = ""
     next_action: str = ""
+    # §4/§16: live quota state (pool, reset_at, resets_in_s) so the
+    # dashboard shows WAITING_FOR_QUOTA with its real reset time.
+    quota_state: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
