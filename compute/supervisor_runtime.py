@@ -40,6 +40,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import signal
 import subprocess
 import sys
@@ -89,6 +90,25 @@ NIGHT = "NIGHT"
 
 def _now() -> float:
     return time.time()
+
+
+def _pid_alive(pid: int) -> bool:
+    """Cross-platform liveness check for the instance lock / watchdog."""
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except (OSError, ValueError):
+        pass
+    # Windows: os.kill(pid, 0) succeeds for any existing pid on some shells;
+    # confirm via tasklist for a definitive answer.
+    try:
+        r = subprocess.run(["tasklist", "/FI", f"PID eq {pid}"],
+                           capture_output=True, text=True, timeout=15.0)
+        return str(pid) in (r.stdout or "")
+    except (subprocess.TimeoutExpired, OSError):
+        return False
 
 
 @dataclass
@@ -492,6 +512,57 @@ class SupervisorRuntime:
         return recovered
 
     # -- daemon (§4: event-driven where possible, no busy-loop) ---------------------
+    def acquire_instance_lock(self) -> bool:
+        """§2 single-instance protection: exactly ONE Supervisor Runtime per
+        state-dir. A stale lock (dead pid) is reclaimed. Returns False when
+        another live instance owns the lock — the caller must exit rather
+        than run a duplicate supervisor."""
+        lock_path = self.state_dir / "supervisor.lock"
+        self._lock_path = lock_path
+        try:
+            if lock_path.exists():
+                try:
+                    other = json.loads(lock_path.read_text(
+                        encoding="utf-8"))
+                    other_pid = int(other.get("pid", -1))
+                except (ValueError, json.JSONDecodeError):
+                    other_pid = -1
+                # another live OS process owns it -> refuse. A stale lock
+                # (dead pid, or a pid that is merely this same process
+                # testing itself) is reclaimed.
+                if other_pid > 0 and other_pid != os.getpid() and \
+                        _pid_alive(other_pid) and not \
+                        self._is_self_test_lock(other_pid):
+                    return False      # a live supervisor owns this state
+            tmp = lock_path.with_suffix(".tmp")
+            tmp.write_text(json.dumps({
+                "pid": os.getpid(),
+                "acquired_at": _now(),
+                "adapters": sorted(self.adapters),
+            }), encoding="utf-8")
+            tmp.replace(lock_path)
+            return True
+        except OSError:
+            return True   # lock unwritable: proceed (single-host assumption)
+
+    def release_instance_lock(self) -> None:
+        lock_path = getattr(self, "_lock_path", None)
+        if lock_path and lock_path.exists():
+            try:
+                data = json.loads(lock_path.read_text(encoding="utf-8"))
+                if data.get("pid") == os.getpid():
+                    lock_path.unlink()
+            except (OSError, json.JSONDecodeError):
+                pass
+
+    @staticmethod
+    def _is_self_test_lock(pid: int) -> bool:
+        """A lock written by THIS SAME OS process (unit tests construct two
+        runtimes in one process) is not a competing supervisor — the real
+        cross-process guarantee comes from the distinct-pid + liveness check
+        in acquire_instance_lock."""
+        return pid == os.getpid()
+
     def run_forever(self) -> None:  # pragma: no cover - daemon loop
         """§33/§48: the loop runs until STOPPED (signal or explicit stop) —
         NEVER until continuation_required happens to be False. A quiet cycle
@@ -499,15 +570,22 @@ class SupervisorRuntime:
         watching, not a reason to exit; the next idle worker must still be
         caught (§7: 'OpenCode must remain registered after task assignment').
         """
+        if not self.acquire_instance_lock():
+            self._emit("runtime.duplicate_instance_refused",
+                       pid=os.getpid())
+            return
         self.recover()
         self._install_signal_handlers()
-        while not self._stop.is_set():
-            try:
-                self.run_cycle()
-            except Exception as e:  # noqa: BLE001 — §24 worker failure != stop
-                self._emit("runtime.cycle_error", error=str(e))
-            self._stop.wait(self.cycle_interval_s)
-        self.persist()   # §32: persist before any boundary
+        try:
+            while not self._stop.is_set():
+                try:
+                    self.run_cycle()
+                except Exception as e:  # noqa: BLE001 — §24 failure != stop
+                    self._emit("runtime.cycle_error", error=str(e))
+                self._stop.wait(self.cycle_interval_s)
+        finally:
+            self.persist()   # §32: persist before any boundary
+            self.release_instance_lock()
 
     def _install_signal_handlers(self) -> None:  # pragma: no cover
         def _handler(signum: int, frame: Any) -> None:
@@ -546,7 +624,14 @@ def main(argv: Optional[list[str]] = None) -> int:  # pragma: no cover
                         help="print the durable checkpoint and exit")
     parser.add_argument("--with-opencode", action="store_true")
     parser.add_argument("--with-codex", action="store_true")
+    parser.add_argument("--watchdog", action="store_true",
+                        help="run as the persistence watchdog (§2): ensure "
+                             "exactly one Supervisor Runtime is alive, "
+                             "restart it if not. Does NO project work.")
     args = parser.parse_args(argv)
+
+    if args.watchdog:
+        return _watchdog_loop(args)
 
     adapters: list[WorkerAdapter] = []
     if args.with_opencode:
@@ -564,6 +649,73 @@ def main(argv: Optional[list[str]] = None) -> int:  # pragma: no cover
         return 0
     runtime.run_forever()
     return 0
+
+
+def _watchdog_loop(args: Any) -> int:  # pragma: no cover - daemon
+    """§2 PERSISTENCE WATCHDOG: the supervisor-of-the-supervisor. Its ONLY
+    job is that the Supervisor Runtime exists. It performs no project
+    engineering. Architecture:
+
+        WINDOWS -> WATCHDOG -> SUPERVISOR RUNTIME -> WORKER POOL
+
+    Cycle: is the supervisor process alive? YES -> leave it alone.
+    NO -> read the last checkpoint -> relaunch the runtime detached ->
+    continue. Single-instance is enforced by the runtime's own lock, so a
+    race between watchdog and a manual start cannot produce duplicates.
+    """
+    state_dir = Path(args.state_dir)
+    state_dir.mkdir(parents=True, exist_ok=True)
+    lock_path = state_dir / "supervisor.lock"
+    script = Path(__file__).resolve()
+    repo_root = script.parent.parent
+    stop = threading.Event()
+
+    def _handler(signum: int, frame: Any) -> None:
+        stop.set()
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        try:
+            signal.signal(sig, _handler)
+        except (ValueError, OSError):
+            pass
+
+    while not stop.is_set():
+        pid = None
+        if lock_path.exists():
+            try:
+                pid = int(json.loads(lock_path.read_text(
+                    encoding="utf-8")).get("pid", -1))
+            except (ValueError, json.JSONDecodeError, OSError):
+                pid = -1
+        if pid is None or not _pid_alive(pid):
+            # supervisor is gone -> relaunch it DETACHED so it survives the
+            # watchdog's own death and any parent turn ending (§3)
+            cmd = [sys.executable, str(script),
+                   "--with-opencode", "--with-codex",
+                   "--state-dir", str(state_dir),
+                   "--interval", str(args.interval)]
+            try:
+                subprocess.Popen(
+                    cmd, cwd=str(repo_root),
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                    stdin=subprocess.DEVNULL,
+                    creationflags=getattr(subprocess,
+                                          "DETACHED_PROCESS", 0)
+                    | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0))
+                _watchdog_log(state_dir, f"supervisor relaunched "
+                                         f"(was pid {pid})")
+            except OSError as e:
+                _watchdog_log(state_dir, f"relaunch failed: {e}")
+        stop.wait(max(30.0, args.interval / 2))
+    return 0
+
+
+def _watchdog_log(state_dir: Path, msg: str) -> None:
+    """Append-only watchdog journal — power-cut readable, never rewritten."""
+    try:
+        with (state_dir / "watchdog.log").open("a", encoding="utf-8") as f:
+            f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {msg}\n")
+    except OSError:
+        pass
 
 
 if __name__ == "__main__":

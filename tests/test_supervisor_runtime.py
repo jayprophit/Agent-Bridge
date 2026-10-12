@@ -12,6 +12,9 @@ no live worker is disturbed:
 from __future__ import annotations
 
 import json
+import subprocess
+import os
+import sys
 
 import pytest
 
@@ -246,3 +249,39 @@ class TestAdapterHonesty:
         rt.register_adapter(a)
         rt.run_cycle()
         assert "fake-1" in rt._pending_verification   # awaiting §45.8 proof
+
+
+class TestInstanceLock:
+    """§2: exactly ONE Supervisor Runtime per state-dir. A race or a manual
+    double-start must never create two supervisors."""
+
+    def test_second_instance_refused_while_first_alive(self, rt):
+        assert rt.acquire_instance_lock() is True
+        # a SEPARATE OS PROCESS holding the lock must be refused — this is
+        # the only honest proof of single-instance (same-process objects
+        # share a pid and cannot model a competing supervisor).
+        probe = subprocess.run(
+            [sys.executable, "-c",
+             "import sys, json; sys.path.insert(0, '.');"
+             "from compute.supervisor_runtime import SupervisorRuntime;"
+             "rt = SupervisorRuntime(sys.argv[1]);"
+             "print(json.dumps(rt.acquire_instance_lock()))",
+             str(rt.state_dir)],
+            capture_output=True, text=True, timeout=60.0)
+        assert json.loads(probe.stdout.strip()) is False
+        rt.release_instance_lock()
+
+    def test_stale_lock_from_dead_pid_is_reclaimed(self, rt):
+        lock = rt.state_dir / "supervisor.lock"
+        lock.write_text(json.dumps({"pid": 999999}), encoding="utf-8")
+        assert rt.acquire_instance_lock() is True
+        assert json.loads(lock.read_text(encoding="utf-8"))["pid"] == \
+            os.getpid()
+        rt.release_instance_lock()
+
+    def test_release_only_frees_own_lock(self, rt):
+        rt.acquire_instance_lock()
+        other = SupervisorRuntime(str(rt.state_dir))
+        other.release_instance_lock()   # not ours — must NOT free it
+        assert (rt.state_dir / "supervisor.lock").exists()
+        rt.release_instance_lock()
