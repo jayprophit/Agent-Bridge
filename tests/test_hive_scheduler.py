@@ -268,3 +268,97 @@ class TestOverview:
         h.route(_task())
         assert h.overview()["waiting_for_quota"] == 1
         assert "t1" in h._deferred
+
+
+class TestQuotaPools:
+    """§2/§4 of the quota directive: independent allowance windows; capacity
+    is the MOST RESTRICTIVE window, never an average."""
+
+    def _entry(self, worker, pool, total, remaining, tier=FREE_TIER):
+        from compute.hive_scheduler import (
+            FREE_TIER as FT, POOL_SHORT_WINDOW as SW, POOL_WEEKLY as WK,
+            QuotaLedgerEntry, VERIFIED)
+        return QuotaLedgerEntry(
+            worker_id=worker, provider="codex", tier=tier,
+            quota_total=total, quota_remaining=remaining,
+            pool=pool, confidence=VERIFIED)
+
+    def test_capacity_is_most_restrictive_window(self):
+        from compute.hive_scheduler import (
+            POOL_SHORT_WINDOW, POOL_WEEKLY, HiveScheduler, FREE_TIER,
+            QuotaLedgerEntry, VERIFIED)
+        h = HiveScheduler()
+        h.register_worker("w", provider="codex", tier=FREE_TIER)
+        # five-hour at 80%, weekly at 18% -> the worker is an 18% worker (§4)
+        h.record_quota(QuotaLedgerEntry(
+            worker_id="w", provider="codex", tier=FREE_TIER,
+            quota_total=100, quota_remaining=80,
+            pool=POOL_SHORT_WINDOW, confidence=VERIFIED))
+        h.record_quota(QuotaLedgerEntry(
+            worker_id="w", provider="codex", tier=FREE_TIER,
+            quota_total=100, quota_remaining=18,
+            pool=POOL_WEEKLY, confidence=VERIFIED))
+        cap = h.worker_capacity("w")
+        assert cap["capacity"] == 0.18
+        assert cap["pools_known"] == 2
+
+    def test_any_known_empty_pool_blocks_worker(self):
+        from compute.hive_scheduler import (
+            POOL_SHORT_WINDOW, POOL_WEEKLY, HiveScheduler, FREE_TIER,
+            QuotaLedgerEntry, VERIFIED, TaskSpec)
+        h = HiveScheduler()
+        h.register_worker("w", provider="codex", tier=FREE_TIER,
+                          capabilities=("CODING_AGENT",))
+        h.record_quota(QuotaLedgerEntry(
+            worker_id="w", provider="codex", tier=FREE_TIER,
+            quota_total=100, quota_remaining=80,
+            pool=POOL_SHORT_WINDOW, confidence=VERIFIED))
+        h.record_quota(QuotaLedgerEntry(
+            worker_id="w", provider="codex", tier=FREE_TIER,
+            quota_total=100, quota_remaining=0,
+            pool=POOL_WEEKLY, confidence=VERIFIED))
+        # weekly empty -> hard skip even though five-hour has 80% (§27)
+        assert h.worker_score("w", TaskSpec(
+            task_id="t", title="t",
+            required_capability="CODING_AGENT")) is None
+
+    def test_unknown_pool_is_not_exhausted(self):
+        from compute.hive_scheduler import (
+            HiveScheduler, FREE_TIER, QuotaLedgerEntry, VERIFIED)
+        h = HiveScheduler()
+        h.register_worker("w", provider="x", tier=FREE_TIER)
+        h.record_quota(QuotaLedgerEntry(
+            worker_id="w", provider="x", tier=FREE_TIER,
+            confidence=VERIFIED))   # all None -> UNKNOWN
+        cap = h.worker_capacity("w")
+        assert cap["capacity"] is None      # honest UNKNOWN
+        assert cap["exhausted"] is False
+
+    def test_record_plan_stores_pools_and_banked(self):
+        from compute.hive_scheduler import (
+            POOL_SHORT_WINDOW, POOL_WEEKLY, HiveScheduler,
+            OWNED_PAID_ENTITLEMENT as OPE, QuotaLedgerEntry, VERIFIED)
+        h = HiveScheduler()
+        h.record_plan("codex-primary", "codex", OPE, [
+            QuotaLedgerEntry(worker_id="codex-primary", provider="codex",
+                             tier=OPE, pool=POOL_SHORT_WINDOW,
+                             confidence=VERIFIED),
+            QuotaLedgerEntry(worker_id="codex-primary", provider="codex",
+                             tier=OPE, pool=POOL_WEEKLY,
+                             confidence=VERIFIED),
+        ], banked_resets=1)
+        cap = h.worker_capacity("codex-primary")
+        assert cap["pools_total"] == 2
+
+    def test_paid_option_recorded_never_acted_on(self):
+        from compute.hive_scheduler import (
+            POOL_WEEKLY, HiveScheduler, FREE_TIER, QuotaLedgerEntry, VERIFIED)
+        h = HiveScheduler()
+        h.register_worker("w", provider="x", tier=FREE_TIER)
+        h.record_quota(QuotaLedgerEntry(
+            worker_id="w", provider="x", tier=FREE_TIER,
+            pool=POOL_WEEKLY, confidence=VERIFIED,
+            paid_option_available=True))
+        cap = h.worker_capacity("w")
+        # §10: the fact is recorded; no scheduler path purchases anything
+        assert cap["paid_option_available"] is True

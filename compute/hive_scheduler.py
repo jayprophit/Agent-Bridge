@@ -51,8 +51,25 @@ FREE_TIER = "FREE_TIER"
 FREEMIUM = "FREEMIUM"
 TRIAL = "TRIAL"
 PAID = "PAID"
+OWNED_PAID_ENTITLEMENT = "OWNED_PAID_ENTITLEMENT"  # existing owner-paid sub
 TIERS = frozenset({LOCAL_UNLIMITED, FREE, FREE_PLAN, FREE_TIER, FREEMIUM,
-                   TRIAL, PAID, UNKNOWN})
+                   TRIAL, PAID, OWNED_PAID_ENTITLEMENT, UNKNOWN})
+
+# --- quota POOLS (§2 of the quota directive: limits are INDEPENDENT windows,
+# never one number — five-hour + weekly + monthly each gate separately) ------
+POOL_SHORT_WINDOW = "SHORT_WINDOW"      # e.g. Codex five-hour allowance
+POOL_WEEKLY = "WEEKLY"
+POOL_MONTHLY = "MONTHLY"
+POOL_CREDIT_PERIOD = "CREDIT_PERIOD"    # monthly credit/usage allowance view
+POOL_MODEL_SPECIFIC = "MODEL_SPECIFIC"
+POOL_REQUEST_RATE = "REQUEST_RATE"
+POOL_CONCURRENCY = "CONCURRENCY"
+POOL_BANKED_RESET = "BANKED_RESET"
+POOL_PROMOTIONAL = "PROMOTIONAL_RESET"
+QUOTA_POOLS = frozenset({POOL_SHORT_WINDOW, POOL_WEEKLY, POOL_MONTHLY,
+                         POOL_CREDIT_PERIOD, POOL_MODEL_SPECIFIC,
+                         POOL_REQUEST_RATE, POOL_CONCURRENCY,
+                         POOL_BANKED_RESET, POOL_PROMOTIONAL, UNKNOWN})
 
 # --- reset cadence (§5, §24) -------------------------------------------------
 HOURLY = "HOURLY"
@@ -127,6 +144,13 @@ class QuotaLedgerEntry:
 
     quota_remaining=None means UNKNOWN (never 0-as-fabrication and never a
     guessed percentage). confidence says how the number was obtained.
+
+    `pool` (§2 of the quota directive): which INDEPENDENT allowance window
+    this entry describes — SHORT_WINDOW (five-hour), WEEKLY, MONTHLY, ... A
+    worker with several pools needs each recorded separately; capacity is the
+    MOST RESTRICTIVE window, never an average (§4). `pool_id` identifies a
+    shared pool so the scheduler knows two apps drawing on the same account
+    allowance reduce each other's capacity (§15 of the quota directive).
     """
     worker_id: str
     provider: str
@@ -139,6 +163,9 @@ class QuotaLedgerEntry:
     next_reset_epoch: Optional[float] = None
     confidence: str = UNKNOWN
     source: str = ""
+    pool: str = UNKNOWN
+    pool_id: str = ""
+    paid_option_available: bool = False     # §10: recorded, NEVER purchased
     observed_at: str = field(default_factory=_now_iso)
 
     def __post_init__(self) -> None:
@@ -148,6 +175,8 @@ class QuotaLedgerEntry:
             raise ValueError(f"unknown confidence {self.confidence!r}")
         if self.reset_type not in RESET_TYPES:
             raise ValueError(f"unknown reset_type {self.reset_type!r}")
+        if self.pool not in QUOTA_POOLS:
+            raise ValueError(f"unknown pool {self.pool!r}")
 
     def remaining_fraction(self) -> Optional[float]:
         """Honest remaining fraction, or None when UNKNOWN (§38)."""
@@ -155,6 +184,12 @@ class QuotaLedgerEntry:
                 or self.quota_total <= 0):
             return None
         return max(0.0, min(1.0, self.quota_remaining / self.quota_total))
+
+    def exhausted(self) -> bool:
+        """True only when the pool is KNOWN-empty. UNKNOWN is not exhausted
+        (§38 honesty) — the scheduler treats UNKNOWN separately."""
+        frac = self.remaining_fraction()
+        return frac is not None and frac <= 0.0
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -240,6 +275,8 @@ class HiveScheduler:
         self._paid_budget = paid_budget      # §4 default 0
         self._workers: dict[str, dict[str, Any]] = {}   # worker_id -> profile
         self._quota: dict[str, QuotaLedgerEntry] = {}   # worker_id -> latest
+        self._quota_pools: dict[str, dict[str, QuotaLedgerEntry]] = {}
+        self._plans: dict[str, dict[str, Any]] = {}     # PlanProfiles
         self._tasks: dict[str, TaskSpec] = {}
         self._assignments: dict[str, str] = {}          # task_id -> worker_id
         self._reservations: dict[str, float] = {}       # worker_id -> fraction
@@ -300,9 +337,62 @@ class HiveScheduler:
                 w["state"] = state
 
     def record_quota(self, entry: QuotaLedgerEntry) -> None:
-        """§5/§6: persist one quota observation (UNKNOWN stays UNKNOWN)."""
+        """§5/§6: persist one quota observation (UNKNOWN stays UNKNOWN).
+
+        §2/§4 of the quota directive: pools are INDEPENDENT windows. A worker
+        may have several (five-hour + weekly + monthly) — each is stored
+        separately under (worker_id, pool) and worker capacity is the MOST
+        RESTRICTIVE window, never an average.
+        """
         with self._lock:
             self._quota[entry.worker_id] = entry
+            self._quota_pools.setdefault(entry.worker_id, {})[entry.pool] = \
+                entry
+
+    def record_plan(self, worker_id: str, provider: str, tier: str,
+                    pools: list[QuotaLedgerEntry],
+                    banked_resets: int = 0,
+                    last_verified: str = "") -> None:
+        """§18/§27: record a full PlanProfile for one worker. All pools are
+        stored; `paid_option_available` is recorded but NEVER acted on (§10 —
+        owner policy: no purchases)."""
+        for e in pools:
+            self.record_quota(e)
+        with self._lock:
+            self._plans[worker_id] = {
+                "worker_id": worker_id,
+                "provider": provider,
+                "tier": tier,
+                "pools": [e.pool for e in pools],
+                "banked_resets": banked_resets,
+                "last_verified": last_verified or _now_iso(),
+            }
+
+    def worker_capacity(self, worker_id: str) -> dict[str, Any]:
+        """§4: MULTI-WINDOW CAPACITY — the most restrictive known pool wins.
+        Returns an honest summary: capacity=None means UNKNOWN (never
+        fabricated), next_reset is the earliest upcoming reset, and
+        exhausted=True only when a KNOWN pool is empty."""
+        with self._lock:
+            entries = list(self._quota_pools.get(worker_id, {}).values())
+            if not entries:
+                entries = [self._quota[worker_id]] \
+                    if worker_id in self._quota else []
+        fracs = [e.remaining_fraction() for e in entries]
+        known = [f for f in fracs if f is not None]
+        resets = [e.next_reset_epoch for e in entries
+                  if e.next_reset_epoch is not None]
+        return {
+            "worker_id": worker_id,
+            "capacity": (min(known) if known else None),
+            "pools_known": len(known),
+            "pools_total": len(entries),
+            "exhausted": any(e.exhausted() for e in entries),
+            "next_reset_epoch": (min(resets) if resets else None),
+            "paid_option_available": any(e.paid_option_available
+                                         for e in entries),
+            "confidence": (entries[0].confidence if entries else UNKNOWN),
+        }
 
     def reserve_quota(self, worker_id: str, fraction: float) -> None:
         """§25: hold scarce quota for a known upcoming task."""
@@ -340,11 +430,13 @@ class HiveScheduler:
             # §4 free-first: PAID workers need the (default-zero) paid budget.
             if w["tier"] == PAID and self._paid_budget <= 0:
                 return None
-            # §27 exhausted quota: quota_remaining==0 is a hard skip; UNKNOWN
-            # (None) is NOT a skip — it is routed with an honest note.
-            q = self._quota.get(worker_id)
-            if q is not None and q.quota_remaining == 0:
+            # §27 exhausted quota: a KNOWN-empty pool is a hard skip; UNKNOWN
+            # (None) is NOT a skip — it is routed with an honest note. §4:
+            # multi-window — ANY known pool at zero blocks the worker.
+            cap = self.worker_capacity(worker_id)
+            if cap["exhausted"]:
                 return None
+            q = self._quota.get(worker_id)
 
             score = 0.0
             # capability_fit (+3 exact, +1 family-prefix)
@@ -359,8 +451,10 @@ class HiveScheduler:
             # §4 tier priority (free-first): lower tier number scores higher.
             score += (9 - TIER_PRIORITY.get(w["tier"], 6)) * 0.8
             # remaining_free_quota (§9); UNKNOWN contributes neutrally.
+            # §4: score on the MOST RESTRICTIVE pool, not the latest entry —
+            # five-hour at 80% with weekly at 18% is an 18% worker.
             if q is not None:
-                frac = q.remaining_fraction()
+                frac = cap["capacity"]
                 if frac is not None:
                     score += frac * 2.0
                     # §8 quota scarcity penalty when the task is large.
