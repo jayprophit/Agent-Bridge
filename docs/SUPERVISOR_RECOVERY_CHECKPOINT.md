@@ -503,3 +503,22 @@ J click a worker -> detail ✓ (+ continue action). K no fixture masquerading
 as live ✓ (every row is a LIVE_VERIFIED fact from the live registry). The
 remaining control verbs (pause/reassign/change-model) reuse the same
 control_continue pattern and are the next increment.
+
+---
+
+## 16. SUPERVISOR_MISSED_IDLE_EVENT — recorded 2026-10-12 23:40
+
+Runtime reported 208 cycles, all 3 services alive, yet `continuation_required:
+False` while OpenCode had produced no new session activity for 478s and the
+owner had to point out that OpenCode stopped again. Two defects:
+
+1. §36 VIOLATION: the owner reported an idle worker. Recorded as
+   SUPERVISOR_MISSED_IDLE_EVENT — monitoring did not raise it.
+2. ROOT CAUSE (diagnosed): the OpenCode liveness window is 600s, so a worker
+   478s idle still reads RUNNING; and `_compute_continuation()` returns False
+   when every worker reads RUNNING — so "no worker looks idle" + "nothing
+   pending" = quiet cycle = no event. The gap: a worker that is *nominally
+   RUNNING* but has not advanced its task is indistinguishable from one that
+   is working. The runtime needs PROGRESS-based idle detection (no new file
+   write / commit / session advance for N cycles), not just liveness-window.
+   That is a §37 supervisor self-health item, now queued as a real task.
