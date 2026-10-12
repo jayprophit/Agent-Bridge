@@ -493,9 +493,15 @@ class SupervisorRuntime:
 
     # -- daemon (§4: event-driven where possible, no busy-loop) ---------------------
     def run_forever(self) -> None:  # pragma: no cover - daemon loop
+        """§33/§48: the loop runs until STOPPED (signal or explicit stop) —
+        NEVER until continuation_required happens to be False. A quiet cycle
+        (all workers running, nothing pending) is a HEALTHY state to keep
+        watching, not a reason to exit; the next idle worker must still be
+        caught (§7: 'OpenCode must remain registered after task assignment').
+        """
         self.recover()
         self._install_signal_handlers()
-        while not self._stop.is_set() and self.continuation_required:
+        while not self._stop.is_set():
             try:
                 self.run_cycle()
             except Exception as e:  # noqa: BLE001 — §24 worker failure != stop
