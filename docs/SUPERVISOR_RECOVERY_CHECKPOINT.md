@@ -288,3 +288,28 @@ worktree for P0-A.
    `test_fallback_skips_dead_model` pings live Ollama qwen3 (ollama was
    DOWN at check time) — environment state, not a code regression.
 4. Ollama restart pending (serve died again this session).
+
+---
+
+## 12. §46 SUPERVISOR ACTION — OpenCode check-in + next-task assignment (2026-10-12 ~13:2x)
+
+Per §45/§46 (ACT, don't just report): OpenCode was IDLE 38 min after
+FINISHING cb1eb26. Hermes QA'd it (175/175 green, ACCEPT), then assigned the
+next READY unit — **Supervisor Dashboard UI V1** (React frontend for the
+/v1/supervisor/* API; honesty-vocabulary chips; shadcn/ui + Radix; new
+src/supervisor-ui/ tree; genesis-ui untouched; TDD).
+
+Delivery: clipboard-paste channel (2807-byte prompt staged via cat|clip,
+foreground ctrl+a/ctrl+v — background key-combo delivery is dropped by the
+Chromium surface per tool verdict; escalated correctly). Verified RESUMPTION
+two ways: (1) opencode db time_updated 2s fresh, (2) AX tree shows composer
+cleared + Send gone + OpenCode actively writing src/supervisor-ui/components/
+index.ts (Panel/Badge/StatusDot/Tabs/EmptyState/Progress ui exports +
+TeamStrip/ConferenceGrid re-exports) — i.e. it understood the assignment and
+started the component layer.
+
+Codex verified ACTIVE (rollout mtime 12:56, MAT) — left alone (read-only).
+
+SUPERVISION STATE: both external workers RUNNING. No idle workers, no unread
+handoffs, no uncorrected failures. Hermes continues the §33 loop: QA OpenCode
+on its next completion, QA Codex on MAT completion.
