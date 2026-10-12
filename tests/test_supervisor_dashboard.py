@@ -333,3 +333,121 @@ class TestOpenCodeAdapter:
         assert "opencode" in snap["sections"]
         assert snap["sections"]["opencode"]["cli"]["state"] in (
             sup.LIVE_VERIFIED, sup.STALE, sup.OFFLINE, sup.DEGRADED)
+
+
+class TestOpenCodeLiveness:
+    def test_missing_binary_is_honest_offline(self):
+        # No CLI and (in the test host) the tasklist signal may still find a
+        # process; the guarantee is the verdict is a real derived state, never
+        # a fabricated ACTIVE, and cli is honestly OFFLINE.
+        facts = sup.read_opencode_liveness(opencode_bin="definitely-not-opencode-xyz")
+        assert facts["cli"].effective_state() == sup.OFFLINE
+        assert facts["verdict"].value in ("ACTIVE", "IDLE", "OFFLINE")
+        assert facts["verdict"].effective_state() in (sup.LIVE_VERIFIED, sup.OFFLINE)
+
+    def test_real_liveness_verdict(self):
+        facts = sup.read_opencode_liveness()
+        assert facts["process_present"].effective_state() in (
+            sup.LIVE_VERIFIED, sup.OFFLINE)
+        # freshest_session only present when the db channel answered.
+        if "freshest_session" in facts:
+            fs = facts["freshest_session"]
+            assert fs.effective_state() in (sup.LIVE_VERIFIED, sup.STALE)
+            assert isinstance(fs.value, dict) and "time_updated" in fs.value
+        assert facts["verdict"].value in ("ACTIVE", "IDLE", "OFFLINE")
+
+
+class TestCodexAdapter:
+    def test_missing_home_is_honest_offline(self, tmp_path):
+        # A codex home with no sessions/ dir must report OFFLINE, never invent
+        # sessions.
+        facts = sup.read_codex_state(codex_home=str(tmp_path / "nope"))
+        assert facts["codex"].effective_state() == sup.OFFLINE
+        assert facts["codex"].value is None
+        assert facts["cli"].effective_state() in (sup.LIVE_VERIFIED, sup.OFFLINE)
+
+    def test_empty_sessions_dir_is_offline(self, tmp_path):
+        home = tmp_path / ".codex"
+        (home / "sessions" / "2026" / "10" / "12").mkdir(parents=True)
+        facts = sup.read_codex_state(codex_home=str(home))
+        assert facts["codex"].effective_state() == sup.OFFLINE
+        assert facts["codex"].value is None
+
+    def test_fake_rollout_parses_first_and_last(self, tmp_path):
+        home = tmp_path / ".codex"
+        day = home / "sessions" / "2026" / "10" / "12"
+        day.mkdir(parents=True)
+        rollout = day / "rollout-2026-10-12T10-00-00-aaaa-bbbb.jsonl"
+        import json as _json
+        lines = [
+            {"timestamp": "2026-10-12T10:00:00.000Z", "type": "session_meta",
+             "payload": {"id": "aaaa-bbbb", "cwd": "/tmp/proj",
+                         "originator": "codex_work_desktop"}},
+            {"timestamp": "2026-10-12T10:05:00.000Z", "type": "event_msg",
+             "payload": {}},
+        ]
+        rollout.write_text("\n".join(_json.dumps(x) for x in lines), encoding="utf-8")
+        facts = sup.read_codex_state(codex_home=str(home),
+                                     heartbeat_active_s=999999.0)
+        assert facts["rollout_count"].value == 1
+        sess = facts["sessions"].value
+        assert len(sess) == 1
+        assert sess[0]["id"] == "aaaa-bbbb"
+        assert sess[0]["cwd"] == "/tmp/proj"
+        assert sess[0]["last_event_at"] == "2026-10-12T10:05:00.000Z"
+        assert facts["verdict"].value == "ACTIVE"
+
+    def test_no_secret_fields_in_output(self, tmp_path):
+        # The adapter must never surface auth/token/credential material.
+        home = tmp_path / ".codex"
+        day = home / "sessions" / "2026" / "10" / "12"
+        day.mkdir(parents=True)
+        # plant decoy secret files the adapter must NOT read
+        (home / "auth.json").write_text('{"OPENAI_API_KEY":"sk-SECRET"}',
+                                        encoding="utf-8")
+        (home / ".sandbox-secrets").mkdir()
+        (home / ".sandbox-secrets" / "s.txt").write_text("SECRET", encoding="utf-8")
+        rollout = day / "rollout-2026-10-12T10-00-00-aaaa-bbbb.jsonl"
+        import json as _json
+        rollout.write_text(_json.dumps(
+            {"timestamp": "2026-10-12T10:00:00.000Z", "type": "session_meta",
+             "payload": {"id": "aaaa-bbbb"}}), encoding="utf-8")
+        facts = sup.read_codex_state(codex_home=str(home))
+        blob = _json.dumps({k: v.to_dict() for k, v in facts.items()})
+        assert "SECRET" not in blob
+        assert "sk-" not in blob
+
+
+class TestRefreshExternalWorkers:
+    def test_refresh_populates_codex_and_liveness(self, tmp_path):
+        import os
+        repo = os.path.dirname(os.path.dirname(os.path.abspath(sup.__file__)))
+        home = tmp_path / ".codex"
+        day = home / "sessions" / "2026" / "10" / "12"
+        day.mkdir(parents=True)
+        import json as _json
+        (day / "rollout-2026-10-12T10-00-00-aaaa-bbbb.jsonl").write_text(
+            _json.dumps({"timestamp": "2026-10-12T10:00:00.000Z",
+                         "type": "session_meta", "payload": {"id": "aaaa-bbbb"}}),
+            encoding="utf-8")
+        st = sup.SupervisorState()
+        sup.refresh_snapshot(st, {"self": repo}, ollama_url="http://127.0.0.1:1",
+                             opencode_bin="opencode", codex_home=str(home))
+        snap = st.snapshot()
+        assert "codex" in snap["sections"]
+        assert snap["sections"]["codex"]["verdict"]["value"] in (
+            "ACTIVE", "IDLE", "UNKNOWN")
+        assert "liveness" in snap["sections"]["opencode"]
+
+    def test_heartbeat_emits_only_on_change(self):
+        st = sup.SupervisorState()
+        # first sight always emits
+        sup._emit_verdict_change(st, "codex", "ACTIVE")
+        assert st.last_seq >= 1
+        # same verdict -> no new event (coalescing)
+        seq = st.last_seq
+        sup._emit_verdict_change(st, "codex", "ACTIVE")
+        assert st.last_seq == seq
+        # change -> emits again
+        sup._emit_verdict_change(st, "codex", "IDLE")
+        assert st.last_seq > seq

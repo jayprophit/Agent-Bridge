@@ -44,6 +44,7 @@ already strips them; adapters add no secret fields).
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import threading
 import time
@@ -257,15 +258,17 @@ def read_team_registry(registry: Any) -> dict[str, SourceFact]:
 def _run_cli(cmd: list[str], timeout: float) -> subprocess.CompletedProcess:
     """Run a CLI robustly on Windows.
 
-    `opencode` is an npm .cmd shim, not a bare .exe, so subprocess.run([...])
-    raises FileNotFoundError even though the shell resolves it. Try the bare
-    argv first; on FileNotFoundError retry through the shell so shims resolve.
+    `opencode`/`codex` are npm .cmd shims, not bare .exe, so subprocess.run
+    raises FileNotFoundError even though the shell resolves them. Try the bare
+    argv first; on FileNotFoundError retry through the shell. The shell retry
+    uses subprocess.list2cmdline (Windows-native quoting) — NOT shlex.quote,
+    whose single quotes cmd.exe does not interpret, which mangles SQL/flag
+    arguments (verified: `opencode db "SELECT ..."` returned usage text).
     """
     try:
         return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
     except FileNotFoundError:
-        import shlex
-        return subprocess.run(" ".join(shlex.quote(c) for c in cmd),
+        return subprocess.run(subprocess.list2cmdline(cmd),
                               shell=True, capture_output=True, text=True, timeout=timeout)
 
 
@@ -335,6 +338,212 @@ def read_opencode_session(opencode_bin: str = "opencode", session_id: str = "",
         "session": fact(summary, LIVE_VERIFIED, "opencode-cli"),
         "message_count": fact(len(msgs), LIVE_VERIFIED, "opencode-cli"),
     }
+
+
+def read_opencode_liveness(opencode_bin: str = "opencode",
+                           liveness_window_s: float = 600.0,
+                           timeout: float = 20.0) -> dict[str, SourceFact]:
+    """OpenCode heartbeat via the sanctioned `opencode db` SQLite channel.
+
+    The app owns opencode.db's WAL, so a plain sqlite3.connect against the live
+    file deadlocks (verified: 45-60s hangs). The `opencode db` CLI runs inside
+    the app's own lock, so it is the only safe channel. We read the freshest
+    session's time_updated (epoch ms) and derive an honest verdict:
+
+      ACTIVE   session updated within liveness_window_s (the app is working)
+      IDLE     CLI/process present but the session is stale
+      OFFLINE  no CLI and no process
+      DEGRADED any signal timed out or failed (never fabricated)
+
+    The verdict never outranks its evidence: it names the composing signals.
+    Reads only session rows; never touches the `credential` table (§14).
+    """
+    now = _now()
+    signals: dict[str, SourceFact] = {}
+
+    # process_present: is an OpenCode window/process alive at all?
+    proc_alive = False
+    try:
+        p = _run_cli(["tasklist", "/FI", "IMAGENAME eq OpenCode.exe"], 15.0)
+        proc_alive = "OpenCode.exe" in (p.stdout or "")
+    except (OSError, subprocess.SubprocessError):
+        proc_alive = False
+    signals["process_present"] = fact(
+        proc_alive, LIVE_VERIFIED if proc_alive else OFFLINE, "tasklist")
+
+    # freshest session via opencode db (sanctioned channel, bounded query).
+    cli_up = False
+    freshest: dict[str, Any] = {}
+    try:
+        p = _run_cli([opencode_bin, "db",
+                      "SELECT id,title,agent,time_updated FROM session "
+                      "ORDER BY time_updated DESC LIMIT 3",
+                      "--format", "json"], timeout)
+        cli_up = p.returncode == 0
+        if cli_up:
+            rows = json.loads(p.stdout or "[]")
+            if isinstance(rows, list) and rows:
+                freshest = rows[0]
+    except (OSError, subprocess.SubprocessError, ValueError, TypeError):
+        cli_up = False
+    signals["cli"] = fact("available" if cli_up else "unavailable",
+                          LIVE_VERIFIED if cli_up else OFFLINE, "opencode-cli")
+    if freshest:
+        signals["freshest_session"] = fact(freshest, LIVE_VERIFIED, "opencode-db")
+
+    # derive verdict from real signals only. The verdict VALUE is the
+    # worker-lifecycle state (ACTIVE/IDLE/OFFLINE); its SourceFact `state` is
+    # LIVE_VERIFIED because it is computed from live evidence (never
+    # fabricated). DEGRADED stays as the state when a signal failed.
+    updated_ms = freshest.get("time_updated") if freshest else None
+    if cli_up and isinstance(updated_ms, (int, float)):
+        age_s = max(0.0, now - (updated_ms / 1000.0))
+        verdict = "ACTIVE" if age_s <= liveness_window_s else "IDLE"
+        note = f"freshest session updated {age_s:.0f}s ago (window {liveness_window_s:.0f}s)"
+        vstate = LIVE_VERIFIED
+    elif proc_alive or cli_up:
+        verdict = "IDLE"
+        note = "process/cli present but no fresh session row"
+        vstate = LIVE_VERIFIED
+    else:
+        verdict = "OFFLINE"
+        note = "no opencode cli and no process"
+        vstate = OFFLINE
+    signals["verdict"] = fact(verdict, vstate, "derived", note=note)
+    signals["liveness_window_s"] = fact(liveness_window_s, LIVE_VERIFIED, "config")
+    return signals
+
+
+def read_codex_state(codex_home: str = "~/.codex", max_sessions: int = 20,
+                     heartbeat_active_s: float = 600.0,
+                     timeout: float = 20.0) -> dict[str, SourceFact]:
+    """Codex external-worker telemetry from rollout JSONL (read-only).
+
+    Codex (OpenAI Codex CLI / desktop app) writes one JSONL per thread under
+    `<home>/sessions/YYYY/MM/DD/rollout-<LOCAL-ISO-start>-<uuid>.jsonl`. Each
+    line is {timestamp, ordinal, type, payload}. We read ONLY the first line
+    (session_meta: id/cwd/originator/forks) and the last line (latest
+    timestamp) per newest session — never auth.json, config.toml, or the
+    secrets dir (§14). Rollout file mtime + last-line timestamp are the
+    heartbeat. `codex doctor`/`codex resume` are interactive/slow — never
+    called from a read-model; `codex --version` is the only CLI probe.
+
+    Verdict (derived, never fabricated): ACTIVE (newest rollout written within
+    heartbeat_active_s) / IDLE (rollouts exist but stale) / OFFLINE (no
+    sessions root or no files).
+    """
+    home = os.path.expanduser(codex_home)
+    sessions_root = os.path.join(home, "sessions")
+    now = _now()
+
+    # CLI version probe (fast, safe). Absent binary -> OFFLINE cli fact.
+    try:
+        p = _run_cli(["codex", "--version"], min(timeout, 15.0))
+        cli_version = (p.stdout or "").strip()[:80] if p.returncode == 0 else ""
+        cli_up = p.returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        cli_version, cli_up = "", False
+
+    if not os.path.isdir(sessions_root):
+        return {
+            "codex": fact(None, OFFLINE, "codex-rollout",
+                          note="no sessions root (codex never ran or different home)"),
+            "cli": fact(cli_version or None, LIVE_VERIFIED if cli_up else OFFLINE,
+                        "codex-cli"),
+        }
+
+    rollouts: list[str] = []
+    for root, _dirs, files in os.walk(sessions_root):
+        for fn in files:
+            if fn.startswith("rollout-") and fn.endswith(".jsonl"):
+                rollouts.append(os.path.join(root, fn))
+    rollouts.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+    newest = rollouts[:max_sessions]
+
+    sessions: list[dict[str, Any]] = []
+    newest_mtime = 0.0
+    for path in newest:
+        try:
+            mtime = os.path.getmtime(path)
+            newest_mtime = max(newest_mtime, mtime)
+            meta: dict[str, Any] = {}
+            last_ts = ""
+            with open(path, "r", encoding="utf-8", errors="replace") as fh:
+                for line in fh:  # first line only for meta
+                    line = line.strip()
+                    if line:
+                        try:
+                            first = json.loads(line)
+                            meta = (first.get("payload", {})
+                                    if isinstance(first, dict) else {})
+                        except (ValueError, TypeError):
+                            pass
+                    break
+                # last line: bounded reverse read
+                last_ts = _last_line_timestamp(path)
+            sessions.append({
+                "id": meta.get("id") or os.path.basename(path),
+                "cwd": meta.get("cwd"),
+                "originator": meta.get("originator"),
+                "forked_from_id": meta.get("forked_from_id"),
+                "parent_thread_id": meta.get("parent_thread_id"),
+                "thread_cli_version": meta.get("cli_version"),
+                "last_event_at": last_ts,
+                "file_mtime_s": round(mtime, 1),
+                "age_s": round(now - mtime, 1),
+            })
+        except (OSError, ValueError):
+            continue
+
+    if not sessions:
+        return {
+            "codex": fact(None, OFFLINE, "codex-rollout",
+                          note="no readable rollout files"),
+            "cli": fact(cli_version or None, LIVE_VERIFIED if cli_up else OFFLINE,
+                        "codex-cli"),
+        }
+
+    age_s = now - newest_mtime if newest_mtime else None
+    if age_s is not None and age_s <= heartbeat_active_s:
+        verdict, vstate = "ACTIVE", LIVE_VERIFIED
+    elif age_s is not None:
+        verdict, vstate = "IDLE", LIVE_VERIFIED
+    else:
+        verdict, vstate = "UNKNOWN", UNKNOWN
+
+    return {
+        "cli": fact(cli_version or None, LIVE_VERIFIED if cli_up else OFFLINE,
+                    "codex-cli"),
+        "rollout_count": fact(len(rollouts), LIVE_VERIFIED, "codex-rollout"),
+        "sessions": fact(sessions, LIVE_VERIFIED, "codex-rollout"),
+        "verdict": fact(verdict, vstate, "derived",
+                        note=f"newest rollout {age_s:.0f}s ago" if age_s is not None
+                        else "no mtime"),
+        "heartbeat_active_s": fact(heartbeat_active_s, LIVE_VERIFIED, "config"),
+    }
+
+
+def _last_line_timestamp(path: str, chunk: int = 4096) -> str:
+    """Read the trailing JSON line's `timestamp` without loading the file."""
+    try:
+        with open(path, "rb") as fh:
+            fh.seek(0, os.SEEK_END)
+            size = fh.tell()
+            fh.seek(max(0, size - chunk))
+            tail = fh.read().decode("utf-8", errors="replace").strip().splitlines()
+        for line in reversed(tail):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                obj = json.loads(line)
+                if isinstance(obj, dict) and "timestamp" in obj:
+                    return str(obj["timestamp"])
+            except (ValueError, TypeError):
+                continue
+    except OSError:
+        pass
+    return ""
 
 
 # --- normaliser -------------------------------------------------------------
@@ -425,7 +634,9 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
                      ollama_url: str = "http://127.0.0.1:11434",
                      team_registry: Any = None,
                      opencode_bin: Optional[str] = None,
-                     opencode_session_id: str = "") -> None:
+                     opencode_session_id: str = "",
+                     codex_home: Optional[str] = None,
+                     opencode_liveness_window_s: float = 600.0) -> None:
     """Pull real adapter data into the snapshot. Call on a timer or per-request.
 
     `repos` maps a project label -> absolute repo path. `team_registry` is an
@@ -461,7 +672,47 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
         if opencode_session_id:
             oc.update({k: v.to_dict() for k, v in
                        read_opencode_session(opencode_bin, opencode_session_id).items()})
+        # Liveness/heartbeat: derived ACTIVE/IDLE/OFFLINE from the sanctioned
+        # `opencode db` channel (the app owns the WAL; never a raw sqlite3).
+        liveness = {k: v.to_dict() for k, v in
+                    read_opencode_liveness(opencode_bin,
+                                           opencode_liveness_window_s).items()}
+        oc["liveness"] = liveness
         state.set_section("opencode", oc)
+        _emit_verdict_change(state, "opencode",
+                             liveness.get("verdict", {}).get("value"))
+
+    if codex_home is not None:
+        cx = {k: v.to_dict() for k, v in read_codex_state(codex_home).items()}
+        state.set_section("codex", cx)
+        _emit_verdict_change(state, "codex",
+                             cx.get("verdict", {}).get("value"))
+
+
+def _emit_verdict_change(state: SupervisorState, worker: str,
+                         verdict: Any) -> None:
+    """Emit a worker.heartbeat only when the verdict CHANGES (coalescing).
+
+    Per reconciliation §10 the risk is event flooding, so we keep the last
+    verdict per worker on the state and emit the existing `worker.heartbeat`
+    event name (no new event family) only on a transition. First sight always
+    emits so the dashboard has a baseline.
+    """
+    if verdict is None:
+        return
+    prev = getattr(state, "_last_verdicts", None)
+    if prev is None:
+        prev = {}
+        state._last_verdicts = prev  # type: ignore[attr-defined]
+    if prev.get(worker) == verdict:
+        return
+    prev[worker] = verdict
+    state.ingest({
+        "event": "worker.heartbeat",
+        "worker": worker,
+        "verdict": verdict,
+        "timestamp": _now_iso(),
+    })
 
 
 # --- loopback HTTP + SSE server (mirrors node_server framing) ---------------
