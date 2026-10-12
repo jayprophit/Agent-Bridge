@@ -123,6 +123,14 @@ clean, 24/24 tests). OpenCode's resume should therefore re-inspect and
 reconcile (not duplicate). Hermes will independently QA whatever OpenCode
 produces against 647c6e7.
 
+OpenCode confirmed WORKING: session message_count grew 343 → 351 (my resume
+registered), and a live edit `GenesisShell.tsx +5 -1` appeared near the
+honest-DOM-state region. §20 acceptance demo re-run post-recovery: ALL
+adapters LIVE_VERIFIED against real data (Ollama 0.34.4 recovered, git, 2
+team-registry workers, OpenCode session, SSE framing). One honest degradation:
+`opencode` HTTP adapter = OFFLINE (serve :56993 still Basic-auth-gated; CLI
+path works) — correct §15 honesty, not a defect.
+
 ---
 
 ## 7. Live worker heartbeats (verified this session, 2026-10-12 ~11:0x)
