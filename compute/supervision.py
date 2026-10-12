@@ -508,3 +508,25 @@ class Supervisor:
                                           or self.open_gaps()),
             "last_progress_at": self._last_progress_at,
         }
+
+    def worker_roster(self) -> list[dict[str, Any]]:
+        """§17.J: the live per-worker rows for the dashboard roster — one row
+        per registered worker with the fields the UI shows and clicks into.
+        Same records the cycle uses, so UI and daemon never diverge."""
+        rows = []
+        for wid, r in sorted(self._workers.items()):
+            rows.append({
+                "worker_id": wid,
+                "application": r.application,
+                "role": r.role,
+                "worker_type": r.worker_type,
+                "status": r.status,
+                "task_description": r.task_description,
+                "project": r.project,
+                "model": r.model,
+                "quota_state": r.quota_state,
+                "last_heartbeat": r.last_heartbeat,
+                "review_state": r.review_state,
+                "next_action": r.next_action,
+            })
+        return rows

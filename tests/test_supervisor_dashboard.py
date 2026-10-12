@@ -216,6 +216,107 @@ class TestSupervisorAPI:
             sup.build_supervisor_server(st, host="0.0.0.0")
 
 
+# --- §17.J / §18 control surface (worker detail + continue) -------------------
+class _FakeAdapter:
+    worker_id = "fake-1"
+    application = "fakeapp"
+    role = "tester"
+
+    def status(self):
+        return {"verdict": "IDLE", "evidence": ["fixture adapter"]}
+
+    def current_task(self):
+        return {"task": "bounded task", "evidence": []}
+
+    def send_instruction(self, instruction, continue_task=False):
+        return {"delivered": True, "channel": "fake", "evidence": ["ok"]}
+
+
+class _FakeRuntime:
+    """Stands in for SupervisorRuntime for the API route tests — the routes
+    only call worker_detail()/control_continue(), so a minimal fake proves
+    routing + wiring without touching real workers."""
+    def __init__(self):
+        self.adapters = {"fake-1": _FakeAdapter()}
+        self.continued = []
+
+    def worker_detail(self, worker_id):
+        if worker_id not in self.adapters:
+            return {"ok": False, "error_code": "UNKNOWN_WORKER"}
+        a = self.adapters[worker_id]
+        st = a.status()
+        return {"ok": True, "worker_id": worker_id,
+                "application": a.application, "role": a.role,
+                "verdict": st["verdict"], "evidence": st["evidence"]}
+
+    def control_continue(self, worker_id):
+        if worker_id not in self.adapters:
+            return {"ok": False, "error_code": "UNKNOWN_WORKER"}
+        self.continued.append(worker_id)
+        return {"ok": True, "worker_id": worker_id, "delivered": True,
+                "channel": "fake", "evidence": ["ok"]}
+
+
+class TestControlSurfaceRoutes:
+    @pytest.fixture()
+    def server(self):
+        st = sup.SupervisorState()
+        rt = _FakeRuntime()
+        srv = sup.build_supervisor_server(st, host="127.0.0.1", port=0,
+                                          runtime=rt)
+        t = threading.Thread(target=srv.serve_forever, daemon=True)
+        t.start()
+        port = srv.server_address[1]
+        yield f"http://127.0.0.1:{port}", rt
+        srv.shutdown()
+        srv.server_close()
+
+    def test_worker_detail_get(self, server):
+        base, _ = server
+        with urllib.request.urlopen(base + "/v1/supervisor/worker/fake-1",
+                                    timeout=5) as r:
+            d = json.loads(r.read())
+        assert d["ok"] is True
+        assert d["worker_id"] == "fake-1"
+        assert d["application"] == "fakeapp"
+        assert d["verdict"] == "IDLE"
+
+    def test_worker_detail_unknown_worker(self, server):
+        base, _ = server
+        with urllib.request.urlopen(base + "/v1/supervisor/worker/nope",
+                                    timeout=5) as r:
+            d = json.loads(r.read())
+        assert d["ok"] is False
+        assert d["error_code"] == "UNKNOWN_WORKER"
+
+    def test_continue_post_uses_real_channel(self, server):
+        base, rt = server
+        req = urllib.request.Request(
+            base + "/v1/supervisor/worker/fake-1/continue", data=b"{}",
+            method="POST", headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=5) as r:
+            d = json.loads(r.read())
+        assert d["ok"] is True
+        assert d["delivered"] is True
+        assert rt.continued == ["fake-1"]     # the runtime actually acted
+
+    def test_worker_detail_503_without_runtime(self):
+        st = sup.SupervisorState()
+        srv = sup.build_supervisor_server(st, host="127.0.0.1", port=0)
+        t = threading.Thread(target=srv.serve_forever, daemon=True)
+        t.start()
+        base = f"http://127.0.0.1:{srv.server_address[1]}"
+        try:
+            urllib.request.urlopen(base + "/v1/supervisor/worker/fake-1",
+                                   timeout=5)
+            assert False, "expected HTTPError"
+        except urllib.error.HTTPError as e:
+            assert e.code == 503
+        finally:
+            srv.shutdown()
+            srv.server_close()
+
+
 # --- refresh wiring ---------------------------------------------------------
 class TestRefresh:
     def test_refresh_populates_sections_with_real_states(self):

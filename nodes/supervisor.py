@@ -765,6 +765,10 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
                 "continuation_required": fact(
                     ov["continuation_required"], "LIVE_VERIFIED",
                     "supervision").to_dict(),
+                # §17.J: the live per-worker roster the dashboard clicks into
+                "workers": fact(
+                    supervisor.worker_roster(), "LIVE_VERIFIED",
+                    "supervision").to_dict(),
             })
             if ov["handoffs_pending"]:
                 state.ingest({"event": "supervisor.handoffs_pending",
@@ -883,6 +887,35 @@ class _SupHandler(BaseHTTPRequestHandler):
                         except ValueError:
                             since = 0
                 return self._send_sse(st.events_since(since))
+            # §17.J: GET /v1/supervisor/worker/<id> — one worker's detail
+            if len(parts) == 4 and parts[:3] == ["v1", "supervisor",
+                                                 "worker"]:
+                rt = getattr(self, "runtime", None)
+                if rt is None:
+                    return self._send(503, {"ok": False,
+                                            "error_code":
+                                            "RUNTIME_NOT_WIRED"})
+                return self._send(200, rt.worker_detail(parts[3]))
+            return self._send(404, {"ok": False, "error_code": "UNKNOWN_ROUTE"})
+        except Exception as e:  # noqa: BLE001
+            return self._send(500, {"ok": False, "error_code": "SUPERVISOR_ERROR",
+                                    "detail": type(e).__name__})
+
+    def do_POST(self) -> None:  # noqa: N802
+        # §18 control surface (loopback-only, same as every route here).
+        # POST /v1/supervisor/worker/<id>/continue -> issue a continue
+        # instruction through the REAL adapter channel the cycle uses.
+        url = urlparse(self.path)
+        parts = [p for p in url.path.split("/") if p]
+        try:
+            if (len(parts) == 5 and parts[:3] == ["v1", "supervisor", "worker"]
+                    and parts[4] == "continue"):
+                rt = getattr(self, "runtime", None)
+                if rt is None:
+                    return self._send(503, {"ok": False,
+                                            "error_code":
+                                            "RUNTIME_NOT_WIRED"})
+                return self._send(200, rt.control_continue(parts[3]))
             return self._send(404, {"ok": False, "error_code": "UNKNOWN_ROUTE"})
         except Exception as e:  # noqa: BLE001
             return self._send(500, {"ok": False, "error_code": "SUPERVISOR_ERROR",
@@ -893,11 +926,17 @@ class _SupHandler(BaseHTTPRequestHandler):
 
 
 def build_supervisor_server(state: SupervisorState, host: str = "127.0.0.1",
-                            port: int = 0) -> ThreadingHTTPServer:
-    """Bind the supervisor API. Loopback-only, same rule as node_server."""
+                            port: int = 0, runtime: Any = None) \
+        -> ThreadingHTTPServer:
+    """Bind the supervisor API. Loopback-only, same rule as node_server.
+
+    `runtime` (optional) wires the §17/§18 control surface: the worker-detail
+    GET and the continue POST both act through the live SupervisorRuntime's
+    real adapters — the API never opens a second channel to a worker."""
     if host == "0.0.0.0":
         raise ValueError("refusing public bind: supervisor API stays on 127.0.0.1")
     _SupHandler.state = state
+    _SupHandler.runtime = runtime
     srv = ThreadingHTTPServer((host, port), _SupHandler)
     srv.daemon_threads = True
     return srv

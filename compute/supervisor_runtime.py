@@ -577,6 +577,56 @@ class SupervisorRuntime:
                    delivered=result.get("delivered", False))
         # verify the worker returned to active on the NEXT cycle (§45.8)
 
+    def worker_detail(self, worker_id: str) -> dict[str, Any]:
+        """§17.J: one worker's full detail for the control surface — live
+        verdict + adapter info + supervision record + current task + quota +
+        review state. Reads from the SAME registry the cycle uses, so the UI
+        and the daemon never diverge. Honest: an unknown worker is reported
+        as unknown, never fabricated."""
+        adapter = self.adapters.get(worker_id)
+        rec = self.supervisor.worker(worker_id)
+        if adapter is None and rec is None:
+            return {"ok": False, "error_code": "UNKNOWN_WORKER",
+                    "worker_id": worker_id}
+        detail: dict[str, Any] = {
+            "ok": True, "worker_id": worker_id,
+            "application": getattr(adapter, "application", None),
+            "role": getattr(adapter, "role", None),
+            "verdict": None, "evidence": [],
+            "record": rec.to_dict() if rec else None,
+            "pending_verification": worker_id in self._pending_verification,
+        }
+        if adapter is not None:
+            try:
+                st = adapter.status()
+                detail["verdict"] = st.get("verdict")
+                detail["evidence"] = st.get("evidence", [])
+                if st.get("quota"):
+                    detail["quota"] = st["quota"]
+                detail["current_task"] = adapter.current_task()
+            except Exception as e:  # noqa: BLE001 — never crash the surface
+                detail["evidence"] = [f"{type(e).__name__}: {e}"]
+        return detail
+
+    def control_continue(self, worker_id: str) -> dict[str, Any]:
+        """§18 control surface: the owner/UI tells a worker to CONTINUE its
+        current bounded task. Uses the SAME real adapter channel the cycle
+        uses (opencode run / codex exec resume --last / ollama generate) —
+        no second transport, no fabrication. The result is honest:
+        delivered=True only when the adapter actually delivered."""
+        adapter = self.adapters.get(worker_id)
+        if adapter is None:
+            return {"ok": False, "error_code": "UNKNOWN_WORKER",
+                    "worker_id": worker_id}
+        actions: dict[str, Any] = {"workers": {worker_id: {}}}
+        self._check_in(worker_id, adapter, actions)
+        ci = actions["workers"][worker_id].get("check_in", {})
+        self.persist()
+        return {"ok": True, "worker_id": worker_id,
+                "delivered": ci.get("delivered", False),
+                "channel": ci.get("channel", ""),
+                "evidence": ci.get("evidence", [])}
+
     def _watchdogs(self) -> dict[str, Any]:
         """§11-§14: the runtime's self-checks. A violation is recorded as a
         SUPERVISOR DEFECT — visible, never hidden. Scans ALL supervised

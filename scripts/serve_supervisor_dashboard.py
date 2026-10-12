@@ -61,7 +61,8 @@ def main() -> int:
                                                        "governor", None))
 
     _refresh()
-    srv = sup.build_supervisor_server(state, host="127.0.0.1", port=args.port)
+    srv = sup.build_supervisor_server(state, host="127.0.0.1", port=args.port,
+                                      runtime=runtime)
     print(f"Supervisor Dashboard API on http://127.0.0.1:{args.port} "
           f"(/v1/supervisor/health, /v1/supervisor/state)", flush=True)
 
