@@ -681,11 +681,19 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
                      opencode_session_id: str = "",
                      codex_home: Optional[str] = None,
                      opencode_liveness_window_s: float = 600.0,
-                     hive: Any = None) -> None:
+                     hive: Any = None,
+                     supervisor: Any = None,
+                     resource_governor: Any = None,
+                     knowledge_index: Any = None) -> None:
     """Pull real adapter data into the snapshot. Call on a timer or per-request.
 
     `repos` maps a project label -> absolute repo path. `team_registry` is an
     optional TeamRegistry instance (read-only). All adapters are read-only.
+
+    `supervisor` is a compute.supervision.Supervisor (the §33 loop's state
+    machine); `resource_governor` a compute.resource_governor.ResourceGovernor;
+    `knowledge_index` a compute.knowledge_index.KnowledgeIndex. Each adds a
+    dashboard section when present (Workstation/Resources/Supervision views).
     """
     git_section: dict[str, Any] = {}
     for label, path in repos.items():
@@ -736,6 +744,70 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
     if hive is not None:
         state.set_section("hive", {k: v.to_dict()
                                    for k, v in read_hive_state(hive).items()})
+
+    # --- permanent active supervision (§35 dashboard: supervision view) --------
+    if supervisor is not None:
+        try:
+            ov = supervisor.overview()
+            state.set_section("supervision", {
+                "workers_total": fact(
+                    ov["workers_total"], "LIVE_VERIFIED", "supervision").to_dict(),
+                "workers_by_status": fact(
+                    ov["workers_by_status"], "LIVE_VERIFIED", "supervision").to_dict(),
+                "handoffs_pending": fact(
+                    ov["handoffs_pending"], "LIVE_VERIFIED", "supervision").to_dict(),
+                "handoffs_total": fact(
+                    ov["handoffs_total"], "LIVE_VERIFIED", "supervision").to_dict(),
+                "gaps_open": fact(
+                    ov["gaps_open"], "LIVE_VERIFIED", "supervision").to_dict(),
+                "gaps_by_severity": fact(
+                    ov["gaps_by_severity"], "LIVE_VERIFIED", "supervision").to_dict(),
+                "continuation_required": fact(
+                    ov["continuation_required"], "LIVE_VERIFIED",
+                    "supervision").to_dict(),
+            })
+            if ov["handoffs_pending"]:
+                state.ingest({"event": "supervisor.handoffs_pending",
+                              "count": ov["handoffs_pending"],
+                              "timestamp": _now_iso()})
+        except Exception as e:  # noqa: BLE001
+            state.set_section("supervision", {
+                "error": fact(str(e), "DEGRADED", "supervision").to_dict()})
+
+    # --- resource governor (§33 workstation view) -------------------------------
+    if resource_governor is not None:
+        try:
+            ov = resource_governor.overview()
+            state.set_section("resources", {
+                "pressure_state": fact(
+                    ov["pressure_state"], "LIVE_VERIFIED", "resource_governor").to_dict(),
+                "sample": fact(
+                    ov["sample"], "LIVE_VERIFIED", "resource_governor").to_dict(),
+                "throttle_actions": fact(
+                    ov["throttle_actions"], "LIVE_VERIFIED",
+                    "resource_governor").to_dict(),
+            })
+        except Exception as e:  # noqa: BLE001
+            state.set_section("resources", {
+                "error": fact(str(e), "DEGRADED", "resource_governor").to_dict()})
+
+    # --- project knowledge layer (§15-§20 knowledge view) ------------------------
+    if knowledge_index is not None:
+        try:
+            ov = knowledge_index.overview()
+            state.set_section("knowledge", {
+                "objects": fact(
+                    ov["objects"], "LIVE_VERIFIED", "knowledge_index").to_dict(),
+                "by_type": fact(
+                    ov["by_type"], "LIVE_VERIFIED", "knowledge_index").to_dict(),
+                "by_project": fact(
+                    ov["by_project"], "LIVE_VERIFIED", "knowledge_index").to_dict(),
+                "by_confidence": fact(
+                    ov["by_confidence"], "LIVE_VERIFIED", "knowledge_index").to_dict(),
+            })
+        except Exception as e:  # noqa: BLE001
+            state.set_section("knowledge", {
+                "error": fact(str(e), "DEGRADED", "knowledge_index").to_dict()})
 
 
 def _emit_verdict_change(state: SupervisorState, worker: str,

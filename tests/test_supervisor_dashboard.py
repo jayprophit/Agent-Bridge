@@ -485,3 +485,65 @@ class TestHiveDashboardSection:
         # §38 honesty: the known quota shows its fraction; UNKNOWN would be None
         quotas = hive_sec["quotas"]["value"]
         assert quotas[0]["remaining_fraction"] == 0.4
+
+    # --- §35 supervision + resources + knowledge dashboard sections -----------
+    def test_supervision_section_populated(self):
+        from compute.supervision import Gap, Handoff, Supervisor
+        sv = Supervisor()
+        sv.register_worker("w-1", "EXTERNAL_AI_AGENT", "opencode",
+                           role="ide-worker")
+        sv.submit_handoff(Handoff(task_id="t-1", worker_id="w-1",
+                                  project="agent-bridge"))
+        sv.record_gap(Gap(gap_id="g-1", severity="HIGH", category="test",
+                          description="missing coverage"))
+        st = sup.SupervisorState()
+        sup.refresh_snapshot(st, {}, ollama_url="http://127.0.0.1:1",
+                             supervisor=sv)
+        sec = st.snapshot()["sections"]["supervision"]
+        assert sec["workers_total"]["value"] == 1
+        assert sec["handoffs_pending"]["value"] == 1
+        assert sec["gaps_open"]["value"] == 1
+        # §2 completion directive: continuation_required is an honest flag
+        assert sec["continuation_required"]["value"] is True
+        assert sec["workers_by_status"]["value"]["AWAITING_QA"] == 1
+
+    def test_supervision_error_is_degraded_not_fatal(self):
+        class Broken:
+            def overview(self):
+                raise RuntimeError("boom")
+        st = sup.SupervisorState()
+        sup.refresh_snapshot(st, {}, ollama_url="http://127.0.0.1:1",
+                             supervisor=Broken())
+        sec = st.snapshot()["sections"]["supervision"]
+        assert sec["error"]["state"] == sup.DEGRADED
+
+    def test_resources_section_populated(self):
+        from compute.resource_governor import ResourceGovernor, ResourceSample
+        g = ResourceGovernor()
+        g._sample = ResourceSample(cpu=0.4, ram=0.7, confidence="VERIFIED")
+        st = sup.SupervisorState()
+        sup.refresh_snapshot(st, {}, ollama_url="http://127.0.0.1:1",
+                             resource_governor=g)
+        sec = st.snapshot()["sections"]["resources"]
+        assert sec["pressure_state"]["value"] in (
+            "HEALTHY", "ELEVATED", "PRESSURE", "CRITICAL")
+        assert sec["sample"]["value"]["cpu"] == 0.4
+
+    def test_knowledge_section_populated(self):
+        from compute.knowledge_index import KnowledgeIndex, KnowledgeObject
+        idx = KnowledgeIndex()
+        idx._objects = {
+            "h1": KnowledgeObject(object_id="h1", source_id="chat_exports",
+                                  source_type="CHAT_EXPORT", path="/x/a.txt",
+                                  project="genesis", confidence="VERIFIED"),
+            "h2": KnowledgeObject(object_id="h2", source_id="master_prompts",
+                                  source_type="PROMPT_ARCHIVE",
+                                  path="/x/b.txt", project="unmapped",
+                                  confidence="VERIFIED"),
+        }
+        st = sup.SupervisorState()
+        sup.refresh_snapshot(st, {}, ollama_url="http://127.0.0.1:1",
+                             knowledge_index=idx)
+        sec = st.snapshot()["sections"]["knowledge"]
+        assert sec["objects"]["value"] == 2
+        assert sec["by_project"]["value"]["genesis"] == 1
