@@ -190,3 +190,101 @@ Fixes applied (verified: the 3 GenesisShell errors are gone from tsc):
 Pending: worktree `npm install` (done) → `tsc --noEmit` + `vitest run` must be
 clean before commit. Then commit + push + remote-verify on
 `unit/supervisor-dashboard-ui`.
+
+---
+
+## 9. Knowledge Layer + Resource Governor + Permanent Supervision (2026-10-12, Agent-Bridge-dashboard @ 9355779)
+
+Delivered on branch `unit/external-worker-telemetry` (Agent-Bridge-dashboard),
+all pushed + remote-verified: 3e31f97 (knowledge+governor+toolchain fix) →
+9355779 (supervision+dashboard wiring). 140/140 targeted tests green
+(26 supervision + 23 knowledge + 22 governor + 24 hive + 45 dashboard).
+
+### 9.1 Project Knowledge Layer — `compute/knowledge_index.py`
+One indexed, provenance-preserving knowledge base over the AUTHORISED corpus
+so hive workers retrieve task-relevant context instead of re-reading
+everything (§15-§20). Pipeline: discover → sha256 content-hash → parse →
+extract (summary = actual opening, speaker markers kept inline) → classify →
+dedupe → map-to-project (keyword evidence; "unmapped" rather than guessing)
+→ extract requirement tokens (AETH-IDE-441 / MAT-124) → index → retrieve.
+Incremental sync (§19): NEW/CHANGED/DELETED by hash; deleted files recorded.
+Runtime artifact `knowledge_index.json` is gitignored (personal paths).
+**LIVE EVIDENCE:** 604 files scanned → 534 objects (70 deduped), 0 errors,
+all VERIFIED confidence; mapped genesis 147 / agent-bridge 49 /
+ide-workspace 39 / mat 26 / unmapped 273. Task-scoped retrieval returns
+precise hits with provenance hashes; re-sync is a perfect no-op (604
+unchanged). Sources resolved via %USERPROFILE%/%EXTERNAL_DRIVE% placeholders.
+
+### 9.2 Resource Governor — `compute/resource_governor.py`
+MAXIMUM USEFUL THROUGHPUT not max processes (§10-§14, §31-§35). Live sampling
+(cpu/ram/gpu/vram/disk) with per-axis honest confidence (UNKNOWN never a
+fabricated 0%). Pressure HEALTHY/ELEVATED/PRESSURE/CRITICAL; admission admits
+a task only if all axes stay within gates after demand + reserve; reserve
+SCALES with class so LIGHT work is never vetoed (§25 BLOCKED TASK != BLOCKED
+PROGRAMME). **LIVE:** at 70% RAM/ELEVATED — LIGHT admitted, MEDIUM/HEAVY/
+GPU_HEAVY deferred. Adaptive throttling + explainable verdicts with
+privacy-aware offload hints.
+
+### 9.3 Toolchain discovery fix — `machine_capability.py`
+`_run_probe` gained the list2cmdline shell fallback (npm/.cmd shims raise
+FileNotFoundError under shell=False). **LIVE:** 28 of 30 tools WORKING
+(clang 22.1.8, MinGW, cmake 4.4.2, python 3.11+3.14, uv, node 24/npm 11,
+rust 1.98, dotnet, OpenJDK 21, Go 1.27, git 2.55, docker 29.7.2,
+arduino-cli, sqlite3, wsl); lld/lldb honestly AVAILABLE_BUT_BROKEN.
+
+### 9.4 Permanent Active Supervision — `compute/supervision.py`
+Hermes is the ACTIVE SUPERVISOR, not a dispatcher (§1-§38). WorkerRecord with
+the FULL §2 vocabulary (19 states); heartbeat + stall detection (§4
+investigate-then-act: INTERRUPTED at checkpoint, never assumed dead);
+mandatory structured Handoff (§5); review queue that drains every handoff —
+none left unread (§30); verdicts (§6) ACCEPT/CORRECTION_REQUIRED/
+CONTINUE_SAME_WORKER/EXTEND_SCOPE/REASSIGN/CROSS_AGENT_REVIEW/BLOCKED, and
+**ACCEPT WITH ZERO EVIDENCE IS REFUSED** (§2: completion is evidence-backed);
+gap analysis creates tasks (§7/§19, CRITICAL/HIGH/MEDIUM/LOW/DEFERRED);
+auto-assignment (§8/§25); JSON persistence with continuation_required (§32).
+
+### 9.5 Dashboard wiring — `nodes/supervisor.py`
+`refresh_snapshot` gained three optional sections: supervision (workers by
+status, handoffs pending, gaps by severity, continuation_required),
+resources (pressure + live sample + throttle actions), knowledge (objects,
+by_type, by_project, by_confidence). Each fact carries SourceFact honesty
+(LIVE_VERIFIED / DEGRADED on adapter error — never fatal).
+
+## 10. OPENCODE RECOVERED + QA'D — cb1eb26 is canonical P0-A (2026-10-12 ~13:0x)
+
+Per §46 (inspect both workers; ACT, don't just report):
+- **OpenCode was IDLE** 38 min (last session update ~12:26) — but it had
+  FINISHED its bounded unit on its own: commit `cb1eb26` "P0-A: bind the
+  Genesis UI to real Agent Bridge runtime state", local == origin/master 0/0.
+  Read its AX tree: no Stop button, composer idle, last edits
+  conference.test.tsx + GenesisShell + views + index.ts, running
+  vitest/tsc/vite.
+- **Hermes independent QA of cb1eb26:** `npx vitest run src/genesis-ui
+  --maxWorkers=1 --fileParallelism=false` → **12 files, 175 tests passed,
+  exit 0**. Its implementation has `useGenesisRuntime` as the single network
+  boundary + `bounds.test.ts` architecture enforcement (better than my
+  worktree version).
+- **Codex was ACTIVE** (rollout mtime 12:56 today) working on MAT — left
+  alone (read-only monitoring).
+
+### 10.1 RECONCILIATION — 647c6e7 marked SUPERSEDED (§49 no duplicate systems)
+My worktree fix `647c6e7` (unit/supervisor-dashboard-ui) and OpenCode's
+`cb1eb26` solve the same P0-A problem with equivalent mechanisms (local
+message echo). OpenCode's version is committed, pushed, independently QA'd
+(175 green) and adds the `__GENESIS_RUNTIME_SOURCE__` debug override mine
+lacks. **Ruling: cb1eb26 (master) is canonical; 647c6e7 is SUPERSEDED —
+kept as provenance, not deleted.** No merge needed; do not resurrect the
+worktree for P0-A.
+
+## 11. Remaining work (next actions, in order)
+1. OpenCode next task (§8/§25): send continuation — P0-A accepted; assign
+   the next READY unit (dashboard UI slice per scratch/opencode_dashboard_ui_prompt.md,
+   now deliverable via clipboard-paste) and verify it resumes.
+2. Codex MAT QA when its current unit completes (ACTIVE, rollout 12:56).
+3. Regression: full 2218-test suite cannot complete as one run (420s host
+   foreground limit + host kills background jobs; slow files are live-CLI
+   tests 8-11s each). Verified green: 140 targeted + 175 IDE-Workspace
+   genesis-ui. Known pre-existing env failure: test_acquisition_queue.py
+   `test_fallback_skips_dead_model` pings live Ollama qwen3 (ollama was
+   DOWN at check time) — environment state, not a code regression.
+4. Ollama restart pending (serve died again this session).
