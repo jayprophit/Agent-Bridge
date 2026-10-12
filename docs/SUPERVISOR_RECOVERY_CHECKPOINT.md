@@ -100,3 +100,31 @@ restart-needed. Recorded, not re-asked.
 - Checkpoint after each bounded unit.
 
 **continuation_required = true** (recovery complete; loop continues).
+
+---
+
+## 7. Live worker heartbeats (verified this session, 2026-10-12 ~10:45)
+
+| worker | evidence | state |
+|---|---|---|
+| CODEX / MAT | git index mtime 10:03, `MAT-ADVANCED-RESUME.md` mtime 10:31, HEAD `cc805f8` | **ACTIVE** (writing ~14 min ago) — monitor read-only, do NOT touch write-set |
+| OPENCODE / IDE-Workspace | P0-A files last modified 2026-10-09 20:25 (3 days), nothing in last 10 min | **IDLE/ABANDONED** write-set → Hermes finishing P0-A in isolated worktree |
+| Ollama | restarted this session, `/api/version` → 0.34.4, dashboard adapter LIVE_VERIFIED | **RECOVERED** |
+| Docker / WSL / LM Studio | down (power cut) | RESTART_NEEDED (not blockers) |
+
+## 8. P0-A fix in progress (Hermes, isolated worktree `IDE-Workspace-dashboard`)
+
+OpenCode's P0-A runtime binding was interrupted with 3 tsc errors. OpenCode has
+been idle 3 days → per §11(B) Hermes is finishing it in the isolated worktree
+(branch `unit/supervisor-dashboard-ui`), NOT touching OpenCode's master checkout.
+
+Fixes applied (verified: the 3 GenesisShell errors are gone from tsc):
+1. import `./runtime/types` → `./runtime/runtimeTypes` (+ `RuntimeBinding`).
+2. removed duplicate `messages` useState; local echo is now a separate
+   `localEcho` buffer merged (de-duped by id) with binding-derived `messages`.
+3. `runtime?: RuntimeBinding` added to `ViewCommonProps` (optional, so tests /
+   minimal embeds still render). HomeView/ChatView accept it.
+
+Pending: worktree `npm install` (done) → `tsc --noEmit` + `vitest run` must be
+clean before commit. Then commit + push + remote-verify on
+`unit/supervisor-dashboard-ui`.
