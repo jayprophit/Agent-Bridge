@@ -204,13 +204,34 @@ class MachineCapabilityRegistry:
         }
 
     def _run_probe(self, cmd: list[str], timeout: float = 10.0) -> tuple[bool, str]:
-        """Run a probe command safely with timeout."""
+        """Run a probe command safely with timeout.
+
+        On Windows many development tools are npm/.cmd shims (git, node, npm,
+        uv, opencode, codex), not bare .exe, so subprocess.run([...]) raises
+        FileNotFoundError even though the shell resolves them. Try the bare
+        argv first; on FileNotFoundError retry through the shell using
+        subprocess.list2cmdline (Windows-native quoting — NOT shlex.quote,
+        whose single quotes cmd.exe does not interpret and which mangles
+        flag arguments). Without this, the PATH inventory under-reports
+        every shim tool as ABSENT (verified: 0 of 30 tools found while
+        git/node/npm/uv all work from bash).
+        """
         try:
             result = subprocess.run(
                 cmd, capture_output=True, text=True, timeout=timeout, shell=False
             )
             output = (result.stdout or result.stderr or "").strip()
             return result.returncode == 0, output
+        except FileNotFoundError:
+            try:
+                result = subprocess.run(
+                    subprocess.list2cmdline(cmd), capture_output=True,
+                    text=True, timeout=timeout, shell=True
+                )
+                output = (result.stdout or result.stderr or "").strip()
+                return result.returncode == 0, output
+            except (subprocess.TimeoutExpired, OSError) as e:
+                return False, str(e)
         except (subprocess.TimeoutExpired, OSError) as e:
             return False, str(e)
 
