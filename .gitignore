@@ -225,4 +225,4 @@ raw_*_*.bin
 secrets/
 credentials/
 .env
-.env.*
+.env.*knowledge_index.json
