@@ -133,6 +133,38 @@ path works) — correct §15 honesty, not a defect.
 
 ---
 
+## 8. Units delivered after the resume (2026-10-12 ~11:30-12:00)
+
+| unit | branch | commit | evidence |
+|---|---|---|---|
+| External-worker telemetry (Codex rollout adapter + OpenCode liveness monitor) | unit/external-worker-telemetry | **fb14a89** (pushed) | 39/39 tests; both adapters smoke-tested LIVE (codex ACTIVE/43 rollouts, opencode ACTIVE) |
+| Quota-aware hive scheduler | (pending push) | 09b7e3d | 65/65 targeted tests; honesty gates proven |
+
+Telemetry adapters: `read_codex_state` (rollout JSONL, never touches
+auth/config/secrets) + `read_opencode_liveness` (sanctioned `opencode db`
+channel — plain sqlite3 deadlocks the live WAL, verified). `_run_cli` fixed
+to use `subprocess.list2cmdline` (shlex.quote mangled SQL args through
+cmd.exe — a real rc=1 bug). Heartbeats reuse `worker.heartbeat`, coalesced
+to verdict changes.
+
+Hive scheduler (`compute/hive_scheduler.py`): quota ledger with
+VERIFIED/OBSERVED/ESTIMATED/UNKNOWN honesty (§38 — UNKNOWN never becomes an
+invented %), WORKER_SCORE router with hard gates: FREE_FIRST_STRICT (PAID
+ineligible at budget 0), PRIVACY BEFORE QUOTA (SECRET never leaves local),
+ONE WRITER PER WRITE-SET (§13), exhausted-quota skip (§27), large-task
+penalty on scarce quota (§8), reservation (§25). Reallocation excludes the
+old worker and emits structured JSON handoffs (§14). Full save/load
+persistence (§37 power-failure recovery). Extends team_registry +
+app_registry — no parallel systems (§49). Dashboard: `hive` section exposes
+overview/workers/quotas/waiting_for_quota/handoffs.
+
+NEXT UNITS (queued): (a) full-repo regression + merge both branches to main;
+(b) live tier/quota audit of external apps (gradual, no logins/changes);
+(c) dashboard workforce view rendering the hive section (UI slice);
+(d) Codex MAT QA on completion.
+
+---
+
 ## 7. Live worker heartbeats (verified this session, 2026-10-12 ~11:0x)
 
 | worker | evidence | state |
