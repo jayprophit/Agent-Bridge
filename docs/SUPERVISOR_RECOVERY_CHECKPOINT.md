@@ -375,3 +375,75 @@ single owner action is documented in
 docs/SUPERVISOR_RUNTIME_STARTUP.md (one elevated PowerShell command). It
 blocks ONLY auto-start-at-logon; the runtime is built, tested, live-verified
 and RUNNING without it. Start-now/status/uninstall need no elevation.
+
+---
+
+## 14. CONTINUATION PATCH — commissioning + quota failover + visible dashboard + fork audit (2026-10-12 ~15:5x)
+
+The four observed defects, each root-caused and fixed with live proof.
+
+### 14.1 DEFECT 1 — "continuous operation stopped again": ROOT CAUSE = process-tree coupling
+The runtime launched via the tool's background shell was a CHILD of the
+Hermes serve process tree; when the chat turn ended, the tool session tore
+down and killed the whole tree. Fixed in three layers:
+- DETACHED launch (Start-Process, DETACHED_PROCESS|NEW_PROCESS_GROUP):
+  parent is a system process, not Hermes.
+- INSTANCE LOCK (supervisor.lock): a second process is refused (cross-process
+  proof); stale locks reclaimed; only owner releases.
+- PERSISTENCE WATCHDOG (--watchdog): WINDOWS -> WATCHDOG -> RUNTIME -> WORKERS;
+  checks liveness each interval, relaunches the runtime DETACHED, journals to
+  watchdog.log. Does NO project work.
+LIVE ACCEPTANCE (§2, no human): killed the runtime; watchdog revived it 55s
+later. Exactly one runtime + one watchdog, both detached.
+
+### 14.2 DEFECT 4/5 — Codex cooldown -> reallocation
+parse_codex_cooldown() reads the LIVE five-hour reset from the rollout
+('usage_limit_exceeded ... try again at 2:59 PM'). CodexAdapter returns
+WAITING_FOR_QUOTA; run_cycle emits worker.capacity_unavailable, records
+quota_state, KEEPS the programme moving (KEEP RESERVED — no mid-write-set
+reassign). WorkerRecord.quota_state field added.
+LIFECYCLE PROOF: Codex WAITING_FOR_QUOTA at 13:51 (reset 14:59) -> at 15:50
+the reset passed and Codex AUTO-RE-ENTERED the pool as RUNNING. §25 quota
+shifts work end-to-end.
+
+### 14.3 DEFECT 3 — commission additional workers (§6-§9)
+scripts/commission_workers.py runs the §7 pipeline over the workstation.
+HONEST statuses: 3 CONTROLLABLE (opencode, codex, ollama — real headless/
+local channels); 9 LAUNCHABLE-not-controllable (claude, cursor, antigravity,
+deepseek, devin, kimi, qwen, manus, chatgpt — GUI/web, no structured control
+channel on PATH), each with the exact reason (§15 — never fabricated ready).
+OllamaAdapter: a REAL local worker (free-first, LOCAL_UNLIMITED, quota
+UNKNOWN-not-invented). LIVE: executed a task end-to-end, replied
+'LOCAL-WORKER-OK'. Fleet is now 3 workers (opencode + codex + ollama).
+
+### 14.4 DEFECT 6 — dashboard USER-VISIBLE (§16-§19)
+OpenCode had shipped the UI (IDE-Workspace ea4bf1c, 92 files, tsc 0) but
+there was no LIVE backend launcher. scripts/serve_supervisor_dashboard.py
+serves the real read-model on :8472 bound to the LIVE runtime registry.
+LIVE ACCEPTANCE (§17 A-E): A builds (supervisor-ui 29.49 kB); B vite serves
+supervisor-ui.html (HTTP 200); C backend healthy + proxy /api/v1/supervisor/*
+-> real data; D dashboard OPEN in the owner's Edge window; E UI reads REAL
+supervisor data (workers_total 3, LIVE_VERIFIED), no fixture.
+Running now: runtime daemon + watchdog + dashboard API + vite — all
+independent of any chat turn.
+
+### 14.5 DEFECT 20/21 — fork reconciliation
+scripts/reconcile_forks.py: every fork ACCOUNTED FOR with a §20 disposition +
+project mapping. LIVE: 352 forks reconciled — 63 PARTIAL_REUSE mapped across
+9 projects (media 12, build-tooling 9, data 9, ide-workspace 8, embedded 8,
+infra 6, compute-fabric 5, mat 5, genesis 1), 289 IRRELEVANT with reasons,
+0 silently ignored. "Use all forks" = account for all, not blindly merge.
+
+### 14.6 Tests + commits
+136/136 targeted tests (36 runtime + 26 supervision + 23 knowledge + 22
+governor + 29 hive). Agent-Bridge-dashboard chain (pushed/verified):
+9355779 -> aa41dc0 -> ed317ab -> 12b2da3 -> 17d71db -> 01f141e -> 6373c96 ->
+96d459a -> a8c63fd. IDE-Workspace ea4bf1c (OpenCode UI, pushed/verified).
+
+### 14.7 STILL OPEN (honest, not hidden)
+- §17.F-K: dashboard controls (click worker -> inspect/continue/reassign) are
+  read-only today; the write-control surface is the next unit.
+- 9 GUI/web apps remain LAUNCHABLE-not-controllable pending an MCP/A2A bridge
+  or GUI automation; recorded, not fabricated.
+- Cloud LIVE verification still BLOCKED_OWNER (5 credential rotations).
+- OpenCode Dashboard UI still needs §33 QA on its final state.
