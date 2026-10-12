@@ -103,7 +103,29 @@ restart-needed. Recorded, not re-asked.
 
 ---
 
-## 7. Live worker heartbeats (verified this session, 2026-10-12 ~10:45)
+| OPENCODE / IDE-Workspace | 11:0x | 2026-10-12 11:0x | RECOVERING → RUNNING |
+
+OpenCode was open but the agent was IDLE/INTERRUPTED (chat last active 8:00
+PM pre-power-cut; no Stop/Working button; composer empty). Resumed by Hermes
+via computer control: clipboard-paste (cat file | clip) + ctrl+a/ctrl+v into
+the composer (per-keystroke typing was lossy — only 1 of 308 chars landed —
+clipboard-paste is the reliable channel for this rich-text editor) + click
+Send. Verified: message committed to transcript AND Stop button appeared
+(agent generating). Resume prompt = "resume from exact pre-power-failure
+state, do not redo completed work, recover uncommitted changes, rerun tests,
+continue the bounded runtime-binding task, commit/push/remote-verify,
+report evidence."
+
+IMPORTANT (§49): the P0-A runtime-binding task OpenCode was interrupted on is
+ALREADY COMPLETE — Hermes finished it in the isolated worktree
+(IDE-Workspace/unit/supervisor-dashboard-ui @647c6e7, remote-verified, tsc
+clean, 24/24 tests). OpenCode's resume should therefore re-inspect and
+reconcile (not duplicate). Hermes will independently QA whatever OpenCode
+produces against 647c6e7.
+
+---
+
+## 7. Live worker heartbeats (verified this session, 2026-10-12 ~11:0x)
 
 | worker | evidence | state |
 |---|---|---|
