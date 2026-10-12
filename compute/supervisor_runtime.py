@@ -47,6 +47,8 @@ import subprocess
 import sys
 import threading
 import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -361,6 +363,70 @@ class CodexAdapter(WorkerAdapter):
             return {"delivered": False, "evidence": [str(e)]}
         return {"delivered": ok, "channel": "codex-exec-resume",
                 "evidence": [out[:200] if out else "no output"]}
+
+
+class OllamaAdapter(WorkerAdapter):
+    """§6/§9: a LOCAL model worker (free-first tier). Executes bounded tasks
+    via the Ollama HTTP API. Verdict comes from the /api/version probe; a
+    model that cannot be reached is OFFLINE with evidence, never fabricated.
+    Quota is the free local tier — no allowance window to exhaust."""
+
+    def __init__(self, worker_id: str = "ollama-local",
+                 model: str = "qwen2.5-coder:3b-instruct-q4_K_M",
+                 base_url: str = "http://127.0.0.1:11434") -> None:
+        super().__init__(worker_id=worker_id, application="ollama",
+                         role="local-worker")
+        self.model = model
+        self.base_url = base_url.rstrip("/")
+        self._last_task = ""
+
+    def status(self) -> dict[str, Any]:
+        try:
+            req = urllib.request.Request(f"{self.base_url}/api/version")
+            with urllib.request.urlopen(req, timeout=6.0) as resp:
+                ver = json.loads(resp.read().decode("utf-8")).get("version")
+            # local runtime is 'running' when its API answers; it has no
+            # session activity, so RUNNING means available-to-serve (§15)
+            return {"verdict": RUNNING,
+                    "evidence": [f"ollama {ver} serving model "
+                                 f"{self.model}"]}
+        except (urllib.error.URLError, OSError, ValueError) as e:
+            return {"verdict": OFFLINE,
+                    "evidence": [f"ollama unreachable: {e}"]}
+
+    def send_instruction(self, instruction: str,
+                         continue_task: bool = False) -> dict[str, Any]:
+        """Execute the instruction as a bounded local generation (§11: pick
+        real tasks). Returns delivered + the model's actual reply."""
+        self._last_task = instruction
+        payload = json.dumps({
+            "model": self.model,
+            "prompt": instruction,
+            "stream": False,
+        }).encode("utf-8")
+        try:
+            req = urllib.request.Request(
+                f"{self.base_url}/api/generate", data=payload,
+                headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=600.0) as resp:
+                body = json.loads(resp.read().decode("utf-8"))
+            reply = (body.get("response") or "").strip()
+            return {"delivered": bool(reply), "channel": "ollama-api",
+                    "evidence": [reply[:400] if reply else "empty reply"]}
+        except (urllib.error.URLError, OSError, ValueError) as e:
+            return {"delivered": False, "evidence": [str(e)]}
+
+    def current_task(self) -> dict[str, Any]:
+        return {"task": self._last_task, "evidence": [f"model {self.model}"]}
+
+    def quota_state(self) -> list[QuotaLedgerEntry]:
+        # free local tier: no allowance window to exhaust; recorded honestly
+        # with quota_remaining=None (UNKNOWN), never an invented number (§38)
+        return [QuotaLedgerEntry(worker_id=self.worker_id,
+                                 provider="ollama", tier="LOCAL_UNLIMITED",
+                                 quota_remaining=None, quota_used=0.0,
+                                 quota_unit="local_free", pool=UNKNOWN,
+                                 source="ollama-local-runtime")]
 
 
 # --- the runtime -------------------------------------------------------------------
@@ -725,6 +791,11 @@ def main(argv: Optional[list[str]] = None) -> int:  # pragma: no cover
                         help="print the durable checkpoint and exit")
     parser.add_argument("--with-opencode", action="store_true")
     parser.add_argument("--with-codex", action="store_true")
+    parser.add_argument("--with-ollama", action="store_true",
+                        help="register the local Ollama model worker "
+                             "(free-first tier, §6)")
+    parser.add_argument("--ollama-model", default=
+                        "qwen2.5-coder:3b-instruct-q4_K_M")
     parser.add_argument("--watchdog", action="store_true",
                         help="run as the persistence watchdog (§2): ensure "
                              "exactly one Supervisor Runtime is alive, "
@@ -739,6 +810,8 @@ def main(argv: Optional[list[str]] = None) -> int:  # pragma: no cover
         adapters.append(OpenCodeAdapter())
     if args.with_codex:
         adapters.append(CodexAdapter())
+    if args.with_ollama:
+        adapters.append(OllamaAdapter(model=args.ollama_model))
     runtime = SupervisorRuntime(args.state_dir, adapters=adapters,
                                 cycle_interval_s=args.interval)
 

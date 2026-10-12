@@ -27,7 +27,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from compute.supervisor_runtime import (  # noqa: E402
-    CodexAdapter, OpenCodeAdapter, SupervisorRuntime)
+    CodexAdapter, OllamaAdapter, OpenCodeAdapter, SupervisorRuntime)
 from nodes import supervisor as sup  # noqa: E402
 
 REPOS = {
@@ -47,7 +47,8 @@ def main() -> int:
     # read-model over it (bus=None -> isolated state we feed via refresh).
     # Registered WITH the real adapters so worker cards/quota are live.
     runtime = SupervisorRuntime(
-        args.state_dir, adapters=[OpenCodeAdapter(), CodexAdapter()],
+        args.state_dir, adapters=[OpenCodeAdapter(), CodexAdapter(),
+                                  OllamaAdapter()],
         cycle_interval_s=args.interval)
     runtime.run_cycle()   # one live observation so the first page load is real
     state = sup.create_supervisor_state(session_id="dashboard")

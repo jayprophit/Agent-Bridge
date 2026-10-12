@@ -21,8 +21,8 @@ import pytest
 
 from compute.supervisor_runtime import (
     IDLE, NO_COMPATIBLE_READY_WORK, OFFLINE, RUNNING, SUPERVISOR_DEFECT,
-    UNKNOWN_VERDICT, WAITING_FOR_QUOTA, CodexAdapter, OpenCodeAdapter,
-    SupervisorRuntime, WorkerAdapter, parse_codex_cooldown)
+    UNKNOWN_VERDICT, WAITING_FOR_QUOTA, CodexAdapter, OllamaAdapter,
+    OpenCodeAdapter, SupervisorRuntime, WorkerAdapter, parse_codex_cooldown)
 from compute.supervision import ACCEPT, Gap, Handoff
 
 
@@ -389,3 +389,48 @@ class TestCodexCooldownReallocation:
         rec = rt.supervisor.worker("codex-primary")
         assert rec.status == WAITING_FOR_QUOTA
         assert rec.quota_state["reset_at"] == "14:59"
+
+
+class TestOllamaLocalWorker:
+    """§6: the local Ollama model is a commissioned worker (free-first tier).
+    Its verdict must come from the live API, never fabricated."""
+
+    def test_offline_when_api_unreachable(self):
+        a = OllamaAdapter(base_url="http://127.0.0.1:59999")
+        st = a.status()
+        assert st["verdict"] == OFFLINE
+        assert st["evidence"]
+
+    def test_quota_is_free_local_tier_not_invented(self):
+        a = OllamaAdapter()
+        q = a.quota_state()
+        assert len(q) == 1
+        assert q[0].provider == "ollama"
+        assert q[0].quota_remaining is None    # UNKNOWN, not fabricated (§38)
+        assert q[0].tier == "LOCAL_UNLIMITED"
+
+    def test_send_instruction_hits_generate_endpoint(self, monkeypatch):
+        captured = {}
+
+        class FakeResp:
+            def read(self):
+                return json.dumps({"response": "LOCAL-WORKER-OK"}).encode()
+            def __enter__(self):
+                return self
+            def __exit__(self, *a):
+                return False
+
+        def fake_urlopen(req, timeout=None):
+            captured["url"] = req.full_url
+            captured["body"] = json.loads(req.data.decode())
+            return FakeResp()
+
+        monkeypatch.setattr("compute.supervisor_runtime.urllib.request"
+                            ".urlopen", fake_urlopen)
+        a = OllamaAdapter(model="test-model")
+        r = a.send_instruction("say hi")
+        assert r["delivered"] is True
+        assert "LOCAL-WORKER-OK" in r["evidence"][0]
+        assert captured["url"].endswith("/api/generate")
+        assert captured["body"]["model"] == "test-model"
+        assert a.current_task()["task"] == "say hi"
