@@ -451,3 +451,37 @@ class TestRefreshExternalWorkers:
         # change -> emits again
         sup._emit_verdict_change(st, "codex", "IDLE")
         assert st.last_seq > seq
+
+
+class TestHiveDashboardSection:
+    def test_hive_not_wired_is_not_exposed(self):
+        st = sup.SupervisorState()
+        facts = sup.read_hive_state(None)
+        assert facts["hive"].effective_state() == sup.NOT_EXPOSED
+
+    def test_hive_section_populated_from_live_scheduler(self):
+        from compute.hive_scheduler import (
+            FREE_TIER, LOCAL_UNLIMITED, QuotaLedgerEntry, HiveScheduler,
+            TaskSpec)
+        h = HiveScheduler()
+        h.register_worker("w-local", provider="ollama",
+                          tier=LOCAL_UNLIMITED, capabilities=("CODING_AGENT",))
+        h.register_worker("w-cloud", provider="freecloud",
+                          tier=FREE_TIER, capabilities=("RESEARCH",))
+        h.record_quota(QuotaLedgerEntry(
+            worker_id="w-cloud", provider="freecloud", tier=FREE_TIER,
+            quota_total=100.0, quota_remaining=40.0, confidence="VERIFIED"))
+        h.route(TaskSpec(task_id="t1", title="t1",
+                         required_capability="CODING_AGENT"))
+        st = sup.SupervisorState()
+        sup.refresh_snapshot(st, {}, ollama_url="http://127.0.0.1:1", hive=h)
+        snap = st.snapshot()
+        assert "hive" in snap["sections"]
+        hive_sec = snap["sections"]["hive"]
+        assert hive_sec["overview"]["state"] in (sup.LIVE_VERIFIED, sup.STALE)
+        ov = hive_sec["overview"]["value"]
+        assert ov["workers"] == 2
+        assert ov["tasks_assigned"] == 1
+        # §38 honesty: the known quota shows its fraction; UNKNOWN would be None
+        quotas = hive_sec["quotas"]["value"]
+        assert quotas[0]["remaining_fraction"] == 0.4

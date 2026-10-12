@@ -629,6 +629,50 @@ def create_supervisor_state(bus: Any = None, session_id: str = "",
     return st
 
 
+def read_hive_state(hive: Any) -> dict[str, SourceFact]:
+    """Quota-aware hive workforce overview for the dashboard (§30, §31).
+
+    `hive` is a compute.hive_scheduler.HiveScheduler instance (injected, never
+    constructed here — the supervisor is a read-model, not a second
+    scheduler). Every number comes from the live scheduler; UNKNOWN quota
+    stays UNKNOWN (§38) — the dashboard shows the honesty, not a fake %.
+    """
+    if hive is None:
+        return {"hive": not_exposed("hive scheduler not wired")}
+    try:
+        ov = hive.overview()
+    except Exception as e:  # noqa: BLE001
+        return {"hive": fact(None, DEGRADED, "hive-scheduler",
+                             note=f"{type(e).__name__}: {e}")}
+    workers = []
+    quota_rows = []
+    for wid, w in sorted(hive._workers.items()):
+        workers.append({
+            "worker_id": wid,
+            "provider": w.get("provider"),
+            "tier": w.get("tier"),
+            "privacy_class": w.get("privacy_class"),
+            "state": w.get("state"),
+            "capabilities": w.get("capabilities"),
+        })
+        q = hive._quota.get(wid)
+        if q is not None:
+            d = q.to_dict()
+            frac = q.remaining_fraction()
+            # §38: remaining_fraction None => UNKNOWN, never an invented %.
+            d["remaining_fraction"] = frac
+            quota_rows.append(d)
+    return {
+        "overview": fact(ov, LIVE_VERIFIED, "hive-scheduler"),
+        "workers": fact(workers, LIVE_VERIFIED, "hive-scheduler"),
+        "quotas": fact(quota_rows, LIVE_VERIFIED, "hive-scheduler"),
+        "waiting_for_quota": fact(list(hive._deferred.keys()), LIVE_VERIFIED,
+                                  "hive-scheduler"),
+        "handoffs": fact([h.to_dict() for h in hive.handoffs()[-20:]],
+                         LIVE_VERIFIED, "hive-scheduler"),
+    }
+
+
 # --- refresh wiring ---------------------------------------------------------
 def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
                      ollama_url: str = "http://127.0.0.1:11434",
@@ -636,7 +680,8 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
                      opencode_bin: Optional[str] = None,
                      opencode_session_id: str = "",
                      codex_home: Optional[str] = None,
-                     opencode_liveness_window_s: float = 600.0) -> None:
+                     opencode_liveness_window_s: float = 600.0,
+                     hive: Any = None) -> None:
     """Pull real adapter data into the snapshot. Call on a timer or per-request.
 
     `repos` maps a project label -> absolute repo path. `team_registry` is an
@@ -687,6 +732,10 @@ def refresh_snapshot(state: SupervisorState, repos: dict[str, str],
         state.set_section("codex", cx)
         _emit_verdict_change(state, "codex",
                              cx.get("verdict", {}).get("value"))
+
+    if hive is not None:
+        state.set_section("hive", {k: v.to_dict()
+                                   for k, v in read_hive_state(hive).items()})
 
 
 def _emit_verdict_change(state: SupervisorState, worker: str,
