@@ -599,3 +599,31 @@ confirmed active. Full spec: IDE-Workspace/docs/handoffs/supervisor-merge-m3.md.
 
 Fleet LIVE: runtime+API :8472, canonical react-ui, m2 redirect, proxy data.
 Both repos in sync. Loop continues (§28/§33) — M3 -> F3 -> gap -> M4 -> F4.
+
+---
+
+## 19. POST-REPORT CONTINUATION CYCLE (2026-10-13 ~06:2x) — §22 hook run
+
+Owner directive 989515: a report is NOT a stop condition. Post-report hook
+executed (§22 all steps), loop continues.
+
+§22.1 OpenCode M3: RUNNING (not idle). Spawned @explore subagent to mine the
+  vibe-prototype; landing conference.tsx + m3-readmodel.ts. Monitoring, no
+  intervention.
+§22.10 Codex quota: REFRESHED — rollout appended 06:16, status IMPLEMENTING,
+  quota_state empty. CODEX_CAPACITY_RESTORED emitted (§12). Codex back on MAT;
+  no re-poke. MAT support continues via OpenCode meanwhile.
+§22.12 runtime/watchdog: HEALTHY — 125 cycles, last save 48s, continuation_
+  required True. §36 fix working: ollama-local flagged NO_PROGRESS (local
+  model genuinely stalled). 2 pythonw + 3 python alive.
+§22.15 fast gap: M3 in progress (OpenCode); M4 not started (F4 polish);
+  external commissioning incomplete; 63 PARTIAL_REUSE forks need per-project
+  reuse decisions.
+§22.10/§10 external app audit: Claude RUNNING (pid 8696), Manus RUNNING
+  (pid 12604), Cursor has CLI (cursor.cmd), VS Code CLI present. Start-menu
+  shortcuts exist for Antigravity/Claude/Cursor/DeepSeek/Devin/Kimi/Manus/
+  Qwen/OpenClaw — all commissionable candidates per §20 DISCOVER→...→REGISTER.
+
+NEXT (§22.18+ another cycle): commission controllable external workers
+(Cursor CLI = structured control channel, highest priority per control-channel
+law); prep M4 for when M3 closes; extend fork reuse decisions. Loop continues.
