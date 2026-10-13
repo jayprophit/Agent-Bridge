@@ -434,3 +434,83 @@ class TestOllamaLocalWorker:
         assert captured["url"].endswith("/api/generate")
         assert captured["body"]["model"] == "test-model"
         assert a.current_task()["task"] == "say hi"
+
+
+class TestProgressBasedIdleDetection:
+    """§36/§37: a worker that stays nominally RUNNING without advancing must
+    be flagged. The liveness window alone cannot see this — that blindness
+    was the SUPERVISOR_MISSED_IDLE_EVENT root cause."""
+
+    def test_unchanged_evidence_flags_no_progress(self, rt):
+        """Same evidence for STALL_CYCLES -> NO_PROGRESS + worker.idle_review.
+        The owner must never have to report an idle worker. Cycle 1 is the
+        baseline observation, so STALL_CYCLES identical successors follow it."""
+        a = FakeAdapter(script=[RUNNING] * 8)
+        rt.register_adapter(a)
+        for _ in range(SupervisorRuntime.STALL_CYCLES + 1):
+            rt.run_cycle()
+        assert "fake-1" in rt.idle_reasons
+        assert rt.idle_reasons["fake-1"] == "NO_PROGRESS"
+        assert any(e["event"] == "worker.idle_review"
+                   for e in rt.events)
+
+    def test_changing_evidence_clears_no_progress(self, rt):
+        class Advancing(FakeAdapter):
+            """A worker whose evidence genuinely changes each cycle — it is
+            alive AND progressing."""
+            def status(self):
+                self.cycles_seen += 1
+                return {"verdict": RUNNING,
+                        "evidence": [f"progress step {self.cycles_seen}"]}
+        rt.register_adapter(Advancing(script=[RUNNING] * 10))
+        # Advancing evidence never accumulates a stall count and never flags.
+        for _ in range(SupervisorRuntime.STALL_CYCLES + 3):
+            rt.run_cycle()
+        assert "fake-1" not in rt.idle_reasons
+
+    def test_flag_clears_when_worker_resumes_progress(self, rt):
+        """The real recovery case: a worker stalls (NO_PROGRESS flagged),
+        then its evidence changes -> the flag is cleared in the same cycle."""
+        class StalledThenAdvances(FakeAdapter):
+            def __init__(self):
+                super().__init__(script=[RUNNING] * 20)
+                self.step = 0
+            def status(self):
+                self.cycles_seen += 1
+                self.step += 1
+                # cycles 1-4: frozen evidence. cycle 5+: new evidence.
+                if self.step <= 4:
+                    ev = ["frozen evidence"]
+                else:
+                    ev = [f"new evidence step {self.step}"]
+                return {"verdict": RUNNING, "evidence": ev}
+        a = StalledThenAdvances()
+        rt.register_adapter(a)
+        for _ in range(SupervisorRuntime.STALL_CYCLES + 1):
+            rt.run_cycle()
+        assert "fake-1" in rt.idle_reasons      # stalled first
+        for _ in range(3):
+            rt.run_cycle()
+        assert "fake-1" not in rt.idle_reasons  # then recovered
+
+    def test_cooldown_worker_is_not_flagged_as_stalled(self, rt):
+        """A WAITING_FOR_QUOTA worker is legitimately not progressing — its
+        quota is refreshing. It must NOT be flagged NO_PROGRESS."""
+        class Cooldown(FakeAdapter):
+            def status(self):
+                return {"verdict": WAITING_FOR_QUOTA,
+                        "evidence": ["usage_limit_exceeded"],
+                        "quota": {"pool": "five_hour", "reset_at": "01:11"}}
+        rt.register_adapter(Cooldown(script=[WAITING_FOR_QUOTA] * 8))
+        for _ in range(SupervisorRuntime.STALL_CYCLES + 3):
+            rt.run_cycle()
+        assert "fake-1" not in rt.idle_reasons
+
+    def test_no_progress_keeps_continuation_required(self, rt):
+        """A stalled worker is unfinished programme work — continuation_required
+        must stay True so the watchdog/daemon never treats it as done."""
+        a = FakeAdapter(script=[RUNNING] * 8)
+        rt.register_adapter(a)
+        for _ in range(SupervisorRuntime.STALL_CYCLES + 1):
+            rt.run_cycle()
+        assert rt.continuation_required is True

@@ -435,6 +435,11 @@ class SupervisorRuntime:
     durable checkpoint. `run_cycle()` is ONE §33 loop iteration — the chat
     turn may call it directly; the daemon calls it in a loop."""
 
+    # §36/§37: cycles of an unchanged progress signature before a worker is
+    # flagged NO_PROGRESS. At the default 120s interval this is ~6 minutes of
+    # a nominally-alive worker producing no new evidence.
+    STALL_CYCLES = 3
+
     def __init__(self, state_dir: str | Path,
                  adapters: Optional[list[WorkerAdapter]] = None,
                  cycle_interval_s: float = 120.0) -> None:
@@ -456,6 +461,11 @@ class SupervisorRuntime:
         # §45.8: workers we sent a continue-instruction to whose resumption
         # is NOT yet verified — continuation stays required until they are.
         self._pending_verification: set[str] = set()
+        # §36/§37: progress-based idle detection (SUPERVISOR_MISSED_IDLE_EVENT
+        # root cause — a liveness window alone cannot see a worker that stays
+        # nominally RUNNING without advancing).
+        self._progress_sigs: dict[str, str] = {}
+        self._stall_counts: dict[str, int] = {}
         for a in (adapters or []):
             self.register_adapter(a)
 
@@ -483,6 +493,40 @@ class SupervisorRuntime:
         ids.update(self.supervisor._workers.keys())
         return sorted(ids)
 
+    def _progress_signature(self, wid: str, st: dict[str, Any]) -> str:
+        """§36/§37 PROGRESS signature: a stable fingerprint of the evidence a
+        worker is actually advancing. Two cycles with the SAME signature mean
+        the worker is nominally alive but not progressing — a liveness window
+        alone cannot see this (the SUPERVISOR_MISSED_IDLE_EVENT root cause)."""
+        ev = "|".join(str(e) for e in st.get("evidence", [])[:2])
+        return f"{st.get('verdict','?')}::{ev}"
+
+    def _track_progress(self, wid: str, st: dict[str, Any],
+                        actions: dict[str, Any]) -> bool:
+        """Returns True when the worker made progress this cycle. After
+        STALL_CYCLES identical signatures, records a SUPERVISOR DEFECT-style
+        finding and raises WORKER_IDLE_REVIEW — visible, never silent (§36:
+        the owner must never have to report an idle worker)."""
+        sig = self._progress_signature(wid, st)
+        prev = self._progress_sigs.get(wid)
+        if prev is not None and prev == sig:
+            self._stall_counts[wid] = self._stall_counts.get(wid, 0) + 1
+        else:
+            self._stall_counts[wid] = 0
+        self._progress_sigs[wid] = sig
+        stalled_cycles = self._stall_counts.get(wid, 0)
+        if stalled_cycles >= self.STALL_CYCLES:
+            self.idle_reasons.setdefault(wid, "NO_PROGRESS")
+            actions["workers"][wid]["no_progress"] = {
+                "stall_cycles": stalled_cycles,
+                "signature": sig[:160],
+                "finding": "nominally alive, no evidence of task progress",
+            }
+            self._emit("worker.idle_review", worker=wid,
+                       stall_cycles=stalled_cycles)
+            return False
+        return True
+
     # -- one supervision cycle (§33) ----------------------------------------------
     def run_cycle(self) -> dict[str, Any]:
         """OBSERVE ALL WORKERS -> CHECK HEARTBEATS -> READ HANDOFFS ->
@@ -500,9 +544,17 @@ class SupervisorRuntime:
                                        "evidence": st.get("evidence", [])}
             if rec is None:
                 continue
+            # §36/§37: progress-based idle detection runs for EVERY verdict
+            # except WAITING_FOR_QUOTA (a cooldown is not a stall) — a worker
+            # that stays nominally RUNNING without advancing is caught here.
+            if verdict not in (WAITING_FOR_QUOTA, OFFLINE, UNKNOWN_VERDICT):
+                progressed = self._track_progress(wid, st, actions)
+            else:
+                progressed = True
             if verdict == RUNNING:
                 self.supervisor.heartbeat(wid, status="IMPLEMENTING", quota_state={})
-                self.idle_reasons.pop(wid, None)
+                if progressed:
+                    self.idle_reasons.pop(wid, None)
                 # §45.8: resumption verified — clear the pending flag
                 if wid in self._pending_verification:
                     self._pending_verification.discard(wid)
@@ -541,13 +593,15 @@ class SupervisorRuntime:
         return actions
 
     def _compute_continuation(self) -> bool:
-        """§27/§45.8: the single honest continuation computation. True unless
-        NOTHING remains: no unread handoffs, no open gaps, no supervisor
-        defects, no in-flight check-in awaiting resumption verification."""
+        """§27/§45.8/§36: the single honest continuation computation. True
+        unless NOTHING remains: no unread handoffs, no open gaps, no worker
+        needing supervisor action (SUPERVISOR_DEFECT *or* NO_PROGRESS — a
+        stalled worker is unfinished programme work, §36), no in-flight
+        check-in awaiting resumption verification."""
         return bool(
             self.supervisor.unreviewed_handoffs()
             or self.supervisor.open_gaps()
-            or any(r == SUPERVISOR_DEFECT
+            or any(r in (SUPERVISOR_DEFECT, "NO_PROGRESS")
                    for r in self.idle_reasons.values())
             or self._pending_verification)
 
