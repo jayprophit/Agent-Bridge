@@ -522,3 +522,40 @@ owner had to point out that OpenCode stopped again. Two defects:
    is working. The runtime needs PROGRESS-based idle detection (no new file
    write / commit / session advance for N cycles), not just liveness-window.
    That is a §37 supervisor self-health item, now queued as a real task.
+
+---
+
+## 17. §44 EXECUTED — VISUAL QA SELF-RUN + M2 SHIP + §36 IDLE FIX (2026-10-13 ~02:5x)
+
+Owner directive 402c67: stop ending the loop after a report; do NOT ask the
+owner to perform routine QA; current UI is a foundation (UI-F1), target >=UI-F4
+avatar-first; regenerate the backlog and keep going.
+
+EXECUTED (§44 A–W, no owner QA asked):
+- A/B: supervisor self-health inspected; §16 SUPERVISOR_MISSED_IDLE_EVENT
+  recorded + root-caused (progress-based idle detection missing). 311b4e9.
+- C/D: OpenCode inspected (was finishing §17.J); QA'd prior work.
+- G/H: Codex quota recorded (rollout-based).
+- M/N: 24 reference images located (Genesis + IDE-Workspace/references/visuals);
+  design language extracted via vision (Aetherius IDE 3-col shell, NEXUS/OE
+  mission-control density, navy/cyan/violet palette).
+- O/P: visual QA run BY HERMES against the owner refs — F1 scorecard produced.
+- Q: SUPERVISOR_UI_M2-A assigned to OpenCode (avatars+cards+team room);
+  M2 shell shipped by Hermes in parallel (§23 — not sequential).
+- §36 FIX (904ab97): _progress_signature + _track_progress, STALL_CYCLES=3,
+  WAITING_FOR_QUOTA exempt; NO_PROGRESS keeps continuation_required True.
+- M2 shell (53cc45b, live :5199/supervisor-m2.html): Aetherius 3-col shell,
+  avatar worker cards, 7 mission-control tiles, live Continue, SourceFact
+  honesty. §42 scorecard (1eb4087): UI-F1 -> UI-F2, HONESTLY short of UI-F4.
+- Full chain was found DEAD (runtime+watchdog+API) overnight; restarted,
+  verified cycling (3 workers LIVE_VERIFIED). RESOURCES CRITICAL is real
+  (governor) and shown faithfully.
+- OpenCode M2-A IN PROGRESS: avatar.tsx/worker-card.tsx/team-room.tsx,
+  1208 LOC, 45 avatar tests green.
+
+NEXT (loop continues, not a stopping point):
+- QA OpenCode M2-A when it lands; assign M2-B (nav shell + mission control).
+- M3: conference + messaging + richer interaction. M4: IDE/workspace.
+- Extend mission-control tiles (project/milestone/GIT/TEST/research/security);
+- full worker view (model/provider/plan/timeline/tools); five-theme coverage;
+  keyboard + responsive audit to reach UI-F4.
