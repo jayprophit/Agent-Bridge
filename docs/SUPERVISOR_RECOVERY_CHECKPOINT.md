@@ -559,3 +559,43 @@ NEXT (loop continues, not a stopping point):
 - Extend mission-control tiles (project/milestone/GIT/TEST/research/security);
 - full worker view (model/provider/plan/timeline/tools); five-theme coverage;
   keyboard + responsive audit to reach UI-F4.
+
+---
+
+## 18. §2/§31 CANONICAL MERGE + REFERENCE INGESTION (2026-10-13 ~06:0x)
+
+Owner directive b919a9: merge the two dashboard attempts into ONE canonical
+React UI, ingest the four reference dirs + the vibe-prototype (the "video
+attempt"), reach F4, keep the loop running.
+
+STATE RECONCILIATION (§1): git clean, HEAD==origin on both repos. The "failed
+mutation" was a stale-write GUARD correctly refusing an overwrite — resolved by
+reading then writing a NEW file. No real corruption. Both entries exist;
+React M2-A components tracked.
+
+REFERENCE INGESTION (§4/§5/§6/§7): 72 files across 4 dirs. KEY FINDING: the
+"video attempt visually closer to the images" is the vibe-prototype — a WORKING
+10,005-LOC React Aetherius IDE (motion/d3/lucide), NOT a video (no mp4/webm/
+mov/gif on disk). Extracted its real design DNA (Plus Jakarta Sans + Fira Code
+@13px, slate-950 base, cyan-400/blue-600 accents, pulse-glow/orbit motion).
+Manifest + matrix: Agent-Bridge-dashboard/docs/REFERENCE_MANIFEST_AND_DESIGN_MATRIX.md (43276b2).
+
+MERGE (§2/§31) — ONE canonical UI:
+- Canonical = React supervisor-ui.html (tested client + SourceFact + controls
+  + bounds). M2 shell's mission-control composition PORTED IN as
+  components/mission-control.tsx (8 owner telemetry tiles, same live facts,
+  NOT_EXPOSED honesty). supervisor-m2.html is now a REDIRECT to it (§31 D).
+- MERGE ACCEPTANCE: A one React app ✓ B canonical ✓ C M2 ported ✓ D redirect
+  ✓ E one client ✓ F one store ✓ G one stream ✓ H 147/147 tests ✓ I live ✓
+  J controls ✓ (K/L/M/N = F4 polish, in progress via M3).
+- Tests caught a REAL honesty bug: roster-derived quota showed 0 with
+  LIVE_VERIFIED when by_status absent — fixed (derive from roster).
+- Self-QA (§21, browser AX tree): Mission Control renders LIVE — 2 active /
+  3 total / 1 waiting-quota (Codex) / CRITICAL resources honest.
+
+ASSIGNED (§23): SUPERVISOR-MERGE-M3 (conference + messaging + richer mission
+control, port vibe-prototype mechanisms) delivered to OpenCode — new session
+confirmed active. Full spec: IDE-Workspace/docs/handoffs/supervisor-merge-m3.md.
+
+Fleet LIVE: runtime+API :8472, canonical react-ui, m2 redirect, proxy data.
+Both repos in sync. Loop continues (§28/§33) — M3 -> F3 -> gap -> M4 -> F4.
