@@ -706,3 +706,53 @@ with the previous dependencies" — recorded, not acted on mid-cycle.)
 
 Fleet: API :8472 200, react-ui :5199 200, daemon cycling, watchdog alive.
 Loop continues — M4 in progress; QA + F4/M5 decision when OpenCode reports.
+
+---
+
+## 22. EVIDENCE-BASED STATE CORRECTION + WATCHDOG STALL DETECTION (2026-10-14 ~09:3x)
+
+Owner directive aa7ba6 (§18 EVIDENCE LAW): SESSION FRESH != TASK ACTIVE;
+PROCESS ALIVE != SUPERVISOR HEALTHY; PROMPT SENT != PROMPT RECEIVED.
+
+**STATE CORRECTION (§2):** My previous "M4 RUNNING" claim is RETRACTED.
+Evidence audit found: repo clean vs 98050eb (git diff empty), newest
+supervisor-ui file mtime Oct 13 07:40 (M3's), OpenCode procs alive but
+low-CPU. M4 was reclassified ASSIGNED_UNVERIFIED, then explicitly
+redelivered and re-verified from TASK-SPECIFIC evidence: the OpenCode
+transcript is now titled "Supervisor M4 Increment 1" and actively
+updating — the worker NAMES the task (§1 criterion), which session
+freshness never proved. M4 = RUNNING_VERIFIED.
+
+**M3 was decomposed (§5):** the full F4 unit was too large for one 3B-local
+increment; increment 1 is bounded and self-contained: worker-inspector.tsx
++ typography-token.test.tsx (§15 regression) + card-collapse.test.tsx
+(§16 regression) + wiring, verified by those files existing + 186 tests
+green + tsc 0. Write-ahead journal: IDE-Workspace/docs/handoffs/
+supervisor-merge-m4-journal.md (280c161) — task_id, baseline_sha 98050eb,
+planned write-set, evidence log.
+
+**MODEL ROUTING (§4):** OpenCode relaunched on Qwen 2.5 Coder 3B (local).
+Decision: adequate for the bounded increment 1 only. Codex CLI 0.155.1
+(OWNED_PAID_ENTITLEMENT, zero incremental cost) is the strongest available
+model for the F4 architecture work and is on MAT; OpenCode keeps M4 for
+session continuity. Ollama was found DOWN (11434 free) and restarted.
+
+**WATCHDOG DEFECT FIXED (§7/§8) — shipped 3ebda2e:** the watchdog only
+detected process DEATH, which let stalled daemon 26436 hold the lock for
+31 min (liveness != progress). Now: checkpoint-age check (stall = >3
+intervals, min 300s) classifies PROCESS_ALIVE_BUT_STALLED → SIGTERM/
+SIGKILL + lock clear + detached relaunch; the watchdog journals a heartbeat
+every cycle so a dead watchdog is distinguishable from a quiet one.
+4 new regression tests (TestWatchdogStallDetection); 45/45 runtime suite.
+
+**DELIVERY CHANNEL (§10):** cua-driver UIA still degraded (doctor: desktop
+enumeration >2000ms). Fell down the control ladder to the STRUCTURED CLI
+channel — headless `opencode run "<prompt>"` — which bypasses UIA entirely
+and produced the task-named session. Recorded as the preferred M-delivery
+path while UIA is degraded.
+
+Ollama semantics (§13): ollama-local currently has no assigned task — it
+should read AVAILABLE, not NO_PROGRESS; queued as a runtime fix.
+
+LOOP CONTINUES: increment 1 executing; watchdog live with stall detection;
+backend gaps (resource telemetry, test-health) + Genesis flake still queued.
