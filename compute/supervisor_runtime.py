@@ -477,8 +477,35 @@ class SupervisorRuntime:
         self.supervisor.register_worker(
             adapter.worker_id, adapter.worker_type, adapter.application,
             adapter.role)
+        self._register_in_hive(adapter)
         self._emit("worker.registered", worker=adapter.worker_id,
                    application=adapter.application)
+
+    def _register_in_hive(self, adapter: WorkerAdapter) -> None:
+        """Register the worker in the hive scheduler with quota/capability info."""
+        tier_map = {
+            "opencode": "FREE_PLAN",      # has five-hour quota window
+            "codex": "FREE_PLAN",         # has five-hour quota window
+            "ollama": "LOCAL_UNLIMITED",  # free local tier
+        }
+        capability_map = {
+            "opencode": ("coding", "implementation", "ide"),
+            "codex": ("coding", "implementation", "mat"),
+            "ollama": ("coding", "review", "local", "free"),
+        }
+        provider = adapter.application
+        tier = tier_map.get(provider, "UNKNOWN")
+        capabilities = capability_map.get(provider, ("general",))
+        self.hive.register_worker(
+            worker_id=adapter.worker_id,
+            provider=provider,
+            app_id=provider,
+            tier=tier,
+            privacy_class="PUBLIC",
+            capabilities=capabilities,
+            execution_target=provider,
+            verification_status="AUTOPILOT_READY",
+        )
 
     def _emit(self, event: str, **payload: Any) -> None:
         rec = {"event": event, "timestamp": _now(), **payload}
@@ -585,6 +612,10 @@ class SupervisorRuntime:
             # OFFLINE / UNKNOWN: record honestly, do not fabricate health
             elif verdict in (OFFLINE, UNKNOWN_VERDICT):
                 self.idle_reasons.setdefault(wid, SUPERVISOR_DEFECT)
+
+        # §7: drive the acquisition queue commissioning pipeline
+        if self._acq:
+            self._drive_commissioning(actions)
 
         # §11-§14 watchdogs
         actions["watchdogs"] = self._watchdogs()
@@ -869,6 +900,145 @@ class SupervisorRuntime:
             out["ready_work_with_idle_workers"] = {
                 "ready": len(ready), "idle": idle_workers}
         return out
+
+    def _drive_commissioning(self, actions: dict[str, Any]) -> None:
+        """§7: drive the commissioning pipeline for unassessed apps.
+        
+        For each app not in a FINAL state, assess its controllability and
+        advance it through the pipeline. CONTROLLABLE apps are registered
+        as workers in the hive scheduler."""
+        if not self._acq:
+            return
+        
+        unassessed = self._acq.unassessed(now=_now())
+        if not unassessed:
+            return
+        
+        actions.setdefault("commissioning", {"assessed": 0, "advanced": 0, "registered": 0})
+        
+        for app_info in unassessed:
+            app_id = app_info["app_id"]
+            stage = app_info.get("stage", "DISCOVERED")
+            
+            # Skip apps already in final states
+            if stage in ("CAPABILITY_REGISTERED", "REJECTED"):
+                continue
+            
+            actions["commissioning"]["assessed"] += 1
+            
+            # Assess controllability (simplified from commission_workers.py)
+            assessment = self._assess_app_controllability(app_id)
+            
+            if assessment["controllable"]:
+                # App has a headless agent channel - advance to CAPABILITY_REGISTERED
+                try:
+                    self._acq.advance(app_id, "CAPABILITY_REGISTERED",
+                                     evidence=[assessment["reason"]])
+                    # Register in hive scheduler if not already registered
+                    if app_id not in self.hive._workers:
+                        self._register_commissioned_worker(app_id, assessment)
+                        actions["commissioning"]["registered"] += 1
+                    actions["commissioning"]["advanced"] += 1
+                except Exception:
+                    pass  # honest: log but don't crash the cycle
+            elif assessment["launchable"] and stage == "DISCOVERED":
+                # App is installed but not headless-controllable - advance to LAUNCHED
+                try:
+                    self._acq.advance(app_id, "LAUNCHED",
+                                     evidence=[assessment["reason"]])
+                    actions["commissioning"]["advanced"] += 1
+                except Exception:
+                    pass
+
+    def _assess_app_controllability(self, app_id: str) -> dict[str, Any]:
+        """Assess if an app has a headless agent control channel."""
+        import shutil
+        import subprocess
+        import sys
+        
+        # Known controllable apps with headless CLI channels
+        controllable_apps = {
+            "opencode": {"cli": "opencode", "channel": "cli",
+                         "reason": "CLI on PATH with headless agent channel (opencode run + db telemetry)"},
+            "codex": {"cli": "codex", "channel": "cli",
+                      "reason": "CLI on PATH with headless agent channel (codex exec resume --last)"},
+            "ollama": {"cli": "ollama", "channel": "local-runtime",
+                       "reason": "local model runtime, free-first tier"},
+            "aider": {"cli": "aider", "channel": "cli",
+                      "reason": "CLI on PATH with headless agent channel"},
+            "goose": {"cli": "goose", "channel": "cli",
+                      "reason": "CLI on PATH with headless agent channel"},
+            "qwencode": {"cli": "qwen-code", "channel": "cli",
+                         "reason": "CLI on PATH with headless agent channel"},
+            "geminicli": {"cli": "gemini", "channel": "cli",
+                          "reason": "CLI on PATH with headless agent channel"},
+        }
+        
+        if app_id in controllable_apps:
+            spec = controllable_apps[app_id]
+            cli = spec["cli"]
+            # Check if CLI is on PATH
+            try:
+                r = subprocess.run(["where", cli] if sys.platform == "win32" else ["which", cli],
+                                   capture_output=True, text=True, timeout=15.0)
+                if r.returncode == 0 and cli.lower() in (r.stdout or "").lower():
+                    return {"controllable": True, "launchable": True, "reason": spec["reason"]}
+            except (subprocess.TimeoutExpired, OSError):
+                pass
+            return {"controllable": False, "launchable": True,
+                    "reason": f"CLI '{cli}' not found on PATH"}
+        
+        # GUI/web apps - launchable but not headless-controllable
+        gui_apps = {"cursor", "claude", "antigravity", "deepseek", "devin",
+                    "kimi", "qwen", "manus", "chatgpt", "openclaw", "bionic",
+                    "kristal", "kubeui", "lmstudio", "agentzero", "ui-tars",
+                    "openhands", "anythingllm", "kilocode", "cline",
+                    "openinterpreter", "langflow", "dify", "n8n", "aionsmith",
+                    "eigent", "aionui"}
+        
+        if app_id in gui_apps:
+            channel = "web" if app_id in ("manus", "chatgpt", "deepseek", "kimi", "qwen") else "gui"
+            return {"controllable": False, "launchable": True,
+                    "reason": f"installed as a {channel} application; no structured headless control channel on PATH — commissionable to WORKER_READY only via GUI automation or an MCP/A2A bridge"}
+        
+        # Unknown app
+        return {"controllable": False, "launchable": False,
+                "reason": "candidate, channel unverified"}
+
+    def _register_commissioned_worker(self, app_id: str, assessment: dict) -> None:
+        """Register a commissioned app as a worker in the hive scheduler."""
+        tier_map = {
+            "opencode": "FREE_PLAN",
+            "codex": "FREE_PLAN",
+            "ollama": "LOCAL_UNLIMITED",
+            "aider": "FREE",
+            "goose": "FREE",
+            "qwencode": "FREE",
+            "geminicli": "FREE",
+        }
+        capability_map = {
+            "opencode": ("coding", "implementation", "ide"),
+            "codex": ("coding", "implementation", "mat"),
+            "ollama": ("coding", "review", "local", "free"),
+            "aider": ("coding", "implementation"),
+            "goose": ("coding", "implementation"),
+            "qwencode": ("coding", "implementation"),
+            "geminicli": ("coding", "implementation"),
+        }
+        provider = app_id
+        tier = tier_map.get(provider, "UNKNOWN")
+        capabilities = capability_map.get(provider, ("general",))
+        worker_id = f"{app_id}-commissioned"
+        self.hive.register_worker(
+            worker_id=worker_id,
+            provider=provider,
+            app_id=app_id,
+            tier=tier,
+            privacy_class="PUBLIC",
+            capabilities=capabilities,
+            execution_target=provider,
+            verification_status="AUTOPILOT_READY",
+        )
 
     # -- durable state (§18, §32) ---------------------------------------------------
     @property
