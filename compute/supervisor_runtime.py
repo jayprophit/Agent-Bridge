@@ -964,27 +964,72 @@ def _watchdog_loop(args: Any) -> int:  # pragma: no cover - daemon
                     encoding="utf-8")).get("pid", -1))
             except (ValueError, json.JSONDecodeError, OSError):
                 pid = -1
-        if pid is None or not _pid_alive(pid):
-            # supervisor is gone -> relaunch it DETACHED so it survives the
-            # watchdog's own death and any parent turn ending (§3)
-            cmd = [sys.executable, str(script),
-                   "--with-opencode", "--with-codex", "--with-ollama",
-                   "--state-dir", str(state_dir),
-                   "--interval", str(args.interval)]
-            try:
-                subprocess.Popen(
-                    cmd, cwd=str(repo_root),
-                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                    stdin=subprocess.DEVNULL,
-                    creationflags=getattr(subprocess,
-                                          "DETACHED_PROCESS", 0)
-                    | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0))
-                _watchdog_log(state_dir, f"supervisor relaunched "
-                                         f"(was pid {pid})")
-            except OSError as e:
-                _watchdog_log(state_dir, f"relaunch failed: {e}")
+        if pid is None or pid < 0 or not _pid_alive(pid):
+            # PROCESS_DEAD: supervisor is gone -> relaunch it DETACHED so it
+            # survives the watchdog's own death and any parent turn ending (§3)
+            _relaunch(state_dir, lock_path, script, repo_root, args,
+                      reason=f"process_dead (was pid {pid})")
+        else:
+            # §7 PROCESS_ALIVE_BUT_STALLED: the process exists but has not
+            # checkpointed in a long time (liveness != progress — the exact
+            # defect that let a hung daemon hold the lock for 31 min).
+            stale_s = _checkpoint_age_s(state_dir)
+            stall_threshold = max(300.0, args.interval * 3)
+            if stale_s is not None and stale_s > stall_threshold:
+                _relaunch(state_dir, lock_path, script, repo_root, args,
+                          reason=f"stalled (pid {pid}, checkpoint "
+                                 f"{stale_s:.0f}s old > {stall_threshold:.0f}s)",
+                          kill_pid=pid)
+        # §8 the watchdog must itself leave a heartbeat, or a dead watchdog
+        # is indistinguishable from a quiet one (it previously journaled only
+        # on relaunch, so "no news" looked like "all good").
+        _watchdog_log(state_dir,
+                      f"heartbeat pid={os.getpid()} supervisor_pid={pid} "
+                      f"checkpoint_age_s={_checkpoint_age_s(state_dir)}")
         stop.wait(max(30.0, args.interval / 2))
     return 0
+
+
+def _checkpoint_age_s(state_dir: Path) -> float | None:
+    """Age in seconds of the supervisor's last checkpoint, or None."""
+    ckpt = state_dir / "supervisor_runtime_checkpoint.json"
+    try:
+        return max(0.0, time.time() - ckpt.stat().st_mtime)
+    except OSError:
+        return None
+
+
+def _relaunch(state_dir: Path, lock_path: Path, script: Path,
+              repo_root: Path, args: Any, *, reason: str,
+              kill_pid: int | None = None) -> None:
+    """Kill a stalled supervisor (if any), then relaunch detached."""
+    if kill_pid is not None:
+        try:  # terminate the hung instance so the lock is genuinely free
+            os.kill(kill_pid, signal.SIGTERM)
+            time.sleep(2.0)
+            if _pid_alive(kill_pid):
+                os.kill(kill_pid, signal.SIGKILL)
+                time.sleep(1.0)
+        except OSError:
+            pass
+    try:
+        lock_path.unlink()
+    except OSError:
+        pass
+    cmd = [sys.executable, str(script),
+           "--with-opencode", "--with-codex", "--with-ollama",
+           "--state-dir", str(state_dir),
+           "--interval", str(args.interval)]
+    try:
+        subprocess.Popen(
+            cmd, cwd=str(repo_root),
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL,
+            creationflags=getattr(subprocess, "DETACHED_PROCESS", 0)
+            | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0))
+        _watchdog_log(state_dir, f"supervisor relaunched: {reason}")
+    except OSError as e:
+        _watchdog_log(state_dir, f"relaunch failed: {e}")
 
 
 def _watchdog_log(state_dir: Path, msg: str) -> None:

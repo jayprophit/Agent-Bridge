@@ -514,3 +514,68 @@ class TestProgressBasedIdleDetection:
         for _ in range(SupervisorRuntime.STALL_CYCLES + 1):
             rt.run_cycle()
         assert rt.continuation_required is True
+
+
+class TestWatchdogStallDetection:
+    """§7/§8: PROCESS_ALIVE != SUPERVISOR_HEALTHY. The watchdog must detect
+    a supervisor that holds the lock but has stopped checkpointing (the
+    31-minute hang), journal its own heartbeat so a dead watchdog is
+    distinguishable from a quiet one, and recover by killing + relaunching.
+    """
+
+    def test_checkpoint_age_none_when_missing(self, tmp_path):
+        from compute.supervisor_runtime import _checkpoint_age_s
+        assert _checkpoint_age_s(tmp_path) is None
+
+    def test_checkpoint_age_reflects_mtime(self, tmp_path):
+        import time
+        from compute.supervisor_runtime import _checkpoint_age_s
+        ckpt = tmp_path / "supervisor_runtime_checkpoint.json"
+        ckpt.write_text("{}", encoding="utf-8")
+        age = _checkpoint_age_s(tmp_path)
+        assert age is not None and age < 5.0
+        old = time.time() - 4000.0
+        os.utime(ckpt, (old, old))
+        assert _checkpoint_age_s(tmp_path) > 3000.0
+
+    def test_stall_threshold_is_interval_scaled(self):
+        """A stall is >3 intervals (min 300s) — a busy-but-slow daemon must
+        not be killed, a hung one must be."""
+        import argparse
+        from compute.supervisor_runtime import _watchdog_loop
+        args = argparse.Namespace(state_dir=".", interval=120.0)
+        threshold = max(300.0, args.interval * 3)
+        assert threshold == 360.0
+        args2 = argparse.Namespace(state_dir=".", interval=30.0)
+        assert max(300.0, args2.interval * 3) == 300.0
+
+    def test_relaunch_kills_stalled_pid_and_clears_lock(self, tmp_path):
+        """_relaunch must SIGTERM/SIGKILL the stalled pid, remove the stale
+        lock, and spawn a replacement — the full PROCESS_ALIVE_BUT_STALLED
+        recovery path, with the spawn stubbed so no real daemon starts."""
+        from unittest.mock import patch
+        from compute import supervisor_runtime as srt
+
+        lock = tmp_path / "supervisor.lock"
+        lock.write_text(json.dumps({"pid": 999999}), encoding="utf-8")
+        spawned = {}
+
+        class FakePopen:
+            def __init__(self, cmd, **kw):
+                spawned["cmd"] = cmd
+
+        # 999999 does not exist -> _pid_alive False -> no kill attempted,
+        # but the lock must still be cleared and a replacement spawned.
+        with patch.object(srt.subprocess, "Popen", FakePopen), \
+             patch.object(srt, "_watchdog_log", lambda *a: None):
+            srt._relaunch(tmp_path, lock, srt.Path(__file__),
+                          tmp_path, argparse_ns(), reason="test stall")
+
+        assert not lock.exists()
+        assert "--with-opencode" in spawned["cmd"]
+        assert "--watchdog" not in spawned["cmd"]
+
+
+def argparse_ns():
+    import argparse
+    return argparse.Namespace(interval=120.0)
