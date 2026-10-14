@@ -246,7 +246,7 @@ class OpenCodeAdapter(WorkerAdapter):
 
     def status(self) -> dict[str, Any]:
         ok, out = self._run([self.bin, "db",
-                             "SELECT id,title,time_updated FROM session "
+                             "SELECT id,title,time_updated,tokens_input,tokens_output,tokens_reasoning FROM session "
                              "ORDER BY time_updated DESC LIMIT 1",
                              "--format", "json"])
         if not ok or not out.strip():
@@ -259,10 +259,18 @@ class OpenCodeAdapter(WorkerAdapter):
                     "evidence": ["opencode db returned unparseable output"]}
         age_s = (_now() * 1000 - float(row["time_updated"])) / 1000.0
         verdict = RUNNING if age_s <= self.liveness_window_s else IDLE
-        return {"verdict": verdict,
-                "evidence": [f"session {row['id'][:24]} updated "
-                             f"{age_s:.0f}s ago (window "
-                             f"{self.liveness_window_s:.0f}s)"]}
+        title = row.get("title", "")
+        tokens_in = row.get("tokens_input", 0)
+        tokens_out = row.get("tokens_output", 0)
+        tokens_reasoning = row.get("tokens_reasoning", 0)
+        evidence = [f"session {row['id'][:24]} updated "
+                    f"{age_s:.0f}s ago (window "
+                    f"{self.liveness_window_s:.0f}s)"]
+        if title:
+            evidence.append(f"title: {title}")
+        if tokens_in or tokens_out or tokens_reasoning:
+            evidence.append(f"tokens: in={tokens_in} out={tokens_out} reasoning={tokens_reasoning}")
+        return {"verdict": verdict, "evidence": evidence}
 
     def send_instruction(self, instruction: str,
                          continue_task: bool = False) -> dict[str, Any]:
@@ -450,6 +458,10 @@ class SupervisorRuntime:
         self.hive = HiveScheduler()
         self.governor = ResourceGovernor()
         self.adapters: dict[str, WorkerAdapter] = {}
+        # §9/§10 correction: providers (model runtimes) are NOT workers.
+        # Ollama, LM Studio etc. are PROVIDER/EXECUTION_TARGET entries that
+        # workers (OpenCode, Codex) use as a runtime/backend.
+        self.providers: dict[str, WorkerAdapter] = {}
         self.idle_reasons: dict[str, str] = {}
         self.shift = DAY
         self.continuation_required = True
@@ -472,8 +484,19 @@ class SupervisorRuntime:
             self.register_adapter(a)
 
     # -- registration (§2, §9) ---------------------------------------------------
+    # Model-runtimes (provider) applications are tracked separately from
+    # workers (§9/§10 correction): they are PROVIDER/EXECUTION_TARGET, not
+    # autonomous agents.
+    _PROVIDER_APPS = frozenset({"ollama", "lmstudio", "comfyui",
+                                "text-generation-webui", "vllm"})
+
     def register_adapter(self, adapter: WorkerAdapter) -> None:
         self.adapters[adapter.worker_id] = adapter
+        if adapter.application in self._PROVIDER_APPS:
+            self.providers[adapter.worker_id] = adapter
+            self._emit("provider.registered", provider=adapter.worker_id,
+                       application=adapter.application)
+            return
         self.supervisor.register_worker(
             adapter.worker_id, adapter.worker_type, adapter.application,
             adapter.role)
@@ -566,6 +589,8 @@ class SupervisorRuntime:
         actions: dict[str, Any] = {"cycle": self.cycles, "workers": {}}
 
         for wid, adapter in self.adapters.items():
+            if wid in self.providers:
+                continue  # §9/§10: providers are runtimes, not supervised workers
             st = adapter.status()
             verdict = st.get("verdict", UNKNOWN_VERDICT)
             rec = self.supervisor.worker(wid)
@@ -742,6 +767,9 @@ class SupervisorRuntime:
 
         return {
             "workers": workers_view,
+            "providers": {wid: {"application": a.application,
+                                "role": a.role}
+                          for wid, a in self.providers.items()},
             "ready_tasks": ready_tasks,
             "handoffs_pending": len(self.supervisor.unreviewed_handoffs()),
             "gaps": gaps,
@@ -782,13 +810,23 @@ class SupervisorRuntime:
         gates (§36/§49) — no report may clear continuation while a hard gate
         is tripped."""
         from compute.supervisor_invariants import gate_continuation
+        # §36/§49: continuation is required when ANY authorised project has
+        # unresolved required work.  Per the 2026-10-14 correction (§25) this
+        # must consider the WHOLE programme, not just handoffs/gaps:
+        #   pending handoffs, open gaps, stalled workers (SUPERVISOR_DEFECT /
+        #   NO_PROGRESS), in-flight verification, unassessed apps (§7),
+        #   ready/deferred/active tasks, open quota-locked work, or any
+        #   Constitution hard gate tripped.
         base = bool(
             self.supervisor.unreviewed_handoffs()
             or self.supervisor.open_gaps()
             or any(r in (SUPERVISOR_DEFECT, "NO_PROGRESS")
                    for r in self.idle_reasons.values())
-            or self._pending_verification)
-        # §36/§49: the Constitution gates — a tripped CRITICAL/HIGH invariant
+            or self._pending_verification
+            or (self._acq is not None and len(self._acq.unassessed()) > 0)  # §7/§24
+            or len(self.hive._tasks) > 0    # ready/active tasks exist
+            or len(self.hive._deferred) > 0)  # quota-locked work pending
+        # §36/§49: Constitution gates — a tripped CRITICAL/HIGH invariant
         # forces continuation regardless of surface reports (INVARIANT 28).
         return base or gate_continuation(self._build_invariants_snapshot(
             actions or {}))

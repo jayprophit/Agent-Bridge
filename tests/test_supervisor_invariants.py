@@ -187,11 +187,13 @@ class TestInvariant7Commissioning:
         assert v is not None
         assert "claude" in v.evidence[0]
 
-    def test_fresh_unassessed_app_ok(self):
+    def test_any_unassessed_app_triggers_violation(self):
         snap = _clean_snapshot()
         snap["unassessed_apps"] = [{"app_id": "claude",
                                     "last_action_epoch": snap["now_epoch"]}]
-        assert invariant_7_commissioning_loop(snap) is None
+        v = invariant_7_commissioning_loop(snap)
+        assert v is not None
+        assert "1 uncommissioned app(s)" in v.evidence[0]
 
 
 # === INVARIANT 8: task-specific evidence ===
