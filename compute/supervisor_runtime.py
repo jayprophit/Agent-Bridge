@@ -586,24 +586,132 @@ class SupervisorRuntime:
 
         # §11-§14 watchdogs
         actions["watchdogs"] = self._watchdogs()
+        # §36/§49: the Supervisor Constitution — hard gates, not suggestions.
+        # Run BEFORE continuation computation so a tripped invariant cannot
+        # let the cycle clear continuation_required (INVARIANT 28).
+        actions["constitution"] = self.check_invariants()
         # §33 tail: checkpoint every cycle (persist computes the honest
         # continuation flag itself — one computation, never two)
         self.persist()
         self._last_actions = [actions]
         return actions
 
+    def _build_invariants_snapshot(self, actions: dict[str, Any]) -> dict[str, Any]:
+        """Project the live runtime + hive state into the flat dict shape that
+        compute.supervisor_invariants.check_all() consumes.
+
+        Honesty (§15): axes the constitution cannot see are left at their
+        honest defaults (UNKNOWN / absent) so an invariant reports STUBBED
+        rather than silently skipping — never a fabricated pass.
+        """
+        now_epoch = _now()
+        workers_view: dict[str, dict] = {}
+        for wid, adapter in self.adapters.items():
+            rec = self.supervisor.worker(wid)
+            st = adapter.status()
+            w: dict[str, Any] = {
+                "status": rec.status if rec else st.get("verdict", UNKNOWN_VERDICT),
+                "verdict": st.get("verdict", UNKNOWN_VERDICT),
+                "evidence": st.get("evidence", []),
+                "role": getattr(adapter, "role", ""),
+                "application": getattr(adapter, "application", ""),
+                "last_activity": (rec.last_activity if rec else 0.0),
+            }
+            # §2: count Hermes-native internal subagents
+            if getattr(adapter, "worker_type", "") == "HERMES_INTERNAL":
+                w["internal"] = True
+            workers_view[wid] = w
+
+        # ready tasks from the hive
+        ready_tasks = [
+            t.to_dict() for t in self.hive._tasks.values()
+            if t.task_id not in self.hive._assignments
+        ]
+        # open gaps
+        gaps = [{
+            "gap_id": g.gap_id, "severity": g.severity, "category": g.category,
+            "project": g.project, "description": g.description,
+        } for g in self.supervisor.open_gaps()]
+
+        # quota state per worker (honest: exhausted only when KNOWN-empty)
+        quotas = {}
+        for wid in self.adapters:
+            cap = self.hive.worker_capacity(wid)
+            quotas[wid] = {
+                "exhausted": cap["exhausted"],
+                "next_reset_epoch": cap.get("next_reset_epoch"),
+                "confidence": cap.get("confidence", UNKNOWN),
+                "tier": cap.get("confidence"),  # honest: UNKNOWN when not observed
+            }
+
+        # project lanes + starvation (§14/§15) — sourced from gap/project tracking
+        from compute.supervisor_invariants import gate_continuation  # noqa: E402
+        projects_view: dict[str, dict] = {}
+        # derive per-project last-progress from worker activity per project
+        for g in self.supervisor.open_gaps():
+            pid = g.project or "unassigned"
+            if pid not in projects_view:
+                projects_view[pid] = {"has_unblocked_work": True,
+                                      "last_progress_epoch": 0.0, "priority": "HIGH"}
+        # mark projects that have workers currently IMPLEMENTING
+        for rec in self.supervisor._workers.values():
+            if rec.status in ("IMPLEMENTING", "TESTING", "REVIEWING",
+                              "COMMITTING", "PUSHING"):
+                pid = rec.project or "unassigned"
+                if pid in projects_view:
+                    projects_view[pid]["last_progress_epoch"] = now_epoch
+
+        return {
+            "workers": workers_view,
+            "ready_tasks": ready_tasks,
+            "handoffs_pending": len(self.supervisor.unreviewed_handoffs()),
+            "gaps": gaps,
+            "quotas": quotas,
+            "resources": (self.governor.overview().get("sample") or {}),
+            "projects": projects_view,
+            "unassessed_apps": [],               # §7: wired when acquisition_queue lands
+            "internal_workers": sum(1 for w in workers_view.values()
+                                     if w.get("internal")),
+            "min_internal_target": 5,            # §2 floor (resources permitting)
+            "continuation_required": self.continuation_required,
+            "last_cycle_emitted_report": False,  # §28 hook (set by report path)
+            "worker_actions": actions.get("workers", {}),
+            "now_epoch": now_epoch,
+            "model_routing": {"paid_budget_remaining": 0},  # §12: OWNER policy
+        }
+
+    def check_invariants(self) -> dict[str, Any]:
+        """§36/§49: run the Constitution hard gates.  Returns the
+        ConstitutionResult.to_dict() so the dashboard can surface violations
+        with evidence.  A FAIL on CRITICAL/HIGH also forces continuation via
+        gate_continuation (called by _compute_continuation)."""
+        from compute.supervisor_invariants import (  # noqa: E402
+            check_all, gate_continuation)
+        snapshot = self._build_invariants_snapshot(self._last_actions[-1]
+                                                   if self._last_actions else {})
+        result = check_all(snapshot)
+        self._constitution_result = result.to_dict()
+        return result.to_dict()
+
     def _compute_continuation(self) -> bool:
         """§27/§45.8/§36: the single honest continuation computation. True
         unless NOTHING remains: no unread handoffs, no open gaps, no worker
         needing supervisor action (SUPERVISOR_DEFECT *or* NO_PROGRESS — a
         stalled worker is unfinished programme work, §36), no in-flight
-        check-in awaiting resumption verification."""
-        return bool(
+        check-in awaiting resumption verification.  AND the Constitution
+        gates (§36/§49) — no report may clear continuation while a hard gate
+        is tripped."""
+        from compute.supervisor_invariants import gate_continuation
+        base = bool(
             self.supervisor.unreviewed_handoffs()
             or self.supervisor.open_gaps()
             or any(r in (SUPERVISOR_DEFECT, "NO_PROGRESS")
                    for r in self.idle_reasons.values())
             or self._pending_verification)
+        # §36/§49: the Constitution gates — a tripped CRITICAL/HIGH invariant
+        # forces continuation regardless of surface reports (INVARIANT 28).
+        return base or gate_continuation(self._build_invariants_snapshot(
+            self._last_actions[-1] if self._last_actions else {}))
 
     def _check_in(self, worker_id: str, adapter: WorkerAdapter,
                   actions: dict[str, Any]) -> None:
@@ -739,6 +847,7 @@ class SupervisorRuntime:
             "adapters": {w: {"application": a.application,
                              "role": a.role}
                          for w, a in self.adapters.items()},
+            "constitution": getattr(self, "_constitution_result", None),
             "saved_at": _now(),
         }
         tmp = self.checkpoint_path.with_suffix(".tmp")
