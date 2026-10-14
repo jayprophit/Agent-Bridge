@@ -674,3 +674,35 @@ Fleet now: runtime daemon 22728 + watchdog 17432 (survived) + API
 LOOP CONTINUES: M4 → Hermes QA → visual QA → gap → F4 accept or M5. Backend
 gaps queued for H-SA-DEVOPS (resource telemetry, test-health) + Genesis flake
 (H-SA-QA). External GUI commissioning (Claude/Manus/Cursor) next.
+
+---
+
+## 21. STALL RECOVERY + OPENCODE HUNG + NUDGE REDELIVERY (2026-10-14 ~08:3x)
+
+Background batch findings (5 procs): the delayed cold-start check PASSED
+(react-ui 200, m2-redirect 200, proxy ok). The 3 exited-1 API/vite launches
+were duplicates from the §20 cleanup — expected deaths. The doctor run gave
+the ROOT CAUSE of all earlier GUI friction: **ax_capability: UIAutomation not
+reachable — "UI Automation desktop enumeration exceeded 2000ms; a UIA provider
+may be hung"** — a hung UIA provider under the CPU storm, NOT a defect in the
+apps or the delivery sequence. (Also: a pending Hermes source-update, "running
+with the previous dependencies" — recorded, not acted on mid-cycle.)
+
+§16/§17 FINDINGS + ACTIONS:
+- Runtime daemon 26436 was **PROCESS_ALIVE_BUT_STALLED** (held the lock, no
+  checkpoint in 31 min vs 120s interval). The watchdog only detects process
+  DEATH (it relaunched twice correctly at 06:59/07:14) — §17's stall-detection
+  gap confirmed again. Killed + relaunched → new daemon 12948, CYCLING
+  (411 cycles, 43s fresh) ✓.
+- **OpenCode itself was HUNG** ("OpenCode is not responding" dialog) — the
+  app froze during the storm; its session went idle 1029s. §13 recovery:
+  killed pid 24356, relaunched (pid 24628→31392, now on free local Qwen 2.5
+  Coder 3B via Ollama — good cost posture), session db intact (M3 committed,
+  M4 spec in repo — nothing lost).
+- M4 continuation nudge delivered via the proven path (background click →
+  foreground type to prime → ctrl+a → ctrl+v → return). §26 VERIFIED: new
+  session 81s after delivery; OpenCode now in its autonomous continuation
+  loop (sessions 99s/162s fresh), reading the M4 spec.
+
+Fleet: API :8472 200, react-ui :5199 200, daemon cycling, watchdog alive.
+Loop continues — M4 in progress; QA + F4/M5 decision when OpenCode reports.
