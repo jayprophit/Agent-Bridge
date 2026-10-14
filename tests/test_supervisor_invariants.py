@@ -331,7 +331,8 @@ class TestCheckAllAndGate:
         snap["projects"] = {}
         snap["internal_workers"] = 8
         snap["unassessed_apps"] = []
-        assert gate_continuation(snap) is True   # base is False, but check_all passes
+        # gate is False when all invariants pass -> base (False) decides -> done
+        assert gate_continuation(snap) is False
 
     def test_stubbed_invariants_do_not_fail(self):
         """A STUBBED invariant is reported, not a hard FAIL."""

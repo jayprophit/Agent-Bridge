@@ -109,14 +109,19 @@ def invariant_1_continuation(snapshot: dict) -> Optional[Violation]:
             if p.get("has_unblocked_work"):
                 reasons_off.append(f"project {pid} has unblocked work")
                 break
-    # §2: min-hive breach is unfinished work too
-    if snapshot.get("internal_workers", 0) < snapshot.get("min_internal_target", 0):
-        reasons_off.append(
-            f"internal hive floor unmet "
-            f"({snapshot.get('internal_workers',0)} < "
-            f"{snapshot.get('min_internal_target',0)} with backlog)")
-    if snapshot.get("starvation") or (snapshot.get("starvation") is True and snapshot.get("starvation_detail")):
-        reasons_off.append("project starvation detected")
+    # §2: min-hive breach is unfinished work only when >=5 independent ready units exist
+    ready = _as_list(snapshot.get("ready_tasks"))
+    independent = {t.get("write_set", "x") for t in ready}
+    if len(independent) >= 5:
+        target = 8 if len(independent) >= 8 else 5
+        actual_internal = int(snapshot.get("internal_workers", 0))
+        resources_ok = _resources_permit(snapshot)
+        if resources_ok and actual_internal < target:
+            reasons_off.append(
+                f"internal hive floor unmet "
+                f"({actual_internal} < {target} with {len(independent)} independent ready units)")
+    if snapshot.get("lane_starvation"):
+        reasons_off.append("project lane starvation detected")
     if reasons_off:
         if not snapshot.get("continuation_required", True):
             return Violation(
@@ -334,10 +339,13 @@ def invariant_14_no_project_starvation(snapshot: dict) -> Optional[Violation]:
     projects have unblocked work, that is a defect."""
     projects = snapshot.get("projects") or {}
     starving = []
+    now = snapshot.get("now_epoch", 0)
     for pid, p in projects.items():
+        last_prog = p.get("last_progress_epoch")
+        # last_progress_epoch of 0.0 means never made progress -> definitely stale
+        has_progress = last_prog is not None and last_prog > 0
         if p.get("priority") in ("HIGH", "CRITICAL") and p.get("has_unblocked_work") \
-                and p.get("last_progress_epoch") and \
-                (snapshot.get("now_epoch", 0) - p["last_progress_epoch"]) > 3600:  # 1h stale
+                and (not has_progress or (now - last_prog) > 3600):
             starving.append(pid)
     if starving:
         return Violation(
@@ -448,15 +456,15 @@ def check_all(snapshot: dict) -> ConstitutionResult:
 def gate_continuation(snapshot: dict) -> bool:
     """True == the scheduler MUST keep continuation_required=True
     (a hard gate is tripped).  Used by SupervisorRuntime._compute_continuation
-    as the final AND-term:
+    as the final OR-term:
 
-        continuation_required = <existing evidence> AND gate_continuation(...)
+        continuation_required = <existing evidence> OR gate_continuation(...)
     """
     result = check_all(snapshot)
     if result.passed:
-        return True          # no gates tripped -> existing evidence decides
+        return False         # no gates tripped -> existing evidence decides
     # any live FAIL means the programme is not done, regardless of surface reports
     for v in result.violations:
         if v.status == FAIL and v.severity in (CRITICAL, HIGH):
             return True
-    return True  # MEDIUM stubs don't force continuation
+    return False  # only MEDIUM/STUBBED -> no hard gate tripped

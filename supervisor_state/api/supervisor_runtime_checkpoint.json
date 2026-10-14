@@ -1,0 +1,506 @@
+{
+  "cycles": 48,
+  "shift": "DAY",
+  "continuation_required": true,
+  "pending_verification": [],
+  "idle_reasons": {
+    "ollama-local": "NO_PROGRESS"
+  },
+  "last_actions": [
+    {
+      "cycle": 47,
+      "workers": {
+        "opencode-primary": {
+          "verdict": "RUNNING",
+          "evidence": [
+            "session ses_ec3c32853ffegpfrDy65 updated 378s ago (window 600s)"
+          ]
+        },
+        "codex-primary": {
+          "verdict": "WAITING_FOR_QUOTA",
+          "evidence": [
+            "usage_limit_exceeded; resets None (reset time unknown) [rollout-2026-09-29T15-02-29-01a0ed79-5f56-7d52-bd5e-78f080504700.jsonl]"
+          ],
+          "capacity_unavailable": {
+            "pool": "five_hour",
+            "reset_at": null,
+            "resets_in_s": null
+          }
+        },
+        "ollama-local": {
+          "verdict": "RUNNING",
+          "evidence": [
+            "ollama 0.40.3 serving model qwen2.5-coder:3b-instruct-q4_K_M"
+          ],
+          "no_progress": {
+            "stall_cycles": 46,
+            "signature": "RUNNING::ollama 0.40.3 serving model qwen2.5-coder:3b-instruct-q4_K_M",
+            "finding": "nominally alive, no evidence of task progress"
+          }
+        }
+      },
+      "watchdogs": {}
+    }
+  ],
+  "events_tail": [
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792009425.019214,
+      "worker": "ollama-local",
+      "stall_cycles": 23
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792009552.50092,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792009552.5032034,
+      "worker": "ollama-local",
+      "stall_cycles": 24
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792009681.8167899,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792009681.81904,
+      "worker": "ollama-local",
+      "stall_cycles": 25
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792009808.0065458,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792009808.0090473,
+      "worker": "ollama-local",
+      "stall_cycles": 26
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792009933.4384232,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792009933.440797,
+      "worker": "ollama-local",
+      "stall_cycles": 27
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792010062.083392,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792010062.0857456,
+      "worker": "ollama-local",
+      "stall_cycles": 28
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792010189.4454272,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792010189.4481478,
+      "worker": "ollama-local",
+      "stall_cycles": 29
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792010317.3123505,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792010317.315295,
+      "worker": "ollama-local",
+      "stall_cycles": 30
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792010444.8326294,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792010444.8437166,
+      "worker": "ollama-local",
+      "stall_cycles": 31
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792010578.855211,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792010578.8580322,
+      "worker": "ollama-local",
+      "stall_cycles": 32
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792010705.9310505,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792010705.9357705,
+      "worker": "ollama-local",
+      "stall_cycles": 33
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792010834.4373958,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792010834.4478734,
+      "worker": "ollama-local",
+      "stall_cycles": 34
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792010961.8431048,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792010961.8478599,
+      "worker": "ollama-local",
+      "stall_cycles": 35
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792011090.3632588,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792011090.3855062,
+      "worker": "ollama-local",
+      "stall_cycles": 36
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792011218.575459,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792011218.5823696,
+      "worker": "ollama-local",
+      "stall_cycles": 37
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792011345.850089,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792011345.8537748,
+      "worker": "ollama-local",
+      "stall_cycles": 38
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792011471.6878326,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792011471.6935992,
+      "worker": "ollama-local",
+      "stall_cycles": 39
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792011603.8070178,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792011603.8242412,
+      "worker": "ollama-local",
+      "stall_cycles": 40
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792011728.912575,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792011728.9167786,
+      "worker": "ollama-local",
+      "stall_cycles": 41
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792011855.3772428,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792011855.380826,
+      "worker": "ollama-local",
+      "stall_cycles": 42
+    },
+    {
+      "event": "worker.check_in",
+      "timestamp": 1792014604.0677938,
+      "worker": "opencode-primary",
+      "delivered": false
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792014606.4495862,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792014606.4970806,
+      "worker": "ollama-local",
+      "stall_cycles": 43
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792014732.9710958,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792014732.9740095,
+      "worker": "ollama-local",
+      "stall_cycles": 44
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792014858.8027914,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792014858.8051794,
+      "worker": "ollama-local",
+      "stall_cycles": 45
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792014984.5861173,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792014984.5892096,
+      "worker": "ollama-local",
+      "stall_cycles": 46
+    },
+    {
+      "event": "worker.capacity_unavailable",
+      "timestamp": 1792015111.2729027,
+      "worker": "codex-primary",
+      "pool": "five_hour",
+      "reset_at": null,
+      "resets_in_s": null
+    },
+    {
+      "event": "worker.idle_review",
+      "timestamp": 1792015111.276044,
+      "worker": "ollama-local",
+      "stall_cycles": 47
+    }
+  ],
+  "workers": {
+    "opencode-primary": {
+      "worker_id": "opencode-primary",
+      "worker_type": "EXTERNAL_AI_AGENT",
+      "application": "opencode",
+      "role": "ide-worker",
+      "status": "IMPLEMENTING",
+      "project": "",
+      "task_id": "",
+      "task_description": "",
+      "repo": "",
+      "worktree": "",
+      "branch": "",
+      "write_set": "",
+      "model": "",
+      "provider": "",
+      "tier": "",
+      "phase": "",
+      "started_at": 0.0,
+      "last_heartbeat": 1792015108.428077,
+      "last_activity": 1792015108.428077,
+      "files_changed": [],
+      "tests": {},
+      "latest_commit": "",
+      "latest_push": "",
+      "blockers": [],
+      "handoff_state": "",
+      "review_state": "",
+      "next_action": "",
+      "quota_state": {}
+    },
+    "codex-primary": {
+      "worker_id": "codex-primary",
+      "worker_type": "EXTERNAL_AI_AGENT",
+      "application": "codex",
+      "role": "mat-worker",
+      "status": "WAITING_FOR_QUOTA",
+      "project": "",
+      "task_id": "",
+      "task_description": "",
+      "repo": "",
+      "worktree": "",
+      "branch": "",
+      "write_set": "",
+      "model": "",
+      "provider": "",
+      "tier": "",
+      "phase": "",
+      "started_at": 0.0,
+      "last_heartbeat": 1792015111.2728925,
+      "last_activity": 1792015111.2728925,
+      "files_changed": [],
+      "tests": {},
+      "latest_commit": "",
+      "latest_push": "",
+      "blockers": [],
+      "handoff_state": "",
+      "review_state": "",
+      "next_action": "",
+      "quota_state": {
+        "pool": "five_hour",
+        "reset_at": null,
+        "resets_in_s": null
+      }
+    },
+    "ollama-local": {
+      "worker_id": "ollama-local",
+      "worker_type": "EXTERNAL_AI_AGENT",
+      "application": "ollama",
+      "role": "local-worker",
+      "status": "IMPLEMENTING",
+      "project": "",
+      "task_id": "",
+      "task_description": "",
+      "repo": "",
+      "worktree": "",
+      "branch": "",
+      "write_set": "",
+      "model": "",
+      "provider": "",
+      "tier": "",
+      "phase": "",
+      "started_at": 0.0,
+      "last_heartbeat": 1792015111.276085,
+      "last_activity": 1792015111.276085,
+      "files_changed": [],
+      "tests": {},
+      "latest_commit": "",
+      "latest_push": "",
+      "blockers": [],
+      "handoff_state": "",
+      "review_state": "",
+      "next_action": "",
+      "quota_state": {}
+    }
+  },
+  "adapters": {
+    "opencode-primary": {
+      "application": "opencode",
+      "role": "ide-worker"
+    },
+    "codex-primary": {
+      "application": "codex",
+      "role": "mat-worker"
+    },
+    "ollama-local": {
+      "application": "ollama",
+      "role": "local-worker"
+    }
+  },
+  "saved_at": 1792015111.2763276
+}

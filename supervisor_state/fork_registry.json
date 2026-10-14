@@ -1,0 +1,3522 @@
+[
+  {
+    "fork": "jayprophit/ComfyUI",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-13T09:47:16Z",
+    "disk_usage_kb": 97853
+  },
+  {
+    "fork": "jayprophit/n8n",
+    "parent": "",
+    "license_language": "|TypeScript",
+    "disposition": "PARTIAL_REUSE",
+    "project": "infra",
+    "reason": "diverged fork relevant to infra; assess for reuse",
+    "updated_at": "2026-09-13T09:53:33Z",
+    "disk_usage_kb": 617966
+  },
+  {
+    "fork": "jayprophit/meson",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:49:54Z",
+    "disk_usage_kb": 49709
+  },
+  {
+    "fork": "jayprophit/protobuf",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:55:09Z",
+    "disk_usage_kb": 240611
+  },
+  {
+    "fork": "jayprophit/tree-sitter",
+    "parent": "",
+    "license_language": "|Rust",
+    "disposition": "PARTIAL_REUSE",
+    "project": "ide-workspace",
+    "reason": "diverged fork relevant to ide-workspace; assess for reuse",
+    "updated_at": "2026-09-13T09:56:07Z",
+    "disk_usage_kb": 23432
+  },
+  {
+    "fork": "jayprophit/tock",
+    "parent": "",
+    "license_language": "|Rust",
+    "disposition": "PARTIAL_REUSE",
+    "project": "embedded",
+    "reason": "diverged fork relevant to embedded; assess for reuse",
+    "updated_at": "2026-09-13T09:56:01Z",
+    "disk_usage_kb": 187222
+  },
+  {
+    "fork": "jayprophit/ruff",
+    "parent": "",
+    "license_language": "|Rust",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:57:52Z",
+    "disk_usage_kb": 202623
+  },
+  {
+    "fork": "jayprophit/9front",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "PARTIAL_REUSE",
+    "project": "embedded",
+    "reason": "diverged fork relevant to embedded; assess for reuse",
+    "updated_at": "2026-09-13T09:59:40Z",
+    "disk_usage_kb": 125434
+  },
+  {
+    "fork": "jayprophit/CMake",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:53:02Z",
+    "disk_usage_kb": 202436
+  },
+  {
+    "fork": "jayprophit/grafana",
+    "parent": "",
+    "license_language": "|TypeScript",
+    "disposition": "PARTIAL_REUSE",
+    "project": "infra",
+    "reason": "diverged fork relevant to infra; assess for reuse",
+    "updated_at": "2026-09-13T09:48:22Z",
+    "disk_usage_kb": 1963059
+  },
+  {
+    "fork": "jayprophit/libarchive",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:49:48Z",
+    "disk_usage_kb": 32916
+  },
+  {
+    "fork": "jayprophit/systemd",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "PARTIAL_REUSE",
+    "project": "infra",
+    "reason": "diverged fork relevant to infra; assess for reuse",
+    "updated_at": "2026-09-13T09:55:39Z",
+    "disk_usage_kb": 727187
+  },
+  {
+    "fork": "jayprophit/bootc",
+    "parent": "",
+    "license_language": "|Rust",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:58:19Z",
+    "disk_usage_kb": 8797
+  },
+  {
+    "fork": "jayprophit/grpc",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:48:28Z",
+    "disk_usage_kb": 624732
+  },
+  {
+    "fork": "jayprophit/uv",
+    "parent": "",
+    "license_language": "|Rust",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:46:57Z",
+    "disk_usage_kb": 203156
+  },
+  {
+    "fork": "jayprophit/pyinstaller",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:55:17Z",
+    "disk_usage_kb": 71956
+  },
+  {
+    "fork": "jayprophit/coreboot",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "PARTIAL_REUSE",
+    "project": "embedded",
+    "reason": "diverged fork relevant to embedded; assess for reuse",
+    "updated_at": "2026-09-13T09:58:34Z",
+    "disk_usage_kb": 260963
+  },
+  {
+    "fork": "jayprophit/moby",
+    "parent": "",
+    "license_language": "|Go",
+    "disposition": "PARTIAL_REUSE",
+    "project": "infra",
+    "reason": "diverged fork relevant to infra; assess for reuse",
+    "updated_at": "2026-09-13T09:53:26Z",
+    "disk_usage_kb": 272823
+  },
+  {
+    "fork": "jayprophit/executorch",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "compute-fabric",
+    "reason": "diverged fork relevant to compute-fabric; assess for reuse",
+    "updated_at": "2026-09-12T20:47:31Z",
+    "disk_usage_kb": 382740
+  },
+  {
+    "fork": "jayprophit/llvm-project",
+    "parent": "",
+    "license_language": "|LLVM",
+    "disposition": "PARTIAL_REUSE",
+    "project": "compute-fabric",
+    "reason": "diverged fork relevant to compute-fabric; assess for reuse",
+    "updated_at": "2026-09-12T20:50:59Z",
+    "disk_usage_kb": 4372360
+  },
+  {
+    "fork": "jayprophit/temporal",
+    "parent": "",
+    "license_language": "|Go",
+    "disposition": "PARTIAL_REUSE",
+    "project": "infra",
+    "reason": "diverged fork relevant to infra; assess for reuse",
+    "updated_at": "2026-09-13T09:55:46Z",
+    "disk_usage_kb": 161722
+  },
+  {
+    "fork": "jayprophit/OpenROAD",
+    "parent": "",
+    "license_language": "|Verilog",
+    "disposition": "PARTIAL_REUSE",
+    "project": "embedded",
+    "reason": "diverged fork relevant to embedded; assess for reuse",
+    "updated_at": "2026-09-12T20:48:35Z",
+    "disk_usage_kb": 1011001
+  },
+  {
+    "fork": "jayprophit/SkillSpector",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "ide-workspace",
+    "reason": "diverged fork relevant to ide-workspace; assess for reuse",
+    "updated_at": "2026-09-13T09:53:48Z",
+    "disk_usage_kb": 4013
+  },
+  {
+    "fork": "jayprophit/ultralytics",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-12T20:00:17Z",
+    "disk_usage_kb": 63765
+  },
+  {
+    "fork": "jayprophit/vllm",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "compute-fabric",
+    "reason": "diverged fork relevant to compute-fabric; assess for reuse",
+    "updated_at": "2026-09-12T19:28:49Z",
+    "disk_usage_kb": 279781
+  },
+  {
+    "fork": "jayprophit/verilator",
+    "parent": "",
+    "license_language": "|SystemVerilog",
+    "disposition": "PARTIAL_REUSE",
+    "project": "embedded",
+    "reason": "diverged fork relevant to embedded; assess for reuse",
+    "updated_at": "2026-09-12T19:21:55Z",
+    "disk_usage_kb": 81872
+  },
+  {
+    "fork": "jayprophit/yugabyte-db",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-12T19:51:05Z",
+    "disk_usage_kb": 1083076
+  },
+  {
+    "fork": "jayprophit/ray",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "compute-fabric",
+    "reason": "diverged fork relevant to compute-fabric; assess for reuse",
+    "updated_at": "2026-09-12T18:41:20Z",
+    "disk_usage_kb": 797786
+  },
+  {
+    "fork": "jayprophit/rxdb",
+    "parent": "",
+    "license_language": "|TypeScript",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-12T19:57:13Z",
+    "disk_usage_kb": 626866
+  },
+  {
+    "fork": "jayprophit/tvm",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "PARTIAL_REUSE",
+    "project": "compute-fabric",
+    "reason": "diverged fork relevant to compute-fabric; assess for reuse",
+    "updated_at": "2026-09-12T20:47:04Z",
+    "disk_usage_kb": 146106
+  },
+  {
+    "fork": "jayprophit/SU2",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:17:50Z",
+    "disk_usage_kb": 964638
+  },
+  {
+    "fork": "jayprophit/core",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:05:47Z",
+    "disk_usage_kb": 881502
+  },
+  {
+    "fork": "jayprophit/rtaudio",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-12T20:08:09Z",
+    "disk_usage_kb": 2690
+  },
+  {
+    "fork": "jayprophit/csound",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-12T18:22:23Z",
+    "disk_usage_kb": 135290
+  },
+  {
+    "fork": "jayprophit/kicad-source-mirror",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "mat",
+    "reason": "diverged fork relevant to mat; assess for reuse",
+    "updated_at": "2026-09-12T18:02:17Z",
+    "disk_usage_kb": 4395020
+  },
+  {
+    "fork": "jayprophit/mfem",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "mat",
+    "reason": "diverged fork relevant to mat; assess for reuse",
+    "updated_at": "2026-09-12T18:17:30Z",
+    "disk_usage_kb": 217227
+  },
+  {
+    "fork": "jayprophit/FreeCAD",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "mat",
+    "reason": "diverged fork relevant to mat; assess for reuse",
+    "updated_at": "2026-09-12T18:01:51Z",
+    "disk_usage_kb": 2802441
+  },
+  {
+    "fork": "jayprophit/dolfinx",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "mat",
+    "reason": "diverged fork relevant to mat; assess for reuse",
+    "updated_at": "2026-09-12T18:17:03Z",
+    "disk_usage_kb": 70685
+  },
+  {
+    "fork": "jayprophit/esphome",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "embedded",
+    "reason": "diverged fork relevant to embedded; assess for reuse",
+    "updated_at": "2026-09-12T18:06:12Z",
+    "disk_usage_kb": 104862
+  },
+  {
+    "fork": "jayprophit/sp1",
+    "parent": "",
+    "license_language": "|Rust",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:30:33Z",
+    "disk_usage_kb": 586515
+  },
+  {
+    "fork": "jayprophit/seL4",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:56:29Z",
+    "disk_usage_kb": 15670
+  },
+  {
+    "fork": "jayprophit/nextflow",
+    "parent": "",
+    "license_language": "|Groovy",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:05:28Z",
+    "disk_usage_kb": 75523
+  },
+  {
+    "fork": "jayprophit/qiskit",
+    "parent": "",
+    "license_language": "|Python",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:20:02Z",
+    "disk_usage_kb": 177808
+  },
+  {
+    "fork": "jayprophit/emscripten",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:48:00Z",
+    "disk_usage_kb": 272463
+  },
+  {
+    "fork": "jayprophit/drake",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:05:07Z",
+    "disk_usage_kb": 425009
+  },
+  {
+    "fork": "jayprophit/gtsam",
+    "parent": "",
+    "license_language": "|Jupyter Notebook",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:52:28Z",
+    "disk_usage_kb": 125743
+  },
+  {
+    "fork": "jayprophit/cantera",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:16:19Z",
+    "disk_usage_kb": 60148
+  },
+  {
+    "fork": "jayprophit/blender",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-12T18:03:12Z",
+    "disk_usage_kb": 1388555
+  },
+  {
+    "fork": "jayprophit/iree",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:48:08Z",
+    "disk_usage_kb": 298919
+  },
+  {
+    "fork": "jayprophit/ceph",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:19:21Z",
+    "disk_usage_kb": 1002318
+  },
+  {
+    "fork": "jayprophit/godot-official",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:02:49Z",
+    "disk_usage_kb": 1887937
+  },
+  {
+    "fork": "jayprophit/vscode",
+    "parent": "",
+    "license_language": "|TypeScript",
+    "disposition": "PARTIAL_REUSE",
+    "project": "ide-workspace",
+    "reason": "diverged fork relevant to ide-workspace; assess for reuse",
+    "updated_at": "2026-09-12T14:44:59Z",
+    "disk_usage_kb": 1422728
+  },
+  {
+    "fork": "jayprophit/cesium",
+    "parent": "",
+    "license_language": "|JavaScript",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:42:45Z",
+    "disk_usage_kb": 1013742
+  },
+  {
+    "fork": "jayprophit/redox",
+    "parent": "",
+    "license_language": "|Rust",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:01:18Z",
+    "disk_usage_kb": 27890
+  },
+  {
+    "fork": "jayprophit/PX4-Autopilot",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:47:17Z",
+    "disk_usage_kb": 577502
+  },
+  {
+    "fork": "jayprophit/IfcOpenShell",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:04:15Z",
+    "disk_usage_kb": 380482
+  },
+  {
+    "fork": "jayprophit/pipewire",
+    "parent": "",
+    "license_language": "|C",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:23:51Z",
+    "disk_usage_kb": 41199
+  },
+  {
+    "fork": "jayprophit/kokkos",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:29:16Z",
+    "disk_usage_kb": 43577
+  },
+  {
+    "fork": "jayprophit/verible",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:49:32Z",
+    "disk_usage_kb": 13436
+  },
+  {
+    "fork": "jayprophit/colmap",
+    "parent": "",
+    "license_language": "|C++",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:43:10Z",
+    "disk_usage_kb": 83175
+  },
+  {
+    "fork": "jayprophit/zephyr",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:07:00Z",
+    "disk_usage_kb": 957949
+  },
+  {
+    "fork": "jayprophit/SatDump",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:46:50Z",
+    "disk_usage_kb": 265187
+  },
+  {
+    "fork": "jayprophit/circt",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:50:10Z",
+    "disk_usage_kb": 71489
+  },
+  {
+    "fork": "jayprophit/arrow",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:42:14Z",
+    "disk_usage_kb": 234539
+  },
+  {
+    "fork": "jayprophit/sqlite",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-13T09:55:32Z",
+    "disk_usage_kb": 562300
+  },
+  {
+    "fork": "jayprophit/ggml",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:28:20Z",
+    "disk_usage_kb": 33931
+  },
+  {
+    "fork": "jayprophit/cva6",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-16T15:37:09Z",
+    "disk_usage_kb": 166162
+  },
+  {
+    "fork": "jayprophit/cocotb",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:49:08Z",
+    "disk_usage_kb": 12537
+  },
+  {
+    "fork": "jayprophit/aiida-core",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:19:37Z",
+    "disk_usage_kb": 163481
+  },
+  {
+    "fork": "jayprophit/syncthing",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:58:47Z",
+    "disk_usage_kb": 127746
+  },
+  {
+    "fork": "jayprophit/gvisor",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:56:56Z",
+    "disk_usage_kb": 918777
+  },
+  {
+    "fork": "jayprophit/moose",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:18:56Z",
+    "disk_usage_kb": 777272
+  },
+  {
+    "fork": "jayprophit/IsaacLab",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:03:47Z",
+    "disk_usage_kb": 114008
+  },
+  {
+    "fork": "jayprophit/xls",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:50:34Z",
+    "disk_usage_kb": 85522
+  },
+  {
+    "fork": "jayprophit/openscad",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "mat",
+    "reason": "diverged fork relevant to mat; assess for reuse",
+    "updated_at": "2026-09-12T18:04:40Z",
+    "disk_usage_kb": 83792
+  },
+  {
+    "fork": "jayprophit/litex",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:46:51Z",
+    "disk_usage_kb": 21162
+  },
+  {
+    "fork": "jayprophit/seaweedfs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:18:56Z",
+    "disk_usage_kb": 233929
+  },
+  {
+    "fork": "jayprophit/opa",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:00:30Z",
+    "disk_usage_kb": 3644999
+  },
+  {
+    "fork": "jayprophit/cFS",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:47:20Z",
+    "disk_usage_kb": 6422
+  },
+  {
+    "fork": "jayprophit/webots",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:03:05Z",
+    "disk_usage_kb": 4306566
+  },
+  {
+    "fork": "jayprophit/pennylane",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:20:25Z",
+    "disk_usage_kb": 214927
+  },
+  {
+    "fork": "jayprophit/ardupilot",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:47:46Z",
+    "disk_usage_kb": 661516
+  },
+  {
+    "fork": "jayprophit/connectedhomeip",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:06:35Z",
+    "disk_usage_kb": 1694530
+  },
+  {
+    "fork": "jayprophit/keycloak",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:49:57Z",
+    "disk_usage_kb": 616414
+  },
+  {
+    "fork": "jayprophit/scylladb",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-12T19:52:17Z",
+    "disk_usage_kb": 287071
+  },
+  {
+    "fork": "jayprophit/valkey",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:52:56Z",
+    "disk_usage_kb": 240052
+  },
+  {
+    "fork": "jayprophit/u-boot",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:56:21Z",
+    "disk_usage_kb": 344809
+  },
+  {
+    "fork": "jayprophit/diffusers",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:52:31Z",
+    "disk_usage_kb": 108907
+  },
+  {
+    "fork": "jayprophit/c2pa-rs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:48:27Z",
+    "disk_usage_kb": 313634
+  },
+  {
+    "fork": "jayprophit/openthread",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:08:31Z",
+    "disk_usage_kb": 128989
+  },
+  {
+    "fork": "jayprophit/timescaledb",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-12T19:53:13Z",
+    "disk_usage_kb": 64388
+  },
+  {
+    "fork": "jayprophit/openfhe-development",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:57:49Z",
+    "disk_usage_kb": 13068
+  },
+  {
+    "fork": "jayprophit/k3s",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:52:55Z",
+    "disk_usage_kb": 591697
+  },
+  {
+    "fork": "jayprophit/opentitan",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:22:27Z",
+    "disk_usage_kb": 220051
+  },
+  {
+    "fork": "jayprophit/qemu",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:54:55Z",
+    "disk_usage_kb": 704979
+  },
+  {
+    "fork": "jayprophit/depthai-core",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:18:30Z",
+    "disk_usage_kb": 158634
+  },
+  {
+    "fork": "jayprophit/containerd",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:57:25Z",
+    "disk_usage_kb": 141169
+  },
+  {
+    "fork": "jayprophit/EnergyPlus",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:07:44Z",
+    "disk_usage_kb": 1212344
+  },
+  {
+    "fork": "jayprophit/helm",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:48:40Z",
+    "disk_usage_kb": 29416
+  },
+  {
+    "fork": "jayprophit/playwright",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:50:19Z",
+    "disk_usage_kb": 241573
+  },
+  {
+    "fork": "jayprophit/ansible",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:46:48Z",
+    "disk_usage_kb": 266266
+  },
+  {
+    "fork": "jayprophit/vcpkg",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:50:26Z",
+    "disk_usage_kb": 113017
+  },
+  {
+    "fork": "jayprophit/opentelemetry-collector",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:54:26Z",
+    "disk_usage_kb": 73836
+  },
+  {
+    "fork": "jayprophit/supercollider",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "ide-workspace",
+    "reason": "diverged fork relevant to ide-workspace; assess for reuse",
+    "updated_at": "2026-09-12T18:22:00Z",
+    "disk_usage_kb": 170312
+  },
+  {
+    "fork": "jayprophit/edk2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:55:54Z",
+    "disk_usage_kb": 343801
+  },
+  {
+    "fork": "jayprophit/rust-libp2p",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:59:14Z",
+    "disk_usage_kb": 22282
+  },
+  {
+    "fork": "jayprophit/gatk",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:06:18Z",
+    "disk_usage_kb": 493625
+  },
+  {
+    "fork": "jayprophit/nats-server",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:00:00Z",
+    "disk_usage_kb": 56016
+  },
+  {
+    "fork": "jayprophit/bazel",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:47:04Z",
+    "disk_usage_kb": 1021225
+  },
+  {
+    "fork": "jayprophit/tfhe-rs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:58:42Z",
+    "disk_usage_kb": 56611
+  },
+  {
+    "fork": "jayprophit/PDAL",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:18:04Z",
+    "disk_usage_kb": 214239
+  },
+  {
+    "fork": "jayprophit/crewAI",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:47:28Z",
+    "disk_usage_kb": 295960
+  },
+  {
+    "fork": "jayprophit/openmm",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:15:10Z",
+    "disk_usage_kb": 129307
+  },
+  {
+    "fork": "jayprophit/nrn",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:08:52Z",
+    "disk_usage_kb": 175591
+  },
+  {
+    "fork": "jayprophit/wasmtime",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:56:01Z",
+    "disk_usage_kb": 161589
+  },
+  {
+    "fork": "jayprophit/code-server",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "ide-workspace",
+    "reason": "diverged fork relevant to ide-workspace; assess for reuse",
+    "updated_at": "2026-09-13T09:47:10Z",
+    "disk_usage_kb": 55201
+  },
+  {
+    "fork": "jayprophit/dagster",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:47:34Z",
+    "disk_usage_kb": 1479035
+  },
+  {
+    "fork": "jayprophit/petsc",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:29:40Z",
+    "disk_usage_kb": 349086
+  },
+  {
+    "fork": "jayprophit/openbao",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:00:59Z",
+    "disk_usage_kb": 319041
+  },
+  {
+    "fork": "jayprophit/theia",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "ide-workspace",
+    "reason": "diverged fork relevant to ide-workspace; assess for reuse",
+    "updated_at": "2026-09-12T14:48:07Z",
+    "disk_usage_kb": 203007
+  },
+  {
+    "fork": "jayprophit/llama_index",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:55:24Z",
+    "disk_usage_kb": 501248
+  },
+  {
+    "fork": "jayprophit/compose",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:47:48Z",
+    "disk_usage_kb": 28898
+  },
+  {
+    "fork": "jayprophit/renode",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:22:58Z",
+    "disk_usage_kb": 18086
+  },
+  {
+    "fork": "jayprophit/conan",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:47:22Z",
+    "disk_usage_kb": 35861
+  },
+  {
+    "fork": "jayprophit/firecracker",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:55:30Z",
+    "disk_usage_kb": 42271
+  },
+  {
+    "fork": "jayprophit/warpx",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:18:14Z",
+    "disk_usage_kb": 90483
+  },
+  {
+    "fork": "jayprophit/riscv-isa-sim",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "embedded",
+    "reason": "diverged fork relevant to embedded; assess for reuse",
+    "updated_at": "2026-09-12T19:39:29Z",
+    "disk_usage_kb": 9102
+  },
+  {
+    "fork": "jayprophit/CuraEngine",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:05:04Z",
+    "disk_usage_kb": 76707
+  },
+  {
+    "fork": "jayprophit/DeepLabCut",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:14:13Z",
+    "disk_usage_kb": 251831
+  },
+  {
+    "fork": "jayprophit/spikeinterface",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:54:51Z",
+    "disk_usage_kb": 88182
+  },
+  {
+    "fork": "jayprophit/litellm",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:15:03Z",
+    "disk_usage_kb": 1478687
+  },
+  {
+    "fork": "jayprophit/zenoh",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:59:38Z",
+    "disk_usage_kb": 28183
+  },
+  {
+    "fork": "jayprophit/prometheus",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:54:59Z",
+    "disk_usage_kb": 290383
+  },
+  {
+    "fork": "jayprophit/lerobot",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:21:32Z",
+    "disk_usage_kb": 242207
+  },
+  {
+    "fork": "jayprophit/scanpy",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:06:45Z",
+    "disk_usage_kb": 74501
+  },
+  {
+    "fork": "jayprophit/nest-simulator",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:09:15Z",
+    "disk_usage_kb": 217855
+  },
+  {
+    "fork": "jayprophit/yosys",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:20:42Z",
+    "disk_usage_kb": 40281
+  },
+  {
+    "fork": "jayprophit/opensim-core",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:06:41Z",
+    "disk_usage_kb": 257117
+  },
+  {
+    "fork": "jayprophit/chisel",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:41:36Z",
+    "disk_usage_kb": 1519435
+  },
+  {
+    "fork": "jayprophit/automerge",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:20:30Z",
+    "disk_usage_kb": 133803
+  },
+  {
+    "fork": "jayprophit/A2A",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:54:19Z",
+    "disk_usage_kb": 34275
+  },
+  {
+    "fork": "jayprophit/mem0",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:17:35Z",
+    "disk_usage_kb": 64764
+  },
+  {
+    "fork": "jayprophit/ditto",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:08:11Z",
+    "disk_usage_kb": 153880
+  },
+  {
+    "fork": "jayprophit/sofa",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:05:55Z",
+    "disk_usage_kb": 386465
+  },
+  {
+    "fork": "jayprophit/pcl",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:17:43Z",
+    "disk_usage_kb": 239853
+  },
+  {
+    "fork": "jayprophit/pymatgen-core",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:22:25Z",
+    "disk_usage_kb": 415965
+  },
+  {
+    "fork": "jayprophit/genesis-world",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "genesis",
+    "reason": "diverged fork relevant to genesis; assess for reuse",
+    "updated_at": "2026-09-11T07:42:52Z",
+    "disk_usage_kb": 136067
+  },
+  {
+    "fork": "jayprophit/rtabmap",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:44:30Z",
+    "disk_usage_kb": 83867
+  },
+  {
+    "fork": "jayprophit/alp-data",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:16:20Z",
+    "disk_usage_kb": 47659
+  },
+  {
+    "fork": "jayprophit/crm",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:54:12Z",
+    "disk_usage_kb": 8403
+  },
+  {
+    "fork": "jayprophit/inspector",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:50:51Z",
+    "disk_usage_kb": 28942
+  },
+  {
+    "fork": "jayprophit/transformers",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:45:14Z",
+    "disk_usage_kb": 513021
+  },
+  {
+    "fork": "jayprophit/onnxruntime",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:43:41Z",
+    "disk_usage_kb": 1567226
+  },
+  {
+    "fork": "jayprophit/llama.cpp",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:29:47Z",
+    "disk_usage_kb": 440151
+  },
+  {
+    "fork": "jayprophit/sherpa-onnx",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:13:39Z",
+    "disk_usage_kb": 16683
+  },
+  {
+    "fork": "jayprophit/ollama",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:32:04Z",
+    "disk_usage_kb": 93460
+  },
+  {
+    "fork": "jayprophit/opencv",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:49:08Z",
+    "disk_usage_kb": 566338
+  },
+  {
+    "fork": "jayprophit/OpenHands",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:53:50Z",
+    "disk_usage_kb": 422811
+  },
+  {
+    "fork": "jayprophit/whisper.cpp",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:36:28Z",
+    "disk_usage_kb": 44001
+  },
+  {
+    "fork": "jayprophit/Open3D",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:47:50Z",
+    "disk_usage_kb": 615632
+  },
+  {
+    "fork": "jayprophit/FFmpeg",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T08:18:14Z",
+    "disk_usage_kb": 494721
+  },
+  {
+    "fork": "jayprophit/navigation2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:02:47Z",
+    "disk_usage_kb": 118623
+  },
+  {
+    "fork": "jayprophit/rclone",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:19:43Z",
+    "disk_usage_kb": 256543
+  },
+  {
+    "fork": "jayprophit/typescript-sdk",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:50:07Z",
+    "disk_usage_kb": 18868
+  },
+  {
+    "fork": "jayprophit/libremidi",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:22:27Z",
+    "disk_usage_kb": 14161
+  },
+  {
+    "fork": "jayprophit/OpenVoiceOS",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:14:32Z",
+    "disk_usage_kb": 427
+  },
+  {
+    "fork": "jayprophit/pydantic-ai",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:52:12Z",
+    "disk_usage_kb": 257807
+  },
+  {
+    "fork": "jayprophit/duckdb---community",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-11T08:01:14Z",
+    "disk_usage_kb": 510233
+  },
+  {
+    "fork": "jayprophit/gdal",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:45:49Z",
+    "disk_usage_kb": 494863
+  },
+  {
+    "fork": "jayprophit/xterm.js",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T14:46:55Z",
+    "disk_usage_kb": 36902
+  },
+  {
+    "fork": "jayprophit/buildkit",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:50:37Z",
+    "disk_usage_kb": 66664
+  },
+  {
+    "fork": "jayprophit/sleap",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:14:44Z",
+    "disk_usage_kb": 389264
+  },
+  {
+    "fork": "jayprophit/qdrant",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T08:00:14Z",
+    "disk_usage_kb": 63452
+  },
+  {
+    "fork": "jayprophit/gz-sim",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:46:06Z",
+    "disk_usage_kb": 247139
+  },
+  {
+    "fork": "jayprophit/open-webui",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:39:24Z",
+    "disk_usage_kb": 425074
+  },
+  {
+    "fork": "jayprophit/lammps",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:53:55Z",
+    "disk_usage_kb": 901282
+  },
+  {
+    "fork": "jayprophit/ros2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:46:59Z",
+    "disk_usage_kb": 739
+  },
+  {
+    "fork": "jayprophit/pyscf",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:15:58Z",
+    "disk_usage_kb": 90609
+  },
+  {
+    "fork": "jayprophit/CRISPResso2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:57:09Z",
+    "disk_usage_kb": 3752
+  },
+  {
+    "fork": "jayprophit/graphiti",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:18:42Z",
+    "disk_usage_kb": 15692
+  },
+  {
+    "fork": "jayprophit/influxdb",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-12T19:52:46Z",
+    "disk_usage_kb": 212595
+  },
+  {
+    "fork": "jayprophit/mediapipe",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:51:40Z",
+    "disk_usage_kb": 608640
+  },
+  {
+    "fork": "jayprophit/openvsx",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T14:48:38Z",
+    "disk_usage_kb": 25697
+  },
+  {
+    "fork": "jayprophit/agent-framework",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:37:10Z",
+    "disk_usage_kb": 143929
+  },
+  {
+    "fork": "jayprophit/phone-harness",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:53:55Z",
+    "disk_usage_kb": 213
+  },
+  {
+    "fork": "jayprophit/mujoco",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:45:23Z",
+    "disk_usage_kb": 142045
+  },
+  {
+    "fork": "jayprophit/mne-python",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:25:40Z",
+    "disk_usage_kb": 172915
+  },
+  {
+    "fork": "jayprophit/neo4j",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:53:20Z",
+    "disk_usage_kb": 711174
+  },
+  {
+    "fork": "jayprophit/langgraph",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:52:52Z",
+    "disk_usage_kb": 526429
+  },
+  {
+    "fork": "jayprophit/Orekit",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:48:02Z",
+    "disk_usage_kb": 183917
+  },
+  {
+    "fork": "jayprophit/scipy-community",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:57:37Z",
+    "disk_usage_kb": 207450
+  },
+  {
+    "fork": "jayprophit/tracktion_engine",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:39:11Z",
+    "disk_usage_kb": 1569658
+  },
+  {
+    "fork": "jayprophit/tauri",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:59:06Z",
+    "disk_usage_kb": 109362
+  },
+  {
+    "fork": "jayprophit/samtools",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:05:51Z",
+    "disk_usage_kb": 16156
+  },
+  {
+    "fork": "jayprophit/scikit-bio",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:56:44Z",
+    "disk_usage_kb": 30913
+  },
+  {
+    "fork": "jayprophit/peft",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:45:52Z",
+    "disk_usage_kb": 33405
+  },
+  {
+    "fork": "jayprophit/pyOCD",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:27:55Z",
+    "disk_usage_kb": 31089
+  },
+  {
+    "fork": "jayprophit/python-sdk",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:33:57Z",
+    "disk_usage_kb": 17252
+  },
+  {
+    "fork": "jayprophit/rdkit",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:54:58Z",
+    "disk_usage_kb": 220551
+  },
+  {
+    "fork": "jayprophit/mavlink",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:48:18Z",
+    "disk_usage_kb": 14982
+  },
+  {
+    "fork": "jayprophit/nextpnr",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:21:16Z",
+    "disk_usage_kb": 14795
+  },
+  {
+    "fork": "jayprophit/moveit2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:01:43Z",
+    "disk_usage_kb": 94809
+  },
+  {
+    "fork": "jayprophit/opentofu",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:54:37Z",
+    "disk_usage_kb": 290044
+  },
+  {
+    "fork": "jayprophit/juicefs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:20:14Z",
+    "disk_usage_kb": 71902
+  },
+  {
+    "fork": "jayprophit/runc",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:57:55Z",
+    "disk_usage_kb": 25412
+  },
+  {
+    "fork": "jayprophit/ros2_control",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:02:11Z",
+    "disk_usage_kb": 16867
+  },
+  {
+    "fork": "jayprophit/browser-use",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:35:26Z",
+    "disk_usage_kb": 36407
+  },
+  {
+    "fork": "jayprophit/monaco-editor",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "ide-workspace",
+    "reason": "diverged fork relevant to ide-workspace; assess for reuse",
+    "updated_at": "2026-09-12T14:46:21Z",
+    "disk_usage_kb": 140414
+  },
+  {
+    "fork": "jayprophit/tikv",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:51:32Z",
+    "disk_usage_kb": 139178
+  },
+  {
+    "fork": "jayprophit/livekit",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:37:47Z",
+    "disk_usage_kb": 16487
+  },
+  {
+    "fork": "jayprophit/pedalboard",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:07:43Z",
+    "disk_usage_kb": 29527
+  },
+  {
+    "fork": "jayprophit/kubo",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:58:22Z",
+    "disk_usage_kb": 61057
+  },
+  {
+    "fork": "jayprophit/oras",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:54:44Z",
+    "disk_usage_kb": 7726
+  },
+  {
+    "fork": "jayprophit/stable-baselines3",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:47:40Z",
+    "disk_usage_kb": 5460
+  },
+  {
+    "fork": "jayprophit/accelerate",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:46:37Z",
+    "disk_usage_kb": 6650
+  },
+  {
+    "fork": "jayprophit/electric",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:53:44Z",
+    "disk_usage_kb": 267957
+  },
+  {
+    "fork": "jayprophit/hidapi",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:12:03Z",
+    "disk_usage_kb": 4537
+  },
+  {
+    "fork": "jayprophit/JUCE",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:38:26Z",
+    "disk_usage_kb": 289045
+  },
+  {
+    "fork": "jayprophit/opensoundscape",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:19:33Z",
+    "disk_usage_kb": 538119
+  },
+  {
+    "fork": "jayprophit/OpenTimelineIO",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:49:05Z",
+    "disk_usage_kb": 25091
+  },
+  {
+    "fork": "jayprophit/cockroach",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:50:39Z",
+    "disk_usage_kb": 2672684
+  },
+  {
+    "fork": "jayprophit/plugin-GUI",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:53:51Z",
+    "disk_usage_kb": 239957
+  },
+  {
+    "fork": "jayprophit/cosign",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:48:58Z",
+    "disk_usage_kb": 26762
+  },
+  {
+    "fork": "jayprophit/OpenUSD",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:03:54Z",
+    "disk_usage_kb": 292693
+  },
+  {
+    "fork": "jayprophit/snntorch",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:10:45Z",
+    "disk_usage_kb": 58854
+  },
+  {
+    "fork": "jayprophit/bioacoustics-model-zoo",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:20:12Z",
+    "disk_usage_kb": 24335
+  },
+  {
+    "fork": "jayprophit/PlasmaPy",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:18:34Z",
+    "disk_usage_kb": 39243
+  },
+  {
+    "fork": "jayprophit/AliceVision",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-12T19:17:19Z",
+    "disk_usage_kb": 58760
+  },
+  {
+    "fork": "jayprophit/ibex",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:42:14Z",
+    "disk_usage_kb": 40957
+  },
+  {
+    "fork": "jayprophit/ninja",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "build-tooling",
+    "reason": "diverged fork relevant to build-tooling; assess for reuse",
+    "updated_at": "2026-09-13T09:53:40Z",
+    "disk_usage_kb": 5552
+  },
+  {
+    "fork": "jayprophit/PROJ",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:46:18Z",
+    "disk_usage_kb": 312951
+  },
+  {
+    "fork": "jayprophit/uhd",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:49:44Z",
+    "disk_usage_kb": 189595
+  },
+  {
+    "fork": "jayprophit/BirdNET-Analyzer",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:20:57Z",
+    "disk_usage_kb": 1236591
+  },
+  {
+    "fork": "jayprophit/bioacoustic-ssl",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:29:31Z",
+    "disk_usage_kb": 17108
+  },
+  {
+    "fork": "jayprophit/brainflow",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:24:40Z",
+    "disk_usage_kb": 171862
+  },
+  {
+    "fork": "jayprophit/napari",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:58:11Z",
+    "disk_usage_kb": 91077
+  },
+  {
+    "fork": "jayprophit/pyvisa",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:55:17Z",
+    "disk_usage_kb": 2799
+  },
+  {
+    "fork": "jayprophit/beans-next",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:13:48Z",
+    "disk_usage_kb": 34644
+  },
+  {
+    "fork": "jayprophit/yjs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:49:54Z",
+    "disk_usage_kb": 73734
+  },
+  {
+    "fork": "jayprophit/pinocchio",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:05:30Z",
+    "disk_usage_kb": 42964
+  },
+  {
+    "fork": "jayprophit/matminer",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:23:19Z",
+    "disk_usage_kb": 44012
+  },
+  {
+    "fork": "jayprophit/pysam",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:07:19Z",
+    "disk_usage_kb": 21555
+  },
+  {
+    "fork": "jayprophit/surrealdb",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-12T18:52:28Z",
+    "disk_usage_kb": 66780
+  },
+  {
+    "fork": "jayprophit/liquid-dsp",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:20:50Z",
+    "disk_usage_kb": 26751
+  },
+  {
+    "fork": "jayprophit/gods-eye-view",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-10T14:06:18Z",
+    "disk_usage_kb": 84548
+  },
+  {
+    "fork": "jayprophit/OCCT",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:03:32Z",
+    "disk_usage_kb": 217226
+  },
+  {
+    "fork": "jayprophit/kind",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:53:15Z",
+    "disk_usage_kb": 13967
+  },
+  {
+    "fork": "jayprophit/tvb-root",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:10:00Z",
+    "disk_usage_kb": 641973
+  },
+  {
+    "fork": "jayprophit/7zip",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:52:45Z",
+    "disk_usage_kb": 4506
+  },
+  {
+    "fork": "jayprophit/portaudio",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-12T16:51:14Z",
+    "disk_usage_kb": 6245
+  },
+  {
+    "fork": "jayprophit/circom",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:59:10Z",
+    "disk_usage_kb": 5748
+  },
+  {
+    "fork": "jayprophit/biopython",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:56:16Z",
+    "disk_usage_kb": 74437
+  },
+  {
+    "fork": "jayprophit/fluidsynth",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:52:40Z",
+    "disk_usage_kb": 12217
+  },
+  {
+    "fork": "jayprophit/pure-data",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:22:42Z",
+    "disk_usage_kb": 74828
+  },
+  {
+    "fork": "jayprophit/brian2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:09:35Z",
+    "disk_usage_kb": 38346
+  },
+  {
+    "fork": "jayprophit/VibeVoice",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-10T14:11:28Z",
+    "disk_usage_kb": 217150
+  },
+  {
+    "fork": "jayprophit/servers",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:32:59Z",
+    "disk_usage_kb": 29654
+  },
+  {
+    "fork": "jayprophit/snarkjs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:59:45Z",
+    "disk_usage_kb": 175402
+  },
+  {
+    "fork": "jayprophit/OpenXR-SDK-Source",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:01:29Z",
+    "disk_usage_kb": 13605
+  },
+  {
+    "fork": "jayprophit/antigravity-sdk-python",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:47:42Z",
+    "disk_usage_kb": 1924
+  },
+  {
+    "fork": "jayprophit/no-ai-slop",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:54:19Z",
+    "disk_usage_kb": 1086
+  },
+  {
+    "fork": "jayprophit/git-lfs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:52:14Z",
+    "disk_usage_kb": 21081
+  },
+  {
+    "fork": "jayprophit/fastapi",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:48:07Z",
+    "disk_usage_kb": 55416
+  },
+  {
+    "fork": "jayprophit/PrusaSlicer",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:05:26Z",
+    "disk_usage_kb": 480774
+  },
+  {
+    "fork": "jayprophit/libsndfile",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:50:51Z",
+    "disk_usage_kb": 32764
+  },
+  {
+    "fork": "jayprophit/restic",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:19:48Z",
+    "disk_usage_kb": 71663
+  },
+  {
+    "fork": "jayprophit/demucs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:41:54Z",
+    "disk_usage_kb": 78750
+  },
+  {
+    "fork": "jayprophit/pymatgen",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:52:18Z",
+    "disk_usage_kb": 981186
+  },
+  {
+    "fork": "jayprophit/openMVG",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:16:59Z",
+    "disk_usage_kb": 30316
+  },
+  {
+    "fork": "jayprophit/video-use",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "ide-workspace",
+    "reason": "diverged fork relevant to ide-workspace; assess for reuse",
+    "updated_at": "2026-09-13T09:54:03Z",
+    "disk_usage_kb": 983
+  },
+  {
+    "fork": "jayprophit/VibeVoice-community",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-10T14:13:39Z",
+    "disk_usage_kb": 57135
+  },
+  {
+    "fork": "jayprophit/libusb",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:11:06Z",
+    "disk_usage_kb": 6167
+  },
+  {
+    "fork": "jayprophit/pymeasure",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:55:47Z",
+    "disk_usage_kb": 11715
+  },
+  {
+    "fork": "jayprophit/risc0",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:30:03Z",
+    "disk_usage_kb": 340088
+  },
+  {
+    "fork": "jayprophit/SEAL",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:58:15Z",
+    "disk_usage_kb": 5650
+  },
+  {
+    "fork": "jayprophit/gnuradio",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:55:48Z",
+    "disk_usage_kb": 72242
+  },
+  {
+    "fork": "jayprophit/in-toto",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:49:28Z",
+    "disk_usage_kb": 3326
+  },
+  {
+    "fork": "jayprophit/essentia",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:24:17Z",
+    "disk_usage_kb": 314053
+  },
+  {
+    "fork": "jayprophit/riscv-gnu-toolchain",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "embedded",
+    "reason": "diverged fork relevant to embedded; assess for reuse",
+    "updated_at": "2026-09-12T19:40:26Z",
+    "disk_usage_kb": 7073
+  },
+  {
+    "fork": "jayprophit/pglite",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:56:43Z",
+    "disk_usage_kb": 31700
+  },
+  {
+    "fork": "jayprophit/FreeRTOS-Kernel",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:07:23Z",
+    "disk_usage_kb": 127854
+  },
+  {
+    "fork": "jayprophit/avex",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:15:31Z",
+    "disk_usage_kb": 46491
+  },
+  {
+    "fork": "jayprophit/smolagents",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:52:38Z",
+    "disk_usage_kb": 7421
+  },
+  {
+    "fork": "jayprophit/dask",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:41:45Z",
+    "disk_usage_kb": 137884
+  },
+  {
+    "fork": "jayprophit/librosa",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:39:56Z",
+    "disk_usage_kb": 43596
+  },
+  {
+    "fork": "jayprophit/miniaudio",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-11T07:21:44Z",
+    "disk_usage_kb": 324342
+  },
+  {
+    "fork": "jayprophit/detectron2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:00:58Z",
+    "disk_usage_kb": 6962
+  },
+  {
+    "fork": "jayprophit/openbabel",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:16:41Z",
+    "disk_usage_kb": 79469
+  },
+  {
+    "fork": "jayprophit/mlc-llm",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:16:33Z",
+    "disk_usage_kb": 36989
+  },
+  {
+    "fork": "jayprophit/sound-event-detection",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:12:39Z",
+    "disk_usage_kb": 2363
+  },
+  {
+    "fork": "jayprophit/libsamplerate",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:24:59Z",
+    "disk_usage_kb": 19542
+  },
+  {
+    "fork": "jayprophit/rtl-sdr",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:49:15Z",
+    "disk_usage_kb": 370
+  },
+  {
+    "fork": "jayprophit/vst3sdk",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:10:11Z",
+    "disk_usage_kb": 2746
+  },
+  {
+    "fork": "jayprophit/cr-sqlite",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "data",
+    "reason": "diverged fork relevant to data; assess for reuse",
+    "updated_at": "2026-09-12T19:54:18Z",
+    "disk_usage_kb": 43215
+  },
+  {
+    "fork": "jayprophit/gqrx",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:50:12Z",
+    "disk_usage_kb": 9443
+  },
+  {
+    "fork": "jayprophit/nengo",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:10:23Z",
+    "disk_usage_kb": 115996
+  },
+  {
+    "fork": "jayprophit/clap",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T08:20:26Z",
+    "disk_usage_kb": 5409
+  },
+  {
+    "fork": "jayprophit/BitNet",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:28:58Z",
+    "disk_usage_kb": 8729
+  },
+  {
+    "fork": "jayprophit/openfx",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:48:43Z",
+    "disk_usage_kb": 18261
+  },
+  {
+    "fork": "jayprophit/F5-TTS",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:03:09Z",
+    "disk_usage_kb": 2238
+  },
+  {
+    "fork": "jayprophit/robot_localization",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:52:52Z",
+    "disk_usage_kb": 16688
+  },
+  {
+    "fork": "jayprophit/liblsl",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:54:18Z",
+    "disk_usage_kb": 17273
+  },
+  {
+    "fork": "jayprophit/q-e",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:15:33Z",
+    "disk_usage_kb": 823215
+  },
+  {
+    "fork": "jayprophit/lilv",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:23:25Z",
+    "disk_usage_kb": 8994
+  },
+  {
+    "fork": "jayprophit/voxaboxen",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:18:48Z",
+    "disk_usage_kb": 1113
+  },
+  {
+    "fork": "jayprophit/Carla",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:50:23Z",
+    "disk_usage_kb": 98302
+  },
+  {
+    "fork": "jayprophit/libpd",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:25:35Z",
+    "disk_usage_kb": 8451
+  },
+  {
+    "fork": "jayprophit/liblo",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:51:51Z",
+    "disk_usage_kb": 2012
+  },
+  {
+    "fork": "jayprophit/cellpose",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:57:39Z",
+    "disk_usage_kb": 118203
+  },
+  {
+    "fork": "jayprophit/rocket-chip",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:40:59Z",
+    "disk_usage_kb": 21719
+  },
+  {
+    "fork": "jayprophit/sam2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:01:26Z",
+    "disk_usage_kb": 138255
+  },
+  {
+    "fork": "jayprophit/multiband-audio",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-12T18:13:20Z",
+    "disk_usage_kb": 8584
+  },
+  {
+    "fork": "jayprophit/pyserial",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:27:01Z",
+    "disk_usage_kb": 1744
+  },
+  {
+    "fork": "jayprophit/link",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T08:18:51Z",
+    "disk_usage_kb": 2728
+  },
+  {
+    "fork": "jayprophit/habitat-lab",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:02:30Z",
+    "disk_usage_kb": 284318
+  },
+  {
+    "fork": "jayprophit/NatureLM-audio",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-11T14:26:35Z",
+    "disk_usage_kb": 2738
+  },
+  {
+    "fork": "jayprophit/autogen",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-13T09:50:07Z",
+    "disk_usage_kb": 148692
+  },
+  {
+    "fork": "jayprophit/aubio",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:53:26Z",
+    "disk_usage_kb": 11871
+  },
+  {
+    "fork": "jayprophit/lv2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:48:18Z",
+    "disk_usage_kb": 7167
+  },
+  {
+    "fork": "jayprophit/Depth-Anything-V2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:02:00Z",
+    "disk_usage_kb": 46233
+  },
+  {
+    "fork": "jayprophit/audiocraft",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-11T07:40:42Z",
+    "disk_usage_kb": 25025
+  },
+  {
+    "fork": "jayprophit/pyusb",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:27:27Z",
+    "disk_usage_kb": 1135
+  },
+  {
+    "fork": "jayprophit/python-rtmidi",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:08:41Z",
+    "disk_usage_kb": 4882
+  },
+  {
+    "fork": "jayprophit/SigMF",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:21:15Z",
+    "disk_usage_kb": 1985
+  },
+  {
+    "fork": "jayprophit/jack2",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:12:47Z",
+    "disk_usage_kb": 15957
+  },
+  {
+    "fork": "jayprophit/anoncreds-rs",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:51:58Z",
+    "disk_usage_kb": 2754
+  },
+  {
+    "fork": "jayprophit/SoapySDR",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:21:36Z",
+    "disk_usage_kb": 4709
+  },
+  {
+    "fork": "jayprophit/biodenoising",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:27:15Z",
+    "disk_usage_kb": 4988
+  },
+  {
+    "fork": "jayprophit/open_vins",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:44:58Z",
+    "disk_usage_kb": 171850
+  },
+  {
+    "fork": "jayprophit/rtmidi",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:23:17Z",
+    "disk_usage_kb": 1898
+  },
+  {
+    "fork": "jayprophit/libsigrok",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:26:02Z",
+    "disk_usage_kb": 11815
+  },
+  {
+    "fork": "jayprophit/faster-whisper",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T06:56:40Z",
+    "disk_usage_kb": 40514
+  },
+  {
+    "fork": "jayprophit/basic-pitch",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:49:29Z",
+    "disk_usage_kb": 289341
+  },
+  {
+    "fork": "jayprophit/pulseview",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:26:30Z",
+    "disk_usage_kb": 5274
+  },
+  {
+    "fork": "jayprophit/bullet3",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T17:07:09Z",
+    "disk_usage_kb": 297038
+  },
+  {
+    "fork": "jayprophit/mmpose",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:51:03Z",
+    "disk_usage_kb": 56136
+  },
+  {
+    "fork": "jayprophit/BEBE",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:11:11Z",
+    "disk_usage_kb": 24963
+  },
+  {
+    "fork": "jayprophit/OpenVoice",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T07:02:21Z",
+    "disk_usage_kb": 3944
+  },
+  {
+    "fork": "jayprophit/sfizz",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:53:02Z",
+    "disk_usage_kb": 22647
+  },
+  {
+    "fork": "jayprophit/rnnoise",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T16:53:50Z",
+    "disk_usage_kb": 910
+  },
+  {
+    "fork": "jayprophit/devops-directive-docker-course",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "infra",
+    "reason": "diverged fork relevant to infra; assess for reuse",
+    "updated_at": "2026-02-10T23:08:12Z",
+    "disk_usage_kb": 1418
+  },
+  {
+    "fork": "jayprophit/FAST_LIO",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T20:53:19Z",
+    "disk_usage_kb": 129787
+  },
+  {
+    "fork": "jayprophit/ORB_SLAM3",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:43:44Z",
+    "disk_usage_kb": 183277
+  },
+  {
+    "fork": "jayprophit/kalibr",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T19:48:48Z",
+    "disk_usage_kb": 3575
+  },
+  {
+    "fork": "jayprophit/BEBE-datasets",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-12T18:11:34Z",
+    "disk_usage_kb": 3660
+  },
+  {
+    "fork": "jayprophit/acoustic-representation-toolbox",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:28:42Z",
+    "disk_usage_kb": 81389
+  },
+  {
+    "fork": "jayprophit/sound-separation",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:27:56Z",
+    "disk_usage_kb": 33429
+  },
+  {
+    "fork": "jayprophit/sperm-whale-clan-and-coda-detection",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:31:38Z",
+    "disk_usage_kb": 7596
+  },
+  {
+    "fork": "jayprophit/animalsynth",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:31:04Z",
+    "disk_usage_kb": 6885
+  },
+  {
+    "fork": "jayprophit/audio-embeddings",
+    "parent": "",
+    "license_language": "",
+    "disposition": "PARTIAL_REUSE",
+    "project": "media",
+    "reason": "diverged fork relevant to media; assess for reuse",
+    "updated_at": "2026-09-12T18:12:14Z",
+    "disk_usage_kb": 2280
+  },
+  {
+    "fork": "jayprophit/unsupervised-speech-translation",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-09-11T14:30:24Z",
+    "disk_usage_kb": 176
+  },
+  {
+    "fork": "jayprophit/hello-world-1",
+    "parent": "",
+    "license_language": "",
+    "disposition": "IRRELEVANT",
+    "project": "",
+    "reason": "no signal linking this fork to a registered project",
+    "updated_at": "2026-02-10T23:43:10Z",
+    "disk_usage_kb": 2
+  }
+]

@@ -466,6 +466,8 @@ class SupervisorRuntime:
         # nominally RUNNING without advancing).
         self._progress_sigs: dict[str, str] = {}
         self._stall_counts: dict[str, int] = {}
+        # §7: acquisition queue for unassessed external AI apps
+        self._acq: Optional[Any] = None
         for a in (adapters or []):
             self.register_adapter(a)
 
@@ -589,10 +591,10 @@ class SupervisorRuntime:
         # §36/§49: the Supervisor Constitution — hard gates, not suggestions.
         # Run BEFORE continuation computation so a tripped invariant cannot
         # let the cycle clear continuation_required (INVARIANT 28).
-        actions["constitution"] = self.check_invariants()
+        actions["constitution"] = self.check_invariants(actions)
         # §33 tail: checkpoint every cycle (persist computes the honest
         # continuation flag itself — one computation, never two)
-        self.persist()
+        self.persist(actions)
         self._last_actions = [actions]
         return actions
 
@@ -606,13 +608,20 @@ class SupervisorRuntime:
         """
         now_epoch = _now()
         workers_view: dict[str, dict] = {}
+        action_workers = actions.get("workers", {})
         for wid, adapter in self.adapters.items():
             rec = self.supervisor.worker(wid)
-            st = adapter.status()
+            aw = action_workers.get(wid, {})
+            st_verdict = aw.get("verdict")
+            st_evidence = aw.get("evidence")
+            if st_verdict is None or st_evidence is None:
+                st = adapter.status()
+                st_verdict = st_verdict or st.get("verdict", UNKNOWN_VERDICT)
+                st_evidence = st_evidence or st.get("evidence", [])
             w: dict[str, Any] = {
-                "status": rec.status if rec else st.get("verdict", UNKNOWN_VERDICT),
-                "verdict": st.get("verdict", UNKNOWN_VERDICT),
-                "evidence": st.get("evidence", []),
+                "status": rec.status if rec else st_verdict,
+                "verdict": st_verdict,
+                "evidence": st_evidence,
                 "role": getattr(adapter, "role", ""),
                 "application": getattr(adapter, "application", ""),
                 "last_activity": (rec.last_activity if rec else 0.0),
@@ -661,6 +670,45 @@ class SupervisorRuntime:
                 if pid in projects_view:
                     projects_view[pid]["last_progress_epoch"] = now_epoch
 
+        # §7: wire the acquisition queue into the snapshot
+        unassessed = []
+        try:
+            from compute.acquisition_queue import AcquisitionQueue  # noqa
+            if self._acq:
+                unassessed = self._acq.unassessed(now=now_epoch)
+        except Exception:            # noqa: BLE001 — §15: honest, never fabricate
+            unassessed = []
+
+        # §14/§15: lane-level starvation from the project-lanes module
+        lane_starvation = []
+        try:
+            from compute.project_lanes import (  # noqa
+                compute_starvation, DEFAULT_LANES)
+            worker_proj: dict[str, dict] = {}
+            for wid, rec in self.supervisor._workers.items():
+                pid = rec.project or "unassigned"
+                wp = worker_proj.setdefault(pid, {
+                    "active": 0, "has_unblocked_work": False,
+                    "last_progress_epoch": 0.0})
+                if rec.status in ("IMPLEMENTING", "TESTING", "REVIEWING",
+                                  "COMMITTING", "PUSHING"):
+                    wp["active"] += 1
+                    wp["last_progress_epoch"] = max(wp["last_progress_epoch"],
+                                                    rec.last_activity)
+            for g in self.supervisor.open_gaps():
+                pid = g.project or "unassigned"
+                wp = worker_proj.setdefault(pid, {
+                    "active": 0, "has_unblocked_work": True,
+                    "last_progress_epoch": 0.0})
+                wp["has_unblocked_work"] = True
+            rep = compute_starvation(
+                [l for l in DEFAULT_LANES
+                 if l["project"] in worker_proj or l["project"] == "unassigned"],
+                worker_proj, now=now_epoch)
+            lane_starvation = rep.starved_lanes
+        except Exception:            # noqa: BLE001
+            lane_starvation = []
+
         return {
             "workers": workers_view,
             "ready_tasks": ready_tasks,
@@ -669,7 +717,7 @@ class SupervisorRuntime:
             "quotas": quotas,
             "resources": (self.governor.overview().get("sample") or {}),
             "projects": projects_view,
-            "unassessed_apps": [],               # §7: wired when acquisition_queue lands
+            "unassessed_apps": unassessed,        # §7: from acquisition queue
             "internal_workers": sum(1 for w in workers_view.values()
                                      if w.get("internal")),
             "min_internal_target": 5,            # §2 floor (resources permitting)
@@ -678,22 +726,23 @@ class SupervisorRuntime:
             "worker_actions": actions.get("workers", {}),
             "now_epoch": now_epoch,
             "model_routing": {"paid_budget_remaining": 0},  # §12: OWNER policy
+            "lane_starvation": lane_starvation,    # §14/§15: live starvation
+            "deferred_tasks": [t for t in self.hive._deferred.values()],
         }
 
-    def check_invariants(self) -> dict[str, Any]:
+    def check_invariants(self, actions: Optional[dict[str, Any]] = None) -> dict[str, Any]:
         """§36/§49: run the Constitution hard gates.  Returns the
         ConstitutionResult.to_dict() so the dashboard can surface violations
         with evidence.  A FAIL on CRITICAL/HIGH also forces continuation via
         gate_continuation (called by _compute_continuation)."""
         from compute.supervisor_invariants import (  # noqa: E402
             check_all, gate_continuation)
-        snapshot = self._build_invariants_snapshot(self._last_actions[-1]
-                                                   if self._last_actions else {})
+        snapshot = self._build_invariants_snapshot(actions or {})
         result = check_all(snapshot)
         self._constitution_result = result.to_dict()
         return result.to_dict()
 
-    def _compute_continuation(self) -> bool:
+    def _compute_continuation(self, actions: Optional[dict[str, Any]] = None) -> bool:
         """§27/§45.8/§36: the single honest continuation computation. True
         unless NOTHING remains: no unread handoffs, no open gaps, no worker
         needing supervisor action (SUPERVISOR_DEFECT *or* NO_PROGRESS — a
@@ -711,7 +760,7 @@ class SupervisorRuntime:
         # §36/§49: the Constitution gates — a tripped CRITICAL/HIGH invariant
         # forces continuation regardless of surface reports (INVARIANT 28).
         return base or gate_continuation(self._build_invariants_snapshot(
-            self._last_actions[-1] if self._last_actions else {}))
+            actions or {}))
 
     def _check_in(self, worker_id: str, adapter: WorkerAdapter,
                   actions: dict[str, Any]) -> None:
@@ -826,13 +875,15 @@ class SupervisorRuntime:
     def checkpoint_path(self) -> Path:
         return self.state_dir / "supervisor_runtime_checkpoint.json"
 
-    def persist(self) -> None:
+    def persist(self, actions: Optional[dict[str, Any]] = None) -> None:
         """§18: persist EVERYTHING outside model context. continuation_
         required is computed FRESH at persist time (not the last cycle's
         value) so a power-cut checkpoint is always truthful (§27). An
         in-flight check-in (continue instruction sent, resumption NOT yet
         verified) keeps continuation_required True (§45.8)."""
-        self.continuation_required = self._compute_continuation()
+        if actions is None:
+            actions = self._last_actions[-1] if self._last_actions else {}
+        self.continuation_required = self._compute_continuation(actions)
         data = {
             "cycles": self.cycles,
             "shift": self.shift,
@@ -978,6 +1029,34 @@ class SupervisorRuntime:
 
     # -- status for the control surface (§26) ----------------------------------------
     def status(self) -> dict[str, Any]:
+        # §36/§49: surface a fresh constitution result even when status()
+        # is queried without a full cycle (e.g. dashboard poll between cycles).
+        self.check_invariants()
+        acq_count = 0
+        unassessed = []
+        if self._acq:
+            unassessed = self._acq.unassessed()
+            acq_count = len(unassessed)
+        # §14/§15: live starvation snapshot for the dashboard
+        lane_starvation = []
+        try:
+            from compute.project_lanes import (  # noqa
+                compute_starvation, DEFAULT_LANES)
+            worker_proj: dict[str, dict] = {}
+            for rec in self.supervisor._workers.values():
+                pid = rec.project or "unassigned"
+                wp = worker_proj.setdefault(pid, {"active": 0,
+                                                 "has_unblocked_work": False,
+                                                 "last_progress_epoch": 0.0})
+                if rec.status in ("IMPLEMENTING", "TESTING", "REVIEWING",
+                                  "COMMITTING", "PUSHING"):
+                    wp["active"] += 1
+                    wp["last_progress_epoch"] = max(wp["last_progress_epoch"],
+                                                    rec.last_activity)
+            rep = compute_starvation(DEFAULT_LANES, worker_proj, now=_now())
+            lane_starvation = rep.starved_lanes
+        except Exception:        # noqa: BLE001
+            pass
         return {
             "cycles": self.cycles,
             "shift": self.shift,
@@ -989,6 +1068,13 @@ class SupervisorRuntime:
             "gaps_open": len(self.supervisor.open_gaps()),
             "supervision": self.supervisor.overview(),
             "resources": self.governor.overview()["pressure_state"],
+            "constitution": getattr(self, "_constitution_result", None),
+            "acquisition": {
+                "total_apps": self._acq.count() if self._acq else 0,
+                "unassessed": acq_count,
+                "unassessed_list": unassessed,
+            },
+            "project_starvation": lane_starvation,
             "checkpoint": str(self.checkpoint_path),
         }
 
@@ -1007,8 +1093,16 @@ def main(argv: Optional[list[str]] = None) -> int:  # pragma: no cover
     parser.add_argument("--with-ollama", action="store_true",
                         help="register the local Ollama model worker "
                              "(free-first tier, §6)")
-    parser.add_argument("--ollama-model", default=
+    parser.add_argument("--ollama-model", default=\
                         "qwen2.5-coder:3b-instruct-q4_K_M")
+    parser.add_argument("--with-acquisition", action="store_true",
+                        help="initialize the §7 acquisition queue for "
+                             "unassessed external AI apps")
+    parser.add_argument("--seed-acquisition", action="store_true",
+                        help="seed the §7 acquisition queue from "
+                             "compute/acquisition_seed.jsonl on startup")
+    parser.add_argument("--acquisition-db", default="",
+                        help="path to the acquisition queue jsonl (§7)")
     parser.add_argument("--watchdog", action="store_true",
                         help="run as the persistence watchdog (§2): ensure "
                              "exactly one Supervisor Runtime is alive, "
@@ -1027,6 +1121,33 @@ def main(argv: Optional[list[str]] = None) -> int:  # pragma: no cover
         adapters.append(OllamaAdapter(model=args.ollama_model))
     runtime = SupervisorRuntime(args.state_dir, adapters=adapters,
                                 cycle_interval_s=args.interval)
+    if args.with_acquisition:
+        from compute.acquisition_queue import AcquisitionQueue
+        db = args.acquisition_db or str(Path(args.state_dir) / "acquisition.jsonl")
+        runtime._acq = AcquisitionQueue(db)
+    if args.seed_acquisition:
+        from compute.acquisition_queue import AcquisitionQueue
+        db = args.acquisition_db or str(Path(args.state_dir) / "acquisition.jsonl")
+        acq = AcquisitionQueue(db)
+        seed = Path("compute/acquisition_seed.jsonl")
+        if seed.exists():
+            now = _now()
+            for line in seed.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                import json as _j
+                d = _j.loads(line)
+                if d["app_id"] not in acq._apps:
+                    acq.discover(d["app_id"], name=d["name"],
+                                 source=d["source"],
+                                 category=d.get("category", "agent-app"),
+                                 discovered_at=d.get("discovered_at", now),
+                                 last_action_at=d.get("last_action_at", now),
+                                 current_stage=d.get("current_stage", "DISCOVERED"),
+                                 resource_cost=d.get("resource_cost", "MEDIUM"),
+                                 notes=d.get("notes", []))
+        runtime._acq = acq
 
     if args.status:
         print(json.dumps(runtime.status(), indent=2, default=str))
@@ -1127,6 +1248,7 @@ def _relaunch(state_dir: Path, lock_path: Path, script: Path,
         pass
     cmd = [sys.executable, str(script),
            "--with-opencode", "--with-codex", "--with-ollama",
+           "--with-acquisition",
            "--state-dir", str(state_dir),
            "--interval", str(args.interval)]
     try:

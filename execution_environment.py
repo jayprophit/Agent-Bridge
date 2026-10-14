@@ -358,7 +358,8 @@ class ExecutionEnvironmentRegistry:
                     if len(parts) >= 3:
                         drive = parts[2].upper()
                         rest = "/".join(parts[3:])
-                        return f"{drive}:\\{rest.replace('/', '\\')}"
+                        backslash = "\\"
+                        return f"{drive}:{backslash}{rest.replace('/', backslash)}"
         
         # Container paths (simplified - actual conversion depends on volume mounts)
         if to_env_obj.working_directory_behavior == "container_mapped":
