@@ -221,3 +221,83 @@ later supplies keys, and are never required).
 NEXT: LM Studio bring-up + registration as local host 2; M4 increment 1
 reassigned to OpenCode on nemotron-3-ultra-free; progressive GUI
 commissioning one app at a time.
+
+---
+
+## 24. HONEST RECONCILIATION — WHAT THE CONSTITUTION SWEEP ACTUALLY FOUND (2026-10-14 ~22:3x)
+
+§15/§45 honesty: the earlier "531-535" claims overstated what is coded. VERIFY
+by file existence / git log (not by report prose):
+
+- `compute/supervisor_invariants.py` — does NOT exist (0 matches in repo).
+- `tests/test_supervisor_invariants.py` — does NOT exist (0 matches).
+- The git log has no "invariants" commit. The 5 earlier commits are all docs /
+  the watchdog-stall-detection commit (3ebda2e) / the API-key loader (a898a1f).
+- `compute/supervisor_runtime.py` DOES exist (1045 lines) — it EMBEDS 5
+  invariants inline: (1) §1 continuation — `_compute_continuation` + the
+  run_forever loop that never stops on a quiet cycle; (2) §2/§33 min-hive
+  via the `--with-opencode --with-codex --with-ollama` launch flags +
+  watchdog relaunch; (3) §3/§45 no-idle-worker via `_track_progress`
+  progress-signature stall detection + `_check_in` auto-continue; (4) §31
+  supervisor watchdog (checkpoint-age stall detection); (5) §32 worker
+  watchdog (heartbeat staleness → INTERRUPTED).
+
+What EXISTS and is real (verified by reading + tests):
+- `compute/hive_scheduler.py` — HiveScheduler with free-first
+  TierPriority, multi-window quota pools (most-restrictive wins),
+  worker_score routing, write-set ownership (§2 §9), privacy gates (§8).
+  Tests: 29 pass.
+- `compute/supervision.py` — Supervisor state machine: WorkerRecord with
+  20 lifecycle states, structured Handoff review queue, Gap analysis,
+  auto_assign (§25), intervene_on_stalls. Tests: 26 pass.
+- `compute/team_registry.py` — canonical + append-only provenance,
+  roles/departments, RACI, worker careers, fork accounting fields.
+  Tests: 35 pass.
+- `compute/resource_governor.py` — live CPU/RAM/GPU/VRAM sampling with
+  honest UNKNOWN confidence, per-class admission control + throttle
+  actions. Tests: pass.
+- `compute/local_team_executor.py` — real local multi-agent team
+  execution over Ollama with distributed tracing + structured handoffs
+  (proves §9 team members may share a model but need distinct role/trace).
+- `compute/knowledge_index.py` + `compute/instance_registry.py` +
+  `compute/app_registry.py` + `compute/enterprise_team.py` +
+  `compute/ollama_provider_v2.py` + provider/credential modules — all
+  present and importable.
+
+What is genuinely MISSING or under-enforced (the gaps the owner's
+Constitution targets):
+- §2 internal team floor: NO dynamic spawning of Hermes-native subagents
+  for architecture/QA/security/UI-UX/research/DevOps/provenance/doc/
+  integration/perf/accessibility. The runtime hardcodes exactly 3
+  EXTERNAL adapters; there is no internal-subagent spawner and no
+  role-to-role assignment pipeline. `local_team_executor` proves the
+  mechanism for local models but is not wired into the hive as a
+  "Hermes-native internal team" with the required roles.
+- §3 no-idle-worker-with-ready-work: `_watchdogs` flags ready+idle as a
+  defect, BUT `_compute_continuation` does NOT include project-starvation
+  or min-hive breach, so the supervisor can report
+  continuation_required=False while the team floor is unmet.
+- §7 external worker commissioning loop: NO acquisition/unassessed-apps
+  queue, NO launch→test→register→assign pipeline. The estate sweep
+  (audit v3) was a one-off discovery, not a runtime structure.
+- §14/§15 project lanes + starvation: NO lane model, NO
+  per-project-progress gating, NO PROJECT_STARVATION emission. This is
+  the "fixing-Hermes-starves-everything" bug — confirmed structurally
+  absent.
+- §12 model-routing POLICY enforcement: HiveScheduler is free-first, but
+  the documented "best adequate zero-incremental-cost model" selection
+  (coding strength, context, vision, tool use, latency, success history,
+  privacy, local resource cost) is NOT encoded — it lives only in
+  docs/MODEL_ROUTING_POLICY_STARRED_FREE.md as prose.
+- §16 browser-research worker / §17 pagination / §18 GitHub research:
+  absent entirely.
+- §23 gap-every-cycle: `_watchdogs` does partial (handoffs / idle /
+  ready+idle) but NOT project-starvation or lane-level gap analysis.
+
+TESTS (actual): supervision 26 + hive_scheduler 29 + team_registry 35 = 90
+supervisor-core tests pass. No `test_supervisor_invariants.py` (the 12-test
+claim was false). `psutil` missing for benchmarks — unrelated.
+
+COMMIT (this correction): 36a992e already pushed. Provenance of this
+correction is honest: I am RECORADING the overstatement so the Constitution
+that follows fixes the real gaps, not the claimed ones.
