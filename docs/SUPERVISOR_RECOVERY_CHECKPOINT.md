@@ -627,3 +627,50 @@ executed (§22 all steps), loop continues.
 NEXT (§22.18+ another cycle): commission controllable external workers
 (Cursor CLI = structured control channel, highest priority per control-channel
 law); prep M4 for when M3 closes; extend fork reuse decisions. Loop continues.
+
+---
+
+## 20. M3 ACCEPTED → M4 RUNNING + CHAIN RECOVERY (2026-10-14 ~06:5x) — §30
+
+Owner directive f2e40a: "worker stopped" = handoff → QA → next task; GUI
+fallback for worker commissioning; never stop at a milestone.
+
+§1 M3 HANDOFF INGESTED: docs/handoffs/supervisor-merge-m3-done.md — conference
+  (roster-derived, same workers fact), message-feed (same event stream, no
+  second fetch), resource-tiles (CPU/RAM/GPU/VRAM NOT_EXPOSED honest —
+  resources.sample is null), 5-theme glow, m3.test.tsx 433 lines. Honest
+  deferrals documented (voice/video, active speaker, message composer,
+  sparkline). Fabricated prototype data REFUSED (Math.random gauges, fake
+  speakers, Unsplash portraits, invented PIDs) — the correct standard.
+§30.2 INDEPENDENT QA: HEAD 98050eb == origin ✓; diff 8 files / +1717 ✓;
+  honesty grep clean (only doc-comment mentions) ✓; OpenCode's own screenshot
+  report independently consistent (147→186 tests, 441/25 files, tsc 0).
+  M3 = ACCEPTED.
+§30.3 VISUAL QA: chain was DEAD on arrival (vite+API+runtime all down, chain
+  died overnight AGAIN — watchdog journal 18:48 yesterday, checkpoint 11h
+  stale). §16/§17 recovery performed.
+§24 WATCHDOG TRUTH: the watchdog (17432) + runtime daemon (22728) were
+  actually STILL ALIVE from the 05:34 restart — they survived. What killed
+  the chain's usefulness: (a) vite died, (b) I launched FOUR duplicate API
+  servers (Start-Process + .cmd + background python x2) — each ran its own
+  SupervisorRuntime with adapter probes → CPU storm → PowerShell bridge
+  unresponsive → everything hung. ROOT CAUSE = my own duplicate launches,
+  not a chain defect. FIX: killed duplicates; API now runs with
+  --state-dir supervisor_state/api so its runtime NEVER clobbers the daemon's
+  shared checkpoint (the earlier "cycles: 1" reading was the API's runtime
+  overwriting the daemon's 391-cycle checkpoint).
+§30.6 M4 DELIVERED: spec docs/handoffs/supervisor-merge-m4.md (F4 surfaces
+  A–F + §6 typography regression + §7 card-collapse regression + honesty
+  contract). Delivered via computer_use: background click → foreground type
+  test → ctrl+a → ctrl+v (M4 prompt, 2772 bytes) → return. §26 VERIFIED:
+  OpenCode session "Continue bounded task inspection" active 43s after
+  delivery, ACTIVE on M4 (62s). GUI path: hotkey combos fail on the Electron
+  window until a foreground `type` activates it — then combos work.
+M4 = RUNNING.
+
+Fleet now: runtime daemon 22728 + watchdog 17432 (survived) + API
+(separate state dir) + vite 30156. All HTTP-verified after cooldown.
+
+LOOP CONTINUES: M4 → Hermes QA → visual QA → gap → F4 accept or M5. Backend
+gaps queued for H-SA-DEVOPS (resource telemetry, test-health) + Genesis flake
+(H-SA-QA). External GUI commissioning (Claude/Manus/Cursor) next.
