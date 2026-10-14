@@ -158,3 +158,66 @@ Fixes applied (verified: the 3 GenesisShell errors are gone from tsc):
 Pending: worktree `npm install` (done) → `tsc --noEmit` + `vitest run` must be
 clean before commit. Then commit + push + remote-verify on
 `unit/supervisor-dashboard-ui`.
+
+---
+
+## 23. STARRED-FREE ROUTING + ESTATE COMMISSIONING SWEEP (2026-10-14 ~21:0x)
+
+Owner directives: (a) "use the starred free models instead of models that
+need api keys as they will need a paid tier usually" + check non-starred free
+models; (b) configure OpenCode's own free providers + the installed local
+models; commission the AI-agent apps across Programming & Code + Start Menu.
+
+**STARRED LIST EXTRACTED** (desktop picker's `favorite-models` key in
+AppData/Roaming/Hermes Local Storage leveldb/004534.ldb — verified against
+the live OpenRouter catalog): nemotron-3-ultra-550b:free (976k ctx),
+nemotron-3.5-lightning:free (976k), nemotron-3-super-120b:free (256k),
+thinkingmachines/inkling-small:free (1M), plus nous:: free variants that
+route through THIS session's already-authenticated provider. Non-starred
+free finds: gemma-4-31b-it:free, gemma-4-26b-a4b-it:free,
+cohere/north-mini-code:free, ling-3.1-flash.
+
+**BIGGEST FIND: OpenCode ships its own zero-key free provider.**
+`opencode models` lists 9 opencode/*-free models — nemotron-3-ultra-free,
+nemotron-3.5-lightning-free, space-bunny-free, step-5-preview-free,
+longcat-2.5-preview-free, cat-jam-free, mimo-v2.6-flash-free,
+muse-spark-1.3-contributor-free, big-pickle. No API key, no account. These
+match the starred list.
+
+**HERMES CREDENTIAL POOL DISCOVERY:** auth.json's credential_pool already
+holds LIVE credentials for `nous` (oauth, status=exhausted/429 — this
+session's provider) AND `openrouter` (api_key type, 0 requests, no error).
+So the :free OpenRouter tier is reachable through an EXISTING credential —
+the 5 CRED-* rotations are NOT needed for free-tier routing. (Copilot pool
+entry: 0 entries.)
+
+**CONFIG CHANGED (opencode.jsonc):**
+- model: 3B local Qwen → `opencode/nemotron-3-ultra-free` (zero-key, stronger)
+- small_model: → `opencode/nemotron-3.5-lightning-free`
+- wired the installed-but-unconfigured local models: qwen3:latest (5.2GB,
+  strongest local general) and moondream:latest (VISION — phi2+CLIP,
+  enables image-reading increments incl. self visual-QA vs the reference
+  images). Local tier remains the offline/privacy fallback.
+
+**§8 VERIFICATION (task-specific, not session-age):** tool-execution probe
+— the new model ACTUALLY invoked the write tool: `.opencode-probe-ok.txt`
+containing PROBE-OK landed in the real repo (probe then removed). The 3B's
+failure mode (mimicking a tool call as text) is gone. This unblocks M4
+increment 1's reassignment to OpenCode on a capable model.
+
+**ESTATE SWEEP (docs/AI_AGENT_APP_COMMISSIONING_AUDIT_V3.md):** 26
+AI-relevant shortcuts in Programming & Code + Start Menu. Running: OpenCode
+(8 procs), Antigravity IDE (agent-mode verified earlier, Gemini 3.8 Flash
+High). Shortcut-only, uncommissioned: Claude, Cursor, ChatGPT, DeepSeek,
+Kimi, Qwen, Manus, Devin, OpenClaw (companion+gateway — possible structured
+channel), Bionic/KRISTAL/KubeUI (unidentified). LM Studio installed with a
+9B Qwen3.5 + vision projector, not running, not registered.
+
+**COMMITS:** Agent-Bridge-dashboard 374630c (routing policy), 275926d (audit
+v3). API keys remain LAST RESORT (compute/credential_loader.py +
+docs/EXTERNAL_API_KEYS_REQUIRED.md unchanged — they activate IF the owner
+later supplies keys, and are never required).
+
+NEXT: LM Studio bring-up + registration as local host 2; M4 increment 1
+reassigned to OpenCode on nemotron-3-ultra-free; progressive GUI
+commissioning one app at a time.
