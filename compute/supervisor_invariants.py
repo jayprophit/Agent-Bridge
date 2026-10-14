@@ -365,15 +365,20 @@ def invariant_7_commissioning_loop(snapshot: dict) -> Optional[Violation]:
     claims 'commissioned' with no registered capability is a false claim."""
     unassessed = _as_list(snapshot.get("unassessed_apps"))
     if unassessed:
+        now = snapshot.get("now_epoch", 0)
         stale = [a["app_id"] for a in unassessed
-                 if (snapshot.get("now_epoch", 0) - a.get("last_action_epoch", 0)) > 86400]
-        if stale:
-            return Violation(
-                "INVARIANT_7_COMMISSIONING_LOOP", "§7",
-                severity=HIGH,
-                evidence=[f"uncommissioned apps idle >24h: {stale}"],
-                fix_suggestion="Resume the commissioning pipeline for these apps "
-                               "(launch → test agent mode → register capability).")
+                 if (now - a.get("last_action_epoch", 0)) > 86400]
+        # §24 correction: ANY unassessed app is ready commissioning work.
+        # Staleness is a watchdog fallback, NOT the normal trigger.
+        return Violation(
+            "INVARIANT_7_COMMISSIONING_LOOP", "§7/§24",
+            severity=HIGH,
+            evidence=[f"{len(unassessed)} uncommissioned app(s) in acquisition "
+                      f"queue ready for commissioning; stale(>24h)={stale}"],
+            fix_suggestion="Assign H-SA-RESEARCH / H-SA-INTEGRATION workers to "
+                           "commission candidates immediately: discover, inspect "
+                           "repo/docs, evaluate licence/Windows/activity, "
+                           "install/configure, test agent mode, register capability.")
     return None
 
 

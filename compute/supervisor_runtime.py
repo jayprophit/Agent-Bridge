@@ -466,6 +466,11 @@ class SupervisorRuntime:
         self.shift = DAY
         self.continuation_required = True
         self.cycles = 0
+        # §7 (state versioning): every authoritative snapshot carries a
+        # supervisor_instance_id, cycle_id, state_version and observed_at
+        # so the dashboard can detect stale/parallel state (§6/§7).
+        import uuid as _uuid
+        self.instance_id = _uuid.uuid4().hex[:12]
         self._stop = threading.Event()
         self._last_actions: list[dict[str, Any]] = []
         self.events: list[dict[str, Any]] = []       # bounded ring
@@ -797,6 +802,7 @@ class SupervisorRuntime:
         from compute.supervisor_invariants import (  # noqa: E402
             check_all, gate_continuation)
         snapshot = self._build_invariants_snapshot(actions or {})
+        self._last_snapshot = snapshot  # §6: persist for read-model access
         result = check_all(snapshot)
         self._constitution_result = result.to_dict()
         return result.to_dict()
@@ -1093,9 +1099,13 @@ class SupervisorRuntime:
             actions = self._last_actions[-1] if self._last_actions else {}
         self.continuation_required = self._compute_continuation(actions)
         data = {
+            "state_version": "1.0",
+            "supervisor_instance_id": self.instance_id,
+            "cycle_id": self.cycles,
             "cycles": self.cycles,
             "shift": self.shift,
             "continuation_required": self.continuation_required,
+            "observed_at": _now(),
             "pending_verification": sorted(self._pending_verification),
             "idle_reasons": self.idle_reasons,
             "last_actions": self._last_actions,
@@ -1103,12 +1113,28 @@ class SupervisorRuntime:
             "workers": {w: (self.supervisor.worker(w).to_dict()
                             if self.supervisor.worker(w) else None)
                         for w in self.adapters},
+            "providers": {w: {"application": a.application,
+                              "role": a.role}
+                          for w, a in self.providers.items()},
             "adapters": {w: {"application": a.application,
                              "role": a.role}
                          for w, a in self.adapters.items()},
             "constitution": getattr(self, "_constitution_result", None),
+            "acquisition": self._acq.status() if self._acq else None,
             "saved_at": _now(),
         }
+        # §6: also persist the full invariants snapshot fields the read-model
+        # (serve_supervisor_dashboard.py) needs to build its sections without
+        # a second runtime.  These come from the LATEST snapshot computed
+        # this cycle (persist is called after check_invariants / snapshot).
+        latest = self._last_actions[-1] if self._last_actions else {}
+        snap = getattr(self, "_last_snapshot", {})
+        data["resources"] = snap.get("resources", {})
+        data["open_gaps"] = snap.get("gaps", [])
+        data["projects"] = snap.get("projects", {})
+        data["internal_workers"] = snap.get("internal_workers", 0)
+        data["lane_starvation"] = snap.get("lane_starvation", [])
+        data["resources_sample"] = data["resources"]
         tmp = self.checkpoint_path.with_suffix(".tmp")
         tmp.write_text(json.dumps(data, indent=2, default=str),
                        encoding="utf-8")
@@ -1123,6 +1149,7 @@ class SupervisorRuntime:
             data = json.loads(self.checkpoint_path.read_text(
                 encoding="utf-8"))
             self.cycles = data.get("cycles", 0)
+            self.instance_id = data.get("supervisor_instance_id", self.instance_id)
             self.shift = data.get("shift", DAY)
             self.idle_reasons = data.get("idle_reasons", {})
             self._pending_verification = set(

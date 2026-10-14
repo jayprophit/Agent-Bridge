@@ -198,3 +198,21 @@ class AcquisitionQueue:
 
     def __len__(self) -> int:
         return len(self._apps)
+
+    def status(self) -> dict[str, Any]:
+        """§7: compact status for the checkpoint/snapshot."""
+        unassessed = self.unassessed()
+        return {
+            "total_apps": self.count(),
+            "unassessed": len(unassessed),
+            "unassessed_list": [
+                {"app_id": r.app_id, "stage": r.current_stage,
+                 "resource_cost": r.resource_cost,
+                 "last_action_epoch": r.last_action_at,
+                 "control_channel": r.control_channel,
+                 "free_available": r.free_available}
+                for r in unassessed[:20]],
+            "commissioned": sum(
+                1 for r in self._apps.values()
+                if r.verification_status == "AUTOPILOT_READY"),
+        }
