@@ -579,3 +579,65 @@ class TestWatchdogStallDetection:
 def argparse_ns():
     import argparse
     return argparse.Namespace(interval=120.0)
+
+
+class TestCredentialLoader:
+    """The key-activation path (§20): .env.local keys activate providers with
+    zero code change; missing keys NEVER block the programme (§35); key
+    values are never logged or persisted by the loader."""
+
+    def _loader(self):
+        import importlib
+        import compute.credential_loader as cl
+        importlib.reload(cl)
+        return cl
+
+    def test_missing_env_local_yields_no_credentials(self, tmp_path, monkeypatch):
+        cl = self._loader()
+        monkeypatch.setattr(cl, "_ENV_LOCAL", tmp_path / "nonexistent.env")
+        for ref in cl.CREDENTIAL_REFS:
+            monkeypatch.delenv(ref, raising=False)
+        assert cl.load_credentials() == {}
+        assert all(v == "AWAITING_KEY" for v in cl.provider_status().values())
+
+    def test_env_local_activates_providers(self, tmp_path, monkeypatch):
+        cl = self._loader()
+        env = tmp_path / ".env.local"
+        env.write_text(
+            "# owner-supplied keys\n"
+            "CRED-OPENROUTER-PRIMARY=sk-or-test-one\n"
+            'CRED-GEMINI-PRIMARY="AIza-test-two"\n'
+            "MALFORMED LINE NO EQUALS\n"
+            "CRED-GROQ-PRIMARY=\n",
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(cl, "_ENV_LOCAL", env)
+        for ref in cl.CREDENTIAL_REFS:
+            monkeypatch.delenv(ref, raising=False)
+        creds = cl.load_credentials()
+        assert set(creds) == {"CRED-OPENROUTER-PRIMARY", "CRED-GEMINI-PRIMARY"}
+        status = cl.provider_status()
+        assert status["openrouter"] == "LIVE_KEY_PRESENT"
+        assert status["gemini"] == "LIVE_KEY_PRESENT"
+        assert status["groq"] == "AWAITING_KEY"   # empty value != present
+        assert cl.missing_refs() == [
+            "CRED-GROQ-PRIMARY", "CRED-HUGGINGFACE-PRIMARY",
+            "CRED-DEEPSEEK-PRIMARY",
+        ]
+
+    def test_process_env_beats_file(self, tmp_path, monkeypatch):
+        cl = self._loader()
+        env = tmp_path / ".env.local"
+        env.write_text("CRED-OPENROUTER-PRIMARY=from-file\n", encoding="utf-8")
+        monkeypatch.setattr(cl, "_ENV_LOCAL", env)
+        monkeypatch.setenv("CRED-OPENROUTER-PRIMARY", "from-env")
+        assert cl.load_credentials()["CRED-OPENROUTER-PRIMARY"] == "from-env"
+
+    def test_status_never_contains_key_values(self, tmp_path, monkeypatch):
+        cl = self._loader()
+        env = tmp_path / ".env.local"
+        env.write_text("CRED-OPENROUTER-PRIMARY=sk-or-SECRET-VALUE\n", encoding="utf-8")
+        monkeypatch.setattr(cl, "_ENV_LOCAL", env)
+        status = cl.provider_status()
+        blob = repr(status)
+        assert "SECRET" not in blob and "sk-or" not in blob

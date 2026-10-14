@@ -226,3 +226,5 @@ secrets/
 credentials/
 .env
 .env.*knowledge_index.json
+.env.local
+.env.*.local
