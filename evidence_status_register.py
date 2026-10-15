@@ -134,6 +134,29 @@ REGISTRY = {
         "last_updated": "2026-10-15",
         "source": "code inspection + runtime verification",
     },
+    "H01_multitenant_isolation_design": {
+        "status": "DESIGN_SPEC + CODE_INSPECTED + TESTED",
+        "evidence": "H01 design document created (docs/H01_TENANT_ISOLATION_DESIGN.md): code "
+                    "inspection report documenting 6 isolation gaps. tenant_id: str = '' field added "
+                    "to 5 data models (TaskRecord, WorkerInfo, PrincipalContext, TeamRecord, "
+                    "WorkerCareerRecord). All default to '' for backward-compatible single-owner mode. "
+                    "AT-22 simulation tests: 12 tests, all pass. 86 tests pass across H01 + existing "
+                    "suites with no regressions.",
+        "last_updated": "2026-10-15",
+        "source": "design document + code changes + test suite verification",
+    },
+    "BLOCKED_OWNER_CREDENTIAL_ROTATION": {
+        "status": "NARROW_GATE_IMPLEMENTED + MODEL_CONFIG_FIXED + ROTATION_CHECKLIST_CREATED",
+        "evidence": "Root cause of all 8 blocked tasks: profile model config pointing to "
+                    "'stealth/space-bunny-alpha' (HTTP 404 model not found on Nous Portal). "
+                    "Fixed: config.yaml model.default changed to 'poolside/laguna-s-2.1:free' "
+                    "(free Nous Portal model, same as this session). All blocked tasks unblocked. "
+                    "Rotation checklist created: HF_TOKEN first (read-only), then GROQ, GEMINI, "
+                    "OPENROUTER last. Narrow gate: cloud routing uses provider=nous not openrouter, "
+                    "so exposure only affects cloud provider routing, not local/Git work.",
+        "last_updated": "2026-10-15",
+        "source": "config fix + task unblocking + rotation checklist creation",
+    },
 }
 
 # Mapping from old gap IDs to new (preserved as per V2 §5)
