@@ -111,6 +111,7 @@ class AgentMessageBus:
         self._lock = threading.RLock()
         self._subscribers: dict[str, list[Callable[[AgentMessage], None]]] = {}
         self._claim_registry: Any = None   # optional H06 ClaimRegistry (§21)
+        self._skill_pipeline: Any = None   # optional H03 SkillPipeline (§22)
         self._init_db()
 
     def _init_db(self) -> None:
@@ -473,6 +474,69 @@ class AgentMessageBus:
             if (pos in ca and neg in cb) or (neg in ca and pos in cb):
                 return True
         return False
+
+    # -- H03 skill candidate intake (§22, correction §6) ----------------------------------
+    # A worker discovering a reusable capability sends SKILL_CANDIDATE. The
+    # bridge feeds it into the H03 promotion pipeline (candidate → provenance
+    # → sandbox → security → benchmark → approval → publication). Genesis then
+    # receives the same underlying capability. No useful capability stays
+    # trapped inside one disposable worker (§22).
+
+    def set_skill_pipeline(self, pipeline: Any) -> None:
+        """Wire an H03 SkillPipeline into the bus."""
+        self._skill_pipeline = pipeline
+
+    def submit_skill_candidate(self, msg: AgentMessage) -> dict[str, Any]:
+        """Convert a SKILL_CANDIDATE message into a pipeline submission (§22).
+
+        The candidate metadata is carried in the message payload. The worker
+        CANNOT self-install: submission only creates a CANDIDATE-stage entry;
+        publication still requires the full review pipeline.
+        """
+        if not self._skill_pipeline:
+            return {"submitted": False,
+                    "reason": "no skill pipeline wired"}
+        from compute.skill_pipeline import SkillCandidate
+
+        payload = msg.payload or {}
+        try:
+            candidate = SkillCandidate(
+                app_id=payload.get("app_id", ""),
+                name=payload.get("name", payload.get("app_id", "")),
+                version=payload.get("version", "0.1.0"),
+                description=payload.get("description", msg.objective),
+                proposed_bridge_adapter=payload.get("bridge_adapter", ""),
+                required_capabilities=tuple(payload.get("required_capabilities", ())),
+                required_os_deps=tuple(payload.get("required_os_deps", ())),
+                required_model_capabilities=tuple(payload.get("required_model_capabilities", ())),
+                permissions_requested=tuple(payload.get("permissions_requested", ())),
+                source_url=payload.get("source_url", ""),
+                license=payload.get("license", ""),
+                source_hash=payload.get("source_hash", ""),
+                submitted_by=f"{msg.sender_agent}/{msg.sender_worker}",
+            )
+        except ValueError as e:
+            return {"submitted": False, "reason": f"invalid candidate: {e}"}
+        if not candidate.app_id:
+            return {"submitted": False,
+                    "reason": "SKILL_CANDIDATE payload missing app_id"}
+        try:
+            self._skill_pipeline.submit(candidate)
+        except Exception as e:
+            return {"submitted": False, "reason": str(e)}
+
+        self._audit("skill_candidate_submitted", msg,
+                    extra={"app_id": candidate.app_id,
+                           "version": candidate.version})
+        return {
+            "submitted": True,
+            "candidate_id": candidate.candidate_id,
+            "submitter": candidate.submitted_by,
+            "stage": "candidate",
+            "note": "worker submits only; publication requires the full "
+                    "H03 review pipeline (provenance → sandbox → security → "
+                    "benchmark → approval) — no self-install (§22)",
+        }
 
     def stats(self) -> dict[str, Any]:
         """Message bus statistics for the dashboard (§43)."""

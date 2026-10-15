@@ -1,0 +1,68 @@
+{
+  "instantiated_at": 1792097032.329749,
+  "workers": [
+    {
+      "worker_id": "hermes-sa-arch",
+      "task_id": "SA-ARCH-001",
+      "objective": "Reconcile Genesis bridge contract vs Agent-Bridge action intake",
+      "status": "COMPLETE",
+      "handoff": "genesis_action_bridge.py verified contracts-only; t_be9a1988 closed"
+    },
+    {
+      "worker_id": "hermes-sa-backend",
+      "task_id": "SA-BACKEND-001",
+      "objective": "Durable message bus + ACK lifecycle for the Agent Communications Bridge",
+      "status": "COMPLETE",
+      "handoff": "compute/agent_message_bus.py 65 tests incl. SQLite WAL + recovery"
+    },
+    {
+      "worker_id": "hermes-sa-qa",
+      "task_id": "SA-QA-001",
+      "objective": "Independent QA of BRIDGE-E2E-004 (write-set + test pass)",
+      "status": "COMPLETE",
+      "handoff": "1 passed; only tests/bridge_e2e_fixture_test.py created \u2014 exact write-set"
+    },
+    {
+      "worker_id": "hermes-sa-security",
+      "task_id": "SA-SEC-001",
+      "objective": "H02 control commands: leases, descendant cascade, stale-response denial",
+      "status": "COMPLETE",
+      "handoff": "compute/bridge_control.py 12 tests; RECALL cascades; leases fail closed"
+    },
+    {
+      "worker_id": "hermes-sa-research",
+      "task_id": "SA-RESEARCH-001",
+      "objective": "External agent acquisition + repo research (AionUi, Eigent, Kilo Code, Goose...)",
+      "status": "RUNNING",
+      "handoff": "kanban t_3c1c547a unblocked and ready for dispatch"
+    },
+    {
+      "worker_id": "hermes-sa-devops",
+      "task_id": "SA-DEVOPS-001",
+      "objective": "Reliable test execution environment (suite classification)",
+      "status": "COMPLETE",
+      "handoff": "conftest.py markers + TEST_CLASSIFICATION.md committed"
+    },
+    {
+      "worker_id": "hermes-sa-provenance",
+      "task_id": "SA-PROV-001",
+      "objective": "Authoritative evidence corrections (9/9 lifecycle tests found)",
+      "status": "COMPLETE",
+      "handoff": "evidence_status_register.py corrections recorded"
+    },
+    {
+      "worker_id": "hermes-sa-integration",
+      "task_id": "SA-INT-001",
+      "objective": "Wire H06 auto-conflict + H03 skill candidates into the bridge bus",
+      "status": "RUNNING",
+      "handoff": "H06 wired (submit_claim -> conflict case); H03 SKILL_CANDIDATE path next"
+    },
+    {
+      "worker_id": "opencode-01",
+      "task_id": "BRIDGE-E2E-004",
+      "objective": "Create deterministic unit test for class_reserve (bounded eng task)",
+      "status": "COMPLETE",
+      "handoff": "test created + passed; QA verified; commit delegated to supervisor"
+    }
+  ]
+}

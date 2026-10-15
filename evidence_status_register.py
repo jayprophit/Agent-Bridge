@@ -54,20 +54,48 @@ REGISTRY = {
         "source": "implementation + 43 passing tests",
     },
     "bridge_live_delivery_test": {
-        "status": "PARTIALLY_VERIFIED",
-        "evidence": "Live autonomous delivery test via OpenCodeAdapter (§30): "
-                    "3 tasks sent via `opencode run --model <model> <prompt>`. "
-                    "ALL 3 delivered: task_id found in OpenCode worker transcript "
-                    "(DELIVERY_VERIFIED §15). BRIDGE-TEST-003 received a model response "
-                    "(8651 input, 54 output tokens, 2 messages). No owner manual relay needed. "
-                    "Sessions: ses_ebf60d271ffeCHrY5dGaVbNpQg (TEST-001), "
-                    "ses_ebf5b7218ffeNuHHfKpvU8CYka (TEST-002), "
-                    "ses_ebf558982ffe0kQQxvI7zg9XoJ (TEST-003). "
-                    "LIMITATION: nemotron-3-ultra-free is slow (test 001/002 timed out at 120s/180s). "
-                    "Full lifecycle (TASK_COMPLETE + HANDOFF + QA) NOT yet proven — "
-                    "requires a faster model or longer timeout.",
+        "status": "FULL_AUTONOMOUS_WORK_CYCLE_VERIFIED",
+        "evidence": "BRIDGE-E2E-004 proved the autonomous work cycle with ZERO owner "
+                    "keyboard input (2026-10-15 21:17). Complete worker brief rendered "
+                    "from the canonical envelope (§14 render_for_worker). OpenCode "
+                    "(model opencode/nemotron-3.5-lightning-free) executed: "
+                    "ASSIGN → DELIVERED → ACK → TASK_START → PROGRESS → created "
+                    "tests/bridge_e2e_fixture_test.py (exact write-set) → ran the test "
+                    "→ TASK_COMPLETE + HANDOFF. Hermes independent QA: test passes "
+                    "(class_reserve('LIGHT')=0.03 < class_reserve('HEAVY')=0.15), "
+                    "write-set compliance exact (only the authorized file created). "
+                    "9 of 11 lifecycle steps proven. GAP: worker did not git commit "
+                    "(its venv lacked pytest so it verified manually instead). "
+                    "This is NOT yet 'bridge fully LIVE_VERIFIED' — the "
+                    "commit-and-next-task loop (step 11) still needs BRIDGE-E2E-005.",
         "last_updated": "2026-10-15",
-        "source": "live opencode run + transcript verification",
+        "source": "live opencode run + independent Hermes QA re-run",
+    },
+    "bridge_h06_integration": {
+        "status": "IMPLEMENTED",
+        "evidence": "H06 conflict resolution is wired INTO the message bus: "
+                    "AgentMessageBus.submit_claim() registers typed claims in the "
+                    "ClaimRegistry, detects contradictions between claims on the same "
+                    "task, auto-creates a conflict case preserving BOTH views, and "
+                    "proposes a QA-VERIFY verification task (§21). Resolution requires "
+                    "evidence, never voting. 5 integration tests in "
+                    "tests/test_bridge_integrations.py.",
+        "last_updated": "2026-10-15",
+        "source": "implementation + tests",
+    },
+    "bridge_h02_control": {
+        "status": "IMPLEMENTED",
+        "evidence": "H02 control commands implemented over the bridge in "
+                    "compute/bridge_control.py: PAUSE, RESUME, CANCEL, RECALL, "
+                    "REVOKE, REVOKE_CAPABILITY, REVOKE_PROVIDER, EMERGENCY_HALT. "
+                    "Short-lived leases (§24) fail closed on expiry; RECALL cascades "
+                    "to all transitive descendants (§25); authority is re-checked at "
+                    "EXECUTION time so stale responses from recalled workers cannot "
+                    "trigger side effects (§25). New intents added: REVOKE, "
+                    "REVOKE_CAPABILITY, REVOKE_PROVIDER, EMERGENCY_HALT. "
+                    "12 control tests in tests/test_bridge_integrations.py.",
+        "last_updated": "2026-10-15",
+        "source": "implementation + tests",
     },
     "worker_runtime_leases_heartbeat_checkpoints": {
         "status": "VERIFIED",

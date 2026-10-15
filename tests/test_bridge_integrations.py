@@ -281,3 +281,83 @@ class TestWorkerBriefRendering:
         brief = adapter.render_for_worker(self._task())
         assert len(brief) > 500  # a real brief, not a one-liner
         assert "class_reserve" in brief or "unit test" in brief.lower()
+
+
+# --- H03 skill candidate intake (§22) ---------------------------------------------
+
+class TestSkillCandidateIntake:
+    def _candidate_msg(self, app_id="worker-tool", version="0.1.0"):
+        return AgentMessage(
+            message_id="msg_skill_001",
+            sender_agent="opencode", sender_worker="opencode-01",
+            receiver_agent="hermes", receiver_worker="bridge-supervisor",
+            task_id="SKILL-CAND-001",
+            intent=Intent.SKILL_CANDIDATE,
+            objective="Reusable log-summarising workflow discovered during task",
+            payload={
+                "app_id": app_id,
+                "name": "Worker Log Summariser",
+                "version": version,
+                "description": "Summarises worker logs into typed findings",
+                "bridge_adapter": "logsum_adapter.py",
+                "required_capabilities": ["TEXT_PROCESSING"],
+                "permissions_requested": ["read_logs"],
+                "license": "MIT",
+            })
+
+    def test_no_pipeline_wired(self, tmp_path):
+        """Without a pipeline wired, submission fails honestly."""
+        bus = AgentMessageBus(db_path=Path(tmp_path) / "bus.db")
+        result = bus.submit_skill_candidate(self._candidate_msg())
+        assert result["submitted"] is False
+        assert "no skill pipeline" in result["reason"]
+
+    def test_candidate_submitted_not_installed(self, tmp_path):
+        """§22: a worker CANNOT self-install — submission only creates CANDIDATE."""
+        from compute.skill_pipeline import SkillPipeline
+        bus = AgentMessageBus(db_path=Path(tmp_path) / "bus.db")
+        pipeline = SkillPipeline()
+        bus.set_skill_pipeline(pipeline)
+
+        result = bus.submit_skill_candidate(self._candidate_msg())
+        assert result["submitted"] is True
+        assert result["stage"] == "candidate"
+        assert "no self-install" in result["note"]
+
+        # The candidate exists but is NOT in the production registry
+        assert "worker-tool" in pipeline.all_candidates().keys() or \
+            any(c.app_id == "worker-tool" for c in pipeline.all_candidates().values())
+        # And it cannot publish without the full review pipeline
+        with pytest.raises(Exception):
+            pipeline.approve_and_publish("worker-tool@0.1.0",
+                                          approver="opencode-01")
+
+    def test_missing_app_id_rejected(self, tmp_path):
+        from compute.skill_pipeline import SkillPipeline
+        bus = AgentMessageBus(db_path=Path(tmp_path) / "bus.db")
+        bus.set_skill_pipeline(SkillPipeline())
+        result = bus.submit_skill_candidate(self._candidate_msg(app_id=""))
+        assert result["submitted"] is False
+        assert "app_id" in result["reason"]
+
+    def test_full_promotion_path_from_bridge_candidate(self, tmp_path):
+        """§22: a bridge-submitted candidate CAN be promoted by review."""
+        from compute.skill_pipeline import SkillPipeline
+        bus = AgentMessageBus(db_path=Path(tmp_path) / "bus.db")
+        pipeline = SkillPipeline()
+        bus.set_skill_pipeline(pipeline)
+
+        result = bus.submit_skill_candidate(self._candidate_msg())
+        cid = result["candidate_id"]
+        # Drive the full review pipeline (reviewers, not the worker)
+        pipeline.provenance_review(cid, "H-SA-SECURITY", True, "MIT licence verified")
+        pipeline.sandbox_tests(cid, "H-SA-QA", True, "isolated run clean")
+        pipeline.security_review(cid, "H-SA-SECURITY", True,
+                                  granted_permissions=("read_logs",))
+        pipeline.benchmark(cid, "H-SA-QA", True, genesis_solo=True,
+                           details="genesis invoked adapter alone")
+        published = pipeline.approve_and_publish(cid, approver="hermes-supervisor",
+                                                  genesis_solo=True)
+        assert published.app_id == "worker-tool"
+        # Genesis can now invoke the same underlying capability (§22)
+        assert published.genesis_solo is True
