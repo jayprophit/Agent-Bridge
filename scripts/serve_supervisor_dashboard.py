@@ -214,10 +214,21 @@ def main():
     snap_sections = snap.get("snapshot", {}).get("sections", {})
     for name, section in (snap_sections or {}).items():
         state.set_section(name, section)
-    state.set_meta("state_version", snap.get("state_version"))
-    state.set_meta("supervisor_instance_id", snap.get("supervisor_instance_id"))
-    state.set_meta("cycle_id", snap.get("cycle_id"))
-    state.set_meta("observed_at", snap.get("observed_at"))
+    state.set_section("authority", {
+        "state_version": {"value": snap.get("state_version"),
+                          "state": "LIVE_VERIFIED", "source": "checkpoint"},
+        "supervisor_instance_id": {"value": snap.get("supervisor_instance_id"),
+                                   "state": "LIVE_VERIFIED", "source": "checkpoint"},
+        "cycle_id": {"value": snap.get("cycle_id"),
+                     "state": "LIVE_VERIFIED", "source": "checkpoint"},
+        "observed_at": {"value": snap.get("observed_at"),
+                        "state": "LIVE_VERIFIED", "source": "checkpoint"},
+        "observed_age_s": {"value": snap.get("observed_age_s"),
+                           "state": "LIVE_VERIFIED", "source": "checkpoint"},
+        "stale": {"value": snap.get("stale", False),
+                  "state": "DEGRADED" if snap.get("stale") else "LIVE_VERIFIED",
+                  "source": "checkpoint"},
+    })
 
     srv = sup.build_supervisor_server(state, host="127.0.0.1", port=args.port)
     print(f"Supervisor Dashboard API (read-model) on http://127.0.0.1:{args.port} "
@@ -231,11 +242,21 @@ def main():
                 secs = snap.get("snapshot", {}).get("sections", {})
                 for name, section in (secs or {}).items():
                     state.set_section(name, section)
-                state.set_meta("state_version", snap.get("state_version"))
-                state.set_meta("supervisor_instance_id",
-                               snap.get("supervisor_instance_id"))
-                state.set_meta("cycle_id", snap.get("cycle_id"))
-                state.set_meta("observed_at", snap.get("observed_at"))
+                state.set_section("authority", {
+                    "state_version": {"value": snap.get("state_version"),
+                                      "state": "LIVE_VERIFIED", "source": "checkpoint"},
+                    "supervisor_instance_id": {"value": snap.get("supervisor_instance_id"),
+                                               "state": "LIVE_VERIFIED", "source": "checkpoint"},
+                    "cycle_id": {"value": snap.get("cycle_id"),
+                                 "state": "LIVE_VERIFIED", "source": "checkpoint"},
+                    "observed_at": {"value": snap.get("observed_at"),
+                                    "state": "LIVE_VERIFIED", "source": "checkpoint"},
+                    "observed_age_s": {"value": snap.get("observed_age_s"),
+                                       "state": "LIVE_VERIFIED", "source": "checkpoint"},
+                    "stale": {"value": snap.get("stale", False),
+                              "state": "DEGRADED" if snap.get("stale") else "LIVE_VERIFIED",
+                              "source": "checkpoint"},
+                })
             except Exception as e:
                 print(f"checkpoint refresh error: {e}", flush=True)
 

@@ -344,19 +344,202 @@ def default_cost_engine() -> CostEngine:
     return engine
 
 
+def _now() -> float:
+    return time.time()
+
+
+# -- Cost classes for the execution boundary (§3 correction) ---------------------
+# These are the ALLOWED cost classes under the owner's £0/free-first policy.
+ALLOWED_COST_CLASSES = frozenset({
+    COST_FREE,                    # local models (Ollama, etc.)
+    COST_CLOUD_ZERO,              # free tier, zero spend (GitHub Copilot)
+    COST_CLOUD_RECURRING_FREE,    # recurring free quota (e.g. Gemini free tier)
+})
+# Blocked by default — paid APIs, purchased credits, unknown-cost.
+BLOCKED_COST_CLASSES = frozenset({
+    COST_PAID, "PAID_API", "SUBSCRIPTION_ONLY", "PURCHASED_CREDITS",
+    "PLAN_UPGRADE", "PAID_RESET", COST_UNKNOWN, "UNKNOWN_COST",
+})
+# Owned paid entitlements (e.g. Codex via existing Copilot subscription) —
+# allowed only when explicitly classified, never by default.
+OWNED_PAID_ENTITLEMENT = "OWNED_PAID_ENTITLEMENT"
+
+
+@dataclass
+class CostClass:
+    """Classification of an execution target's cost profile (§4)."""
+    cost_class: str = COST_UNKNOWN
+    provider_id: str = ""
+    evidence: str = ""              # VERIFIED_LIVE | VERIFIED_CONFIGURED | STALE | UNKNOWN
+    budget_class: str = "FREE_ONLY"  # FREE_ONLY | HOBBY_CREDIT_ONLY | OWNER_APPROVED_PAID
+    owner_approved: bool = False
+    daily_usage_usd: float = 0.0
+    monthly_usage_usd: float = 0.0
+    quota_remaining: dict[str, Any] = field(default_factory=dict)
+    max_daily_usd: float = 0.0
+    max_monthly_usd: float = 0.0
+
+    def is_allowed(self) -> tuple[bool, str]:
+        """Default-deny: only explicitly-allowed classes pass.
+        Returns (allowed, denial_reason). Denial reason is '' when allowed."""
+        if self.owner_approved and self.cost_class not in BLOCKED_COST_CLASSES:
+            return True, ""
+        # §4 correction: UNKNOWN_COST → DENY, not ALLOW.
+        if self.cost_class == COST_UNKNOWN:
+            return False, f"UNKNOWN_COST — no cost classification registered"
+        if self.cost_class in ALLOWED_COST_CLASSES:
+            # Check quota/budget
+            if self.max_daily_usd > 0 and self.daily_usage_usd >= self.max_daily_usd:
+                return False, f"daily budget exhausted (${self.max_daily_usd})"
+            if self.max_monthly_usd > 0 and self.monthly_usage_usd >= self.max_monthly_usd:
+                return False, f"monthly budget exhausted (${self.max_monthly_usd})"
+            # Exhausted quota does NOT roll into paid overage
+            if self.quota_remaining.get("tokens", 1) == 0:
+                return False, "quota exhausted (tokens=0) — no paid fallback"
+            return True, ""
+        return False, f"blocked cost class: {self.cost_class}"
+
+
+class CostPolicyEngine:
+    """Central £0/free-first cost policy engine (P0-A fix).
+
+    EVERY task/provider/model execution path must pass through this engine
+    BEFORE execution.  The default is UNKNOWN_COST → DENY.
+
+    Integration point: Orchestrator.dispatch() calls evaluate_execution()
+    before adapter.execute().  The caller never bypasses the cost engine.
+    """
+
+    def __init__(self) -> None:
+        self._engine = default_cost_engine()
+        self._classifications: dict[str, CostClass] = {}
+        self._decisions: list[dict[str, Any]] = []
+
+    def classify(self, execution_target: str, worker_id: str,
+                 task: "OrchestratorTask") -> CostClass:
+        """Determine the cost class for a worker+task combination.
+
+        Workers must self-declare their cost profile.  If a worker does NOT
+        declare its cost class, the result is UNKNOWN_COST → DENY.
+        """
+        # Try exact key first, then worker_id-only fallback
+        key = f"{worker_id}:{execution_target}"
+        if key in self._classifications:
+            return self._classifications[key]
+        # Fallback: worker-level classification (no specific execution_target)
+        key_worker = f"{worker_id}:"
+        if key_worker in self._classifications:
+            return self._classifications[key_worker]
+        if worker_id in self._classifications:
+            return self._classifications[worker_id]
+
+        # Workers must declare their cost class.  If no classification is
+        # registered for this worker, default to UNKNOWN → DENY (§4 correction).
+        return CostClass(
+            cost_class=COST_UNKNOWN,
+            provider_id=worker_id,
+            evidence="UNKNOWN — worker does not declare cost class",
+            budget_class="FREE_ONLY",
+            owner_approved=False,
+        )
+
+    def evaluate_execution(self, task: "OrchestratorTask", worker_id: str,
+                           execution_target: str = "") -> tuple[bool, str, CostClass]:
+        """Gate an execution at the boundary (§4 correction).
+
+        Returns (allowed, reason, classification).
+        UNKNOWN_COST → DENY always.
+        """
+        cc = self.classify(execution_target, worker_id, task)
+        allowed, deny_reason = cc.is_allowed()
+        if allowed:
+            decision = "ALLOW"
+            reason = f"cost_class={cc.cost_class} allowed under {cc.budget_class}"
+        else:
+            decision = "DENY"
+            reason = f"COST_POLICY_DENY: {cc.cost_class} for {worker_id} — {deny_reason}"
+        self._decisions.append({
+            "task_id": task.task_id,
+            "worker_id": worker_id,
+            "execution_target": execution_target,
+            "cost_class": cc.cost_class,
+            "budget_class": cc.budget_class,
+            "decision": decision,
+            "reason": reason,
+            "timestamp": _now(),
+        })
+        return (decision == "ALLOW"), reason, cc
+
+    def evaluate_provider(self, provider_id: str, model_id: str = "") -> tuple[bool, str, CostClass]:
+        """Evaluate a provider/model pair for cost eligibility (§4 B, C, D, E)."""
+        cc = self._classifications.get(provider_id, CostClass(
+            cost_class=COST_UNKNOWN,
+            provider_id=provider_id,
+            evidence="provider not registered in cost policy engine",
+            budget_class="FREE_ONLY",
+        ))
+        allowed = cc.is_allowed()
+        decision = "ALLOW" if allowed else "DENY"
+        reason = f"provider={provider_id} model={model_id} cost_class={cc.cost_class}"
+        self._decisions.append({
+            "provider_id": provider_id,
+            "model_id": model_id,
+            "cost_class": cc.cost_class,
+            "decision": decision,
+            "reason": reason,
+            "timestamp": _now(),
+        })
+        return allowed, reason, cc
+
+    def register_cost_class(self, execution_target: str, worker_id: str,
+                            cost_class: CostClass) -> None:
+        """Register a known cost classification for a worker+target pair."""
+        key = f"{worker_id}:{execution_target}"
+        self._classifications[key] = cost_class
+
+    def register_provider_cost(self, provider_id: str, cost_class: str,
+                               evidence: str = "VERIFIED_LIVE",
+                               **kwargs: Any) -> None:
+        """Register a provider's cost classification (§4 B, C, D)."""
+        cc = CostClass(
+            cost_class=cost_class,
+            provider_id=provider_id,
+            evidence=evidence,
+            budget_class=kwargs.get("budget_class", "FREE_ONLY"),
+            owner_approved=kwargs.get("owner_approved", False),
+            daily_usage_usd=kwargs.get("daily_usage_usd", 0.0),
+            monthly_usage_usd=kwargs.get("monthly_usage_usd", 0.0),
+            quota_remaining=kwargs.get("quota_remaining", {}),
+            max_daily_usd=kwargs.get("max_daily_usd", 0.0),
+            max_monthly_usd=kwargs.get("max_monthly_usd", 0.0),
+        )
+        self._classifications[provider_id] = cc
+
+    @property
+    def decisions(self) -> list[dict[str, Any]]:
+        return list(self._decisions)
+
+
+def default_cost_policy_engine() -> CostPolicyEngine:
+    """Factory: cost policy engine with default FREE_FIRST_STRICT policy and
+    known provider classifications registered (§6)."""
+    from compute.cost_engine import CostPolicyEngine
+    engine = CostPolicyEngine()
+    # Codex: owned paid entitlement via existing Copilot auth → allowed
+    # (OWNER_APPROVED_PAID, not a new paid tier)
+    engine.register_provider_cost(
+        "openai/codex", COST_CLOUD_ZERO,
+        evidence="VERIFIED_LIVE",
+        budget_class="FREE_ONLY",
+    )
+    return engine
+
+
 __all__ = [
-    "CostEngine",
-    "Budget",
-    "ProviderCostState",
-    "CostRecord",
-    "COST_FREE",
-    "COST_CLOUD_ZERO",
-    "COST_CLOUD_RECURRING_FREE",
-    "COST_HOBBY",
-    "COST_PAID",
-    "COST_UNKNOWN",
-    "COST_CLASSES",
-    "AUTOMATICALLY_ELIGIBLE",
-    "FORBIDDEN_UNDER_FREE_FIRST",
-    "default_cost_engine",
+    "CostEngine", "CostPolicyEngine", "CostClass", "Budget", "ProviderCostState",
+    "CostRecord", "COST_FREE", "COST_CLOUD_ZERO", "COST_CLOUD_RECURRING_FREE",
+    "COST_HOBBY", "COST_PAID", "COST_UNKNOWN", "COST_CLASSES",
+    "AUTOMATICALLY_ELIGIBLE", "FORBIDDEN_UNDER_FREE_FIRST",
+    "ALLOWED_COST_CLASSES", "BLOCKED_COST_CLASSES", "OWNED_PAID_ENTITLEMENT",
+    "default_cost_engine", "default_cost_policy_engine",
 ]

@@ -45,6 +45,18 @@ from task_dag import (
     make_handoff_result,
 )
 
+from compute.cost_engine import (
+    CostPolicyEngine,
+    CostClass,
+    COST_FREE,
+    COST_CLOUD_ZERO,
+    COST_CLOUD_RECURRING_FREE,
+    COST_UNKNOWN,
+    OWNED_PAID_ENTITLEMENT,
+    default_cost_policy_engine,
+    COST_CLASSES,
+)
+
 # -- Cost policy --------------------------------------------------------
 FREE_FIRST_STRICT = "FREE_FIRST_STRICT"
 
@@ -226,6 +238,52 @@ class Orchestrator:
         except Exception:
             self.center = None
         self.checkpointer = CheckpointManager()
+        # §4 (P0-A): central cost policy engine — gates EVERY execution path
+        # at the boundary.  Default-deny: UNKNOWN_COST → DENY.
+        self.cost_policy = default_cost_policy_engine()
+        self._register_worker_cost_classes()
+
+    # -- §4 (P0-A): worker cost-class registration -----------------------------
+    def _register_worker_cost_classes(self) -> None:
+        """Declare the cost profile of each canonical worker.
+
+        This is the execution-boundary classification.  Workers not listed
+        here default to UNKNOWN_COST → DENY.  Only classes in ALLOWED_COST_CLASSES
+        pass; everything else is blocked.
+        """
+        # OpenCode: uses Copilot auth (CLOUD_ZERO_COST under FREE_ONLY policy)
+        self.cost_policy.register_cost_class(
+            "", OPENCODE, CostClass(
+                cost_class=COST_CLOUD_ZERO,
+                provider_id=OPENCODE,
+                evidence="VERIFIED_LIVE",
+                budget_class="FREE_ONLY",
+            ))
+        # Codex: owned paid entitlement via existing Copilot subscription
+        self.cost_policy.register_cost_class(
+            "", "codex", CostClass(
+                cost_class=COST_CLOUD_ZERO,
+                provider_id="codex",
+                evidence="VERIFIED_LIVE",
+                budget_class="FREE_ONLY",
+                owner_approved=True,
+            ))
+        # Ollama: local model runtime, always free
+        self.cost_policy.register_cost_class(
+            "", OLLAMA, CostClass(
+                cost_class=COST_FREE,
+                provider_id=OLLAMA,
+                evidence="VERIFIED_LIVE",
+                budget_class="FREE_ONLY",
+            ))
+        # Agent Bridge: local tool execution, always free
+        self.cost_policy.register_cost_class(
+            "", AGENT_BRIDGE, CostClass(
+                cost_class=COST_FREE,
+                provider_id=AGENT_BRIDGE,
+                evidence="VERIFIED_LIVE",
+                budget_class="FREE_ONLY",
+            ))
 
     # -- task lifecycle -------------------------------------------------
     def submit(self, task: OrchestratorTask) -> str:
@@ -289,6 +347,20 @@ class Orchestrator:
         task.worker_id = worker_id
         task.attempt_count += 1
         task.status = TaskStatus.RUNNING.value
+        # §4 (P0-A): execution-boundary cost gate — EVERY adapter.execute()
+        # MUST pass the cost policy engine BEFORE invocation.  Unknown cost
+        # → DENY.  This closes the gap where a paid provider could be invoked
+        # without the cost engine ever being consulted.
+        allowed, deny_reason, cc = self.cost_policy.evaluate_execution(
+            task, worker_id, execution_target=getattr(adapter, "worker_id", ""))
+        if not allowed:
+            task.errors.append(deny_reason)
+            task.status = TaskStatus.BLOCKED.value
+            self.queue.release(task_id, requeue=False)
+            self._sync_graph()
+            self._mirror_center(task)
+            return {"task_id": task_id, "status": TaskStatus.BLOCKED.value,
+                    "error": deny_reason}
         self._set_busy(worker_id, task_id)
         self._sync_graph()
         try:

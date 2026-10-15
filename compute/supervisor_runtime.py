@@ -454,6 +454,13 @@ class SupervisorRuntime:
         self.state_dir = Path(state_dir)
         self.state_dir.mkdir(parents=True, exist_ok=True)
         self.cycle_interval_s = cycle_interval_s
+        import uuid as _uuid
+        self.instance_id = _uuid.uuid4().hex[:12]
+        self._start_ts = _now()
+        # §8: single-instance lock is acquired in run_forever() via
+        # acquire_instance_lock(); instance_id is stored in the lock and
+        # checkpoint for §9 single-source-of-truth verification.
+        self._lock_path: Optional[Path] = None
         self.supervisor = Supervisor()
         self.hive = HiveScheduler()
         self.governor = ResourceGovernor()
@@ -466,11 +473,7 @@ class SupervisorRuntime:
         self.shift = DAY
         self.continuation_required = True
         self.cycles = 0
-        # §7 (state versioning): every authoritative snapshot carries a
-        # supervisor_instance_id, cycle_id, state_version and observed_at
-        # so the dashboard can detect stale/parallel state (§6/§7).
-        import uuid as _uuid
-        self.instance_id = _uuid.uuid4().hex[:12]
+        # §7 (state versioning): instance_id set above before lock acquisition.
         self._stop = threading.Event()
         self._last_actions: list[dict[str, Any]] = []
         self.events: list[dict[str, Any]] = []       # bounded ring
@@ -1149,7 +1152,10 @@ class SupervisorRuntime:
             data = json.loads(self.checkpoint_path.read_text(
                 encoding="utf-8"))
             self.cycles = data.get("cycles", 0)
-            self.instance_id = data.get("supervisor_instance_id", self.instance_id)
+            # §8: recovery loads state from checkpoint, but the instance_id
+            # is NOT inherited — this daemon has its own fresh instance_id
+            # generated in __init__.  Inheriting a dead daemon's instance_id
+            # would create split-brain: two supervisors claiming the same ID.
             self.shift = data.get("shift", DAY)
             self.idle_reasons = data.get("idle_reasons", {})
             self._pending_verification = set(
@@ -1205,6 +1211,10 @@ class SupervisorRuntime:
                 "pid": os.getpid(),
                 "acquired_at": _now(),
                 "adapters": sorted(self.adapters),
+                # §8/§9: versioning metadata so the API can detect stale or
+                # duplicate supervisor state (single-source-of-truth).
+                "start_time": self._start_ts,
+                "instance_id": self.instance_id,
             }), encoding="utf-8")
             tmp.replace(lock_path)
             return True
