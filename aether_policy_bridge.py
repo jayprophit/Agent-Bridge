@@ -293,8 +293,8 @@ class EvalContext:
         self.action = action
         self.attributes = {} if attributes is None else attributes
         self.timestamp = timestamp or int(time.time())
-        self.network_origin = None
-        self.device_trust = None
+        self.network_origin = network_origin
+        self.device_trust = device_trust
 
 
 # Simple PolicyEngine implementation
