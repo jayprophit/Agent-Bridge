@@ -79,7 +79,7 @@ REGISTRY = {
         "source": "OpenCode handoff §11 / V2 §4",
     },
     "lifecycle_recovery_tests": {
-        "status": "LOCATED (9/9)",
+        "status": "LOCATED (9/9) + CLASSIFIED",
         "evidence": "After thorough search (original subagent search was incomplete due to "
                     "Nous Portal rate-limiting), all 9 claimed lifecycle/recovery scenarios "
                     "are found across 4 test files — NOT a single dedicated suite, but "
@@ -95,9 +95,9 @@ REGISTRY = {
                     "(SupervisedTask.attach takes over existing task); "
                     "(9) power-loss-like interruption: test_supervised_workers.py::test_supervisor_and_worker_both_dead_recovers_from_checkpoint "
                     "(both processes killed, state recovered from durable files). "
-                    "NOTE: 3 of these tests are marked @pytest.mark.slow (lines 148, 165, 194 in "
-                    "test_supervised_workers.py) but the pytest-mark plugin is NOT installed "
-                    "in the venv, so -m 'not slow' currently filters nothing. See SUITE-CLASSIFICATION task.",
+                    "SUITE-CLASSIFICATION task: pytest-timeout NOT installed (config warnings expected); "
+                    "test_fallback_skips_dead_model (120s socket timeout) now marked @pytest.mark.slow; "
+                    "tests/conftest.py registers markers; TEST_CLASSIFICATION.md documents full suite.",
         "last_updated": "2026-10-15",
         "source": "code inspection + test suite search (corrected from NOT_LOCATED)",
     },
