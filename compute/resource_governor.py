@@ -125,13 +125,39 @@ class AdmissionVerdict:
 class ResourceGovernor:
     """Live resource sampling + admission control for the hive scheduler."""
 
+    # --- concurrency limits (§12 H05: prevent oversubscription + nested storms) -
+    # Maximum simultaneous HEAVY/GPU_HEAVY local tasks (the heavy-process guard).
+    # LIGHT/MEDIUM tasks are cheap (subagent calls, git reads) and not counted
+    # against this limit — only genuinely resource-saturating work is.
+    DEFAULT_MAX_CONCURRENT_HEAVY = 2
+    # Hard ceiling on total tracked tasks (all classes) — prevents runaway
+    # nested fan-out where one worker's retry storm spawns thousands.
+    DEFAULT_MAX_TOTAL_CONCURRENT = 20
+    # Per-provider quota tracking (RPM/TPM/daily entitlements).  Fail-closed
+    # when billing/free eligibility is uncertain.  Map: provider -> {budget, used}.
+    DEFAULT_PROVIDER_QUOTAS: dict[str, dict[str, float]] = {
+        "nous": {"daily_budget": 0, "daily_used": 0.0, "spend_verified": True},
+        "ollama-local": {"daily_budget": 0, "daily_used": 0.0, "spend_verified": True},
+    }
+
     def __init__(self, capability: Any = None,
-                 disk_min_free_gb: float = 20.0) -> None:
+                 disk_min_free_gb: float = 20.0,
+                 max_concurrent_heavy: int = DEFAULT_MAX_CONCURRENT_HEAVY,
+                 max_total_concurrent: int = DEFAULT_MAX_TOTAL_CONCURRENT,
+                 provider_quotas: Optional[dict[str, dict[str, Any]]] = None) -> None:
         self._lock = threading.RLock()
         self._capability = capability     # MachineCapabilityRegistry (static)
         self._disk_min_free_gb = disk_min_free_gb
         self._sample: Optional[ResourceSample] = None
         self._history: list[ResourceSample] = []
+        # Concurrency tracking (§12 H05: prevent oversubscription)
+        self._max_concurrent_heavy = max_concurrent_heavy
+        self._max_total_concurrent = max_total_concurrent
+        self._active_total: int = 0          # all task classes
+        self._active_heavy: int = 0          # HEAVY + GPU_HEAVY only
+        # Provider quota state — fail-closed on uncertainty
+        self._provider_quotas: dict[str, dict[str, Any]] = (
+            provider_quotas or dict(self.DEFAULT_PROVIDER_QUOTAS))
 
     # -- live sampling (§2, §33) ----------------------------------------------
     def sample(self) -> ResourceSample:
@@ -238,9 +264,91 @@ class ResourceGovernor:
             return ELEVATED
         return HEALTHY
 
-    # -- admission control (§31) ------------------------------------------------
+    # -- concurrency tracking (§12 H05: prevent oversubscription + nested storms)
+    def begin_task(self, task_class: str) -> None:
+        """Track a task as started for concurrency accounting.
+
+        Call when a task is actually launched.  This complements may_start()
+        — may_start checks static headroom, begin_task enforces the live
+        concurrency ceiling that prevents runaway nested spawning.
+        """
+        with self._lock:
+            self._active_total += 1
+            if task_class in (HEAVY, GPU_HEAVY):
+                self._active_heavy += 1
+
+    def end_task(self, task_class: str) -> None:
+        """Mark a task as completed (decrement counters)."""
+        with self._lock:
+            self._active_total = max(0, self._active_total - 1)
+            if task_class in (HEAVY, GPU_HEAVY):
+                self._active_heavy = max(0, self._active_heavy - 1)
+
+    @property
+    def active_count(self) -> int:
+        """Total currently-running tracked tasks."""
+        return self._active_total
+
+    @property
+    def active_heavy_count(self) -> int:
+        """Currently-running HEAVY/GPU_HEAVY tasks."""
+        return self._active_heavy
+
+    @property
+    def max_concurrent_heavy(self) -> int:
+        return self._max_concurrent_heavy
+
+    @property
+    def max_total_concurrent(self) -> int:
+        return self._max_total_concurrent
+
+    def concurrency_status(self) -> dict[str, Any]:
+        """Live concurrency state — how many slots remain before ceiling."""
+        return {
+            "active_total": self._active_total,
+            "active_heavy": self._active_heavy,
+            "max_total": self._max_total_concurrent,
+            "max_heavy": self._max_concurrent_heavy,
+            "remaining_total": self._max_total_concurrent - self._active_total,
+            "remaining_heavy": self._max_concurrent_heavy - self._active_heavy,
+        }
+
+    def quota_status(self, provider: str = "nous") -> dict[str, Any]:
+        """Per-provider quota state.  Fail-closed on uncertainty."""
+        q = self._provider_quotas.get(provider, {})
+        if not q:
+            return {"provider": provider, "status": "BLOCKED",
+                    "reason": "unknown provider — no quota data"}
+        budget = q.get("daily_budget", 0)
+        used = q.get("daily_used", 0.0)
+        verified = q.get("spend_verified", False)
+        if not verified:
+            return {"provider": provider, "status": "BLOCKED",
+                    "reason": "spend verification uncertain — fail closed",
+                    "budget": budget, "used": used}
+        if budget <= 0:
+            return {"provider": provider, "status": "FREE_ELIGIBLE",
+                    "budget": budget, "used": used,
+                    "remaining": 0 if budget == 0 else budget - used}
+        remaining = max(0, budget - used)
+        return {"provider": provider,
+                "status": "OK" if remaining > 0 else "EXHAUSTED",
+                "budget": budget, "used": used, "remaining": remaining}
+
+    def set_quota_usage(self, provider: str, daily_used: float,
+                        spend_verified: bool = True) -> None:
+        """Update live quota usage from an external monitor."""
+        with self._lock:
+            if provider not in self._provider_quotas:
+                self._provider_quotas[provider] = {
+                    "daily_budget": 0, "daily_used": 0.0,
+                    "spend_verified": spend_verified}
+            self._provider_quotas[provider]["daily_used"] = daily_used
+            self._provider_quotas[provider]["spend_verified"] = spend_verified
+
     def may_start(self, task_class: str,
-                  sample: Optional[ResourceSample] = None) -> AdmissionVerdict:
+                  sample: Optional[ResourceSample] = None,
+                  provider: str = "") -> AdmissionVerdict:
         """THE scheduling question. Honest and explainable (§37)."""
         if task_class not in TASK_CLASSES:
             raise ValueError(f"unknown task class {task_class!r}")
@@ -250,6 +358,39 @@ class ResourceGovernor:
         state = self.pressure(s)
         demand = TASK_DEMAND[task_class]
         reserve = class_reserve(task_class)
+
+        # -- concurrency / quota gates (§12 H05: prevent oversubscription) -----
+        if provider:
+            qs = self.quota_status(provider)
+            if qs["status"] == "BLOCKED":
+                return AdmissionVerdict(
+                    admitted=False, task_class=task_class,
+                    pressure_state=state,
+                    reason=f"{provider}: {qs['reason']}",
+                    offload_hint="fail closed: spend eligibility uncertain")
+            if qs["status"] == "EXHAUSTED":
+                return AdmissionVerdict(
+                    admitted=False, task_class=task_class,
+                    pressure_state=state,
+                    reason=f"{provider}: daily quota exhausted "
+                           f"(budget={qs['budget']}, used={qs['used']})",
+                    offload_hint="move to free-tier provider or queue")
+
+        # Total concurrency ceiling: prevents runaway nested fan-out.
+        if self._active_total >= self._max_total_concurrent:
+            return AdmissionVerdict(
+                admitted=False, task_class=task_class, pressure_state=state,
+                reason="total concurrency limit reached — nested fan-out "
+                       "prevented",
+                offload_hint="queue non-essential tasks; release finished workers")
+
+        # Heavy-process ceiling: only N heavy tasks at once (§12).
+        if task_class in (HEAVY, GPU_HEAVY) and self._active_heavy >= self._max_concurrent_heavy:
+            return AdmissionVerdict(
+                admitted=False, task_class=task_class, pressure_state=state,
+                reason=f"concurrent heavy limit reached ({self._active_heavy}/"
+                       f"{self._max_concurrent_heavy}) — prevents oversubscription",
+                offload_hint="wait for a heavy slot; route to free cloud agent")
 
         if state == CRITICAL:
             return AdmissionVerdict(
@@ -311,6 +452,16 @@ class ResourceGovernor:
             "throttle_actions": self.throttle_actions(),
             "gates": dict(AXIS_GATES),
             "governor_reserve": GOVERNOR_RESERVE,
+            # §33 AT-25: report actual remaining resources
+            "concurrency": self.concurrency_status(),
+            "provider_quotas": {
+                p: self.quota_status(p)
+                for p in self._provider_quotas
+            },
+            "remaining_resources": {
+                "heavy_slots": self._max_concurrent_heavy - self._active_heavy,
+                "total_slots": self._max_total_concurrent - self._active_total,
+            },
         }
 
 

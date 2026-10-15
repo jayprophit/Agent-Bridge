@@ -153,3 +153,166 @@ class TestOverview:
         ov = g.overview()
         assert ov["sample"] is None
         assert ov["pressure_state"] == CRITICAL  # honest: unknown resources
+
+
+# --- AT-25: quota exhaustion + nested fan-out prevention + remaining resources -
+# (appended for V2 H05)
+
+from compute.resource_governor import (
+    AdmissionVerdict, ResourceGovernor as _Gov,
+    ResourceSample as _RS,
+)
+
+
+def _rs(**kw):
+    return _RS(**kw)
+
+
+class TestAT25QuotaExhaustion:
+    """Simulate provider quota exhaustion and fail-closed on uncertainty."""
+
+    def test_exhausted_provider_blocks_admission(self):
+        """When a provider's daily quota is exhausted, may_start denies."""
+        g = ResourceGovernor(
+            provider_quotas={"nous": {"daily_budget": 10, "daily_used": 10.0,
+                                      "spend_verified": True}})
+        v = g.may_start(LIGHT, _rs(cpu=0.2, ram=0.2), provider="nous")
+        assert v.admitted is False
+        assert "exhausted" in v.reason.lower()
+
+    def test_unverified_spend_blocks_fail_closed(self):
+        """Uncertain billing/free eligibility → BLOCKED (fail-closed)."""
+        g = ResourceGovernor(
+            provider_quotas={"nous": {"daily_budget": 10, "daily_used": 5.0,
+                                      "spend_verified": False}})
+        v = g.may_start(LIGHT, _rs(cpu=0.2, ram=0.2), provider="nous")
+        assert v.admitted is False
+        assert "uncertain" in v.reason.lower() or "fail closed" in v.offload_hint.lower()
+
+    def test_unknown_provider_blocks(self):
+        """Unknown provider → no quota data → BLOCKED."""
+        g = ResourceGovernor()
+        v = g.may_start(LIGHT, _rs(cpu=0.2, ram=0.2), provider="unknown-cloud")
+        assert v.admitted is False
+        assert "unknown provider" in v.reason
+
+    def test_free_tier_provider_passes(self):
+        """A free-eligible provider (budget=0) doesn't block admission."""
+        g = ResourceGovernor(
+            provider_quotas={"ollama-local": {"daily_budget": 0, "daily_used": 0.0,
+                                             "spend_verified": True}})
+        v = g.may_start(LIGHT, _rs(cpu=0.2, ram=0.2), provider="ollama-local")
+        assert v.admitted is True
+
+    def test_no_provider_arg_preserves_backward_compatibility(self):
+        """may_start without provider arg still works (existing tests)."""
+        g = ResourceGovernor()
+        v = g.may_start(LIGHT, _rs(cpu=0.2, ram=0.3))
+        assert v.admitted is True
+
+
+class TestAT25NestedSpawnPrevention:
+    """Prevent oversubscription and runaway nested spawning."""
+
+    def test_total_concurrency_ceiling_blocks(self):
+        """When total concurrent tasks hit the ceiling, new tasks are denied."""
+        g = ResourceGovernor(max_total_concurrent=3)
+        for _ in range(3):
+            g.begin_task(LIGHT)
+        v = g.may_start(LIGHT, _rs(cpu=0.1, ram=0.1))
+        assert v.admitted is False
+        assert "concurrency limit" in v.reason
+
+    def test_heavy_concurrency_ceiling_blocks(self):
+        """When heavy tasks hit their ceiling, new heavy tasks are denied."""
+        g = ResourceGovernor(max_concurrent_heavy=2)
+        g.begin_task(HEAVY)
+        g.begin_task(GPU_HEAVY)
+        v = g.may_start(HEAVY, _rs(cpu=0.2, ram=0.3))
+        assert v.admitted is False
+        assert "heavy limit" in v.reason
+
+    def test_light_not_blocked_by_heavy_ceiling(self):
+        """LIGHT tasks are not subject to the heavy-task ceiling."""
+        g = ResourceGovernor(max_concurrent_heavy=1)
+        g.begin_task(HEAVY)  # heavy slot full
+        v = g.may_start(LIGHT, _rs(cpu=0.2, ram=0.3))
+        # LIGHT is admitted (not counted against heavy limit)
+        assert v.admitted is True
+
+    def test_begin_end_task_counters(self):
+        """begin/end_task correctly tracks active counts."""
+        g = ResourceGovernor()
+        assert g.active_count == 0
+        assert g.active_heavy_count == 0
+        g.begin_task(LIGHT)
+        assert g.active_count == 1
+        assert g.active_heavy_count == 0
+        g.begin_task(HEAVY)
+        assert g.active_count == 2
+        assert g.active_heavy_count == 1
+        g.end_task(HEAVY)
+        assert g.active_count == 1
+        assert g.active_heavy_count == 0
+
+    def test_nested_fan_out_stops_at_ceiling(self):
+        """Simulate a worker spawning nested subagents — governor stops the storm."""
+        g = ResourceGovernor(max_total_concurrent=5)
+        admitted = 0
+        denied = 0
+        for i in range(10):  # try to spawn 10 nested workers
+            v = g.may_start(LIGHT, _rs(cpu=0.1, ram=0.1))
+            if v.admitted:
+                g.begin_task(LIGHT)
+                admitted += 1
+            else:
+                denied += 1
+        assert admitted == 5
+        assert denied == 5
+        assert g.active_count == 5
+
+    def test_concurrency_status_reports_remaining(self):
+        """concurrency_status shows how many slots remain."""
+        g = ResourceGovernor(max_total_concurrent=10, max_concurrent_heavy=3)
+        g.begin_task(LIGHT)
+        g.begin_task(HEAVY)
+        status = g.concurrency_status()
+        assert status["active_total"] == 2
+        assert status["active_heavy"] == 1
+        assert status["remaining_total"] == 8
+        assert status["remaining_heavy"] == 2
+
+
+class TestAT25RemainingResources:
+    """Report actual remaining resources via overview()."""
+
+    def test_overview_includes_remaining_resources(self):
+        """overview() reports remaining_slots in remaining_resources."""
+        g = ResourceGovernor()
+        g._sample = _rs(cpu=0.5, ram=0.6, gpu=0.2, vram=0.1,
+                         disk_free_gb=100.0, confidence="VERIFIED")
+        ov = g.overview()
+        assert "remaining_resources" in ov
+        assert "heavy_slots" in ov["remaining_resources"]
+        assert "total_slots" in ov["remaining_resources"]
+        assert ov["remaining_resources"]["heavy_slots"] > 0
+        assert ov["remaining_resources"]["total_slots"] > 0
+
+    def test_overview_includes_concurrency_and_quotas(self):
+        """overview() includes concurrency status + provider quotas."""
+        g = ResourceGovernor()
+        g._sample = _rs(cpu=0.3, ram=0.4, confidence="VERIFIED")
+        ov = g.overview()
+        assert "concurrency" in ov
+        assert "provider_quotas" in ov
+        assert "nous" in ov["provider_quotas"]
+
+    def test_set_quota_updates_status(self):
+        """set_quota_updates_status reflects live usage changes."""
+        g = ResourceGovernor()
+        g.set_quota_usage("nous", daily_used=0.0)
+        assert g.quota_status("nous")["status"] == "FREE_ELIGIBLE"
+        g.set_quota_usage("nous", daily_used=5.0, spend_verified=False)
+        assert g.quota_status("nous")["status"] == "BLOCKED"
+        g.set_quota_usage("nous", daily_used=5.0, spend_verified=True)
+        assert g.quota_status("nous")["status"] == "FREE_ELIGIBLE"
