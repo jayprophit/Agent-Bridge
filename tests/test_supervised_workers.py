@@ -25,6 +25,8 @@ import unittest
 import urllib.request
 from pathlib import Path
 
+import pytest
+
 from worker_runtime import SupervisedTask, WorkerError, run_supervised
 
 
@@ -143,6 +145,7 @@ class TestSupervisedLifecycle(unittest.TestCase):
             self.assertNotEqual(code, 0)
             self.assertFalse((Path(tmp) / "out.txt").exists())
 
+    @pytest.mark.slow
     def test_supervisor_crash_leaves_state_a_new_supervisor_can_continue(self):
         # The supervisor dies mid-run (the object is dropped; nothing is
         # cleaned up). The worker keeps running to completion on its own.
@@ -159,6 +162,7 @@ class TestSupervisedLifecycle(unittest.TestCase):
         self.assertEqual(incoming.center.get(incoming.node_id).status, "COMPLETED")
         incoming.cleanup()
 
+    @pytest.mark.slow
     def test_supervisor_and_worker_both_dead_recovers_from_checkpoint(self):
         import time
         task = SupervisedTask(self.root, "t-double-crash")
@@ -187,6 +191,7 @@ class TestSupervisedLifecycle(unittest.TestCase):
         self.assertTrue(incoming.complete()["verified"])
         incoming.cleanup()
 
+    @pytest.mark.slow
     def test_heartbeat_and_checkpoint_are_observed_during_the_run(self):
         # Large enough that the run outlasts several supervisor polls: the
         # point is observing a live worker, not racing a fast one.
@@ -304,6 +309,7 @@ class TestModelBackendWorker(unittest.TestCase):
              "expect": "Paris", "match": "contains"},
         ]
 
+    @pytest.mark.slow
     def test_model_worker_answers_are_independently_verified(self):
         task = SupervisedTask(self.root, "t-model")
         task.assign_model_query(self._questions(), self.MODEL)
@@ -374,6 +380,7 @@ print("SAVED x=%.1f" % shape.BoundBox.XLength)
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_freecad_task_is_delegated_verified_and_completed(self):
         import freecad_adapter
         found = freecad_adapter.discover()
@@ -492,6 +499,7 @@ print("SIMDONE x2=" + String(val(x, 2.0)) + "\\n");
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_openmodelica_sim_is_delegated_verified_and_completed(self):
         import math
         import openmodelica_adapter

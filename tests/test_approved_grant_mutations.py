@@ -3,8 +3,15 @@
 A green test proves nothing unless breaking the mechanism turns it red.
 Each mutation below is applied to a scratch copy of the repo, the target
 test is run, and the copy is discarded. Repo files are never modified.
+
+This test is marked as slow and is skipped by default. Run with
+`pytest -m mutation` to execute mutation tests.
 """
 from __future__ import annotations
+
+import pytest
+
+pytestmark = pytest.mark.mutation
 
 import shutil
 import subprocess

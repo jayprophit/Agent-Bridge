@@ -19,7 +19,7 @@ from compute.team_registry import TeamRegistry, WorkerCareerRecord
 from nodes import supervisor as sup
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(sup.__file__)))
-MAIN = r"C:/Users/jpowe/Desktop/Projects/Agent-Bridge"
+MAIN = _REPO_ROOT
 
 # Build a small real registry (honest: these are the actual workers we supervise)
 reg = TeamRegistry()

@@ -5,8 +5,15 @@ red. Each mutation is applied to a scratch copy of the repository, the intake
 tests are run there, and the copy is discarded. Repo files are never modified.
 Only tests/test_actions_intake.py runs per mutation (fast); the full suite is
 the commit gate, not the mutation gate.
+
+This test is marked as slow and is skipped by default. Run with
+`pytest -m mutation` to execute mutation tests.
 """
 from __future__ import annotations
+
+import pytest
+
+pytestmark = pytest.mark.mutation
 
 import shutil
 import subprocess

@@ -8,6 +8,8 @@ import time
 import unittest
 from pathlib import Path
 
+import pytest
+
 from runtime import AgentRuntime, RuntimeConfig
 from service import serve
 from tests.helpers import FakeProvider
@@ -35,6 +37,7 @@ OK_SCRIPT = ['{"action":"write","path":"a.txt","content":"hi"}',
 
 
 class TestQuotas(unittest.TestCase):
+    @pytest.mark.slow
     def test_max_active_sessions(self):
         import time as _t
 
@@ -157,6 +160,7 @@ class TestHumanGate(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_revise_spawns_linked_child(self):
         import threading
         tmp = Path(tempfile.mkdtemp(prefix="v05_gate3_"))
@@ -187,6 +191,7 @@ class TestHumanGate(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_cancel_long_task(self):
         import time as _t
 
@@ -215,6 +220,7 @@ class TestHumanGate(unittest.TestCase):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_user_revision_links(self):
         tmp = Path(tempfile.mkdtemp(prefix="v05_rev_"))
         try:

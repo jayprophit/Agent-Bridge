@@ -20,3 +20,14 @@ benchmark = ["psutil==7.2.2"]
 test_command = "python -m unittest discover -s tests -p test_*.py"
 api_version = "v1"
 protocol_version = "0.4"
+
+[tool.pytest]
+timeout = "120"
+timeout_method = "thread"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "mutation: marks tests as mutation tests (run with '-m mutation')",
+]
+
+[tool.pytest.mark.slow]
+timeout = "180"

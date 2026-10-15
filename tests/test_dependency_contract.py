@@ -33,7 +33,8 @@ PYPROJECT = REPO / "pyproject.toml"
 CI = REPO / ".github" / "workflows" / "ci.yml"
 
 SKIP_DIRS = {"node_modules", ".git", "local", "__pycache__", ".pytest_cache",
-             "build", "dist", "integration-archive", ".bridge", "references"}
+              "build", "dist", "integration-archive", ".bridge", "references",
+              ".venv"}
 
 # Paths that are not importable from the runtime entry points but still have to
 # run somewhere. A hard third-party import here is legitimate, but it must be
