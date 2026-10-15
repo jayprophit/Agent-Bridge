@@ -15,6 +15,21 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pytest
+
+# SLOW BY DESIGN, NOT BY DEFECT.
+#
+# Measured on this host: copytree ~1.5s, and one inner `pytest` over TARGETS
+# ~85s (107 tests). With 23 mutations that is roughly 35-40 minutes for this
+# single test method.
+#
+# It was previously unmarked, so a plain `pytest tests` looked like it had
+# hung: output froze around 3% for tens of minutes with idle CPU. Nothing was
+# deadlocked - it was inside this test, which was doing real work. The marker
+# makes that cost visible and lets `-m "not slow"` skip it during iteration.
+# It still runs in the full gate.
+pytestmark = pytest.mark.slow
+
 REPO = Path(__file__).resolve().parent.parent
 TARGETS = ["tests/test_actions_intake.py", "tests/test_action_id_uniqueness.py",
            "tests/test_recovery_privacy.py", "tests/test_evidence_integrity.py",
