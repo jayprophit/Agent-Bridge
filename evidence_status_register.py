@@ -75,14 +75,19 @@ REGISTRY = {
         "source": "OpenCode handoff §11 / V2 §4",
     },
     "lifecycle_recovery_tests": {
-        "status": "NOT_LOCATED",
-        "correction": "Claimed 9 lifecycle/recovery tests (heartbeat loss, worker crash, supervisor "
-                      "crash, restart, checkpoint recovery, stale lock, interrupted task, handoff "
-                      "recovery, power-loss-like interruption) were NOT located in the test suite. "
-                      "This is NOT the same as NOT_IMPLEMENTED — source may exist but was not found. "
-                      "Task H-SA-PROVENANCE was created to search for and create these tests.",
+        "status": "PARTIALLY_LOCATED (3/9)",
+        "evidence": "Searched tests/ directory for 9 claimed lifecycle/recovery scenarios. "
+                    "Found 3 (scattered across 3 test files, NOT a cohesive worker lifecycle suite): "
+                    "(1) stale-lock recovery: test_cross_process_state.py::test_the_lock_is_released_when_the_holder_dies; "
+                    "(2) restart recovery: test_bridge_contract.py::test_restart_reloads_shared_ledger; "
+                    "(3) checkpoint recovery: test_autonomous_loop.py::test_checkpoint_resume. "
+                    "NOT FOUND (6/9): heartbeat loss, worker crash, supervisor crash, "
+                    "interrupted task, handoff recovery, power-loss-like interruption. "
+                    "Task H-SA-PROVENANCE created to create the 6 missing tests. "
+                    "3/9 found does NOT equal 9/9 — the claim of '9 lifecycle/recovery tests' "
+                    "is partially substantiated but scattered, not a dedicated suite.",
         "last_updated": "2026-10-15",
-        "source": "OpenCode handoff §11",
+        "source": "code inspection + test suite search",
     },
     "full_agent_bridge_suite": {
         "status": "NOT_YET_VERIFIED_GREEN",
@@ -103,13 +108,14 @@ REGISTRY = {
         "source": "OpenCode handoff §9",
     },
     "policy_bridge_network_origin_device_trust": {
-        "status": "FIXED",
+        "status": "FIXED + TESTED + INDEPENDENTLY_VERIFIED",
         "evidence": "aether_policy_bridge.py EvalContext (line 287) previously discarded "
                     "network_origin and device_trust by setting them to None in __init__ "
                     "despite accepting them as constructor parameters. executor.py (line 323-324) "
                     "supplies network_origin='local' and device_trust=100. Fix: changed lines 296-297 "
-                    "to store the constructor parameters. Verified: EvalContext now correctly "
-                    "preserves network_origin='local' and device_trust=100.",
+                    "to store the constructor parameters. Regression tests: tests/test_policy_bridge_fields.py "
+                    "(6 tests, all pass in 0.51s). Existing B04 tests: 15/15 pass (no regressions). "
+                    "Commit: 798dcb0.",
         "last_updated": "2026-10-15",
         "source": "code inspection + runtime verification",
     },
