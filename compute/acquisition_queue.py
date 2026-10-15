@@ -206,11 +206,11 @@ class AcquisitionQueue:
             "total_apps": self.count(),
             "unassessed": len(unassessed),
             "unassessed_list": [
-                {"app_id": r.app_id, "stage": r.current_stage,
-                 "resource_cost": r.resource_cost,
-                 "last_action_epoch": r.last_action_at,
-                 "control_channel": r.control_channel,
-                 "free_available": r.free_available}
+                {"app_id": r["app_id"], "stage": r["stage"],
+                 "resource_cost": r["resource_cost"],
+                 "last_action_epoch": r["last_action_epoch"],
+                 "control_channel": r["control_channel"],
+                 "free_available": r["free_available"]}
                 for r in unassessed[:20]],
             "commissioned": sum(
                 1 for r in self._apps.values()
