@@ -795,6 +795,53 @@ class SupervisorRuntime:
             "model_routing": {"paid_budget_remaining": 0},  # §12: OWNER policy
             "lane_starvation": lane_starvation,    # §14/§15: live starvation
             "deferred_tasks": [t for t in self.hive._deferred.values()],
+            "availability": self._availability_snapshot(),  # §H12: degradation resilience
+        }
+
+    def _availability_snapshot(self) -> dict[str, Any]:
+        """§H12: build the availability state for the degradation-resilience
+        invariant.  Tracks per-tier provider status so INVARIANT_15 can detect
+        when a core capability tier goes fully OFFLINE and no fallback exists."""
+        # §H12: define essential capabilities and which tier backs each
+        capability_tiers = {
+            "local_execution": "local",
+            "free_inference": "owned_free",
+            "git_access": "local",
+            "local_storage": "local",
+        }
+        essential_capabilities = list(capability_tiers.keys())
+
+        # build tier views from live adapters + providers
+        tiers: dict[str, list[dict]] = {
+            "local": [],
+            "owned_free": [],
+            "free_cloud": [],
+            "paid": [],
+        }
+        for wid, adapter in self.adapters.items():
+            st = adapter.status()
+            verdict = st.get("verdict", "UNKNOWN")
+            # classify into a tier
+            tier = "local" if getattr(adapter, "provider", "") == "ollama" else "free_cloud"
+            tiers.setdefault(tier, []).append({
+                "worker_id": wid,
+                "application": getattr(adapter, "application", ""),
+                "status": verdict,
+            })
+        for wid, provider in self.providers.items():
+            st = provider.status()
+            verdict = st.get("verdict", "UNKNOWN")
+            tier = "owned_free" if getattr(provider, "provider", "") == "nous" else "free_cloud"
+            tiers.setdefault(tier, []).append({
+                "worker_id": wid,
+                "application": getattr(provider, "application", ""),
+                "status": verdict,
+            })
+
+        return {
+            "essential_capabilities": essential_capabilities,
+            "capability_tiers": capability_tiers,
+            "tiers": tiers,
         }
 
     def check_invariants(self, actions: Optional[dict[str, Any]] = None) -> dict[str, Any]:

@@ -78,6 +78,9 @@ MEDIUM = "MEDIUM"
 #   internal_workers   int                   (count of hermes-native subagents)
 #   model_routing      dict                   (policy: free-first enforcement)
 #   continuation_required bool                (current runtime value)
+#   availability       dict                  (§H12: tier/provider status for
+#                                            degradation resilience invariant)
+#   deferred_tasks     list                  (parked tasks awaiting reset)
 
 # keys that are nice-to-have; if absent, the invariant is STUBBED:
 #   teams, forks, research_gaps, browser_worker, git_state, provenance, ...
@@ -399,6 +402,61 @@ def invariant_28_no_report_termination(snapshot: dict) -> Optional[Violation]:
 
 
 # ===========================================================================
+# INVARIANT 15 — DEGRADATION RESILIENCE (§H12 / §36 §15)
+# ===========================================================================
+def invariant_15_degradation_resilience(snapshot: dict) -> Optional[Violation]:
+    """H12 architectural safeguard (hard-coded):
+
+    "Aetherius must never lose essential capabilities merely because a
+    third-party service, model, cloud account, worker, or development tool
+    becomes unavailable."
+
+    A violation occurs when a core capability tier goes fully offline AND
+    no fallback (local / owned-entitlement / another free tier) exists to
+    preserve it.
+    """
+    availability = snapshot.get("availability")
+    if not availability:
+        return Violation(
+            "INVARIANT_15_DEGRADATION_RESILIENCE", "§H12",
+            severity=MEDIUM, status=STUBBED,
+            evidence=["no 'availability' block in snapshot — H12 safeguard not yet wired"],
+            fix_suggestion="Add availability state to SupervisorRuntime._build_invariants_snapshot: "
+                           "track per-tier availability and include 'essential_capabilities' list.")
+    essentials = _as_list(availability.get("essential_capabilities"))
+    if not essentials:
+        return Violation(
+            "INVARIANT_15_DEGRADATION_RESILIENCE", "§H12",
+            severity=MEDIUM, status=STUBBED,
+            evidence=["availability block present but no 'essential_capabilities' declared"],
+            fix_suggestion="Define the essential capability set (e.g. ['local_execution', "
+                           "'free_inference', 'git_access', 'local_storage']).")
+    tiers = availability.get("tiers", {})
+    cap_tiers = availability.get("capability_tiers", {})
+    available_tiers = []
+    for tier_name, providers in tiers.items():
+        active = [p for p in _as_list(providers) if p.get("status") != "OFFLINE"]
+        if active:
+            available_tiers.append(tier_name)
+    degraded = []
+    for cap in essentials:
+        cap_tier = cap_tiers.get(cap)
+        if cap_tier:
+            providers = tiers.get(cap_tier, [])
+            active = [p for p in _as_list(providers) if p.get("status") != "OFFLINE"]
+            if not active:
+                degraded.append(f"{cap} (tier: {cap_tier} fully offline)")
+    if degraded:
+        return Violation(
+            "INVARIANT_15_DEGRADATION_RESILIENCE", "§H12",
+            severity=CRITICAL,
+            evidence=[f"degraded capabilities: {degraded}",
+                     f"available tiers: {available_tiers}"],
+            fix_suggestion="Restore or provision a fallback for: " + ", ".join(degraded))
+    return None
+
+
+# ===========================================================================
 # invariant registry + consolidated check
 # ===========================================================================
 
@@ -415,6 +473,7 @@ INVARIANTS = {
     "INVARIANT_13_QUOTA_SCHEDULING":        invariant_13_quota_exhaustion,
     "INVARIANT_14_NO_PROJECT_STARVATION":   invariant_14_no_project_starvation,
     "INVARIANT_28_NO_REPORT_TERMINATION":   invariant_28_no_report_termination,
+    "INVARIANT_15_DEGRADATION_RESILIENCE":  invariant_15_degradation_resilience,
 }
 
 

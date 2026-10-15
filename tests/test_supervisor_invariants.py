@@ -22,6 +22,7 @@ from compute.supervisor_invariants import (
     invariant_13_quota_exhaustion,
     invariant_14_no_project_starvation,
     invariant_28_no_report_termination,
+    invariant_15_degradation_resilience,
 )
 from compute.hive_scheduler import AVAILABLE, IMPLEMENTING, TESTING, COMPLETE
 from compute.supervisor_runtime import (
@@ -83,6 +84,24 @@ def _clean_snapshot():
                           "last_assignment_tier": "FREE"},
         "deferred_tasks": [],
         "all_suitable_workers_exhausted": False,
+        "availability": {
+            "essential_capabilities": ["local_execution", "free_inference",
+                                        "git_access", "local_storage"],
+            "capability_tiers": {
+                "local_execution": "local",
+                "free_inference": "owned_free",
+                "git_access": "local",
+                "local_storage": "local",
+            },
+            "tiers": {
+                "local": [{"worker_id": "ollama-local",
+                           "application": "ollama", "status": "RUNNING"}],
+                "owned_free": [{"worker_id": "opencode-primary",
+                                 "application": "opencode", "status": "RUNNING"}],
+                "free_cloud": [],
+                "paid": [],
+            },
+        },
     }
 
 
@@ -365,3 +384,70 @@ class TestRuntimeWiring:
         assert "constitution" in actions
         assert isinstance(actions["constitution"], dict)
         assert actions["constitution"]["checked"] > 0
+
+
+# === INVARIANT 15: degradation resilience (§H12) ===
+class TestInvariant15DegradationResilience:
+    def test_stubs_when_no_availability_block(self):
+        snap = _clean_snapshot()
+        snap.pop("availability")
+        v = invariant_15_degradation_resilience(snap)
+        assert v is not None
+        assert v.status == STUBBED
+        assert "no 'availability' block" in v.evidence[0]
+
+    def test_stubs_when_no_essentials(self):
+        snap = _clean_snapshot()
+        snap["availability"] = {"tiers": {"local": []}}
+        v = invariant_15_degradation_resilience(snap)
+        assert v is not None
+        assert v.status == STUBBED
+        assert "no 'essential_capabilities'" in v.evidence[0]
+
+    def test_passes_when_local_available(self):
+        snap = _clean_snapshot()
+        v = invariant_15_degradation_resilience(snap)
+        assert v is None
+
+    def test_fails_when_local_fully_offline(self):
+        snap = _clean_snapshot()
+        snap["availability"]["tiers"]["local"] = [
+            {"worker_id": "ollama-local", "application": "ollama", "status": "OFFLINE"}
+        ]
+        v = invariant_15_degradation_resilience(snap)
+        assert v is not None
+        assert v.status == FAIL
+        assert v.severity == CRITICAL
+        assert "local_execution" in v.evidence[0]
+
+    def test_fails_when_owned_free_fully_offline(self):
+        snap = _clean_snapshot()
+        snap["availability"]["tiers"]["owned_free"] = [
+            {"worker_id": "opencode-primary", "application": "opencode", "status": "OFFLINE"}
+        ]
+        v = invariant_15_degradation_resilience(snap)
+        assert v is not None
+        assert v.status == FAIL
+        assert v.severity == CRITICAL
+        assert "free_inference" in v.evidence[0]
+
+    def test_passes_when_fallback_tier_covers(self):
+        """If the primary tier for a capability is offline, but the capability
+        can be served from a different tier, no violation."""
+        snap = _clean_snapshot()
+        # local tier is fully offline; remap all local-backed capabilities
+        # to owned_free tier (which has an active provider)
+        snap["availability"]["tiers"]["local"] = [
+            {"worker_id": "ollama-local", "application": "ollama", "status": "OFFLINE"}
+        ]
+        snap["availability"]["capability_tiers"]["local_execution"] = "owned_free"
+        snap["availability"]["capability_tiers"]["git_access"] = "owned_free"
+        snap["availability"]["capability_tiers"]["local_storage"] = "owned_free"
+        v = invariant_15_degradation_resilience(snap)
+        assert v is None
+
+    def test_check_all_includes_invariant_15(self):
+        snap = _clean_snapshot()
+        r = check_all(snap)
+        assert r.passed
+        assert r.checked == 12  # 11 original + invariant 15
