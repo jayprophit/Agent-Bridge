@@ -478,7 +478,7 @@ class CostPolicyEngine:
             evidence="provider not registered in cost policy engine",
             budget_class="FREE_ONLY",
         ))
-        allowed = cc.is_allowed()
+        allowed, deny_reason = cc.is_allowed()  # FIX: is_allowed returns (bool, str)
         decision = "ALLOW" if allowed else "DENY"
         reason = f"provider={provider_id} model={model_id} cost_class={cc.cost_class}"
         self._decisions.append({
