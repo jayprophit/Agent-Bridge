@@ -49,10 +49,25 @@ REGISTRY = {
                     "rollout+exec, InternalAgentAdapter, GuiAgentAdapter), compute/bridge_supervisor.py "
                     "(task lifecycle: assign → verify_ack → verify_start → handoff). "
                     "43 tests in tests/test_agent_bridge.py cover schema, state machine, durability, "
-                    "adapters, supervisor lifecycle, and manual relay detection (§44). "
-                    "Live OpenCode roundtrip NOT YET VERIFIED — requires autonomous delivery test (§30).",
+                    "adapters, supervisor lifecycle, and manual relay detection (§44).",
         "last_updated": "2026-10-15",
         "source": "implementation + 43 passing tests",
+    },
+    "bridge_live_delivery_test": {
+        "status": "PARTIALLY_VERIFIED",
+        "evidence": "Live autonomous delivery test via OpenCodeAdapter (§30): "
+                    "3 tasks sent via `opencode run --model <model> <prompt>`. "
+                    "ALL 3 delivered: task_id found in OpenCode worker transcript "
+                    "(DELIVERY_VERIFIED §15). BRIDGE-TEST-003 received a model response "
+                    "(8651 input, 54 output tokens, 2 messages). No owner manual relay needed. "
+                    "Sessions: ses_ebf60d271ffeCHrY5dGaVbNpQg (TEST-001), "
+                    "ses_ebf5b7218ffeNuHHfKpvU8CYka (TEST-002), "
+                    "ses_ebf558982ffe0kQQxvI7zg9XoJ (TEST-003). "
+                    "LIMITATION: nemotron-3-ultra-free is slow (test 001/002 timed out at 120s/180s). "
+                    "Full lifecycle (TASK_COMPLETE + HANDOFF + QA) NOT yet proven — "
+                    "requires a faster model or longer timeout.",
+        "last_updated": "2026-10-15",
+        "source": "live opencode run + transcript verification",
     },
     "worker_runtime_leases_heartbeat_checkpoints": {
         "status": "VERIFIED",
