@@ -112,6 +112,7 @@ class AgentMessageBus:
         self._subscribers: dict[str, list[Callable[[AgentMessage], None]]] = {}
         self._claim_registry: Any = None   # optional H06 ClaimRegistry (§21)
         self._skill_pipeline: Any = None   # optional H03 SkillPipeline (§22)
+        self._scope_guard: Any = None      # optional H01 ScopeGuard (AT-22)
         self._init_db()
 
     def _init_db(self) -> None:
@@ -537,6 +538,24 @@ class AgentMessageBus:
                     "H03 review pipeline (provenance → sandbox → security → "
                     "benchmark → approval) — no self-install (§22)",
         }
+
+    # -- H01 scope enforcement (AT-22 ready, single-owner today) --------------------
+    # The envelope carries owner/workspace/tenant scope; the guard refuses
+    # cross-scope messages when enforcement is enabled. Today single-owner:
+    # violations are CHECKED and logged but nothing can cross (one scope).
+
+    def set_scope_guard(self, guard: Any) -> None:
+        """Wire an H01 ScopeGuard into the bus."""
+        self._scope_guard = guard
+
+    def check_scope(self, msg: AgentMessage) -> dict[str, Any]:
+        """Check a message's scope before delivery (§ H01/AT-22)."""
+        if not self._scope_guard:
+            return {"allowed": True, "reason": "no scope guard wired"}
+        result = self._scope_guard.check_message(msg)
+        if not result["allowed"]:
+            return result
+        return result
 
     def stats(self) -> dict[str, Any]:
         """Message bus statistics for the dashboard (§43)."""

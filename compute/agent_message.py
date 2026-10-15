@@ -159,6 +159,15 @@ class AgentMessage:
     project_id: str = ""
     task_id: str = ""
 
+    # --- scope (H01: single-owner today, multi-tenant-ready schema) -------------
+    # The first release stays single-owner/private (V2 H12). These fields exist
+    # NOW so the data model never needs a rewrite: an empty owner_id means "the
+    # sole owner", an empty workspace_id means "the default workspace". Nothing
+    # here pretends public multi-user operation exists (AT-22).
+    owner_id: str = ""             # the owner this message belongs to
+    workspace_id: str = ""         # workspace/project scope within the owner
+    tenant_id: str = ""            # reserved for future multi-user; "" = sole owner
+
     # Intent + payload (§5)
     intent: Intent = Intent.DM
     objective: str = ""
@@ -213,6 +222,11 @@ class AgentMessage:
             "receiver": {"agent_id": self.receiver_agent, "worker_id": self.receiver_worker},
             "project_id": self.project_id,
             "task_id": self.task_id,
+            "scope": {
+                "owner_id": self.owner_id,
+                "workspace_id": self.workspace_id,
+                "tenant_id": self.tenant_id,
+            },
             "intent": self.intent.value,
             "objective": self.objective,
             "constraints": self.constraints,
@@ -253,6 +267,9 @@ class AgentMessage:
             receiver_worker=receiver.get("worker_id", ""),
             project_id=data.get("project_id", ""),
             task_id=data.get("task_id", ""),
+            owner_id=(data.get("scope") or {}).get("owner_id", ""),
+            workspace_id=(data.get("scope") or {}).get("workspace_id", ""),
+            tenant_id=(data.get("scope") or {}).get("tenant_id", ""),
             intent=Intent(data["intent"]),
             objective=data.get("objective", ""),
             constraints=data.get("constraints", {}),
@@ -294,6 +311,9 @@ def build_task_assign(
     priority: int = 50,
     evidence_refs: list[str] | None = None,
     dependencies: list[str] | None = None,
+    owner_id: str = "",
+    workspace_id: str = "",
+    tenant_id: str = "",
 ) -> AgentMessage:
     """Build a TASK_ASSIGN message with the standard §5 envelope."""
     return AgentMessage(
@@ -304,6 +324,9 @@ def build_task_assign(
         receiver_worker=receiver_worker,
         project_id=project_id,
         task_id=task_id,
+        owner_id=owner_id,
+        workspace_id=workspace_id,
+        tenant_id=tenant_id,
         intent=Intent.TASK_ASSIGN,
         objective=objective,
         constraints={
