@@ -75,19 +75,27 @@ REGISTRY = {
         "source": "OpenCode handoff §11 / V2 §4",
     },
     "lifecycle_recovery_tests": {
-        "status": "PARTIALLY_LOCATED (3/9)",
-        "evidence": "Searched tests/ directory for 9 claimed lifecycle/recovery scenarios. "
-                    "Found 3 (scattered across 3 test files, NOT a cohesive worker lifecycle suite): "
-                    "(1) stale-lock recovery: test_cross_process_state.py::test_the_lock_is_released_when_the_holder_dies; "
-                    "(2) restart recovery: test_bridge_contract.py::test_restart_reloads_shared_ledger; "
-                    "(3) checkpoint recovery: test_autonomous_loop.py::test_checkpoint_resume. "
-                    "NOT FOUND (6/9): heartbeat loss, worker crash, supervisor crash, "
-                    "interrupted task, handoff recovery, power-loss-like interruption. "
-                    "Task H-SA-PROVENANCE created to create the 6 missing tests. "
-                    "3/9 found does NOT equal 9/9 — the claim of '9 lifecycle/recovery tests' "
-                    "is partially substantiated but scattered, not a dedicated suite.",
+        "status": "LOCATED (9/9)",
+        "evidence": "After thorough search (original subagent search was incomplete due to "
+                    "Nous Portal rate-limiting), all 9 claimed lifecycle/recovery scenarios "
+                    "are found across 4 test files — NOT a single dedicated suite, but "
+                    "scattered across: (1) heartbeat loss: test_hybrid_cloud_p0.py::test_instance_registry_gc_stale "
+                    "(stale instances garbage collected); (2) worker crash: test_supervised_workers.py::test_killed_worker_is_detected_reconciled_and_retried_to_verified "
+                    "(worker killed mid-run, detected STALLED, retried); (3) supervisor crash: test_supervised_workers.py::test_supervisor_crash_leaves_state_a_new_supervisor_can_continue "
+                    "(supervisor dies, new supervisor attaches via SupervisedTask.attach and continues); "
+                    "(4) restart: test_bridge_contract.py::test_restart_reloads_shared_ledger; "
+                    "(5) checkpoint recovery: test_autonomous_loop.py::test_checkpoint_resume; "
+                    "(6) stale lock: test_cross_process_state.py::test_the_lock_is_released_when_the_holder_dies; "
+                    "(7) interrupted task: test_supervised_workers.py recover() returns 'INTERRUPTED' "
+                    "(lines 84, 188); (8) handoff recovery: test_supervised_workers.py::test_supervisor_crash_leaves_state_a_new_supervisor_can_continue "
+                    "(SupervisedTask.attach takes over existing task); "
+                    "(9) power-loss-like interruption: test_supervised_workers.py::test_supervisor_and_worker_both_dead_recovers_from_checkpoint "
+                    "(both processes killed, state recovered from durable files). "
+                    "NOTE: 3 of these tests are marked @pytest.mark.slow (lines 148, 165, 194 in "
+                    "test_supervised_workers.py) but the pytest-mark plugin is NOT installed "
+                    "in the venv, so -m 'not slow' currently filters nothing. See SUITE-CLASSIFICATION task.",
         "last_updated": "2026-10-15",
-        "source": "code inspection + test suite search",
+        "source": "code inspection + test suite search (corrected from NOT_LOCATED)",
     },
     "full_agent_bridge_suite": {
         "status": "NOT_YET_VERIFIED_GREEN",
