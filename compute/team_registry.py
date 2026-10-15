@@ -205,6 +205,7 @@ class WorkerCareerRecord:
     """
     worker_id: str
     role_id: str
+    tenant_id: str = ""   # H01: tenant boundary for worker identity; "" = single-owner mode
     department: Optional[str] = None
     specialisms: list[str] = field(default_factory=list)
 
@@ -261,6 +262,7 @@ class TeamRecord:
     team_id: str
     team_name: str
     purpose: str
+    tenant_id: str = ""   # H01: tenant boundary for team identity; "" = single-owner mode
     programme_id: Optional[str] = None
     project_id: Optional[str] = None
 

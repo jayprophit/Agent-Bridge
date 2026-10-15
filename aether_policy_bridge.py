@@ -527,6 +527,7 @@ class PrincipalContext:
     kind: str
     id: str
     on_behalf_of: str = ""
+    tenant_id: str = ""  # H01: tenant scoping; "" = single-owner (backward compatible)
 
     def summary(self) -> str:
         base = f"{self.kind}:{self.id}"

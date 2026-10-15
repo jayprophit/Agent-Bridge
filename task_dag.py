@@ -89,6 +89,7 @@ class TaskRecord:
     next_action: str = ""
     priority: int = 5  # P0_CRITICAL=0 .. P6_FUTURE=6; lower runs first
     owner_gate: str = ""  # non-empty + in autonomous_loop.OWNER_GATES stops the loop
+    tenant_id: str = ""   # H01: per-tenant isolation boundary; "" = single-owner mode
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
@@ -276,6 +277,7 @@ class WorkerInfo:
     current_task: str = ""
     supports_model_selection: bool = False  # can be launched with a selected model
     supports_self_model_selection: bool = False  # can change model at runtime (FALSE for OpenCode)
+    tenant_id: str = ""   # H01: tenant boundary for worker identity; "" = single-owner mode
 
 
 class WorkerRegistry:
