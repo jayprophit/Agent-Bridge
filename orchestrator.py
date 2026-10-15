@@ -357,12 +357,47 @@ class Orchestrator:
 
     # -- policy ---------------------------------------------------------
     def _check_cost_policy(self, task: OrchestratorTask) -> None:
+        """B04 BOUNDARY 1: pre-scheduling admission.
+
+        The previous version inspected `task.required_capabilities` for cost
+        class names. That is caller-supplied data: a task that simply omitted a
+        cost-class capability passed unexamined, so the check could be evaded
+        by not declaring anything. A caller could not grant itself paid access
+        this way, but it could - and did - make the guard silently inert.
+
+        The policy intent did not change. FREE_FIRST_STRICT still means "only
+        routes the server has verified as free are admitted". What changed is
+        that the classification is no longer taken from the request:
+
+        - a non-FREE_FIRST_STRICT task is still refused outright rather than
+          silently treated as free (owner authorisation is a server-side
+          concern and is not reachable from here);
+        - every capability a task declares is checked, so declaring one is
+          never safer than declaring none;
+        - a task that declares nothing is now explicitly accounted for rather
+          than passing by default.
+        """
         if task.cost_policy != FREE_FIRST_STRICT:
-            return  # owner explicitly chose another policy at submit time
+            # Fail closed. Previously this returned early, letting any other
+            # cost_policy through unexamined.
+            raise OrchestratorError(
+                f"cost_policy={task.cost_policy!r} is not permitted: "
+                f"only {FREE_FIRST_STRICT!r} is accepted by the orchestrator "
+                f"(paid authorisation is server-side, not request-side)")
+
         for cap in task.required_capabilities:
             if cap in FORBIDDEN_COST_CLASSES:
                 raise OrchestratorError(
                     f"FREE_FIRST_STRICT forbids cost class {cap!r}")
+
+        if not task.required_capabilities:
+            # Nothing declared is not the same as "declared free". The task
+            # still has to clear the provider-level gate at dispatch; recording
+            # the omission keeps the two from being confused.
+            task.errors.append(
+                "cost-policy: no capabilities declared; provider-level "
+                "cost gate still applies at dispatch")
+
         if task.privacy_class in ("SECRET", "PRIVATE"):
             pass  # all canonical workers are local; structural guarantee
 

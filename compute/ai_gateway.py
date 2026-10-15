@@ -174,6 +174,25 @@ class AetheriusGateway:
             # Return routing info without dispatch
             return self._build_routing_only_response(request, route)
 
+        # ---- B04 BOUNDARY 2: final pre-dispatch re-authorisation ----------
+        # Step 4 already checked, but between that check and here the selected
+        # provider may have been swapped by the fallback loop, the budget may
+        # have been exhausted by a concurrent request, or a provider's free
+        # entitlement may have lapsed. This is the LAST point before an
+        # external API is touched, so it re-verifies rather than trusting the
+        # earlier decision.
+        #
+        # Deliberately placed after adapter resolution and before
+        # `adapter.execute(...)`: a rejected request must never reach an
+        # external model API, so the check cannot be hoisted earlier.
+        final_ok, final_reason = self.cost_engine.check_eligible(
+            route.selected_provider, request.budget_class)
+        if not final_ok:
+            return self._error_response(
+                request, BUDGET_EXCEEDED,
+                f"Final pre-dispatch authorisation refused "
+                f"{route.selected_provider}: {final_reason}")
+
         provider_request = self._to_provider_request(request, route)
 
         try:

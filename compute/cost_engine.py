@@ -13,7 +13,9 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from models.inference_contract import FREE_ONLY, HOBBY_CREDIT_ONLY
+from models.inference_contract import (
+    FREE_ONLY, HOBBY_CREDIT_ONLY, OWNER_APPROVED_PAID, CUSTOM_LIMIT,
+)
 
 # Cost class for a provider
 COST_FREE = "FREE"           # always free (local)
@@ -32,6 +34,21 @@ AUTOMATICALLY_ELIGIBLE = (COST_FREE, COST_CLOUD_ZERO, COST_CLOUD_RECURRING_FREE)
 # Forbidden under FREE_FIRST_STRICT (never auto-selected)
 FORBIDDEN_UNDER_FREE_FIRST = ("PAID_API", "SUBSCRIPTION_ONLY",
                               "ONE_TIME_TRIAL", "UNKNOWN_COST")
+
+# Budget classes that may only take effect through SERVER-SIDE owner authority.
+#
+# A caller may REQUEST one of these on an inference request, but the request is
+# not evidence. Prior to the B04 fix these were honoured verbatim, which meant
+# any caller could send `budget_class="OWNER_APPROVED_PAID"` and route to a PAID
+# or UNKNOWN provider with no owner approval anywhere in the system. These are
+# now REQUEST_ONLY: honoured solely on the strength of
+# `Budget.owner_approved_paid`, which is server state, never request state.
+REQUEST_ONLY_BUDGET_CLASSES = (HOBBY_CREDIT_ONLY, OWNER_APPROVED_PAID, CUSTOM_LIMIT)
+
+# Evidence values that make a provider's cost classification trustworthy.
+# Anything else fails closed: an unreviewed provider is treated as UNKNOWN,
+# because "we have not checked" is not the same claim as "it is free".
+VERIFIED_EVIDENCE = ("VERIFIED_LIVE", "VERIFIED_CONFIGURED")
 
 
 @dataclass
@@ -184,56 +201,109 @@ class CostEngine:
         return (input_tokens * input_rate / 1000.0 +
                 output_tokens * output_rate / 1000.0)
 
+    def resolve_budget_class(self, requested: str = "", scope: str = "default") -> tuple[str, str]:
+        """Resolve the EFFECTIVE budget class using server-side authority.
+
+        A caller may request a wider class; it does not thereby obtain one.
+        `Budget.owner_approved_paid` is server state that only an operator can
+        set, so it - not the request - decides whether paid routes open.
+
+        This is the first half of the B04 fix. Returns (effective_class, note).
+        """
+        requested = requested or self.default_budget_class
+        if requested == FREE_ONLY:
+            return FREE_ONLY, "caller requested FREE_ONLY"
+
+        if requested in REQUEST_ONLY_BUDGET_CLASSES:
+            budget = self.get_or_create_budget(scope)
+            if not budget.owner_approved_paid:
+                # Fail closed: the request is downgraded to FREE_ONLY, never
+                # honoured and never an error - a legitimate FREE_ONLY workload
+                # must keep working while a paid request is simply refused.
+                return FREE_ONLY, (
+                    f"requested {requested!r} downgraded to FREE_ONLY: "
+                    "no server-side owner paid authorization on record"
+                )
+            return requested, f"owner_approved_paid on record; {requested!r} honoured"
+
+        # An unrecognised class must never widen access.
+        return FREE_ONLY, f"unknown budget class {requested!r} downgraded to FREE_ONLY"
+
     def check_eligible(self, provider_id: str, budget_class: str = "",
                        scope: str = "default") -> tuple[bool, str]:
-        """Check if a provider is eligible under the current budget policy.
+        """Fail-closed eligibility gate (B04).
 
-        FREE_FIRST_STRICT: only automatically-eligible cost classes pass.
-        Returns (eligible, reason).
+        Order matters, and each step is a distinct denial reason:
+
+        1. The provider must be REGISTERED. An unregistered provider is by
+           definition unreviewed, so it is denied - never assumed free.
+        2. The provider's cost class must be one this engine knows. A novel
+           class fails closed rather than falling through to "eligible".
+        3. The provider must carry verified evidence. A provider whose free
+           entitlement has lapsed (STALE_NEEDS_REVERIFY, or empty) is denied,
+           because "we have not checked recently" is not a free classification.
+        4. The cost class must be permitted by the EFFECTIVE budget class,
+           which is resolved from server authority, not from the request.
+        5. Quota and budget ceilings, as before.
+
+        The previous implementation only ran checks (4)'s FREE_ONLY branch when
+        the caller passed FREE_ONLY, and had no branches at all for
+        OWNER_APPROVED_PAID or CUSTOM_LIMIT - so those classes denied nothing.
         """
         state = self.providers.get(provider_id)
         if state is None:
-            return False, f"provider {provider_id!r} not registered"
+            return False, f"provider {provider_id!r} not registered; fails closed"
 
-        bc = budget_class or self.default_budget_class
+        # -- 2. unknown cost class fails closed
+        if state.cost_class not in COST_CLASSES:
+            return False, (f"provider {provider_id!r} has unknown cost_class="
+                           f"{state.cost_class!r}; fails closed")
+
+        effective, note = self.resolve_budget_class(budget_class, scope)
         budget = self.get_or_create_budget(scope)
 
-        # Under FREE_ONLY, only free tiers pass
-        if bc == FREE_ONLY:
+        # -- 3. evidence. Checked for EVERY class, not only FREE_ONLY.
+        #    Previously a HOBBY/PAID request skipped the evidence check
+        #    entirely, so a never-reviewed provider was reachable.
+        if state.evidence not in VERIFIED_EVIDENCE:
+            return False, (f"provider {provider_id!r} evidence={state.evidence!r} "
+                           f"is not verified; fails closed")
+
+        # -- 4. cost class permitted under the effective class
+        if effective == FREE_ONLY:
             if state.cost_class not in AUTOMATICALLY_ELIGIBLE:
                 return False, (f"FREE_ONLY forbids cost_class={state.cost_class!r} "
-                               f"for provider {provider_id!r}")
-            if state.evidence not in ("VERIFIED_LIVE", "VERIFIED_CONFIGURED"):
-                return False, (f"provider {provider_id!r} evidence={state.evidence!r} "
-                               f"is not verified; fails closed")
-
-        # Under HOBBY_CREDIT_ONLY, free + hobby pass
-        if bc == HOBBY_CREDIT_ONLY:
-            if state.cost_class not in (COST_FREE, COST_CLOUD_ZERO,
-                                        COST_CLOUD_RECURRING_FREE, COST_HOBBY):
+                               f"for provider {provider_id!r} ({note})")
+        elif effective == HOBBY_CREDIT_ONLY:
+            if state.cost_class == COST_HOBBY:
                 if not budget.owner_approved_paid:
-                    return False, (f"HOBBY_CREDIT_ONLY forbids cost_class={state.cost_class!r} "
-                                   f"without explicit owner paid authorization")
+                    return False, (f"HOBBY_CREDIT_ONLY forbids cost_class=HOBBY "
+                                   f"for provider {provider_id!r} without explicit "
+                                   f"owner paid authorization")
+            elif state.cost_class not in AUTOMATICALLY_ELIGIBLE:
+                return False, (f"HOBBY_CREDIT_ONLY forbids cost_class="
+                               f"{state.cost_class!r} for provider {provider_id!r}")
+        # Any other effective class is unreachable: resolve_budget_class only
+        # returns a non-FREE_ONLY class that has server-side owner approval.
+        elif effective not in (OWNER_APPROVED_PAID, CUSTOM_LIMIT):
+            return False, f"unhandled effective budget class {effective!r}; fails closed"
 
-        # Check quotas
+        # -- 5. quota and budgets
         if state.quota_remaining and state.quota_remaining.get("tokens") == 0:
             return False, (f"provider {provider_id!r} quota exhausted "
                            f"(tokens_remaining=0)")
 
-        # Check per-provider budget
         if budget.per_provider_max_usd > 0:
             state.reset_monthly_if_needed()
             if state.monthly_usage_usd >= budget.per_provider_max_usd:
                 return False, (f"provider {provider_id!r} hit per-provider "
                                f"monthly budget ${budget.per_provider_max_usd}")
 
-        # Check daily budget
         global_daily = sum(p.daily_usage_usd for p in self.providers.values())
         if budget.daily_max_usd > 0 and global_daily >= budget.daily_max_usd:
             return False, (f"daily budget ${budget.daily_max_usd} reached "
                            f"(current: ${global_daily:.4f})")
 
-        # Check monthly budget
         global_monthly = sum(p.monthly_usage_usd for p in self.providers.values())
         if budget.monthly_max_usd > 0 and global_monthly >= budget.monthly_max_usd:
             return False, (f"monthly budget ${budget.monthly_max_usd} reached "
