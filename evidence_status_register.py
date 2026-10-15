@@ -39,6 +39,21 @@ REGISTRY = {
         "last_updated": "2026-10-15",
         "source": "owner manual intervention observation + bridge implementation",
     },
+    "bridge_h03_skill_intake": {
+        "status": "IMPLEMENTED",
+        "evidence": "H03 skill discovery is wired INTO the bridge: "
+                    "AgentMessageBus.submit_skill_candidate() converts a "
+                    "SKILL_CANDIDATE message into an H03 SkillPipeline candidate. "
+                    "Workers SUBMIT but CANNOT self-install — publication requires the "
+                    "full provenance → sandbox → security → benchmark → approval "
+                    "pipeline (§22). Tested end-to-end in "
+                    "tests/test_bridge_integrations.py::TestSkillCandidateIntake "
+                    "(4 tests: no-pipeline no-op, candidate-not-installed, "
+                    "missing app_id rejection, full promotion path from a bridge "
+                    "candidate to a published genesis_solo skill).",
+        "last_updated": "2026-10-15",
+        "source": "implementation + tests",
+    },
     "agent_communications_bridge": {
         "status": "IMPLEMENTED",
         "evidence": "Agent Communications Bridge v1 (aetherius.agent-message.v1) implemented across "
@@ -54,22 +69,23 @@ REGISTRY = {
         "source": "implementation + 43 passing tests",
     },
     "bridge_live_delivery_test": {
-        "status": "FULL_AUTONOMOUS_WORK_CYCLE_VERIFIED",
-        "evidence": "BRIDGE-E2E-004 proved the autonomous work cycle with ZERO owner "
-                    "keyboard input (2026-10-15 21:17). Complete worker brief rendered "
-                    "from the canonical envelope (§14 render_for_worker). OpenCode "
-                    "(model opencode/nemotron-3.5-lightning-free) executed: "
-                    "ASSIGN → DELIVERED → ACK → TASK_START → PROGRESS → created "
-                    "tests/bridge_e2e_fixture_test.py (exact write-set) → ran the test "
-                    "→ TASK_COMPLETE + HANDOFF. Hermes independent QA: test passes "
-                    "(class_reserve('LIGHT')=0.03 < class_reserve('HEAVY')=0.15), "
-                    "write-set compliance exact (only the authorized file created). "
-                    "9 of 11 lifecycle steps proven. GAP: worker did not git commit "
-                    "(its venv lacked pytest so it verified manually instead). "
-                    "This is NOT yet 'bridge fully LIVE_VERIFIED' — the "
-                    "commit-and-next-task loop (step 11) still needs BRIDGE-E2E-005.",
+        "status": "TWO_TASK_AUTONOMOUS_LOOP_VERIFIED",
+        "evidence": "The Hermes↔OpenCode bridge sustained TWO consecutive autonomous "
+                    "engineering tasks with ZERO owner keyboard input (2026-10-15 21:47). "
+                    "E2E-004: brief rendered from canonical envelope → OpenCode ACK'd, "
+                    "STARTED, created tests/bridge_e2e_fixture_test.py, verified, "
+                    "TASK_COMPLETE + HANDOFF (supervisor committed). "
+                    "E2E-005: OpenCode created tests/bridge_control_contract_test.py, "
+                    "ran 3 contract assertions (all passed), COMMITTED ITSELF (commit "
+                    "3f14c49), TASK_COMPLETE + HANDOFF. Full lifecycle proven: "
+                    "ASSIGN→DELIVERED→ACK→START→PROGRESS→file change→test→commit→"
+                    "COMPLETE→HANDOFF→Hermes QA→next ASSIGN→ACK→START. "
+                    "Bridge remains NOT fully LIVE_VERIFIED only in the sense that the "
+                    "PROCESS_ALIVE≠RUNNING distinction is enforced in code but the "
+                    "continuous multi-task scheduler still runs per-task, not as a "
+                    "standing daemon loop (§30 wants automatic TASK-B after TASK-A).",
         "last_updated": "2026-10-15",
-        "source": "live opencode run + independent Hermes QA re-run",
+        "source": "live opencode run × 2 + git commit evidence 3f14c49 + QA re-runs",
     },
     "bridge_h06_integration": {
         "status": "IMPLEMENTED",
