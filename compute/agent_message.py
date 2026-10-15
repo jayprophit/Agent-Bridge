@@ -49,7 +49,11 @@ class Intent(str, Enum):
     RESUME = "RESUME"
     CANCEL = "CANCEL"
     RECALL = "RECALL"
+    REVOKE = "REVOKE"                # §23: revoke capability/provider
+    REVOKE_CAPABILITY = "REVOKE_CAPABILITY"  # §23: capability-specific
+    REVOKE_PROVIDER = "REVOKE_PROVIDER"      # §23: provider-specific
     REASSIGN = "REASSIGN"
+    EMERGENCY_HALT = "EMERGENCY_HALT"   # §23: distinct from RECALL
     # Handoff + QA
     HANDOFF = "HANDOFF"
     HANDOFF_ACK = "HANDOFF_ACK"

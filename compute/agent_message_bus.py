@@ -110,6 +110,7 @@ class AgentMessageBus:
         self._bus = event_bus  # existing EventBus for live notifications
         self._lock = threading.RLock()
         self._subscribers: dict[str, list[Callable[[AgentMessage], None]]] = {}
+        self._claim_registry: Any = None   # optional H06 ClaimRegistry (§21)
         self._init_db()
 
     def _init_db(self) -> None:
@@ -402,6 +403,76 @@ class AgentMessageBus:
                 "('PENDING','DELIVERED') ORDER BY created_at").fetchall()
             conn.close()
             return [dict(r) for r in rows]
+
+    # -- H06 conflict integration (§21, correction §5) ------------------------------------
+    # When two workers deliver contradictory typed claims, the bridge does NOT
+    # silently merge them. Both claims are registered with the H06
+    # conflict resolver, a CONTRADICTION conflict case is created, and an
+    # independent verification task is proposed (§21: "preserve both views").
+    #
+    # Wiring is optional (claim_registry=None disables) so existing callers
+    # keep working unchanged.
+
+    def set_claim_registry(self, registry: Any) -> None:
+        """Wire an H06 ClaimRegistry into the bus for auto-conflict detection."""
+        self._claim_registry = registry
+
+    def submit_claim(self, claim: Any) -> dict[str, Any]:
+        """Register a typed claim and check for contradictions (§21).
+
+        Returns {"claim": ..., "conflicts": [...], "verification_task": ...|None}
+        """
+        if not self._claim_registry:
+            return {"claim": claim, "conflicts": [],
+                    "note": "no claim registry wired"}
+        self._claim_registry.submit_claim(claim)
+
+        # Look for prior claims on the same task with a different conclusion.
+        conflicts = []
+        for prior in self._claim_registry.claims_for_task(claim.task_id):
+            if prior.claim_id == claim.claim_id:
+                continue
+            if self._claims_contradict(claim, prior):
+                conflict = self._claim_registry.detect_conflict(
+                    claim.task_id, prior.claim_id, claim.claim_id)
+                if conflict:
+                    conflicts.append(conflict)
+
+        result: dict[str, Any] = {
+            "claim": claim,
+            "conflicts": [c.conflict_id for c in conflicts],
+        }
+        if conflicts:
+            result["verification_task"] = (
+                f"QA-VERIFY-{claim.task_id}: independently evaluate claims "
+                f"{[c.claim_a_id for c in conflicts] + [c.claim_b_id for c in conflicts]} "
+                f"and resolve by evidence (§21: no voting)")
+        return result
+
+    @staticmethod
+    def _claims_contradict(a: Any, b: Any) -> bool:
+        """Heuristic contradiction detector (§21).
+
+        Two claims contradict when they concern the same task and reach
+        opposing conclusions. We do NOT guess at subtle semantic negation —
+        we flag obvious opposites (contains vs not contains, true vs false)
+        and let independent verification resolve them.
+        """
+        if a.task_id != b.task_id:
+            return False
+        ca, cb = a.content.strip().lower(), b.content.strip().lower()
+        if not ca or not cb or ca == cb:
+            return False
+        opposites = [
+            ("is true", "is false"), ("true", "false"),
+            ("exists", "does not exist"), ("works", "does not work"),
+            ("passed", "failed"), ("present", "absent"),
+            ("contains", "does not contain"), ("correct", "incorrect"),
+        ]
+        for pos, neg in opposites:
+            if (pos in ca and neg in cb) or (neg in ca and pos in cb):
+                return True
+        return False
 
     def stats(self) -> dict[str, Any]:
         """Message bus statistics for the dashboard (§43)."""

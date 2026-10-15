@@ -204,28 +204,20 @@ class OpenCodeAdapter(WorkerAdapterInterface):
                     "evidence": [f"intent {msg.intent.value} not supported via CLI"]}
 
     def _send_task_assign(self, msg: AgentMessage) -> dict[str, Any]:
-        """Deliver a task via `opencode run` with task_id in the prompt (§15)."""
-        repo = msg.constraints.get("worktree", "")
-        branch = msg.constraints.get("branch", "")
-        # Build the prompt with the task_id prominently for receiver-side verification
-        prompt = (
-            f"TASK_ID: {msg.task_id}\n"
-            f"PROJECT: {msg.project_id}\n"
-            f"OBJECTIVE: {msg.objective}\n"
-            f"COST_POLICY: {msg.constraints.get('cost_policy', 'ZERO_INCREMENTAL_SPEND')}\n"
-            f"WRITE_SET: {msg.constraints.get('write_set', [])}\n"
-            f"BRANCH: {branch}\n"
-            f"\nWhen you receive this task, first acknowledge with:\n"
-            f"ACK TASK_ID={msg.task_id}\n"
-            f"Then proceed with implementation, testing, and commit.\n"
-        )
+        """Deliver a task via `opencode run` with the COMPLETE worker brief (§14).
+
+        The brief is rendered automatically from the canonical envelope —
+        Hermes never invents a prompt manually (§14). The task_id is embedded
+        for receiver-side verification (§15).
+        """
+        repo = msg.constraints.get("worktree") or msg.constraints.get("repo") or ""
+        prompt = self.render_for_worker(msg)
         cmd = [self.bin, "run", "--model", self.current_model]
         if repo:
             cmd.extend(["--dir", repo])
         cmd.append(prompt)
 
         try:
-            # Run with a generous timeout — OpenCode tasks can take minutes
             p = subprocess.run(cmd, capture_output=True, text=True,
                                timeout=msg.delivery_timeout_s, shell=True)
             output = (p.stdout or "") + (p.stderr or "")
@@ -234,23 +226,72 @@ class OpenCodeAdapter(WorkerAdapterInterface):
                     "delivered": True,
                     "channel": "opencode-run (headless CLI)",
                     "evidence": [
-                        f"opencode run exited 0",
-                        f"output contains task_id: {msg.task_id in output}",
+                        "opencode run exited 0",
+                        f"task_id in output: {msg.task_id in output}",
                     ],
                     "output": output[:2000],
                 }
-            else:
-                return {
-                    "delivered": False,
-                    "channel": "opencode-run (headless CLI)",
-                    "evidence": [f"opencode run exited {p.returncode}: {output[:200]}"],
-                }
+            return {
+                "delivered": False,
+                "channel": "opencode-run (headless CLI)",
+                "evidence": [f"opencode run exited {p.returncode}: {output[:200]}"],
+            }
         except subprocess.TimeoutExpired:
             return {
                 "delivered": False,
                 "channel": "opencode-run (headless CLI)",
                 "evidence": [f"timed out after {msg.delivery_timeout_s}s"],
             }
+
+    def render_for_worker(self, msg: AgentMessage) -> str:
+        """Render the canonical envelope into a COMPLETE worker brief (§14).
+
+        This is the fix for the "reply to this test task" failure: the brief
+        carries everything the worker needs — objective, context, repo,
+        worktree, baseline, write-set, acceptance, permissions, cost policy,
+        evidence refs. A control nudge is NEVER sufficient (§14).
+        """
+        c = msg.constraints
+        evidence_refs = "\n".join(f"  - {r}" for r in msg.evidence_refs) or "  (none)"
+        write_set = "\n".join(f"  - {f}" for f in c.get("write_set", [])) or "  (none)"
+        deps = "\n".join(f"  - {d}" for d in msg.dependencies) or "  (none)"
+        actions = "\n".join(f"  - {a}" for a in msg.requested_actions) or \
+            "  - ACK task ID, then TASK_START, then implement, then TASK_COMPLETE"
+
+        return f"""TASK_ID: {msg.task_id}
+PROJECT: {msg.project_id or "Agent-Bridge"}
+PRIORITY: {msg.priority}
+COST_POLICY: {c.get("cost_policy", "ZERO_INCREMENTAL_SPEND")}
+BRANCH: {c.get("branch", "") or "(current branch)"}
+WORKTREE/REPO: {c.get("worktree") or c.get("repo", "") or "(current directory)"}
+BASELINE: {c.get("baseline_sha") or "(current HEAD)"}
+
+OBJECTIVE:
+{msg.objective}
+
+WRITE_SET (only these files may be created/modified):
+{write_set}
+
+DEPENDENCIES:
+{deps}
+
+REQUESTED ACTIONS:
+{actions}
+
+PERMISSIONS: {c.get("permissions", []) or "(none beyond write-set)"}
+
+EVIDENCE REFS:
+{evidence_refs}
+
+PROTOCOL REQUIREMENTS:
+1. First reply with: ACK TASK_ID={msg.task_id}
+2. Then reply with: TASK_START TASK_ID={msg.task_id}
+3. Do the work described above.
+4. Then reply with: TASK_COMPLETE TASK_ID={msg.task_id} followed by a HANDOFF
+   summary containing: files changed, tests run, results, commit SHA, gaps.
+5. Do NOT ask the owner anything. Routine authorised engineering does not
+   require approval. Work autonomously to completion.
+"""
 
     def read_messages(self, limit: int = 50) -> list[dict[str, Any]]:
         """Read recent sessions via `opencode session list`."""
