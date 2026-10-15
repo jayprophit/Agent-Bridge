@@ -20,6 +20,40 @@ REGISTRY = {
         "last_updated": "2026-10-15",
         "source": "code inspection + test suite",
     },
+    "external_worker_autonomous_assignment": {
+        "status": "FAILED",
+        "correction": "EXTERNAL_WORKER_AUTONOMOUS_ASSIGNMENT = FAILED. "
+                      "worker = opencode-primary. "
+                      "reason = OWNER_HAD_TO_MANUALLY_DELIVER_TASK. "
+                      "Jonathan had to manually paste the prompt into OpenCode and start execution. "
+                      "Therefore OPENCODE_AUTONOMOUS_CONTROL = FAILED and "
+                      "EXTERNAL_WORKER_ASSIGNMENT = NOT_LIVE_VERIFIED. "
+                      "Do not claim OpenCode is IMPLEMENTING merely because OpenCode is open, "
+                      "its process is alive, its session is recent, a prompt was copied to clipboard, "
+                      "a click/key sequence was attempted, a task file exists, or Hermes intended to send work. "
+                      "Only task-specific execution evidence counts. "
+                      "The fix: Agent Communications Bridge (compute/agent_message.py + "
+                      "compute/agent_message_bus.py + compute/worker_bridge_adapters.py + "
+                      "compute/bridge_supervisor.py) — a first-party typed message protocol with "
+                      "durable delivery, ACK lifecycle, and receiver-side verification.",
+        "last_updated": "2026-10-15",
+        "source": "owner manual intervention observation + bridge implementation",
+    },
+    "agent_communications_bridge": {
+        "status": "IMPLEMENTED",
+        "evidence": "Agent Communications Bridge v1 (aetherius.agent-message.v1) implemented across "
+                    "4 modules: compute/agent_message.py (canonical envelope, 27 typed intents, "
+                    "7 claim types, idempotency keys), compute/agent_message_bus.py (SQLite WAL "
+                    "durable bus, JSONL audit log, inbox/outbox, recovery), "
+                    "compute/worker_bridge_adapters.py (OpenCodeAdapter via CLI, CodexAdapter via "
+                    "rollout+exec, InternalAgentAdapter, GuiAgentAdapter), compute/bridge_supervisor.py "
+                    "(task lifecycle: assign → verify_ack → verify_start → handoff). "
+                    "43 tests in tests/test_agent_bridge.py cover schema, state machine, durability, "
+                    "adapters, supervisor lifecycle, and manual relay detection (§44). "
+                    "Live OpenCode roundtrip NOT YET VERIFIED — requires autonomous delivery test (§30).",
+        "last_updated": "2026-10-15",
+        "source": "implementation + 43 passing tests",
+    },
     "worker_runtime_leases_heartbeat_checkpoints": {
         "status": "VERIFIED",
         "evidence": "worker.py implements WorkerHeartbeat, WorkerLease, checkpoint() save/load cycle. "
