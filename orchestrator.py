@@ -146,20 +146,30 @@ def seed_worker_registry() -> WorkerRegistry:
     reg = WorkerRegistry()
     reg.register(WorkerInfo(HERMES, "supervisor",
                             ["planning", "arbitration", "review", "decompose"],
-                            ["local"], "IDLE", ""))
+                            ["local"], "IDLE", "",
+                            supports_model_selection=False,
+                            supports_self_model_selection=False))
     reg.register(WorkerInfo(OPENCODE, "coder",
                             ["code-implement", "repo-edit", "test-run"],
-                            ["local"], "IDLE", ""))
+                            ["local"], "IDLE", "",
+                            supports_model_selection=True,
+                            supports_self_model_selection=False))
     reg.register(WorkerInfo(OLLAMA, "model",
                             ["review", "summarise", "classify", "extract",
                              "critique", "analyse"],
-                            ["local"], "IDLE", ""))
+                            ["local"], "IDLE", "",
+                            supports_model_selection=True,
+                            supports_self_model_selection=True))
     reg.register(WorkerInfo(AGENT_BRIDGE, "tool",
                             ["cura-slice", "openmodelica-sim", "freecad-task",
                              "blender-task", "app-execute"],
-                            ["local"], "IDLE", ""))
+                            ["local"], "IDLE", "",
+                            supports_model_selection=False,
+                            supports_self_model_selection=False))
     blocked = WorkerInfo(OPENCLAW, "candidate", [], ["local"],
-                         "OFFLINE", "")
+                         "OFFLINE", "",
+                         supports_model_selection=False,
+                         supports_self_model_selection=False)
     blocked.current_task = "BLOCKED_OPTIONAL: gateway stopped, owner restart required"
     reg.register(blocked)
     return reg

@@ -274,6 +274,8 @@ class WorkerInfo:
     environments: list[str] = field(default_factory=list)
     state: str = "IDLE"     # IDLE | BUSY | DRAINING | OFFLINE
     current_task: str = ""
+    supports_model_selection: bool = False  # can be launched with a selected model
+    supports_self_model_selection: bool = False  # can change model at runtime (FALSE for OpenCode)
 
 
 class WorkerRegistry:

@@ -110,14 +110,17 @@ REGISTRY = {
         "source": "test suite run",
     },
     "worker_self_model_switch": {
-        "status": "FALSE",
+        "status": "CORRECTED + SCHEMA_EXTENDED",
         "evidence": "Workers cannot switch their own models. OpenCode confirmed: '/models is user-side.' "
-                    "Hermes owns model routing. Worker abstraction must distinguish "
-                    "supports_model_selection (can be launched with a selected model) from "
-                    "supports_self_model_selection (can change model at runtime). For OpenCode, "
-                    "the latter is FALSE.",
+                    "Hermes owns model routing. WorkerInfo schema in task_dag.py extended with "
+                    "supports_model_selection (can be launched with a selected model) and "
+                    "supports_self_model_selection (can change model at runtime). OpenCode: "
+                    "supports_model_selection=True, supports_self_model_selection=False. "
+                    "Ollama: supports_model_selection=True, supports_self_model_selection=True. "
+                    "Codex/Codex CLI: supports_model_selection=True, supports_self_model_selection=False "
+                    "(owner gate for model changes). Agent Bridge: both False (tool executor, not model).",
         "last_updated": "2026-10-15",
-        "source": "OpenCode handoff §9",
+        "source": "OpenCode handoff §9 + schema extension in task_dag.py",
     },
     "policy_bridge_network_origin_device_trust": {
         "status": "FIXED + TESTED + INDEPENDENTLY_VERIFIED",

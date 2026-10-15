@@ -2,6 +2,7 @@
 import shutil
 import tempfile
 import unittest
+import pytest
 from pathlib import Path
 
 from model_lifecycle import ModelRecord, ModelRouter
@@ -145,6 +146,7 @@ class TestStaticScannerE2E(unittest.TestCase):
 
 
 class TestRouterFallbackReal(unittest.TestCase):
+    @pytest.mark.slow  # 120s uncatchable socket timeout when pinging ghost model
     def test_fallback_skips_dead_model(self):
         from model_lifecycle import ModelCapabilityProfiler
         reg = __import__("model_lifecycle").ModelRegistry()
