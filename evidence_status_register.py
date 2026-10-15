@@ -29,12 +29,16 @@ REGISTRY = {
         "source": "code inspection + commit evidence",
     },
     "B04_0_spend_guard": {
-        "status": "FIXED_PENDING_INDEPENDENT_QA",
+        "status": "INDEPENDENTLY_VERIFIED",
         "evidence": "Fixed at commit 2701b24 ('security: enforce the zero-spend guard at two independent "
-                    "boundaries'). Requires independent QA verification (task B04-INDEPENDENT-QA) "
-                    "before ACCEPTED.",
+                    "boundaries'). Independent QA completed: 28 NEW tests in tests/test_b04_independent_qa.py "
+                    "(written from scratch, no imports from existing B04 test file) verify checks A-J across "
+                    "CostClass, CostPolicyEngine, and Orchestrator.dispatch(). Additional bug found and fixed: "
+                    "evaluate_provider() was not unpacking cc.is_allowed() tuple (consistent with evaluate_execution) "
+                    "— would have returned truthy (False, reason) instead of False. All 49 tests pass (28 new + "
+                    "15 existing B04 + 6 policy bridge regression). Commit: pending.",
         "last_updated": "2026-10-15",
-        "source": "git commit 2701b24",
+        "source": "independent test authorship + code inspection + runtime verification",
     },
     "genesis_universal_autonomous_execution": {
         "status": "NOT_CURRENTLY_VERIFIED",
