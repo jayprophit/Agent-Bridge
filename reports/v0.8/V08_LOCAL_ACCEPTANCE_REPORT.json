@@ -3,9 +3,9 @@
   {
    "category": "resource_orchestration",
    "status": "PASS",
-   "duration_s": 15.33,
+   "duration_s": 7.29,
    "detail": {
-    "pool": 8,
+    "pool": 4,
     "workloads": 2,
     "waves": 1
    }
@@ -13,7 +13,7 @@
   {
    "category": "small_model_compat",
    "status": "PASS",
-   "duration_s": 0.11,
+   "duration_s": 0.13,
    "detail": {
     "shortlist_n": 5,
     "modes": [
@@ -25,7 +25,7 @@
   {
    "category": "text",
    "status": "PASS",
-   "duration_s": 2.03,
+   "duration_s": 2.09,
    "detail": {
     "backend": "bridge-text"
    }
@@ -41,7 +41,7 @@
   {
    "category": "ocr",
    "status": "NOT_INSTALLED",
-   "duration_s": 0.15,
+   "duration_s": 0.04,
    "detail": {
     "reason": "tesseract absent; no engine"
    }
@@ -49,7 +49,7 @@
   {
    "category": "image_generation_editing",
    "status": "PROVIDER_REQUIRED",
-   "duration_s": 4.11,
+   "duration_s": 4.08,
    "detail": {
     "reason": "no local endpoint (ComfyUI/A1111/compatible)"
    }
@@ -57,7 +57,7 @@
   {
    "category": "tts",
    "status": "PASS",
-   "duration_s": 2.57,
+   "duration_s": 2.15,
    "detail": {
     "voices": [
      "Microsoft Hazel Desktop",
@@ -159,8 +159,8 @@
  ],
  "summary": {
   "NOT_INSTALLED": 2,
+  "PROVIDER_REQUIRED": 2,
   "PASS": 13,
-  "SKIPPED": 1,
-  "PROVIDER_REQUIRED": 2
+  "SKIPPED": 1
  }
 }

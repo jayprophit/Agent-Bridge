@@ -1,12 +1,12 @@
 # v0.8 Local Acceptance Report
 
-- resource_orchestration: PASS (15.33s)
-- small_model_compat: PASS (0.11s)
-- text: PASS (2.03s)
+- resource_orchestration: PASS (7.29s)
+- small_model_compat: PASS (0.13s)
+- text: PASS (2.09s)
 - vision: PROVIDER_REQUIRED (0.00s)
-- ocr: NOT_INSTALLED (0.15s)
-- image_generation_editing: PROVIDER_REQUIRED (4.11s)
-- tts: PASS (2.57s)
+- ocr: NOT_INSTALLED (0.04s)
+- image_generation_editing: PROVIDER_REQUIRED (4.08s)
+- tts: PASS (2.15s)
 - stt: NOT_INSTALLED (0.00s)
 - voice_agent: PASS (0.01s)
 - email: PASS (0.00s)
