@@ -153,10 +153,10 @@ class CostPolicyUnitTests(unittest.TestCase):
                 cost_class=COST_PAID, provider_id="paid-provider",
                 evidence="VERIFIED_CONFIGURED", budget_class="FREE_ONLY"))
         task = OrchestratorTask(objective="task", role="coder")
-        # First: free provider → allowed
+        # First: free provider -> allowed
         allowed_a, _, _ = self.engine.evaluate_execution(task, "free-provider", "")
         self.assertTrue(allowed_a)
-        # Switch to paid provider → denied
+        # Switch to paid provider -> denied
         allowed_b, reason_b, _ = self.engine.evaluate_execution(task, "paid-provider", "")
         self.assertFalse(allowed_b)
         # Each call is independent
@@ -192,7 +192,7 @@ class OrchestratorCostBoundaryTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp(prefix="orch_cost_"))
 
-def test_dispatch_denies_unknown_worker(self):
+    def test_dispatch_denies_unknown_worker(self):
         """A worker without cost class registration is blocked at the boundary."""
         from compute.cost_engine import CostPolicyEngine
         from task_dag import WorkerRegistry, WorkerInfo
@@ -226,9 +226,14 @@ def test_dispatch_denies_unknown_worker(self):
     def test_dispatch_cost_gate_runs_before_execute(self):
         """Verify execute() is NOT called when cost gate denies."""
         from compute.cost_engine import CostPolicyEngine
+        from task_dag import WorkerRegistry, WorkerInfo
         orch = Orchestrator(self.tmp, adapters={"opencode": RecordingAdapter("opencode")})
-        # Empty cost policy → UNKNOWN_COST → DENY
+        # Empty cost policy - UNKNOWN_COST -> DENY
         orch.cost_policy = CostPolicyEngine()
+        # Register OPENCODE in registry so select_worker finds it
+        orch.registry = WorkerRegistry()
+        orch.registry.register(WorkerInfo(
+            OPENCODE, "coder", ["code-implement"], ["local"], "IDLE", ""))
         tid = orch.submit(OrchestratorTask(
             objective="code something", role="coder"))
         out = orch.dispatch(tid)
