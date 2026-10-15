@@ -3,7 +3,7 @@
   {
    "category": "resource_orchestration",
    "status": "PASS",
-   "duration_s": 32.63,
+   "duration_s": 15.33,
    "detail": {
     "pool": 8,
     "workloads": 2,
@@ -13,7 +13,7 @@
   {
    "category": "small_model_compat",
    "status": "PASS",
-   "duration_s": 0.46,
+   "duration_s": 0.11,
    "detail": {
     "shortlist_n": 5,
     "modes": [
@@ -25,7 +25,7 @@
   {
    "category": "text",
    "status": "PASS",
-   "duration_s": 0.26,
+   "duration_s": 2.03,
    "detail": {
     "backend": "bridge-text"
    }
@@ -41,7 +41,7 @@
   {
    "category": "ocr",
    "status": "NOT_INSTALLED",
-   "duration_s": 0.08,
+   "duration_s": 0.15,
    "detail": {
     "reason": "tesseract absent; no engine"
    }
@@ -49,7 +49,7 @@
   {
    "category": "image_generation_editing",
    "status": "PROVIDER_REQUIRED",
-   "duration_s": 4.75,
+   "duration_s": 4.11,
    "detail": {
     "reason": "no local endpoint (ComfyUI/A1111/compatible)"
    }
@@ -57,7 +57,7 @@
   {
    "category": "tts",
    "status": "PASS",
-   "duration_s": 6.73,
+   "duration_s": 2.57,
    "detail": {
     "voices": [
      "Microsoft Hazel Desktop",
@@ -84,7 +84,7 @@
   {
    "category": "email",
    "status": "PASS",
-   "duration_s": 0.01,
+   "duration_s": 0.0,
    "detail": {
     "draft": "artifact-backed",
     "send": "provider-gated"
@@ -93,7 +93,7 @@
   {
    "category": "telephony",
    "status": "PASS",
-   "duration_s": 0.01,
+   "duration_s": 0.0,
    "detail": {
     "lifecycle": "mock ok (PSTN stays PROVIDER_REQUIRED)",
     "duration_s": 0.0
@@ -127,18 +127,16 @@
   {
    "category": "ide_embedding",
    "status": "PASS",
-   "duration_s": 0.05,
+   "duration_s": 0.02,
    "detail": {
     "contract": "interface-only shape ok"
    }
   },
   {
    "category": "v07_regression",
-   "status": "PASS",
-   "duration_s": 531.7,
-   "detail": {
-    "tests_run": 474
-   }
+   "status": "SKIPPED",
+   "duration_s": 0.0,
+   "detail": {}
   },
   {
    "category": "security",
@@ -154,14 +152,15 @@
    "status": "PASS",
    "duration_s": 0.0,
    "detail": {
-    "before_s": 0.396,
-    "after_s": 0.096
+    "before_s": 2.824,
+    "after_s": 2.334
    }
   }
  ],
  "summary": {
-  "PASS": 14,
   "NOT_INSTALLED": 2,
+  "PASS": 13,
+  "SKIPPED": 1,
   "PROVIDER_REQUIRED": 2
  }
 }

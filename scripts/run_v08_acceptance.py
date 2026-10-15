@@ -263,8 +263,8 @@ def _performance():
     if not os.path.exists(path):
         return {"_status": CONFIGURATION_REQUIRED, "reason": "balance report not generated"}
     rep = _json.load(open(path, encoding="utf-8"))
-    assert rep["after"]["errors"] == 0
-    return {"before_s": rep["before"]["duration_s"], "after_s": rep["after"]["duration_s"]}
+    assert rep.get("errors", []) == []
+    return {"before_s": rep["baseline"]["duration_s"], "after_s": rep["adaptive"]["duration_s"]}
 
 
 def main(argv=None) -> int:
