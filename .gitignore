@@ -229,3 +229,4 @@ credentials/
 .env.*knowledge_index.json
 .env.local
 .env.*.local
+kanban.db
