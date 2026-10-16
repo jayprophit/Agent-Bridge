@@ -134,6 +134,44 @@ class TestLedgerQueueWorkers(unittest.TestCase):
         self.assertEqual([w.worker_id for w in reg.available("code")], ["w1"])
         self.assertEqual(len(reg.available()), 1)
 
+    def test_worker_model_selection_fields(self):
+        """Test that WorkerInfo supports model selection fields."""
+        reg = WorkerRegistry()
+        # OpenCode: can be launched with a model, but cannot switch at runtime
+        reg.register(WorkerInfo(worker_id="opencode", kind="native",
+                                capabilities=["code"], state="IDLE",
+                                supports_model_selection=True,
+                                supports_self_model_selection=False))
+        # Ollama: can be launched with a model AND can switch at runtime
+        reg.register(WorkerInfo(worker_id="ollama", kind="native",
+                                capabilities=["model"], state="IDLE",
+                                supports_model_selection=True,
+                                supports_self_model_selection=True))
+        # Hermes: no model selection
+        reg.register(WorkerInfo(worker_id="hermes", kind="supervisor",
+                                capabilities=["planning"], state="IDLE",
+                                supports_model_selection=False,
+                                supports_self_model_selection=False))
+
+        w_oc = reg.workers["opencode"]
+        self.assertTrue(w_oc.supports_model_selection)
+        self.assertFalse(w_oc.supports_self_model_selection)
+
+        w_ol = reg.workers["ollama"]
+        self.assertTrue(w_ol.supports_model_selection)
+        self.assertTrue(w_ol.supports_self_model_selection)
+
+        w_h = reg.workers["hermes"]
+        self.assertFalse(w_h.supports_model_selection)
+        self.assertFalse(w_h.supports_self_model_selection)
+
+        # Default values should be False
+        reg.register(WorkerInfo(worker_id="default", kind="native",
+                                capabilities=["code"], state="IDLE"))
+        w_def = reg.workers["default"]
+        self.assertFalse(w_def.supports_model_selection)
+        self.assertFalse(w_def.supports_self_model_selection)
+
 
 class TestHandoff(unittest.TestCase):
     def test_contracts(self):

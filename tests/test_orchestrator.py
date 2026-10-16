@@ -49,6 +49,25 @@ class RegistryTests(unittest.TestCase):
         reg = seed_worker_registry()
         self.assertEqual(reg.workers[OPENCLAW].state, "OFFLINE")
 
+    def test_worker_model_selection_fields(self):
+        """Verify seed_worker_registry sets model selection fields correctly."""
+        reg = seed_worker_registry()
+        # OpenCode: can be launched with a model, but cannot switch at runtime
+        self.assertTrue(reg.workers[OPENCODE].supports_model_selection)
+        self.assertFalse(reg.workers[OPENCODE].supports_self_model_selection)
+        # Ollama: can be launched with a model AND can switch at runtime
+        self.assertTrue(reg.workers[OLLAMA].supports_model_selection)
+        self.assertTrue(reg.workers[OLLAMA].supports_self_model_selection)
+        # Hermes: no model selection
+        self.assertFalse(reg.workers[HERMES].supports_model_selection)
+        self.assertFalse(reg.workers[HERMES].supports_self_model_selection)
+        # Agent Bridge: no model selection
+        self.assertFalse(reg.workers[AGENT_BRIDGE].supports_model_selection)
+        self.assertFalse(reg.workers[AGENT_BRIDGE].supports_self_model_selection)
+        # OpenClaw: no model selection (offline)
+        self.assertFalse(reg.workers[OPENCLAW].supports_model_selection)
+        self.assertFalse(reg.workers[OPENCLAW].supports_self_model_selection)
+
     def test_ollama_role_models_are_installed_ids(self):
         self.assertIn("qwen3:0.6b", OLLAMA_ROLE_MODELS["FAST_LOCAL"])
         self.assertIn("moondream:latest", OLLAMA_ROLE_MODELS["VISION_LOCAL"])
