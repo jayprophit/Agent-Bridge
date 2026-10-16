@@ -596,10 +596,17 @@ class SupervisorRuntime:
         self.cycles += 1
         actions: dict[str, Any] = {"cycle": self.cycles, "workers": {}}
 
+        # Collect statuses ONCE per cycle for all adapters (workers + providers)
+        # to avoid multiple adapter.status() calls which breaks progress tracking.
+        worker_statuses: dict[str, dict[str, Any]] = {}
+        for wid, adapter in self.adapters.items():
+            st = adapter.status()
+            worker_statuses[wid] = st
+
         for wid, adapter in self.adapters.items():
             if wid in self.providers:
                 continue  # §9/§10: providers are runtimes, not supervised workers
-            st = adapter.status()
+            st = worker_statuses[wid]
             verdict = st.get("verdict", UNKNOWN_VERDICT)
             rec = self.supervisor.worker(wid)
             actions["workers"][wid] = {"verdict": verdict,
@@ -655,14 +662,15 @@ class SupervisorRuntime:
         # §36/§49: the Supervisor Constitution — hard gates, not suggestions.
         # Run BEFORE continuation computation so a tripped invariant cannot
         # let the cycle clear continuation_required (INVARIANT 28).
-        actions["constitution"] = self.check_invariants(actions)
+        actions["constitution"] = self.check_invariants(actions, worker_statuses)
         # §33 tail: checkpoint every cycle (persist computes the honest
         # continuation flag itself — one computation, never two)
         self.persist(actions)
         self._last_actions = [actions]
         return actions
 
-    def _build_invariants_snapshot(self, actions: dict[str, Any]) -> dict[str, Any]:
+    def _build_invariants_snapshot(self, actions: dict[str, Any],
+                                  worker_statuses: Optional[dict[str, dict[str, Any]]] = None) -> dict[str, Any]:
         """Project the live runtime + hive state into the flat dict shape that
         compute.supervisor_invariants.check_all() consumes.
 
@@ -679,7 +687,11 @@ class SupervisorRuntime:
             st_verdict = aw.get("verdict")
             st_evidence = aw.get("evidence")
             if st_verdict is None or st_evidence is None:
-                st = adapter.status()
+                # Use pre-collected statuses if available, otherwise fall back to adapter.status()
+                if worker_statuses and wid in worker_statuses:
+                    st = worker_statuses[wid]
+                else:
+                    st = adapter.status()
                 st_verdict = st_verdict or st.get("verdict", UNKNOWN_VERDICT)
                 st_evidence = st_evidence or st.get("evidence", [])
             w: dict[str, Any] = {
@@ -795,10 +807,10 @@ class SupervisorRuntime:
             "model_routing": {"paid_budget_remaining": 0},  # §12: OWNER policy
             "lane_starvation": lane_starvation,    # §14/§15: live starvation
             "deferred_tasks": [t for t in self.hive._deferred.values()],
-            "availability": self._availability_snapshot(),  # §H12: degradation resilience
+            "availability": self._availability_snapshot(worker_statuses),  # §H12: degradation resilience
         }
 
-    def _availability_snapshot(self) -> dict[str, Any]:
+    def _availability_snapshot(self, worker_statuses: Optional[dict[str, dict[str, Any]]] = None) -> dict[str, Any]:
         """§H12: build the availability state for the degradation-resilience
         invariant.  Tracks per-tier provider status so INVARIANT_15 can detect
         when a core capability tier goes fully OFFLINE and no fallback exists."""
@@ -819,7 +831,10 @@ class SupervisorRuntime:
             "paid": [],
         }
         for wid, adapter in self.adapters.items():
-            st = adapter.status()
+            if worker_statuses and wid in worker_statuses:
+                st = worker_statuses[wid]
+            else:
+                st = adapter.status()
             verdict = st.get("verdict", "UNKNOWN")
             # classify into a tier
             tier = "local" if getattr(adapter, "provider", "") == "ollama" else "free_cloud"
@@ -829,7 +844,10 @@ class SupervisorRuntime:
                 "status": verdict,
             })
         for wid, provider in self.providers.items():
-            st = provider.status()
+            if worker_statuses and wid in worker_statuses:
+                st = worker_statuses[wid]
+            else:
+                st = provider.status()
             verdict = st.get("verdict", "UNKNOWN")
             tier = "owned_free" if getattr(provider, "provider", "") == "nous" else "free_cloud"
             tiers.setdefault(tier, []).append({
@@ -844,20 +862,22 @@ class SupervisorRuntime:
             "tiers": tiers,
         }
 
-    def check_invariants(self, actions: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    def check_invariants(self, actions: Optional[dict[str, Any]] = None,
+                         worker_statuses: Optional[dict[str, dict[str, Any]]] = None) -> dict[str, Any]:
         """§36/§49: run the Constitution hard gates.  Returns the
         ConstitutionResult.to_dict() so the dashboard can surface violations
         with evidence.  A FAIL on CRITICAL/HIGH also forces continuation via
         gate_continuation (called by _compute_continuation)."""
         from compute.supervisor_invariants import (  # noqa: E402
             check_all, gate_continuation)
-        snapshot = self._build_invariants_snapshot(actions or {})
+        snapshot = self._build_invariants_snapshot(actions or {}, worker_statuses)
         self._last_snapshot = snapshot  # §6: persist for read-model access
         result = check_all(snapshot)
         self._constitution_result = result.to_dict()
         return result.to_dict()
 
-    def _compute_continuation(self, actions: Optional[dict[str, Any]] = None) -> bool:
+    def _compute_continuation(self, actions: Optional[dict[str, Any]] = None,
+                              snapshot: Optional[dict[str, Any]] = None) -> bool:
         """§27/§45.8/§36: the single honest continuation computation. True
         unless NOTHING remains: no unread handoffs, no open gaps, no worker
         needing supervisor action (SUPERVISOR_DEFECT *or* NO_PROGRESS — a
@@ -884,8 +904,9 @@ class SupervisorRuntime:
             or len(self.hive._deferred) > 0)  # quota-locked work pending
         # §36/§49: Constitution gates — a tripped CRITICAL/HIGH invariant
         # forces continuation regardless of surface reports (INVARIANT 28).
-        return base or gate_continuation(self._build_invariants_snapshot(
-            actions or {}))
+        if snapshot is None:
+            snapshot = self._build_invariants_snapshot(actions or {})
+        return base or gate_continuation(snapshot)
 
     def _check_in(self, worker_id: str, adapter: WorkerAdapter,
                   actions: dict[str, Any]) -> None:
@@ -1147,7 +1168,10 @@ class SupervisorRuntime:
         verified) keeps continuation_required True (§45.8)."""
         if actions is None:
             actions = self._last_actions[-1] if self._last_actions else {}
-        self.continuation_required = self._compute_continuation(actions)
+        # Use the snapshot from check_invariants (stored in self._last_snapshot)
+        # to avoid re-building it and calling adapter.status() again.
+        snapshot = getattr(self, "_last_snapshot", None)
+        self.continuation_required = self._compute_continuation(actions, snapshot)
         data = {
             "state_version": "1.0",
             "supervisor_instance_id": self.instance_id,

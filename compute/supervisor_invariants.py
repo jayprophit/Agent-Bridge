@@ -415,6 +415,23 @@ def invariant_15_degradation_resilience(snapshot: dict) -> Optional[Violation]:
     no fallback (local / owned-entitlement / another free tier) exists to
     preserve it.
     """
+    # If there's no active work, degradation resilience is not applicable —
+    # the programme is genuinely idle, not degraded.
+    gaps = _as_list(snapshot.get("gaps"))
+    ready_tasks = _as_list(snapshot.get("ready_tasks"))
+    handoffs_pending = snapshot.get("handoffs_pending", 0)
+    projects = snapshot.get("projects") or {}
+    active_projects = any(
+        isinstance(p, dict) and p.get("has_unblocked_work")
+        for p in projects.values()
+    )
+    if not gaps and not ready_tasks and handoffs_pending == 0 and not active_projects:
+        return Violation(
+            "INVARIANT_15_DEGRADATION_RESILIENCE", "§H12",
+            severity=MEDIUM, status=STUBBED,
+            evidence=["no active work (no gaps, ready tasks, handoffs, or unblocked projects) "
+                      "— degradation resilience not applicable"],
+            fix_suggestion="No action needed; invariant applies when work exists.")
     availability = snapshot.get("availability")
     if not availability:
         return Violation(
