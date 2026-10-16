@@ -194,6 +194,72 @@ REGISTRY = {
         "last_updated": "2026-10-15",
         "source": "code inspection + test suite search (corrected from NOT_LOCATED)",
     },
+    "E2E007_lifecycle_evidence_fusion": {
+        "status": "IMPLEMENTED + TESTED (11 passing)",
+        "evidence": "Structured lifecycle evidence + evidence fusion (compute/bridge_lifecycle.py). "
+                    "The supervisor can independently derive DELIVERED/ACKNOWLEDGED/STARTED/PROGRESSING/"
+                    "COMPLETED/HANDOFF_READY from MULTIPLE evidence channels — transport evidence (adapter "
+                    "created invocation, sent brief, obtained session, received output), task-specific action "
+                    "(file/tool/test evidence), model declarations (ACK/START/COMPLETE), and independent QA. "
+                    "Model markers are ONE optional channel among several — never mandatory. "
+                    "Completion requires artifacts + tests + commit + INDEPENDENT QA (never the worker's "
+                    "own word). Tested in tests/test_bridge_e2e007_lifecycle_evidence.py (11 tests).",
+        "last_updated": "2026-10-16",
+        "source": "compute/bridge_lifecycle.py + tests/test_bridge_e2e007_lifecycle_evidence.py",
+    },
+    "E2E008_standing_autonomous_loop": {
+        "status": "IMPLEMENTED + TESTED (6 passing)",
+        "evidence": "Standing autonomous loop (compute/bridge_standing_loop.py). Start the supervisor daemon "
+                    "ONCE; it drains a READY queue through the bridge with NO manual runner invocation, "
+                    "prompt insertion, task-B command, continue command, or owner input. Scheduler auto-selects "
+                    "TASK-B after TASK-A is verified. Replaces per-task one-shot to the standing multi-task "
+                    "supervisor (§30 gap closed). Tested in tests/test_bridge_e2e008_standing_loop.py (6 tests).",
+        "last_updated": "2026-10-16",
+        "source": "compute/bridge_standing_loop.py + tests/test_bridge_e2e008_standing_loop.py",
+    },
+    "H02_live_nested_worker_recall": {
+        "status": "LIVE_VERIFIED (7 tests)",
+        "evidence": "Real nested-worker recall acceptance over the ACTUAL BridgeControlChannel: "
+                    "parent continues correctly after a child's recall; target team recalled; RECALL cascades "
+                    "to all descendants; active/queued authority expires; late stale response from a recalled "
+                    "worker is recorded but its side effects are DENIED (authorize_side_effects fails closed); "
+                    "EMERGENCY_HALT denies all, lift is owner-only. Tested in "
+                    "tests/test_bridge_h02_live_recall.py (7 tests), all PASSED.",
+        "last_updated": "2026-10-16",
+        "source": "compute/bridge_control.py + tests/test_bridge_h02_live_recall.py",
+    },
+    "H06_live_contradictory_claims": {
+        "status": "LIVE_VERIFIED (6 tests)",
+        "evidence": "Live contradictory-claims acceptance: two real contradictory claims → conflict detected "
+                    "→ both preserved → resolution by INDEPENDENT EVIDENCE (no majority vote; no shorter-message "
+                    "wins; no most-confident wins) → consistent result received. Only a VERIFIED_CONCLUSION can "
+                    "supersede both; a newer claim alone does NOT win (no recency bias). Tested in "
+                    "tests/test_bridge_h06_live_conflict.py (6 tests), all PASSED. Includes the full AT-26 path: "
+                    "two claims → conflict → evidence-based resolution.",
+        "last_updated": "2026-10-16",
+        "source": "compute/conflict_resolution.py + tests/test_bridge_h06_live_conflict.py",
+    },
+    "programme_acceptance_gate_h12": {
+        "status": "IMPLEMENTED (compute/programme_gate.py + build_h12_programme_gate)",
+        "evidence": "Programme acceptance gate for V2 H12 minimum deployment. Evaluates live evidence: "
+                    "orchestration+state, shared model gateway, two free inference routes, remote execution "
+                    "target, genesis solo capability (NOT CURRENTLY VERIFIED — owner blocked), supervised live "
+                    "team, INVARIANT_15 degradation safeguard, £0/free guard, durable message bus, evidence "
+                    "register. Outputs MILESTONE_REACHED or NOT_YET with blocking failures. Success = completed "
+                    "tasks + verifiable artefacts, NOT counts of providers/subagents/frameworks (H12).",
+        "last_updated": "2026-10-16",
+        "source": "compute/programme_gate.py",
+    },
+    "bridge_generic_transport": {
+        "status": "IMPLEMENTED",
+        "evidence": "Agent Communications Bridge is first-party generic (compute/worker_bridge_adapters.py): "
+                    "OpenCodeAdapter (CLI, §13), CodexAdapter (rollout+exec, §31), InternalAgentAdapter (in-process, "
+                    "$32), GuiAgentAdapter (GUI fallback, §14). Same canonical envelope across all transports. "
+                    "Genesis uses the thin ActionProposal→POST intake module. Bridge scope guard (owner/workspace/tenant) "
+                    "implemented in compute/bridge_scope.py.",
+        "last_updated": "2026-10-16",
+        "source": "compute/worker_bridge_adapters.py + compute/bridge_scope.py",
+    },
     "full_agent_bridge_suite": {
         "status": "NOT_YET_VERIFIED_GREEN",
         "evidence": "Previous reports of 1,407 Agent Bridge tests and 1407+ acceptance tests are "

@@ -198,11 +198,79 @@ class CheckpointReader:
         }
 
 
+_MIME = {
+    ".html": "text/html; charset=utf-8",
+    ".js": "text/javascript; charset=utf-8",
+    ".css": "text/css; charset=utf-8",
+    ".json": "application/json",
+    ".webp": "image/webp",
+    ".png": "image/png",
+    ".svg": "image/svg+xml",
+    ".glb": "model/gltf-binary",
+    ".vrm": "model/gltf-binary",
+    ".ico": "image/x-icon",
+}
+
+
+def _install_ui_routes(srv, ui_root: Path) -> None:
+    """Serve ui/ statically on the same server as the API.
+
+    One process, one origin: GET / and /ui/<file> serve the dashboard page,
+    so the browser never makes a cross-origin call to the read-only API.
+    """
+    ui_root = ui_root.resolve()
+    base_handler = srv.RequestHandlerClass
+
+    class UiHandler(base_handler):  # type: ignore[misc, valid-type]
+        def do_GET(self):  # noqa: N802
+            path = self.path.split("?", 1)[0]
+            if path == "/ui":
+                body = b""
+                self.send_response(301)
+                self.send_header("Location", "/ui/")
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
+            rel = None
+            if path == "/":
+                rel = "index.html"
+            elif path.startswith("/ui/"):
+                rel = path[len("/ui/"):] or "index.html"
+            if rel is None:
+                return base_handler.do_GET(self)
+            target = (ui_root / rel).resolve()
+            try:
+                target.relative_to(ui_root)
+            except ValueError:
+                return self._send(403, {"ok": False,
+                                        "error_code": "UI_FORBIDDEN"})
+            if not target.is_file():
+                return self._send(404, {"ok": False,
+                                        "error_code": "UI_NOT_FOUND"})
+            body = target.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type",
+                             _MIME.get(target.suffix.lower(),
+                                       "application/octet-stream"))
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *args: Any) -> None:
+            pass
+
+    srv.RequestHandlerClass = UiHandler
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8472)
     ap.add_argument("--state-dir", default="supervisor_state")
     ap.add_argument("--interval", type=float, default=120.0)
+    ap.add_argument("--ui-root", default=str(_REPO_ROOT / "ui"))
+    ap.add_argument("--no-ui", action="store_true",
+                    help="API only; do not serve the dashboard page")
     args = ap.parse_args()
 
     reader = CheckpointReader(args.state_dir,
@@ -231,8 +299,12 @@ def main():
     })
 
     srv = sup.build_supervisor_server(state, host="127.0.0.1", port=args.port)
+    if not args.no_ui:
+        _install_ui_routes(srv, Path(args.ui_root))
     print(f"Supervisor Dashboard API (read-model) on http://127.0.0.1:{args.port} "
           f"- reading daemon checkpoint <- {reader.ckpt_path}", flush=True)
+    if not args.no_ui:
+        print(f"Dashboard UI on http://127.0.0.1:{args.port}/ui/", flush=True)
 
     def _refresh_loop():
         while True:

@@ -43,6 +43,47 @@
     ctx.fillText(this.state.event, cx, H - 12);
   };
 
+  /* Image-state renderer (v1.0): drives the face art shipped with the
+   * dashboard. State -> face file lives here; ring/glow/bars are CSS keyed
+   * off the wrapper's data-state attribute. Falls back to Renderer2D at the
+   * caller if the host has no img element. */
+  var STATE_FACES = {
+    IDLE: "assets/face-neutral.webp",
+    LISTENING: "assets/face-neutral.webp",
+    SPEAKING: "assets/face-neutral.webp",
+    APPROVAL: "assets/face-neutral.webp",
+    ERROR: "assets/face-neutral.webp",
+    THINKING: "assets/face-wireframe.webp",
+    WORKING: "assets/face-wireframe.webp",
+    TOOL_RUNNING: "assets/face-wireframe.webp"
+  };
+
+  function ImageRenderer(wrap) {
+    this.wrap = wrap;
+    this.img = wrap ? wrap.querySelector("#face-img") : null;
+    this.state = { event: "IDLE", emotion: "neutral" };
+    this._lastSrc = "";
+  }
+  ImageRenderer.prototype.apply = function (ev) {
+    if (!this.wrap) return;
+    if (ev.event) this.state.event = ev.event;
+    if (ev.emotion) this.state.emotion = ev.emotion;
+    var st = this.state.event;
+    if (this.wrap.getAttribute("data-state") !== st) {
+      this.wrap.setAttribute("data-state", st);
+    }
+    var src = STATE_FACES[st] || STATE_FACES.IDLE;
+    if (this.img && this._lastSrc !== src) {
+      this.img.src = src;
+      this._lastSrc = src;
+    }
+    var label = document.getElementById("avatar-state");
+    if (label) {
+      label.textContent = st + (this.state.emotion && this.state.emotion !== "neutral"
+        ? " · " + this.state.emotion : "");
+    }
+  };
+
   function useThreeRenderer(canvas, glbUrl, onReady) {
     // Integration point: host provides window.THREE (pinned version).
     // Loads reference-avatar.glb (or a user VRM/GLB); jaw/gaze targets by
@@ -51,6 +92,7 @@
     return { three: true, glbUrl: glbUrl, onReady: onReady || null };
   }
 
-  window.Avatar = { Renderer2D: Renderer2D, useThreeRenderer: useThreeRenderer,
+  window.Avatar = { Renderer2D: Renderer2D, ImageRenderer: ImageRenderer,
+    useThreeRenderer: useThreeRenderer,
     JAW: JAW, EMOTIONS: Object.keys(EMOTION_EYES) };
 })();
