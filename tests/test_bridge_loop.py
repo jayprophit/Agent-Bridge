@@ -92,18 +92,30 @@ class TestAutonomousLoop:
         assert rec.ok is False
         assert rec.outcome == "failed_before_ack"
 
-    def test_missing_start_stops_loop(self):
+    def test_missing_start_inferred_from_ack_delivery(self):
+        """START can be inferred from ACK + successful delivery (no explicit marker needed)."""
         adapter = MockAdapter({"T-1": f"**ACK TASK_ID=T-1**\n(no start marker)"})
         loop = BridgeAutonomousLoop(adapter)
         rec = loop.run_task("T-1", "do the thing")
-        assert rec.outcome == "failed_before_start"
+        # START is inferred from ACK + delivery, but COMPLETE fails (no marker)
+        # The task fails at COMPLETE step, not START
+        assert rec.outcome == "qa_or_evidence_failed"
+        start_step = next(s for s in rec.steps if s.step == "task_start")
+        assert start_step.passed is True
+        assert "inferred" in start_step.evidence.lower()
 
-    def test_missing_complete_stops_loop(self):
+    def test_missing_complete_defers_to_write_set_qa(self):
+        """COMPLETE missing doesn't fail immediately — defers to write-set + QA."""
         adapter = MockAdapter({
             "T-1": "**ACK TASK_ID=T-1**\n**TASK_START TASK_ID=T-1**\n(no complete)"})
         loop = BridgeAutonomousLoop(adapter)
         rec = loop.run_task("T-1", "do the thing")
-        assert rec.outcome == "failed_before_complete"
+        # COMPLETE step fails (no marker) but doesn't stop the loop
+        # Final outcome depends on write-set + QA (both pass here since none declared)
+        assert rec.outcome == "qa_or_evidence_failed"
+        complete_step = next(s for s in rec.steps if s.step == "task_complete")
+        assert complete_step.passed is False
+        assert "inferred" in complete_step.evidence.lower()
 
     def test_queue_auto_continues(self):
         """§30: after a verified task, the loop auto-assigns the next one."""
