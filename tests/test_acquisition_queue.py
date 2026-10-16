@@ -148,15 +148,24 @@ class TestRouterFallbackReal(unittest.TestCase):
     def test_fallback_skips_dead_model(self):
         from model_lifecycle import ModelCapabilityProfiler
         reg = __import__("model_lifecycle").ModelRegistry()
-        for mid in ("ghost-model-xyz", "qwen3:0.6b"):
+        for mid in ("ghost-model-xyz", "qwen3:latest"):
             rec = ModelRecord(model_id=mid, provider="ollama", parameters_b=0.6)
             reg.register(rec)
         router = ModelRouter(reg)
         prof = ModelCapabilityProfiler()
+        # Mock the quick_ping to avoid real Ollama API calls
+        from unittest.mock import MagicMock
+        mock_prof = MagicMock()
+        mock_prof.quick_ping.side_effect = lambda m: MagicMock(
+            ok=(m != "ghost-model-xyz"),
+            tokens_per_sec=10.0,
+            output="OK",
+            error=""
+        )
         out = router.route_with_fallback(
             {"capabilities": []}, {"ram_free_gb": 6},
-            healthy=lambda m: prof.quick_ping(m).ok)
-        self.assertEqual(out["model"], "qwen3:0.6b")
+            healthy=lambda m: mock_prof.quick_ping(m).ok)
+        self.assertEqual(out["model"], "qwen3:latest")
         self.assertIn("ghost-model-xyz", out["tried"])
 
 
