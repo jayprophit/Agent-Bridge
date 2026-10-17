@@ -12,7 +12,7 @@ def calculate_fibonacci(n: int) -> int:
         return 1
     else:
         # BUG: should be n-1 + n-2, not n-1 + n-1
-        return calculate_fibonacci(n - 1) + calculate_fibonacci(n - 2)
+        return calculate_fibonacci(n - 1) + calculate_fibonacci(n - 1)
 
 
 def test_fibonacci():
