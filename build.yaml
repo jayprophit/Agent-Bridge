@@ -1,0 +1,102 @@
+# =============================================================================
+# BUILD MANIFEST — Agent-Bridge (runtime safety variant)
+# =============================================================================
+# Authoritative record of how this project is built, tested and verified, and
+# of what is still broken. Read by Aetherius-OS's build manifest registry
+# (docs/BUILD-MANIFEST-REGISTRY.yaml) and validated by
+# src/programme/buildManifest.ts.
+# =============================================================================
+schema_version: "1.0.0"
+
+project:
+  id: agent-bridge-runtimesafety
+  name: Agent-Bridge (runtime safety)
+  kind: library
+  domain: agent-bridge
+  description: >-
+    The Agent-Bridge codebase on the unit/runtime-safety-fixes branch. Adds
+    the runtime safety fixes and the cloud/hybrid audit resolution work.
+  repository: true
+  branch: unit/runtime-safety-fixes
+  languages: [python, powershell, json]
+
+toolchain:
+  build_system: python/pytest
+  package_manager: pip
+  requirements:
+    - name: python
+      version: ">=3.13"
+      required: true
+      purpose: the runtime itself
+    - name: pytest
+      version: ">=9"
+      required: true
+      purpose: the verification suite
+    - name: psutil
+      version: "==7.2.2"
+      required: false
+      purpose: telemetry extras and the benchmark harness
+
+commands:
+  - name: install
+    command: pip install -e .
+    working_directory: .
+    timeout_minutes: 10
+  - name: test
+    command: python -m pytest tests -m "not slow" -q
+    working_directory: .
+    timeout_minutes: 20
+  - name: verify
+    command: python -m pytest tests -m "not slow" -q
+    working_directory: .
+    timeout_minutes: 20
+  - name: test-unittest
+    command: python -m unittest discover -s tests -p test_*.py
+    working_directory: .
+    timeout_minutes: 20
+
+dependencies:
+  projects: [agent-bridge, genesis]
+  external: []
+
+status:
+  state: PARTIAL
+  last_verified: "2026-10-20"
+  summary: >-
+    Same v0.8.1 core and same verification surface as the parent
+    Agent-Bridge project. The working tree is clean, and the branch head is
+    a documentation commit that resolves a cloud/hybrid audit by recording
+    which states are fixed and which remain.
+  evidence:
+    - "git log -1 -> 7d24feb docs: Cloud/Hybrid audit RESOLUTION - fixed vs remaining states"
+    - "git status --porcelain -> clean working tree on branch unit/runtime-safety-fixes"
+    - "pyproject.toml -> name agent-bridge, version 0.8.1, requires-python >=3.13"
+
+known_issues:
+  - id: ABRS-001
+    severity: medium
+    summary: >-
+      The runtime safety fixes on this branch are not yet reconciled with the
+      parent project, so the same defect may be fixed in one tree and not
+      the other.
+    evidence: >-
+      The branch head is a documentation commit; the fix commits preceding
+      it are not present on the parent main branch.
+    status: OPEN
+    todo_ref: TODO-ABRS-001
+  - id: ABRS-002
+    severity: medium
+    summary: >-
+      The cloud/hybrid audit is recorded as resolved into fixed and remaining
+      states, but the remaining states are not tracked in a shared register.
+    evidence: >-
+      HEAD commit subject is "docs: Cloud/Hybrid audit RESOLUTION - fixed vs
+      remaining states".
+    status: OPEN
+    todo_ref: TODO-ABRS-002
+
+notes:
+  - >-
+    Four Agent-Bridge trees exist at v0.8.1 on divergent branches with no
+    merge strategy recorded. A single shared defect register, rather than
+    four independent copies, is what would keep them honest.
