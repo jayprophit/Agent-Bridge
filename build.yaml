@@ -1,0 +1,103 @@
+# =============================================================================
+# BUILD MANIFEST — Agent-Bridge (cloud-hybrid runtime variant)
+# =============================================================================
+# Authoritative record of how this project is built, tested and verified, and
+# of what is still broken. Read by Aetherius-OS's build manifest registry
+# (docs/BUILD-MANIFEST-REGISTRY.yaml) and validated by
+# src/programme/buildManifest.ts.
+# =============================================================================
+schema_version: "1.0.0"
+
+project:
+  id: agent-bridge-cloudhybrid
+  name: Agent-Bridge (cloud-hybrid runtime)
+  kind: library
+  domain: agent-bridge
+  description: >-
+    The Agent-Bridge codebase on the unit/cloud-hybrid-runtime branch. Adds
+    the local / cloud / hybrid runtime readiness work and its reconciliation
+    audit over the shared v0.8.1 core.
+  repository: true
+  branch: unit/cloud-hybrid-runtime
+  languages: [python, powershell, json]
+
+toolchain:
+  build_system: python/pytest
+  package_manager: pip
+  requirements:
+    - name: python
+      version: ">=3.13"
+      required: true
+      purpose: the runtime itself
+    - name: pytest
+      version: ">=9"
+      required: true
+      purpose: the verification suite
+    - name: uv
+      version: ">=0.4"
+      required: false
+      purpose: dependency resolution; this branch has an untracked uv.lock
+
+commands:
+  - name: install
+    command: pip install -e .
+    working_directory: .
+    timeout_minutes: 10
+  - name: test
+    command: python -m pytest tests -m "not slow" -q
+    working_directory: .
+    timeout_minutes: 20
+  - name: verify
+    command: python -m pytest tests -m "not slow" -q
+    working_directory: .
+    timeout_minutes: 20
+  - name: test-unittest
+    command: python -m unittest discover -s tests -p test_*.py
+    working_directory: .
+    timeout_minutes: 20
+
+dependencies:
+  projects: [agent-bridge, genesis]
+  external: []
+
+status:
+  state: PARTIAL
+  last_verified: "2026-10-20"
+  summary: >-
+    Same v0.8.1 core and same verification surface as the parent
+    Agent-Bridge project, on a branch that adds the cloud-hybrid runtime
+    readiness audit. The branch carries one untracked file, uv.lock, whose
+    resolution is not yet established.
+  evidence:
+    - "pyproject.toml -> name agent-bridge, version 0.8.1, requires-python >=3.13"
+    - "git log -1 -> d0219ea docs: Genesis Local/Cloud/Hybrid runtime readiness audit (reconciliation unit)"
+    - "git status --porcelain -> ?? uv.lock"
+
+known_issues:
+  - id: ABCH-001
+    severity: low
+    summary: >-
+      uv.lock is present but untracked, so the dependency resolution this
+      branch was developed against is not recorded.
+    evidence: >-
+      git status --porcelain -> "?? uv.lock"
+    status: OPEN
+    todo_ref: TODO-ABCH-001
+  - id: ABCH-002
+    severity: medium
+    summary: >-
+      The cloud-hybrid readiness work is recorded as an audit rather than a
+      verified runtime, and the branch has diverged from main.
+    evidence: >-
+      HEAD commit subject is "docs: Genesis Local/Cloud/Hybrid runtime
+      readiness audit (reconciliation unit)".
+    status: OPEN
+    todo_ref: TODO-ABCH-002
+
+notes:
+  - >-
+    This branch is a variant of Agent-Bridge, not a separate codebase. A fix
+    landed on main may need porting here, and the reverse is also true.
+  - >-
+    The hybrid runtime depends on the Hermes model/provider policy recorded
+    in HERMES_MODEL_PROVIDER_ENVIRONMENT_GATE_2026-10-07.md.
