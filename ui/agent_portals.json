@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "comment": "Per-agent dashboard registry for the Aetherius Supervisor UI. 'url' may contain {profile}, {worker} and {host} placeholders. Keys ending in * match by prefix. embed=false forces new-tab open.",
+  "portals": {
+    "aetherius-supervisor": {
+      "label": "Hermes web portal",
+      "kind": "hermes",
+      "url": "http://127.0.0.1:9119/chat?profile={profile}",
+      "params": { "profile": "aetherius-build" },
+      "embed": true
+    },
+    "hermes-*": {
+      "label": "Hermes portal",
+      "kind": "hermes",
+      "url": "http://127.0.0.1:9119/chat?profile={worker}",
+      "embed": true
+    }
+  }
+}

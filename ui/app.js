@@ -36,6 +36,10 @@
   var bridgeOnline = false;
   var held = [];
   var activeAgent = null;
+  var portalRegistry = null;
+  var lastWorkers = [];
+  var lastAuth = {};
+  var lastRosterSig = "";
 
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) {
@@ -59,6 +63,13 @@
     return String(v).slice(0, 19);
   }
   function unwrap(v) { return (v && typeof v === "object" && "value" in v) ? v.value : v; }
+  function fmtVal(v) {
+    if (v === undefined || v === null || v === "") return "";
+    if (typeof v === "object") {
+      try { return JSON.stringify(v); } catch (e) { return String(v); }
+    }
+    return String(v);
+  }
   function unwrapSection(sec) {
     sec = unwrap(sec);
     var out = {};
@@ -104,6 +115,111 @@
     f.appendChild(el("div", "feedline", ts() + " " + text));
     while (f.children.length > 200) f.removeChild(f.firstChild);
     f.scrollTop = f.scrollHeight;
+  }
+
+  /* ---- agent detail + per-agent dashboards (agent_portals.json) ---------- */
+
+  function loadPortals() {
+    return fetch("agent_portals.json", { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
+      .then(function (j) { portalRegistry = (j && j.portals) || {}; })
+      .catch(function () { portalRegistry = {}; });
+  }
+
+  function resolvePortal(workerId) {
+    if (!portalRegistry || !workerId) return null;
+    var entry = portalRegistry[workerId];
+    if (!entry) {
+      var keys = Object.keys(portalRegistry);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (k.slice(-1) === "*" && workerId.indexOf(k.slice(0, -1)) === 0) {
+          entry = portalRegistry[k];
+          break;
+        }
+      }
+    }
+    if (!entry || !entry.url) return null;
+    var profile = qp.get("profile") || (entry.params && entry.params.profile) || PORTAL_PROFILE;
+    var url = entry.url
+      .replace("{profile}", encodeURIComponent(profile))
+      .replace("{worker}", encodeURIComponent(workerId))
+      .replace("{host}", location.hostname);
+    return { label: entry.label || "Dashboard", url: url, embed: entry.embed !== false };
+  }
+
+  function openEmbed(url, label) {
+    var m = $("embed-modal"), f = $("embed-frame");
+    if (!m || !f) { window.open(url, "_blank"); return; }
+    var t = $("embed-title"), ob = $("embed-open"), fb = $("embed-fallback"), cb = $("embed-close");
+    if (t) t.textContent = label || url;
+    if (ob) ob.onclick = function () { window.open(url, "_blank"); };
+    if (fb) fb.classList.remove("on");
+    f.onerror = function () { if (fb) fb.classList.add("on"); };
+    f.src = url;
+    m.classList.add("on");
+    if (cb) cb.focus();
+  }
+  function closeEmbed() {
+    var m = $("embed-modal"), f = $("embed-frame");
+    if (f) f.src = "about:blank";
+    if (m) m.classList.remove("on");
+  }
+
+  function openPortal(workerId) {
+    var p = resolvePortal(workerId);
+    if (!p) { feedLine("no dashboard registered for " + workerId); return false; }
+    if (p.embed) openEmbed(p.url, p.label + " — " + workerId);
+    else window.open(p.url, "_blank");
+    return true;
+  }
+
+  function renderDetail() {
+    var d = $("agent-detail");
+    if (!d) return;
+    d.innerHTML = "";
+    if (!activeAgent) { d.classList.remove("on"); return; }
+    var w = null;
+    for (var i = 0; i < lastWorkers.length; i++) {
+      if (lastWorkers[i].worker_id === activeAgent) { w = lastWorkers[i]; break; }
+    }
+    var isSup = activeAgent === "aetherius-supervisor";
+    var status = w ? (w.status || "") : (lastAuth && lastAuth.stale ? "STALE" : "LIVE");
+    var head = el("div", "head");
+    head.appendChild(el("span", "dot " + statusClass(status)));
+    head.appendChild(el("h4", "", activeAgent));
+    var x = el("button", "", "×");
+    x.title = "deselect";
+    x.onclick = function () { activeAgent = null; renderDetail(); renderRoster(lastWorkers, lastAuth); };
+    head.appendChild(x);
+    d.appendChild(head);
+    [["status", status], ["role", w && w.role], ["phase", w && w.phase],
+     ["handoff", w && w.handoff_state], ["review", w && w.review_state],
+     ["quota", w && w.quota_state], ["heartbeat", w && fmtStamp(w.last_heartbeat)],
+     ["task", (isSup ? "read-only monitoring of all workers" : (w && w.task_description)) || ""]
+    ].forEach(function (kv) {
+      if (!kv[1]) return;
+      var row = el("div", "kv");
+      row.appendChild(el("span", "", kv[0]));
+      row.appendChild(el("span", "", short(fmtVal(kv[1]), 80)));
+      d.appendChild(row);
+    });
+    var pt = resolvePortal(activeAgent);
+    var row = el("div", "btnrow");
+    if (pt) {
+      var b = el("button", "", pt.embed ? "Open dashboard" : "Open dashboard ↗");
+      b.onclick = function () { openPortal(activeAgent); };
+      row.appendChild(b);
+    } else if (!isSup) {
+      row.appendChild(el("div", "empty", "CLI agent — no web dashboard registered"));
+    }
+    if (!isSup) {
+      var cb = el("button", "", "Continue");
+      cb.onclick = function () { continueWorker(activeAgent, cb); };
+      row.appendChild(cb);
+    }
+    d.appendChild(row);
+    d.classList.add("on");
   }
 
   /* ---- avatar: shared event bus for image + 3D renderers ---------------- */
@@ -209,9 +325,12 @@
     }
     var sup = unwrapSection(sections.supervision);
     var workers = asList(sup.workers);
+    lastWorkers = workers;
+    lastAuth = auth;
     renderRoster(workers, auth);
     renderTeam(workers);
     renderMonitor(snapshot);
+    renderDetail();
     var ap = $("approvals");
     if (ap) {
       var pending = sup.handoffs_pending;
@@ -222,6 +341,15 @@
   function renderRoster(workers, auth) {
     var rl = $("roster-list");
     if (!rl) return;
+    var sig = JSON.stringify([activeAgent, !!(auth && auth.stale), workers.map(function (w) {
+      return [w.worker_id, w.status, w.phase, w.task_description];
+    })]);
+    if (sig === lastRosterSig && rl.children.length) {
+      var c0 = $("roster-count");
+      if (c0) c0.textContent = "(" + workers.length + ")";
+      return;
+    }
+    lastRosterSig = sig;
     rl.innerHTML = "";
     var synth = {
       worker_id: "aetherius-supervisor",
@@ -240,22 +368,26 @@
       var sub2 = w.task_description ? short(w.task_description, 64) : (w.project || "");
       if (sub2) meta.appendChild(el("div", "sub", sub2));
       a.appendChild(meta);
-      if (w.worker_id === "aetherius-supervisor") {
+      var pt = resolvePortal(w.worker_id);
+      if (pt) {
         var pb = el("button", "", "portal");
-        pb.title = "Hermes web portal (" + PORTAL_PROFILE + ")";
+        pb.title = pt.label + (pt.embed ? " (embedded)" : "");
         pb.style.marginLeft = "auto";
         pb.style.alignSelf = "center";
         pb.onclick = function (e) {
           if (e && e.stopPropagation) e.stopPropagation();
-          window.open(PORTAL_BASE + "/chat?profile=" + encodeURIComponent(PORTAL_PROFILE), "_blank");
+          openPortal(w.worker_id);
         };
         a.appendChild(pb);
       }
       a.onclick = function () {
-        activeAgent = w.worker_id;
+        activeAgent = (activeAgent === w.worker_id) ? null : w.worker_id;
         renderRoster(workers, auth);
-        transcript("system", "selected agent: " + w.worker_id +
-          (w.task_description ? " · " + short(w.task_description, 120) : ""), "sys");
+        renderDetail();
+        if (activeAgent) {
+          transcript("system", "selected agent: " + w.worker_id +
+            (w.task_description ? " · " + short(w.task_description, 120) : ""), "sys");
+        }
       };
       rl.appendChild(a);
     });
@@ -285,7 +417,7 @@
         if (kv[1] === undefined || kv[1] === null || kv[1] === "") return;
         var row = el("div", "kv");
         row.appendChild(el("span", "", kv[0]));
-        row.appendChild(el("span", "", short(String(kv[1]), 90)));
+        row.appendChild(el("span", "", short(fmtVal(kv[1]), 90)));
         card.appendChild(row);
       });
       var btn = el("button", "", "Continue");
@@ -655,6 +787,14 @@
     };
     var compact = $("btn-compact");
     if (compact) compact.onclick = function () { document.body.classList.toggle("compact"); };
+
+    var ec = $("embed-close");
+    if (ec) ec.onclick = closeEmbed;
+    var em = $("embed-modal");
+    if (em) em.onclick = function (e) { if (e.target === em) closeEmbed(); };
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeEmbed();
+    });
     var tts = $("btn-tts");
     if (tts) tts.onclick = function () { setTts(!ttsOn); };
     var call = $("btn-call");
@@ -696,7 +836,7 @@
     document.addEventListener("aetherius-avatar-event", function (e) {
       if (e && e.detail) avatarEvent(e.detail);
     });
-    pollHealth(); pollState(); pingBridge();
+    pollHealth(); loadPortals().then(pollState); pingBridge();
     setInterval(pollHealth, 5000);
     setInterval(pollState, 10000);
     setInterval(pingBridge, 15000);
@@ -712,6 +852,12 @@
     setDock: setDock,
     applyAvatarEvent: avatarEvent,
     set3d: set3d,
-    send: send
+    send: send,
+    selectAgent: function (id) {
+      activeAgent = id || null;
+      renderRoster(lastWorkers, lastAuth);
+      renderDetail();
+    },
+    openPortal: openPortal
   };
 })();
