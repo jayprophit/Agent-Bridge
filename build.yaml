@@ -1,0 +1,126 @@
+# =============================================================================
+# BUILD MANIFEST — Agent-Bridge (external worker telemetry variant)
+# =============================================================================
+# Authoritative record of how this project is built, tested and verified, and
+# of what is still broken. Read by Aetherius-OS's build manifest registry
+# (docs/BUILD-MANIFEST-REGISTRY.yaml) and validated by
+# src/programme/buildManifest.ts.
+# =============================================================================
+schema_version: "1.0.0"
+
+project:
+  id: agent-bridge-dashboard
+  name: Agent-Bridge (supervisor UI / worker telemetry)
+  kind: application
+  domain: agent-bridge
+  description: >-
+    The Agent-Bridge codebase on the unit/external-worker-telemetry branch.
+    Adds the supervisor UI, external worker telemetry, and the live
+    acceptance work recorded in the M2 QA scorecard.
+  repository: true
+  branch: unit/external-worker-telemetry
+  languages: [python, javascript, html, json]
+
+toolchain:
+  build_system: python/pytest
+  package_manager: pip
+  requirements:
+    - name: python
+      version: ">=3.13"
+      required: true
+      purpose: the runtime and its bridge tests
+    - name: pytest
+      version: ">=9"
+      required: true
+      purpose: the verification suite
+    - name: node
+      version: ">=18"
+      required: false
+      purpose: the supervisor UI asset pipeline and browser checks
+
+commands:
+  - name: install
+    command: pip install -e .
+    working_directory: .
+    timeout_minutes: 10
+  - name: test
+    command: python -m pytest tests -m "not slow" -q
+    working_directory: .
+    timeout_minutes: 20
+  - name: verify
+    command: python -m pytest tests -m "not slow" -q
+    working_directory: .
+    timeout_minutes: 20
+  - name: test-unittest
+    command: python -m unittest discover -s tests -p test_*.py
+    working_directory: .
+    timeout_minutes: 20
+
+dependencies:
+  projects: [agent-bridge, ide-workspace]
+  external: []
+
+status:
+  state: PARTIAL
+  last_verified: "2026-10-20"
+  summary: >-
+    The runtime verification surface matches the parent project. The branch
+    has eight changed or untracked paths, most of them supervisor UI work
+    and new telemetry evidence, and the recorded M2 visual QA scorecard
+    rates the UI at level UI-F1 against a target of UI-F4.
+  evidence:
+    - "git log -1 -> dc9d8d8 E2E-007+E2E-008+H02+H06 live acceptance: lifecycle evidence fusion, standing autonomous loop, nested-worker recall, contradictory-claims resolution"
+    - "git status --porcelain -> 8 changed paths: M ui/app.js, M ui/index.html, ?? ui/README.md, ?? ui/agent_portals.json, and 4 new screenshots under docs/screenshots/"
+    - "docs/SUPERVISOR_UI_M2_QA_AND_TASKS.md -> ASSESSED LEVEL UI-F1, target >= UI-F4"
+
+known_issues:
+  - id: ABD-001
+    severity: high
+    summary: >-
+      The supervisor UI is assessed at level UI-F1 against a target of
+      UI-F4. Twelve structural gaps are recorded, led by the absence of an
+      avatar system, a navigation shell and a mission control home.
+    evidence: >-
+      docs/SUPERVISOR_UI_M2_QA_AND_TASKS.md GAP LIST G1..G12 and SCORECARD.
+    status: OPEN
+    todo_ref: TODO-ABD-001
+  - id: ABD-002
+    severity: medium
+    summary: >-
+      Twelve worker actions are referenced by the team room view, but only
+      continue is live; the rest have no real endpoint behind them.
+    evidence: >-
+      docs/SUPERVISOR_UI_M2_QA_AND_TASKS.md T-UI-1: "all 11 worker actions
+      wired where a real endpoint exists (continue is live today; others emit
+      an honest NOT_IMPLEMENTED/DEFERRED_INTERFACE state)".
+    status: OPEN
+    todo_ref: TODO-ABD-002
+  - id: ABD-003
+    severity: medium
+    summary: >-
+      Theme coverage for ABYSS, AURORA, EMBER, GRAPHITE and FROST is unproven
+      on the new components.
+    evidence: >-
+      docs/SUPERVISOR_UI_M2_QA_AND_TASKS.md G12 "THEME COVERAGE UNPROVEN".
+    status: OPEN
+    todo_ref: TODO-ABD-003
+  - id: ABD-004
+    severity: low
+    summary: >-
+      Eight working-tree paths are uncommitted, including the new telemetry
+      screenshots and the agent portal configuration.
+    evidence: >-
+      git status --porcelain -> 8 changed paths.
+    status: OPEN
+    todo_ref: TODO-ABD-004
+
+notes:
+  - >-
+    The M2 definition of done is explicit: polished nav shell, avatar
+    worker cards, real workforce team view, full worker inspector, live
+    status/quota, project/task queue, handoffs, gap queue, supervisor
+    health, resource monitor, Git/test evidence, responsive layouts, theme
+    integration, accessibility and LIVE/DEMO separation.
+  - >-
+    The visual QA scorecard is to be scripted, not scored by eye, so every
+    future increment is measured automatically.
