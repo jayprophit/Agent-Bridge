@@ -226,3 +226,7 @@ secrets/
 credentials/
 .env
 .env.*
+# The branch variants of this project. They are git
+# worktrees of this repository, and a worktree inside the
+# main worktree must not be tracked by it.
+variants/
