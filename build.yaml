@@ -1,0 +1,172 @@
+# =============================================================================
+# BUILD MANIFEST — Agent-Bridge
+# =============================================================================
+# Authoritative record of how this project is built, tested and verified, and
+# of what is still broken. Read by Aetherius-OS's build manifest registry
+# (docs/BUILD-MANIFEST-REGISTRY.yaml) and validated by
+# src/programme/buildManifest.ts.
+# =============================================================================
+schema_version: "1.0.0"
+
+project:
+  id: agent-bridge
+  name: Agent-Bridge
+  kind: library
+  domain: agent-bridge
+  description: >-
+    Local-first bridge connecting small AI models, tools and devices through
+    a unified runtime. Dependency-free Python core with optional psutil and
+    PyYAML extras, an MCP adapter, delegation, policy and security layers.
+  repository: true
+  branch: main
+  languages: [python, powershell, json]
+
+toolchain:
+  build_system: python/pytest
+  package_manager: pip
+  requirements:
+    - name: python
+      version: ">=3.13"
+      required: true
+      purpose: the runtime itself
+    - name: pytest
+      version: ">=9"
+      required: true
+      purpose: the verification suite
+    - name: psutil
+      version: "==7.2.2"
+      required: false
+      purpose: telemetry extras and the benchmark harness
+    - name: pyyaml
+      version: ">=6"
+      required: false
+      purpose: YAML configuration extras
+
+commands:
+  - name: install
+    command: pip install -e .
+    working_directory: .
+    timeout_minutes: 10
+  - name: test
+    command: python -m pytest tests -m "not slow" -q
+    working_directory: .
+    timeout_minutes: 20
+  - name: test-full
+    command: python -m pytest tests
+    working_directory: .
+    timeout_minutes: 60
+  - name: test-unittest
+    command: python -m unittest discover -s tests -p test_*.py
+    working_directory: .
+    timeout_minutes: 20
+  - name: verify
+    command: python -m pytest tests -m "not slow" -q
+    working_directory: .
+    timeout_minutes: 20
+  - name: secret-scan
+    command: pwsh -NoProfile -File tools/secret_scan.ps1
+    working_directory: .
+    timeout_minutes: 5
+
+dependencies:
+  projects: [genesis, aetherius-os]
+  external: []
+
+status:
+  state: PARTIAL
+  last_verified: "2026-10-20"
+  summary: >-
+    The fast verification path (pytest with the slow marker deselected) is
+    the supported gate; the full suite includes a mutation proof that copies
+    the repository 23 times and takes roughly 35-40 minutes on this host.
+    The repository also carries a large amount of one-off analysis scripts
+    at its root that are not part of the runtime and are not covered by the
+    test suite.
+  evidence:
+    - "pyproject.toml [tool.agent-bridge] test_command = python -m unittest discover -s tests -p test_*.py"
+    - "pyproject.toml [tool.pytest.ini_options] markers: slow = long-running verification (mutation proof); deselect with -m 'not slow'"
+    - "git status --porcelain -> clean working tree on branch main"
+    - "2026-10-20: python -m pytest tests -m 'not slow' -q did not terminate within a 15 minute window on this host"
+
+known_issues:
+  - id: AB-TST-001
+    severity: high
+    summary: >-
+      Neither verification path completes in a practical window on this
+      host. Five test files spawn external processes and do not finish
+      within 45 seconds each, and only one of them is marked slow.
+    evidence: >-
+      Measured per file on 2026-10-20: test_actions_intake_mutations.py,
+      test_approved_grant_mutations.py, test_blender_adapter.py,
+      test_browser.py and test_collision_oracle.py each exceeded a 45
+      second per-file budget. test_actions_intake.py takes 34.3s on its
+      own. The remaining files run in 1 to 13 seconds. A 20-file subset
+      did not complete within 15 minutes, and the full suite did not
+      complete within 30 minutes. pyproject.toml marks only
+      tests/test_actions_intake_mutations.py as slow, so the other four
+      external-process files are unannounced.
+    status: OPEN
+    todo_ref: TODO-AB-001
+  - id: AB-SCR-001
+    severity: medium
+    summary: >-
+      Around sixty one-off analysis and classification scripts sit at the
+      repository root, many of which read machine-specific absolute paths
+      and are not covered by the test suite.
+    evidence: >-
+      analyze_repos.py reads E:\OpenCode-Data\Repository-Governance\github_repos.txt
+      by absolute path; classify_gaps_comprehensive.py requires
+      AGENT_BRIDGE_REQUIREMENTS_SRC and AGENT_BRIDGE_INVENTORY_JSON
+      environment variables.
+    status: OPEN
+    todo_ref: TODO-AB-002
+  - id: AB-GOV-001
+    severity: high
+    summary: >-
+      The repository governance work is only partly closed. 4,066 UNKNOWN
+      requirements were flagged for reconciliation rather than treated as
+      repository candidates, and the shared component registry records 24
+      components whose repository creation state is still CANDIDATE.
+    evidence: >-
+      SUBTASK_G_FINAL_REPORT.md: "UNKNOWN requirements (4,066) flagged for
+      UNKNOWN_REQUIREMENT_RECONCILIATION - NOT repo candidates"; "NEXT:
+      UNKNOWN_REQUIREMENT_RECONCILIATION Priority: HIGH".
+    status: OPEN
+    todo_ref: TODO-AB-003
+  - id: AB-PRS-001
+    severity: medium
+    summary: >-
+      Sixty-three PARTIAL_REUSE forks are recorded as accounted for but not
+      yet dispositioned with a concrete reuse decision.
+    evidence: >-
+      Agent-Bridge-dashboard/docs/SUPERVISOR_UI_M2_QA_AND_TASKS.md T-PROV-1:
+      "for the 63 PARTIAL_REUSE forks, record a concrete reuse decision per
+      project ... 'accounted for' is not yet 'dispositioned with a decision'".
+    status: OPEN
+    todo_ref: TODO-AB-004
+  - id: AB-PUSH-001
+    severity: low
+    summary: >-
+      Commits to main are blocked by an environment deny-rule, so verified
+      work exists only on this machine.
+    evidence: >-
+      native/BUILD-TODO.md records PUSH BLOCKED for Agent-Bridge branch main
+      SHA d7c1277.
+    status: ACCEPTED
+    todo_ref: TODO-AB-005
+
+notes:
+  - >-
+    The runtime itself is dependency-free by design. psutil and PyYAML are
+    optional capabilities, and the benchmark harness genuinely requires
+    psutil. requirements-lock.txt records the exact versions the tree was
+    verified against.
+  - >-
+    This repository and its three sibling variants
+    (Agent-Bridge-cloudhybrid, Agent-Bridge-dashboard,
+    Agent-Bridge-runtimesafety) are the same codebase at v0.8.1 on different
+    branches. They are tracked as separate projects because their scopes
+    have diverged, but a fix here may need porting to the others.
+  - >-
+    Genesis proposes, P25 authorizes, Agent Bridge executes. The bridge must
+    never perform the authorization step itself.
