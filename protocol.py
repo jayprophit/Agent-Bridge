@@ -408,6 +408,34 @@ def validate_action(a: Any) -> tuple[bool, dict[str, Any] | str]:
     return True, {"action": "finish", "message": msg or ""}
 
 
+def _loads_action(blob: str) -> Any:
+    """Read one candidate action object, tolerating a model's habits.
+
+    A model that writes text emits a JSON string value containing a real
+    newline rather than the two characters a backslash and an n. That is
+    not valid JSON, and json.loads refuses it with "Invalid control
+    character", so the action was rejected as though the model had said
+    nothing at all. The model had said exactly what it meant, and the
+    task failed with "no valid structured action found" for an output
+    that was plainly a structured action.
+
+    So the strict reading is tried first, and only if it fails is the
+    relaxed one used. The relaxed reading permits control characters
+    inside strings and relaxes nothing else: the structure, the types
+    and the action itself are still read exactly as before, and the
+    result still has to pass validate_action, which is where the safety
+    lives.
+    """
+    try:
+        return json.loads(blob)
+    except json.JSONDecodeError:
+        pass
+    try:
+        return json.loads(blob, strict=False)
+    except json.JSONDecodeError:
+        return None
+
+
 def parse_model_output(raw: str) -> tuple[dict[str, Any] | None, str, str]:
     raw_p = raw if isinstance(raw, str) else str(raw)
     if not raw_p.strip():
@@ -415,9 +443,8 @@ def parse_model_output(raw: str) -> tuple[dict[str, Any] | None, str, str]:
     first_err: str | None = None
     for cand in extract_candidate_texts(raw_p):
         for blob in _find_json_objects(cand):
-            try:
-                obj = json.loads(blob)
-            except json.JSONDecodeError:
+            obj = _loads_action(blob)
+            if obj is None:
                 continue
             if not isinstance(obj, dict):
                 continue

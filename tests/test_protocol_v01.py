@@ -47,12 +47,72 @@ class TestVariants(unittest.TestCase):
         self.assertEqual(obj.get("new"), "y")
 
 
+class TestModelHabits(unittest.TestCase):
+    """A model that writes text does not always produce valid JSON.
+
+    The output below is the one a real local model produced when asked
+    to write a haiku: the JSON was correct, but the string value held a
+    real newline instead of the two characters a backslash and an n.
+    json.loads refuses that with "Invalid control character", so the
+    action was rejected as though the model had said nothing at all,
+    and the task failed with "no valid structured action found".
+
+    The refusal was right in the sense that the action could not be
+    read, but the output was plainly a structured action, and the model
+    had said exactly what it meant.
+    """
+
+    RAW = ('```json\n{\n  "action": "write",\n  "path": "haiku.txt",\n'
+           '  "content": "Water flows,  \nBeneath the moon,  \n'
+           'Silence whispers."\n}\n```')
+
+    def test_a_real_newline_in_a_string_value_is_read(self):
+        action, _, err = parse_model_output(self.RAW)
+        self.assertEqual(err, "")
+        self.assertIsNotNone(action)
+        self.assertEqual(action["action"], "write")
+        self.assertEqual(action["path"], "haiku.txt")
+        self.assertIn("Water flows", action["content"])
+
+    def test_the_newline_is_preserved_in_the_content(self):
+        action, _, _ = parse_model_output(self.RAW)
+        self.assertIn("\n", action["content"])
+
+    def test_escaped_newlines_still_work(self):
+        """The ordinary form must not be disturbed by the relaxed one."""
+        action, _, err = parse_model_output(
+            '{"action":"write","path":"a.txt","content":"one\\ntwo"}')
+        self.assertEqual(err, "")
+        self.assertEqual(action["content"], "one\ntwo")
+
+    def test_a_broken_object_is_still_refused(self):
+        """The relaxation permits control characters, not broken JSON."""
+        action, _, err = parse_model_output('{"action":"write", "path":')
+        self.assertIsNone(action)
+        self.assertTrue(err)
+
+    def test_an_unknown_action_is_still_refused(self):
+        """The relaxation does not let an invalid action through."""
+        action, _, err = parse_model_output(
+            '{"action":"delete_everything","path":"x","content":"y\\nz"}')
+        self.assertIsNone(action)
+        self.assertIn("unknown action", err)
+
+    def test_a_write_without_content_is_still_refused(self):
+        """Validation still has the last word."""
+        action, _, err = parse_model_output(
+            '{"action":"write","path":"x","content":"ok\\nhere"}')
+        self.assertIsNotNone(action)
+        action, _, err = parse_model_output('{"action":"write","path":"x"}')
+        self.assertIsNone(action)
+        self.assertIn("content", err)
+
+
 class TestValidationFailures(unittest.TestCase):
     def test_unknown_action(self):
         a, raw, err = parse_model_output('{"action":"delete_v01_unknown_xyz","path":"x"}')
         self.assertIsNone(a)
         self.assertIn("unknown action", err)
-
     def test_missing_field(self):
         a, _, err = parse_model_output('{"action":"read"}')
         self.assertIsNone(a)
