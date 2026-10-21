@@ -22,6 +22,11 @@ decision, not this test's. It is recorded as a bounded limitation instead.
 from __future__ import annotations
 
 import ast
+
+try:
+    from helpers import tracked_files
+except ImportError:  # the suite may be run as a package, or not
+    from tests.helpers import tracked_files
 import re
 import sys
 import tomllib
@@ -46,7 +51,16 @@ DIST_TO_IMPORT = {"pyyaml": "yaml"}
 
 
 def repo_python_files():
-    for path in REPO.rglob("*.py"):
+    """The Python files the repository holds.
+
+    The subject is what Git is tracking. The working tree holds a
+    virtualenv, a branch variant that was excluded from tracking, and
+    the runtime state the bridge writes, and a contract check that reads
+    those is checking the machine rather than the repository.
+    """
+    for path in tracked_files(REPO):
+        if path.suffix != ".py":
+            continue
         rel = path.relative_to(REPO)
         if any(part in SKIP_DIRS for part in rel.parts):
             continue

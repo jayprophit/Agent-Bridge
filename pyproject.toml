@@ -15,6 +15,11 @@ yaml = ["pyyaml>=6"]
 # os.cpu_count(). Declared explicitly so that requirement is visible instead of
 # being an undeclared hard import in benchmarks/benchmark_runner.py.
 benchmark = ["psutil==7.2.2"]
+# The declared test command runs seven test modules that import pytest, so
+# pytest is a dependency of the test command and not an optional extra. It
+# was undeclared, and a runner that installed only psutil could not import
+# those seven modules at all, which is what the CI reported as failures.
+test = ["pytest>=8"]
 
 [tool.agent-bridge]
 test_command = "python -m unittest discover -s tests -p test_*.py"

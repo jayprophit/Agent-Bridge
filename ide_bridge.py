@@ -254,6 +254,14 @@ def build_runtime_snapshot(runtime: Any,
                 snap["models"] = list(inventory.get("models", []) or [])
         except Exception:
             pass
+    # The organism, when the Genesis kernel is attached. The snapshot is
+    # what the interface reads, so if the organism is not here then the
+    # interface cannot say that it is, and if it is here then the
+    # interface can say which organism it is.
+    try:
+        snap["genesis"] = runtime.genesis_summary()
+    except Exception:
+        pass
     return snap
 
 

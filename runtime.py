@@ -568,6 +568,13 @@ class AgentRuntime:
         self.action_locks: dict[str, threading.Lock] = {}
         self.metrics = {"sessions": 0, "tasks_completed": 0, "tasks_failed": 0,
                         "tasks_deduplicated": 0}
+        # The Genesis kernel, when one is attached. Genesis is the
+        # organism: it owns identity, memory and the runtime's own state.
+        # The Bridge owns execution, so the kernel is asked to observe
+        # and to remember, and is never asked to decide what is allowed
+        # to run. It is optional: a Bridge with no kernel attached still
+        # runs every task and says that the organism is not attached.
+        self.genesis_kernel = None
         for r in self.cfg.allowed_workspace_roots:
             p = Path(r).expanduser()
             if not p.exists():
@@ -582,6 +589,43 @@ class AgentRuntime:
                 lock = threading.Lock()
                 self.action_locks[action_id] = lock
             return lock
+
+    def genesis_observe(self, topic: str, payload: str) -> dict[str, Any]:
+        """Tell the organism that something happened.
+
+        The organism's state machine is strict: a topic it has no rule
+        for is refused. So the topic is fixed here, and the payload
+        carries what happened. A refusal is returned rather than raised,
+        because the task itself did not fail: the organism declined to
+        record it, and the Bridge says so.
+        """
+        kernel = getattr(self, "genesis_kernel", None)
+        if kernel is None:
+            return {"attached": False, "recorded": False,
+                    "error": "the Genesis kernel is not attached to this Bridge"}
+        from genesis_kernel import TOPIC_EVENT
+        result = kernel.event(topic or TOPIC_EVENT, payload)
+        return {"attached": True, "recorded": result.ok,
+                "result": result.to_dict()}
+
+    def genesis_checkpoint(self) -> dict[str, Any]:
+        """Write the organism's durable state."""
+        kernel = getattr(self, "genesis_kernel", None)
+        if kernel is None:
+            return {"attached": False, "checkpointed": False,
+                    "error": "the Genesis kernel is not attached to this Bridge"}
+        result = kernel.checkpoint()
+        return {"attached": True, "checkpointed": result.ok,
+                "result": result.to_dict()}
+
+    def genesis_summary(self) -> dict[str, Any]:
+        """What is known about the organism."""
+        kernel = getattr(self, "genesis_kernel", None)
+        if kernel is None:
+            return {"attached": False, "healthy": False, "identity": "",
+                    "version": "", "state": "", "calls": 0, "failures": 0,
+                    "error": "the Genesis kernel is not attached to this Bridge"}
+        return kernel.summary()
 
     def _root_rule(self, workspace: Path) -> dict[str, Any]:
         for root, rule in (self.cfg.root_rules or {}).items():

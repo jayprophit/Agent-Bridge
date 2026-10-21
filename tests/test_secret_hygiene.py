@@ -9,6 +9,11 @@ import os
 import re
 import unittest
 
+try:
+    from helpers import tracked_files
+except ImportError:  # the suite may be run as a package, or not
+    from tests.helpers import tracked_files
+
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_PATTERNS = (
@@ -32,18 +37,20 @@ REQUIRED_GITIGNORE = (
 
 class HygieneTests(unittest.TestCase):
     def _source_files(self):
-        # local/ holds ignored non-product archives; hygiene guards product.
-        # Vendor/dependency trees (.opencode, node_modules) carry upstream
-        # test fixtures and must not trip product hygiene.
-        for base, dirs, files in os.walk(REPO_ROOT):
-            dirs[:] = [d for d in dirs
-                       if d not in (".git", "__pycache__", ".bridge", "local",
-                                    ".opencode", "node_modules", ".venv",
-                                    "venv", "dist", "build")]
-            for name in files:
-                if name.endswith((".pyc", ".pyo")):
-                    continue
-                yield os.path.join(base, name)
+        """The files the repository actually holds.
+
+        The subject is what Git is tracking, not the directory. The
+        working tree holds things the repository does not: a local
+        intake, a virtualenv, a branch variant that was deliberately
+        excluded from tracking, and the runtime state the bridge itself
+        writes. Those are the machine's business and not the
+        repository's, and a hygiene guard that fails on them reports a
+        fault that is not there.
+        """
+        for path in tracked_files(REPO_ROOT):
+            if path.name.endswith((".pyc", ".pyo")):
+                continue
+            yield str(path)
 
     def test_no_hardcoded_secrets(self):
         hits = []

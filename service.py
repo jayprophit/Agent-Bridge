@@ -272,6 +272,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, {"checks": rt.self_check()})
             if parts == [API_VERSION, "schema"]:
                 return self._send(200, api_schema())
+            if parts == [API_VERSION, "genesis"]:
+                return self._send(200, rt.genesis_summary())
             if parts == [API_VERSION, "sessions"]:
                 return self._send(200, {"sessions": rt.list_sessions(
                     status=q.get("status", ""), workspace=q.get("workspace", ""),
@@ -397,6 +399,15 @@ class Handler(BaseHTTPRequestHandler):
         if body is None:
             return self._send(400, {"ok": False, "error": "malformed JSON"})
         try:
+            if parts == [API_VERSION, "genesis"]:
+                action = body.get("action", "status")
+                if action == "event":
+                    return self._send(200, rt.genesis_observe(
+                        body.get("topic", ""), body.get("payload", "")))
+                if action == "checkpoint":
+                    return self._send(200, rt.genesis_checkpoint())
+                return self._send(400, {"ok": False,
+                                        "error": "unknown genesis action"})
             if parts == [API_VERSION, "sessions"]:
                 ws = body.get("workspace", "")
                 if not ws:
@@ -413,6 +424,12 @@ class Handler(BaseHTTPRequestHandler):
                         interactive=bool(body.get("interactive", False)))
                 except PermissionError as e:
                     return self._send(403, {"ok": False, "error": str(e)})
+                # The organism is told that a session began. It is asked
+                # to observe, not to decide: the session still runs
+                # whether the organism recorded it or not.
+                rt.genesis_observe(
+                    "organism.event",
+                    f"bridge session {s.session_id} began: mode={s.mode}")
                 return self._send(201, {"session_id": s.session_id, "mode": s.mode,
                                         "approval": s.bridge_cfg.approval,
                                         "interactive": not s.bridge_cfg.non_interactive})
@@ -424,6 +441,9 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(400, {"ok": False, "error": "text required"})
                 tid = s.submit_task(text, body.get("idempotency_key", ""),
                                     parent_task_id=body.get("parent_task_id", ""))
+                rt.genesis_observe(
+                    "organism.event",
+                    f"bridge task {tid} submitted in session {s.session_id}")
                 return self._send(202, {"task_id": tid,
                                         "status": s.tasks[tid].status,
                                         "deduped": bool(s.last_submit_deduped)})
@@ -845,6 +865,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--genesis-store", default="",
                    help="attach a Genesis identity store (JSON) so "
                         "/v1/runtime projects the live avatar state")
+    p.add_argument("--genesis-kernel", default="",
+                   help="attach the Genesis runtime host so the organism is "
+                        "really in the chain: its identity, memory and "
+                        "runtime state are then the ones the Bridge reports")
+    p.add_argument("--genesis-data-root", default="",
+                   help="where the Genesis kernel keeps the organism's "
+                        "durable state (default: .genesis-kernel)")
     p.add_argument("--cors-origin", action="append", default=[],
                    help="owner-approved browser origin for ACAO "
                         "(repeatable; default: none)")
@@ -864,6 +891,32 @@ def main(argv: list[str] | None = None) -> int:
     if args.genesis_store:
         from genesis_runtime import LocalGenesisRuntime
         rt.genesis_runtime = LocalGenesisRuntime(args.genesis_store)
+    if args.genesis_kernel:
+        from genesis_kernel import GenesisKernel
+        kernel = GenesisKernel(
+            args.genesis_kernel,
+            args.genesis_data_root or ".genesis-kernel")
+        if kernel.available():
+            rt.genesis_kernel = kernel
+            # The organism's identity is derived from its namespace and
+            # key, never from the model route, so booting under a route
+            # records the route as an annotation and leaves the identity
+            # alone. The route is what the Bridge would use by default.
+            route = cfg.default_model or ""
+            booted = kernel.boot(route)
+            if booted.ok:
+                print(f"genesis kernel attached: identity={booted.identity} "
+                      f"version={booted.version}", flush=True)
+            else:
+                print(f"genesis kernel attached but the organism did not "
+                      f"boot: {booted.error}", flush=True)
+        else:
+            # A missing or broken kernel is not a reason to refuse to
+            # serve. The Bridge says the organism is not attached, and
+            # every task still runs.
+            print(f"genesis kernel not attached: {args.genesis_kernel} is "
+                  f"not a usable runtime host; the Bridge will run without "
+                  f"the organism and say so", flush=True)
     srv = serve(rt, args.host, args.port)
     print(f"serving /v1 on http://{args.host}:{srv.server_address[1]}", flush=True)
     try:

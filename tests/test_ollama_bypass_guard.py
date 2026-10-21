@@ -30,6 +30,11 @@ import os
 import re
 import unittest
 
+try:
+    from helpers import tracked_files
+except ImportError:  # the suite may be run as a package, or not
+    from tests.helpers import tracked_files
+
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Endpoints that LOAD MODEL WEIGHTS. Read-only discovery endpoints are
@@ -71,14 +76,20 @@ SKIP_DIRS = {
 
 
 def _product_python_files():
-    for base, dirs, files in os.walk(REPO_ROOT):
-        dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
-        for name in files:
-            if not name.endswith(".py"):
-                continue
-            full = os.path.join(base, name)
-            rel = os.path.relpath(full, REPO_ROOT).replace(os.sep, "/")
-            yield rel, full
+    """The Python files the repository holds.
+
+    The subject is what Git is tracking. The working tree holds a
+    virtualenv, a branch variant that was excluded from tracking, and
+    the runtime state the bridge writes, and a guard that reads those is
+    checking the machine rather than the repository.
+    """
+    for full in tracked_files(REPO_ROOT):
+        if not full.name.endswith(".py"):
+            continue
+        rel = os.path.relpath(full, REPO_ROOT).replace(os.sep, "/")
+        if any(part in SKIP_DIRS for part in rel.split("/")):
+            continue
+        yield rel, str(full)
 
 
 class OllamaBypassGuardTests(unittest.TestCase):
