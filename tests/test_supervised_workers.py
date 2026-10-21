@@ -95,8 +95,16 @@ class TestSupervisedLifecycle(unittest.TestCase):
     def test_slow_worker_is_terminated_and_reported_timeout(self):
         # A large input with a tiny budget: the worker is genuinely still
         # working when the supervisor's deadline fires.
+        #
+        # The budget has to be unreachable on ANY machine, or the test
+        # measures the speed of the machine rather than the supervision.
+        # A million lines cannot be transformed in a quarter of a second
+        # on any machine, and a fast one that finished the work first
+        # would have failed the test for a reason that has nothing to do
+        # with what the test is about.
         with self.assertRaises(WorkerError) as ctx:
-            run_supervised(self.root, "t-timeout", make_input(200000), timeout_s=0.2)
+            run_supervised(self.root, "t-timeout", make_input(1000000),
+                           timeout_s=0.25)
         self.assertIn("budget", str(ctx.exception))
         nodes = json.loads((self.root / "taskcenter.json").read_text(encoding="utf-8"))["tasks"]
         matching = [n for n in nodes.values() if n["objective"] == "transform-lines t-timeout"]

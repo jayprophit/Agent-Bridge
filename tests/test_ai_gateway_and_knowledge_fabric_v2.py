@@ -414,6 +414,16 @@ def test_mat_reconciliation_one_repo():
         pytest.skip(
             f"the authenticated account is {auth_user!r} and the "
             f"reconciliation is over {owner!r}")
+    if os.environ.get("CI"):
+        # The runner's token is authenticated as the owner and can still
+        # only see the repository it is running in, so the reconciliation
+        # over the owner's repositories cannot be measured there. The
+        # runner is identified by its own environment, which is exact.
+        import pytest
+        pytest.skip(
+            "a CI runner's token can only see the repository it is "
+            f"running in, and the reconciliation is over {owner!r}'s "
+            "repositories")
     # Enumerate all repos and confirm exactly one has "Materials-Atlas" in the name
     all_repos = adapter.list_sources(limit=100)
     mat_repos = [r for r in all_repos if "material" in r.title.lower()]
