@@ -238,6 +238,22 @@ def build_runtime_snapshot(runtime: Any,
             if isinstance(health, dict) else str(health)
     except Exception:
         pass
+    # The snapshot is a projection of live runtime state, so the model
+    # inventory it reports has to agree with /v1/models. A tracker that has
+    # recorded no models used to leave this empty while the Bridge held
+    # ten, which made one route say "no models" and the other say "ten".
+    # The tracker wins when it has an answer; otherwise the live inventory
+    # is used. `active_model` is deliberately left alone: no model being
+    # selected is a different fact from no model being available, and
+    # conflating them is what makes an IDE claim a connection it does not
+    # have.
+    if not snap.get("models"):
+        try:
+            inventory = runtime.model_inventory()
+            if isinstance(inventory, dict):
+                snap["models"] = list(inventory.get("models", []) or [])
+        except Exception:
+            pass
     return snap
 
 

@@ -88,6 +88,62 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(snap["tasks"], [])
         self.assertEqual(snap["health"], "UNKNOWN")
 
+    def test_models_agree_with_the_live_inventory(self):
+        """The runtime snapshot and /v1/models must not disagree.
+
+        /v1/runtime said "no models" while /v1/models said ten, because
+        the snapshot only ever carried what a tracker had recorded. A
+        consumer of the runtime route was told the machine had no models
+        when it had ten. The snapshot is a projection of live state, so
+        it has to report the live inventory.
+        """
+        class WithModels(FakeRuntime):
+            def model_inventory(self):
+                return {"ok": True, "source": "ollama@127.0.0.1",
+                        "models": [{"name": "m-one"}, {"name": "m-two"}]}
+
+        snap = build_runtime_snapshot(WithModels())
+        self.assertEqual([m["name"] for m in snap["models"]],
+                         ["m-one", "m-two"])
+
+    def test_recorded_models_win_over_the_inventory(self):
+        class WithModels(FakeRuntime):
+            def model_inventory(self):
+                return {"models": [{"name": "live"}]}
+
+        tracker = RuntimeStateTracker()
+        tracker.record_models([{"name": "recorded"}], active="recorded")
+        snap = build_runtime_snapshot(WithModels(), tracker)
+        self.assertEqual([m["name"] for m in snap["models"]], ["recorded"])
+        self.assertEqual(snap["active_model"], "recorded")
+
+    def test_no_model_selected_is_not_no_model_available(self):
+        """Having models is not the same as having one selected.
+
+        `active_model` stays empty until something is actually chosen,
+        so an interface cannot claim a live connection it does not have.
+        """
+        class WithModels(FakeRuntime):
+            def model_inventory(self):
+                return {"models": [{"name": "m-one"}]}
+
+        snap = build_runtime_snapshot(WithModels())
+        self.assertEqual(len(snap["models"]), 1)
+        self.assertEqual(snap["active_model"], "")
+
+    def test_inventory_failure_does_not_break_the_snapshot(self):
+        class Angry(FakeRuntime):
+            def model_inventory(self):
+                raise OSError("ollama unreachable")
+
+        snap = build_runtime_snapshot(Angry())
+        self.assertEqual(snap["models"], [])
+        self.assertEqual(snap["health"], "HEALTHY")
+
+    def test_runtime_without_an_inventory_still_builds(self):
+        snap = build_runtime_snapshot(FakeRuntime())
+        self.assertEqual(snap["models"], [])
+
 
 class TestLiveRoute(unittest.TestCase):
     def test_runtime_route_live(self):
