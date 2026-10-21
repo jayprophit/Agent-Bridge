@@ -34,7 +34,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - run: pip install "psutil==7.2.2" "pytest>=8"
+      # The lockfile, not a set of ranges. The lock exists so that an
+      # install reproduces the verification this tree was checked
+      # against, rather than merely satisfying a range and getting
+      # something else.
+      - run: pip install -r requirements-lock.txt
       # The project's own documented fast path. The `slow` marker
       # deselects the mutation proof, which is a half-hour job and not
       # a gate.
@@ -53,5 +57,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - run: pip install "psutil==7.2.2" "pytest>=8"
+      - run: pip install -r requirements-lock.txt
       - run: python -m pytest tests -q --no-header -p no:cacheprovider

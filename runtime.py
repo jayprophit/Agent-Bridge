@@ -531,6 +531,20 @@ class Session:
         return out
 
 
+def _same_workspace(one: str | Path, other: str | Path) -> bool:
+    """Whether two paths name the same directory.
+
+    A path is compared as it resolves, not as it is spelled. On Windows
+    the short form of a path names the same directory as the long form,
+    and a temporary directory is routinely handed to a caller in one
+    spelling and recorded in the other.
+    """
+    try:
+        return Path(one).resolve() == Path(other).resolve()
+    except OSError:
+        return str(one) == str(other)
+
+
 class AgentRuntime:
     """Public entry point. Owns roots policy, sessions, metrics, health."""
 
@@ -863,7 +877,7 @@ class AgentRuntime:
             if sess is None:
                 del self.session_labels[label]
                 return None
-            if workspace and str(sess.workspace) != str(workspace):
+            if workspace and not _same_workspace(sess.workspace, workspace):
                 raise ValueError(
                     f"session label {label!r} already belongs to workspace "
                     f"{sess.workspace}")
