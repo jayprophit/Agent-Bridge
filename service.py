@@ -134,6 +134,23 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, *args: Any) -> None:  # keep quiet; bridge logs instead
         pass
 
+    def handle_one_request(self) -> None:
+        """A client that goes away is not a server failure.
+
+        A browser that navigates away mid-request, or a poller that
+        abandons a connection between the request and the response, makes
+        the write fail. The stdlib treats that as an unhandled exception
+        and prints the whole traceback, so ordinary use buried the real
+        errors under thousands of lines of noise. Only the connection
+        failures are swallowed here; a genuine fault still propagates and
+        is still reported.
+        """
+        try:
+            super().handle_one_request()
+        except (ConnectionAbortedError, ConnectionResetError,
+                BrokenPipeError):
+            self.close_connection = True
+
     def _drain(self, n: int) -> None:
         try:
             left = n
