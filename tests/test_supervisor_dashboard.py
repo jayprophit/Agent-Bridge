@@ -302,7 +302,11 @@ class TestOpenCodeAdapter:
         assert facts["opencode_session"].effective_state() == sup.UNKNOWN
 
     def test_real_cli_reports_available(self):
-        # opencode is verified on PATH in this environment.
+        # opencode is verified on PATH in this environment, and this
+        # test needs it. Where it is not there, the test says so.
+        import shutil as _shutil
+        if _shutil.which("opencode") is None:
+            pytest.skip("the opencode tool is not on this machine")
         facts = sup.read_opencode_sessions()
         st = facts["cli"].effective_state()
         assert st in (sup.LIVE_VERIFIED, sup.STALE)

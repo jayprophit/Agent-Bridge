@@ -2,6 +2,7 @@
 import shutil
 import tempfile
 import unittest
+from workspace_paths import canonical_workspace
 from pathlib import Path
 
 from runtime import AgentRuntime, RuntimeConfig
@@ -187,7 +188,8 @@ class TestWorkspaceCanonicalization(unittest.TestCase):
         # but to the allowed root that was configured
         s = rt.create_session(".", mode="build")
         # The session workspace should be the resolved allowed root
-        self.assertEqual(str(s.workspace), str(self.ide_workspace))
+        self.assertEqual(str(canonical_workspace(s.workspace)),
+                         str(canonical_workspace(self.ide_workspace)))
 
     def test_dot_workspace_rejected_when_bridge_repo_not_allowed(self):
         """A. workspace='.' resolves to Agent Bridge repo; if Bridge repo not in allowed roots, reject."""
@@ -199,7 +201,8 @@ class TestWorkspaceCanonicalization(unittest.TestCase):
         # This should work because '.' resolves to the allowed root (ide_workspace)
         # not the Bridge repo
         s = rt.create_session(".", mode="build")
-        self.assertEqual(str(s.workspace), str(self.ide_workspace))
+        self.assertEqual(str(canonical_workspace(s.workspace)),
+                         str(canonical_workspace(self.ide_workspace)))
         
         # Verify task preflight would reject if workspace was actually outside
         # by testing a workspace that IS outside allowed roots
@@ -212,7 +215,8 @@ class TestWorkspaceCanonicalization(unittest.TestCase):
         """B. Valid absolute external workspace passes preflight."""
         rt = self._rt_bridge(self.ide_workspace)
         s = rt.create_session(str(self.ide_workspace), mode="build")
-        self.assertEqual(str(s.workspace), str(self.ide_workspace))
+        self.assertEqual(str(canonical_workspace(s.workspace)),
+                         str(canonical_workspace(self.ide_workspace)))
 
     def test_nonexistent_workspace_rejected(self):
         """C. Nonexistent workspace is rejected at session creation."""

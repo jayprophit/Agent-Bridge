@@ -132,9 +132,11 @@ class TestJsonExportParser(unittest.TestCase):
 
 class TestAuditHonesty(unittest.TestCase):
     def test_status_counts_cover_everything(self):
-        data = json.loads(Path(
-            r"E:\OpenCode-Data\Knowledge\AI-CONVERSATION-INGESTION-AUDIT.json"
-        ).read_text(encoding="utf-8"))
+        audit_file = Path(
+            r"E:\OpenCode-Data\Knowledge\AI-CONVERSATION-INGESTION-AUDIT.json")
+        if not audit_file.is_file():
+            self.skipTest(f"the audit output is not on this machine: {audit_file}")
+        data = json.loads(audit_file.read_text(encoding="utf-8"))
         total = sum(data["summary"]["status_counts"].values())
         self.assertEqual(total, data["summary"]["files_discovered"])
         self.assertEqual(data["summary"]["fully_parsed"], 0)

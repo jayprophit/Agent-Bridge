@@ -6,6 +6,11 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+
+try:
+    from helpers import model_runtime_available, package_installed
+except ImportError:  # the suite may be run as a package, or not
+    from tests.helpers import model_runtime_available, package_installed
 from pathlib import Path
 
 from orchestrator import (
@@ -158,6 +163,8 @@ class AdapterBoundaryTests(unittest.TestCase):
 
     def test_opencode_refuses_without_workdir(self):
         from worker_adapters import OpenCodeAdapter
+        if not package_installed("opencode"):
+            self.skipTest("the opencode tool is not on this machine")
         t = OrchestratorTask(objective="x", role="coder")
         out = OpenCodeAdapter().execute(t)
         self.assertFalse(out["ok"])
@@ -165,6 +172,8 @@ class AdapterBoundaryTests(unittest.TestCase):
 
     def test_ollama_probe_sees_fleet(self):
         from worker_adapters import OllamaWorkerAdapter
+        if not model_runtime_available():
+            self.skipTest("the local model runtime is not reachable")
         probe = OllamaWorkerAdapter().probe()
         self.assertTrue(probe["available"])
         # The probe has to report the fleet that is actually there. A
