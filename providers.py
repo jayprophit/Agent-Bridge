@@ -26,8 +26,16 @@ class ModelProvider(ABC):
 
     @abstractmethod
     def chat(self, messages: list[dict[str, str]], temperature: float = 0.1,
-             num_predict: int = 640) -> str:
+             num_predict: int = 640,
+             think: bool | None = None) -> str:
         ...
+
+    def supports_think_control(self) -> bool:
+        """Whether this model's thinking can be turned off.
+
+        Discovered from the runtime, not guessed from the model's name.
+        """
+        return False
 
 
 class OllamaProvider(ModelProvider):
@@ -66,15 +74,44 @@ class OllamaProvider(ModelProvider):
         except Exception as e:
             raise ProviderError(f"cannot reach Ollama at {self.host}: {e}")
 
+    def supports_think_control(self) -> bool:
+        """Whether this model can reason, and so can be asked not to.
+
+        The answer comes from the runtime's own declaration of the
+        model's capabilities, not from its name. A model that can think
+        is asked not to, so that it answers in the content field where
+        the action is read from.
+        """
+        try:
+            return bool(self._v2.discover(self.model).reasoning)
+        except Exception:
+            return False
+
     def chat(self, messages: list[dict[str, str]], temperature: float = 0.1,
-             num_predict: int = 640) -> str:
+             num_predict: int = 640,
+             think: bool | None = None) -> str:
+        """Ask the model, and return what it actually answered.
+
+        ``think`` is forwarded only when it is given. A reasoning model
+        that is left to think answers in its thinking field and leaves
+        the content empty, and the caller gets nothing to act on. The
+        Bridge asks such a model to answer directly, and says so in the
+        error when the model spends its whole output budget thinking.
+        """
         try:
             data = self._v2.chat(self.model, messages,
-                                 temperature=temperature, num_predict=num_predict)
+                                 temperature=temperature,
+                                 num_predict=num_predict, think=think)
         except Exception as e:  # V2 normalized errors → ProviderError
             raise ProviderError(f"Ollama chat failed: {e}")
         text = data.get("content", "")
         if not text:
+            reasoning = str(data.get("thinking", "") or "")
+            if reasoning:
+                raise ProviderError(
+                    f"the model answered only in its thinking and produced no "
+                    f"content ({len(reasoning)} characters of reasoning); it "
+                    f"used its whole output budget before it answered")
             raise ProviderError(f"empty chat response: {str(dict(data))[:500]}")
         return text
 

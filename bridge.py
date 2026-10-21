@@ -445,6 +445,13 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
     router = RoleRouter(cfg.model, cfg.roles)
     routes = {r: router.route(r) for r in ("planner", "coder", "reviewer", "general")}
     providers = dict(providers or {})
+    # The model that ACTUALLY served each role, which is not always the
+    # model that was configured for it. A role whose model is not
+    # installed is served by the first of its declared candidates that
+    # the provider does have, and the run's evidence has to name that
+    # model rather than the one that was asked for. An evidence file
+    # that names a model which never ran is worse than no evidence.
+    resolved_models: dict[str, str] = {}
     system, prompt_name = _prompt(cfg.mode, getattr(cfg, "prompt_profile", "standard"))
     # v0.4 trackers (initialized before any provider/log use)
     comp = CompetenceTracker()
@@ -474,17 +481,22 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
 
     def _prov(role: str) -> Any:
         if role in providers:
+            resolved_models.setdefault(
+                role, getattr(providers[role], "model", "") or router.model_for(role))
             return providers[role]
         if provider is not None:
             # Explicitly passed single provider serves every role unless the
             # providers map overrides that role (v0.2-compatible; also how
             # single-model runs work — logged honestly per role).
             providers[role] = provider
+            resolved_models[role] = (getattr(provider, "model", "")
+                                     or router.model_for(role))
             return provider
         model = router.model_for(role)
         for r2, p2 in providers.items():
             if getattr(p2, "model", None) == model:
                 providers[role] = p2
+                resolved_models[role] = getattr(p2, "model", "") or model
                 return p2
         try:
             p = create_provider("ollama", host=cfg.ollama_url, model=model,
@@ -496,7 +508,38 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                 available = []
             if available and model not in available and not any(
                     model in m or m in model for m in available):
-                raise ProviderError(f"model {model!r} not in provider inventory")
+                # The role's model is not installed. Before failing, try
+                # the role's declared preference order and take the first
+                # one the inventory actually holds.
+                #
+                # The order is declared, not guessed, and the inventory
+                # is still the authority: nothing is used that the
+                # provider does not have, and the substitution is
+                # recorded in the run's evidence so the model that
+                # really did the work is the one that is reported.
+                substitute = ""
+                for candidate in router.candidates_for(role):
+                    if candidate == model:
+                        continue
+                    if candidate in available or any(
+                            candidate in m or m in candidate
+                            for m in available):
+                        substitute = candidate
+                        break
+                if not substitute:
+                    raise ProviderError(
+                        f"model {model!r} not in provider inventory")
+                reason = (f"model {model!r} is not installed; the role's "
+                          f"declared candidate {substitute!r} is")
+                logger.human(f"SUBSTITUTE {role}: {model} -> {substitute} "
+                             f"({reason})")
+                _cx_reroute(model, substitute, reason)
+                fallback_log.append({"role": role, "from": model,
+                                     "to": substitute, "reason": reason,
+                                     "kind": "declared_candidate"})
+                p = create_provider("ollama", host=cfg.ollama_url,
+                                    model=substitute,
+                                    timeout_s=cfg.request_timeout_s)
         except ProviderError as e:
             # per-role fallback chain (explicit, logged, optional)
             for fb in (cfg.fallback.get(role, []) if isinstance(cfg.fallback, dict) else []):
@@ -504,6 +547,7 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                     pf = create_provider("ollama", host=cfg.ollama_url, model=fb,
                                          timeout_s=cfg.request_timeout_s)
                     providers[role] = pf
+                    resolved_models[role] = getattr(pf, "model", "") or fb
                     fallback_log.append({"role": role, "from": model, "to": fb,
                                          "reason": f"primary unavailable: {e}"})
                     logger.human(f"FALLBACK {role}: {model} -> {fb} ({e})")
@@ -513,6 +557,7 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                     continue
             raise
         providers[role] = p
+        resolved_models[role] = getattr(p, "model", "") or model
         return p
 
     def _maybe_fallback(role: str) -> None:
@@ -1043,6 +1088,31 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                 "task_result": _tr(ST_CANCELLED, "cancelled", False),
                 "history": history}
 
+    def _chat(role: str, messages: list[dict[str, str]]) -> str:
+        """Ask the role's model, and ask it to answer rather than think.
+
+        A reasoning model that is left to think puts its answer in the
+        thinking field and leaves the content empty, and the Bridge
+        then has nothing to act on: the run fails with an empty
+        response, and the reason is invisible in the error. The
+        runtime says which models can think, so the Bridge asks those
+        to answer directly, and only those: a model that cannot think
+        is never sent the flag.
+        """
+        provider = _prov(role)
+        think: bool | None = None
+        try:
+            if provider.supports_think_control():
+                think = False
+        except Exception:
+            think = None
+        if think is None:
+            # The flag is passed only when it means something. A
+            # provider that does not do think control is called the way
+            # it was always called.
+            return provider.chat(messages)
+        return provider.chat(messages, think=think)
+
     while step < step_budget:
         if _cancel["flag"]:
             return _cancelled_outcome()
@@ -1053,7 +1123,7 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
         role = call_role
         _maybe_fallback(role)
         try:
-            raw = _prov(role).chat(messages)
+            raw = _chat(role, messages)
         except ProviderError as e:
             logger.human(f"STEP {step} OLLAMA-ERROR {e}")
             logger.event(event="step", step=step, kind=OLLAMA_ERROR, error=str(e))
@@ -1249,7 +1319,8 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                     _cx_finish_sequence(CX_VERIFIED, ["reviewer:approve"])
                     return _finish_ok("reviewer approved", step, history, session,
                                       memory, logger, t0, review_record, label, git,
-                                      _tr(COMPLETED, "reviewer approved", True))
+                                      _tr(COMPLETED, "reviewer approved", True),
+                                      fallback_log)
                 if rev["verdict"] == REJECT:
                     session.status = FAILED
                     logger.event(event="end", finished=False, kind=REVIEW_REJECTED,
@@ -1627,7 +1698,13 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                         "validation_ok": True, "approved": True, "approval": verdict,
                         "executed": True, "result": result, "kind": kind,
                         "duration_ms": dur_ms, "role": role, "called_as": gen_role,
-                        "model": router.model_for(gen_role)})
+                        # The model that actually ran this step, which is
+                        # not always the model that was configured for the
+                        # role. The evidence names what really happened.
+                        "model": (resolved_models.get(gen_role)
+                                  or resolved_models.get(role)
+                                  or router.model_for(gen_role)),
+                        "configured_model": router.model_for(gen_role)})
         if act in MUTATING_ACTIONS:
             _cx_after_unit(f"step {step} {act} "
                            f"ok={result.get('ok')} id={action_id}")
@@ -1866,8 +1943,22 @@ def _run_reviewer(provider: Any, route: Any, task: str, plan_notes: list[str],
                 f"{oracle.get('quality')} — "
                 + "; ".join(oracle.get("reasons", []))[:800])
     try:
-        raw = provider.chat([{"role": "system", "content": REVIEW_SYSTEM + "\n\n" + REVIEW_EXTRA},
-                             {"role": "user", "content": ctx}])
+        # The reviewer is asked to answer, for the same reason the coder
+        # is: a model that thinks instead of answering leaves nothing to
+        # read. Only a model the runtime says can think is asked not to.
+        think: bool | None = None
+        try:
+            if provider.supports_think_control():
+                think = False
+        except Exception:
+            think = None
+        review_messages = [
+            {"role": "system", "content": REVIEW_SYSTEM + "\n\n" + REVIEW_EXTRA},
+            {"role": "user", "content": ctx}]
+        if think is None:
+            raw = provider.chat(review_messages)
+        else:
+            raw = provider.chat(review_messages, think=think)
     except ProviderError as e:
         bus.emit(REVIEW_COMPLETED, {"verdict": "error", "error": str(e)})
         return {"verdict": APPROVE, "issues": [], "recommendations": [],
@@ -1880,7 +1971,10 @@ def _run_reviewer(provider: Any, route: Any, task: str, plan_notes: list[str],
                 "confidence": 0.0, "note": "reviewer output unparseable; execution evidence stands"}
     ground = verify_claims_against_workspace(executor.workspace, verdict, files)
     verdict["grounding"] = ground
-    verdict["model"] = route.model
+    # The model that actually reviewed, which is not always the model
+    # that was configured for the reviewer role.
+    verdict["model"] = getattr(provider, "model", "") or route.model
+    verdict["configured_model"] = route.model
     verdict["shared"] = route.shared_with
     bus.emit(REVIEW_COMPLETED, {"verdict": verdict["verdict"],
                                 "issues": len(verdict["issues"]),
@@ -1901,7 +1995,8 @@ def _review_agrees(rev: dict[str, Any], history: list[dict]) -> bool:
 def _finish_ok(message: str, step: int, history: list, session: BridgeSession,
                memory: SessionMemory, logger: EventLogger, t0: float,
                review: dict, label: str, git: GitManager,
-               task_result: dict | None = None) -> dict:
+               task_result: dict | None = None,
+               fallback_log: list | None = None) -> dict:
     session.status = COMPLETED
     logger.event(event="end", finished=True, steps=step,
                  duration_s=round(time.monotonic() - t0, 2),
@@ -1914,6 +2009,11 @@ def _finish_ok(message: str, step: int, history: list, session: BridgeSession,
                            "review": review, "history": history}
     if task_result is not None:
         out["task_result"] = task_result
+    # The model substitutions that happened during the run, so that a
+    # reader of the result can see which model really did the work and
+    # why it was not the one that was configured.
+    if fallback_log:
+        out["fallback_log"] = fallback_log
     return out
 
 

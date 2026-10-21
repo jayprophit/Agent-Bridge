@@ -68,7 +68,7 @@ class DirectedProvider:
         return [self.model]
 
     def chat(self, messages, temperature: float = 0.1,
-             num_predict: int = 640) -> str:
+             num_predict: int = 640, think: bool | None = None) -> str:
         self.calls += 1
         if self._script:
             return self._script.pop(0)

@@ -1,8 +1,9 @@
 """Delegation Certification Test 2 - Add Function Bug Fix."""
 
 def add(a: int, b: int) -> int:
+    return a + b
     """Add two numbers - INTENTIONAL BUG for worker to fix."""
-    return a + b  # BUG: should be a + b
+    return a - b  # BUG: should be a + b
 
 
 def test_add():
