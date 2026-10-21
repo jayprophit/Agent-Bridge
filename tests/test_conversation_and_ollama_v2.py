@@ -357,6 +357,21 @@ class OllamaCapabilityDiscoveryTests(unittest.TestCase):
         if not self.available:
             self.skipTest("Ollama runtime not reachable")
 
+    def _skip_unless_model(self, model: str):
+        """Skip unless the runtime actually has this model.
+
+        A test that says "this model declares tool calling" is a test
+        about a model. When the model is not on this machine the test
+        cannot say whether it is right, and failing says only that the
+        machine has a different set of models. The skip names the model
+        that is missing.
+        """
+        if not self.available:
+            self.skipTest("Ollama runtime not reachable")
+        names = {str(m) for m in self.provider.list_models()}
+        if model not in names:
+            self.skipTest(f"{model} is not on this machine")
+
     def test_runtime_is_discoverable(self):
         self._skip_unless_live()
         self.assertGreater(len(self.provider.list_models()), 0)
@@ -379,7 +394,7 @@ class OllamaCapabilityDiscoveryTests(unittest.TestCase):
         tool calling, but /api/show declares ["completion","tools"]. Trusting
         the runtime is the whole point of discovery.
         """
-        self._skip_unless_live()
+        self._skip_unless_model("llama3.2:1b-instruct-q4_K_M")
         caps = self.provider.discover("llama3.2:1b-instruct-q4_K_M")
         self.assertTrue(caps.tools)
 
@@ -391,7 +406,7 @@ class OllamaCapabilityDiscoveryTests(unittest.TestCase):
 
     def test_context_length_is_discovered(self):
         """context_length lives in model_info as <arch>.context_length."""
-        self._skip_unless_live()
+        self._skip_unless_model("llama3.2:1b-instruct-q4_K_M")
         caps = self.provider.discover("llama3.2:1b-instruct-q4_K_M")
         self.assertGreater(caps.context_length, 0)
 

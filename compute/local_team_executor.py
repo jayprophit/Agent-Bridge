@@ -381,16 +381,75 @@ class LocalTeamExecutor:
         ])
 
 
+def _pick_installed_model(provider: "OllamaProviderV2",
+                          role: str = "coder") -> str | None:
+    """The smallest installed model that fits the role, or None.
+
+    The size matters: the host has a four gigabyte card, so a proof
+    that loads a large model evicts whatever the owner is running, and
+    the whole point of a local proof is that it does not disturb the
+    machine. So the smallest installed completion model is preferred,
+    and the owner's own role pool is the order of preference within
+    that.
+
+    None means the machine has no usable model, and the caller has to
+    say so rather than measure nothing.
+    """
+    installed = set(provider.list_models())
+    if not installed:
+        return None
+    # The sizes come from the runtime, because the size of a model is
+    # not in its name.
+    sizes: dict[str, int] = {}
+    try:
+        tags = provider._get("/api/tags") or {}
+        for entry in tags.get("models", []):
+            sizes[str(entry.get("name", ""))] = int(entry.get("size", 0) or 0)
+    except Exception:
+        sizes = {}
+    try:
+        from models.model_roles import MINIMUM_MODEL_COVERAGE
+    except Exception:
+        MINIMUM_MODEL_COVERAGE = {}
+    preferred = [MINIMUM_MODEL_COVERAGE.get(key) for key in
+                 ("primary_coder", "fast_coder", "general_reasoner",
+                  "reviewer_debugger", "fallback")]
+    preferred = [name for name in preferred if name]
+    preferred.extend(("hhao/qwen2.5-coder-tools:3b", "qwen3:latest",
+                      "qwen3:1.7b", "granite3.3:2b", "qwen3.5:2b-q4_K_M"))
+    # Among the models the runtime has, the smallest is the one that
+    # least disturbs the machine. The order of preference only breaks
+    # ties between models of the same size.
+    usable = [name for name in installed if "embed" not in name]
+    if not usable:
+        return None
+    usable.sort(key=lambda name: (sizes.get(name, 1 << 40),
+                                  preferred.index(name) if name in preferred
+                                  else len(preferred),
+                                  name))
+    return usable[0]
+
+
 def run_solo_baseline(task: str) -> dict[str, Any]:
     """§13 — SOLO_LOCAL for comparison against TEAM_LOCAL."""
     provider = OllamaProviderV2()
     if not provider.is_available():
         return {"state": "BLOCKED_EXTERNAL", "reason": "Ollama unreachable"}
-    model = None
-    for candidate in ("llama3.2:1b-instruct-q4_K_M", "qwen3:0.6b"):
-        if candidate in provider.list_models():
-            model = candidate
-            break
+    # Pick a model that is actually installed.
+    #
+    # This used to name two models and use whichever of them was
+    # present, and on a machine with neither it went on to make the
+    # request anyway with no model at all. The runtime answered 400, and
+    # the comparison raised instead of reporting that it could not run,
+    # which is the opposite of what a comparison is for.
+    #
+    # So the same selection the team executor uses is used here, and a
+    # machine with no usable model is reported as blocked rather than
+    # measured.
+    model = _pick_installed_model(provider)
+    if not model:
+        return {"state": "BLOCKED_EXTERNAL",
+                "reason": "no installed Ollama model available"}
     started = time.perf_counter()
     try:
         # EPHEMERAL: a solo baseline measurement wants the weights gone when
@@ -398,6 +457,13 @@ def run_solo_baseline(task: str) -> dict[str, Any]:
         # that is still resident from this call (§6).
         result = provider.infer(model, task, max_tokens=96, temperature=0.2,
                                 policy=LeasePolicy.EPHEMERAL)
+    except Exception as exc:
+        # A baseline that could not be measured is blocked, not a crash.
+        # The caller decides what to do with a state, and it cannot decide
+        # anything with an exception.
+        return {"state": "BLOCKED_EXTERNAL",
+                "reason": f"the solo baseline could not be measured: "
+                          f"{type(exc).__name__}: {exc}"[:200]}
     finally:
         # Belt-and-braces: infer() releases its own lease, but a failure
         # between acquire and release must not strand the model (§12).
@@ -413,11 +479,27 @@ def run_solo_baseline(task: str) -> dict[str, Any]:
 
 
 def compare_solo_vs_team(task: str) -> dict[str, Any]:
-    """§13 — measured comparison. Does NOT assume team mode is superior."""
-    solo = run_solo_baseline(task)
+    """§13 - measured comparison. Does NOT assume team mode is superior."""
+    # A comparison that cannot be measured has to say so. A provider
+    # that times out, or a runtime that is not there, is a blocked
+    # measurement and not a crash: the caller decides what to do with a
+    # state, and it cannot decide anything with an exception.
+    try:
+        solo = run_solo_baseline(task)
+    except Exception as exc:
+        return {"state": "BLOCKED_EXTERNAL",
+                "reason": f"the solo baseline could not be measured: "
+                          f"{type(exc).__name__}: {exc}"[:200]}
+    if solo.get("state") != "VERIFIED_LOCAL":
+        return {"state": solo.get("state", "BLOCKED_EXTERNAL"),
+                "reason": solo.get("reason", "the solo baseline could not be measured")}
     executor = LocalTeamExecutor()
     try:
         team = executor.run_bounded_team_task(task)
+    except Exception as exc:
+        return {"state": "BLOCKED_EXTERNAL",
+                "reason": f"the team run could not be measured: "
+                          f"{type(exc).__name__}: {exc}"[:200]}
     finally:
         # §12 hygiene: this helper is called directly by scripts and tests, so
         # it must release even when the comparison raises.

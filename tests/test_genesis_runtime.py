@@ -6,6 +6,25 @@ from pathlib import Path
 from genesis_runtime import LocalGenesisRuntime
 
 
+def _model_runtime_has(name: str) -> bool:
+    """Whether the model runtime has this model.
+
+    A test that rotates to a model is a test about that model and about
+    the machine it is on. Where the machine does not have it, the test
+    cannot say whether it is right, and failing says only that the
+    machine has a different set of models.
+    """
+    import json
+    import urllib.request
+    try:
+        with urllib.request.urlopen(
+                "http://127.0.0.1:11434/api/tags", timeout=10) as res:
+            listed = json.loads(res.read().decode("utf-8"))
+    except Exception:
+        return False
+    return any(str(m.get("name", "")) == name for m in listed.get("models", []))
+
+
 class FakeBridge:
     def __init__(self):
         self.tasks = {}
@@ -92,6 +111,13 @@ class GenesisLiveRotationTests(unittest.TestCase):
             rt.identify("g-live")
             first = rt.rotate_model("granite3.3:2b")
             self.assertTrue(first["ok"], first)
+            # A rotation to a model that is not there is refused, and
+            # that is the product working. So the test needs the model
+            # it rotates to, and skips where the machine does not have
+            # it.
+            for needed in ("granite3.3:2b", "qwen3:0.6b"):
+                if not _model_runtime_has(needed):
+                    self.skipTest(f"{needed} is not on this machine")
             second = rt.rotate_model("qwen3:0.6b")
             self.assertTrue(second["ok"], second)
             self.assertEqual(rt.identity.genesis_id, "g-live")
