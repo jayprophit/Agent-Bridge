@@ -445,6 +445,7 @@ class OllamaCapabilityDiscoveryTests(unittest.TestCase):
         self.assertIs(first, again)
 
     def test_capabilities_serialize(self):
+        self._skip_unless_model("llama3.2:1b-instruct-q4_K_M")
         caps = self.provider.discover("llama3.2:1b-instruct-q4_K_M")
         data = caps.to_dict()
         self.assertIn("supported", data)

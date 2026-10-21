@@ -23,7 +23,11 @@ BASE = _area("CONVERSATION_ANALYSIS")
 _guard(BASE)  # programme outputs must not target the Desktop
 PASS1_LOG = BASE / "pass_1_fragment_classification" / "UNKNOWN_REQUIREMENT_RECONCILIATION_LOG.json"
 OUT = BASE / "pass_2_context_enrichment"
-OUT.mkdir(exist_ok=True)
+# The output directory is NOT created here. A module that touches the
+# filesystem when it is imported cannot be imported on a machine that
+# does not have the output area, and this module is imported by tests
+# that have nothing to do with running the pass. The directory is
+# created where the output is actually written.
 ANALYSIS_DIRS = {"deepseek": BASE / "deepseek_analysis",
                  "chatgpt": BASE / "chatgpt_analysis",
                  "claude": BASE / "claude_analysis"}
@@ -472,6 +476,9 @@ def main():
             dec_links_all.append({"capability": rec["SHA256_ID"], "project": target, **L})
 
     by_state = Counter(e["ACCEPTANCE_STATE"] for e in enriched)
+    # The output area is created here, where the output is written, and
+    # not when the module is imported.
+    OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "PASS_2_LOG.json").write_text(
         json.dumps({"generated_at": NOW, "queue": queue, "count": len(enriched),
                     "records": enriched}, indent=1, ensure_ascii=False), encoding="utf-8")

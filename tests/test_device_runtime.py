@@ -1,4 +1,11 @@
 import unittest
+
+try:
+    from helpers import (model_runtime_available, model_runtime_has,
+                         package_installed)
+except ImportError:  # the suite may be run as a package, or not
+    from tests.helpers import (model_runtime_available,
+                               model_runtime_has, package_installed)
 from unittest.mock import patch
 
 from device import DeviceProfiler, HardwareProfiler
@@ -53,6 +60,8 @@ class DeviceRuntimeTests(unittest.TestCase):
 
     def test_ollama_protocol_detection(self):
         """Test that Ollama-compatible endpoints are correctly detected."""
+        if not model_runtime_available():
+            self.skipTest("the local model runtime is not reachable")
         discovery = LocalRuntimeDiscovery({"ollama": "http://127.0.0.1:11434"})
         result = discovery.discover()[0]
         self.assertEqual(result.protocol, "OLLAMA_COMPATIBLE")

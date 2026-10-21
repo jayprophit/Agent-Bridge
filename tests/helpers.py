@@ -1,8 +1,10 @@
 """Deterministic fake model provider for v0.3 unit tests (no Ollama)."""
 from __future__ import annotations
 
+import json
 import os
 import subprocess
+import urllib.request
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -44,6 +46,37 @@ def tracked_files(root: Path | None = None) -> list[Path]:
         for name in filenames:
             out.append(Path(dirpath) / name)
     return out
+
+
+def model_runtime_available() -> bool:
+    """Whether the local model runtime is reachable."""
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:11434/api/tags",
+                                    timeout=5) as res:
+            json.loads(res.read().decode("utf-8"))
+        return True
+    except Exception:
+        return False
+
+
+def model_runtime_has(name: str) -> bool:
+    """Whether the local model runtime has this model."""
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:11434/api/tags",
+                                    timeout=5) as res:
+            listed = json.loads(res.read().decode("utf-8"))
+    except Exception:
+        return False
+    return any(str(m.get("name", "")) == name for m in listed.get("models", []))
+
+
+def package_installed(module: str) -> bool:
+    """Whether a python module can be imported here."""
+    try:
+        import importlib.util
+        return importlib.util.find_spec(module) is not None
+    except Exception:
+        return False
 
 
 class FakeProvider:
