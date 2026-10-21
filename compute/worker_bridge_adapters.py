@@ -10,6 +10,8 @@ GUI is FALLBACK TRANSPORT, not the semantic protocol (§13).
 """
 from __future__ import annotations
 
+import os
+import shutil
 import subprocess
 import time
 from abc import ABC, abstractmethod
@@ -22,6 +24,37 @@ from compute.agent_message import (
     DeliveryState,
     Intent,
 )
+
+
+def resolve_executable(configured: str = "", name: str = "") -> str:
+    """Find an executable to run, without hard-coding anyone's machine.
+
+    A personal path in the source is a personal path in every checkout
+    of it, and it stops working the moment the repository is on a
+    different machine or a different account. So the executable is
+    DISCOVERED on the PATH.
+
+    An operator may still configure one, and the configuration is
+    validated: a path that exists and is executable is used, and a bare
+    name is looked up on the PATH. On Windows the npm shims are .cmd
+    files, and shutil.which honours PATHEXT, so "opencode" finds
+    "opencode.cmd".
+
+    When nothing is found the name is returned, so the caller gets the
+    ordinary "not found" error from the operating system rather than a
+    made-up path.
+    """
+    candidate = str(configured or "").strip()
+    if candidate:
+        expanded = os.path.expanduser(candidate)
+        if os.path.isfile(expanded) and os.access(expanded, os.X_OK):
+            return expanded
+        found = shutil.which(expanded)
+        return found or expanded
+    if name:
+        found = shutil.which(name)
+        return found or name
+    return ""
 
 
 # --- adapter interface (§12) ------------------------------------------------------------
@@ -139,10 +172,12 @@ class OpenCodeAdapter(WorkerAdapterInterface):
     """
 
     def __init__(self, worker_id: str = "opencode-01",
-                 opencode_bin: str = "C:/Users/jpowe/AppData/Roaming/npm/opencode.cmd",
+                 opencode_bin: str = "",
                  model: str = "nemotron-3-ultra-free"):
         super().__init__(worker_id, "opencode")
-        self.bin = opencode_bin
+        # The executable is discovered, not hard-coded. An operator may
+        # still configure one and it is validated.
+        self.bin = resolve_executable(opencode_bin, "opencode")
         self.current_model = model
         self.capabilities = [
             Capability.CODING,

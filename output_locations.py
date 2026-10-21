@@ -57,8 +57,21 @@ def resolve(workstream: str, *subpath: str, root: str = "",
 
 
 def _desktop_roots() -> tuple:
+    """The Desktop roots for the account that is running.
+
+    The Desktop is a per-user known folder, and it can be in two
+    places: the profile's own Desktop, and the OneDrive-redirected
+    one. Both are derived from the account, and neither of them is
+    anybody else's path.
+
+    A hard-coded fallback for one named account was here, in lower
+    case, and the hygiene check that looks for personal paths was
+    case-sensitive, so it was invisible to it. The guard is now
+    stronger rather than weaker: it protects the OneDrive Desktop,
+    which the hard-coded path never did.
+    """
     home = os.path.expanduser("~").replace("\\", "/").lower()
-    return (home + "/desktop", "c:/users/jpowe/desktop")
+    return (home + "/desktop", home + "/onedrive/desktop")
 
 
 def is_desktop_path(path: str | Path) -> bool:

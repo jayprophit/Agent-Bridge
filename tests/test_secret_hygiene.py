@@ -143,7 +143,13 @@ class HygieneTests(unittest.TestCase):
                     text = f.read()
             except OSError:
                 continue
-            if "C:\\Users\\jpowe" in text or "C:/Users/jpowe" in text:
+            # Case-insensitively, because a WINDOWS path is
+            # case-insensitive: "c:/users/jpowe" names the same
+            # directory as "C:/Users/jpowe", and a check that only
+            # looks for one case is a check that can be written past.
+            lowered = text.lower()
+            if ("c:\\users\\jpowe" in lowered
+                    or "c:/users/jpowe" in lowered):
                 hits.append(os.path.relpath(path, REPO_ROOT))
         self.assertEqual(hits, [], f"personal paths in source: {hits[:5]}")
 
