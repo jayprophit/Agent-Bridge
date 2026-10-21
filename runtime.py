@@ -18,6 +18,8 @@ import uuid
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Callable
+from workspace_paths import (canonical_workspace,
+                               same_workspace)
 
 from bridge import build_task_result, run_bridge
 from checkpoints import CheckpointManager
@@ -531,20 +533,6 @@ class Session:
         return out
 
 
-def _same_workspace(one: str | Path, other: str | Path) -> bool:
-    """Whether two paths name the same directory.
-
-    A path is compared as it resolves, not as it is spelled. On Windows
-    the short form of a path names the same directory as the long form,
-    and a temporary directory is routinely handed to a caller in one
-    spelling and recorded in the other.
-    """
-    try:
-        return Path(one).resolve() == Path(other).resolve()
-    except OSError:
-        return str(one) == str(other)
-
-
 class AgentRuntime:
     """Public entry point. Owns roots policy, sessions, metrics, health."""
 
@@ -696,9 +684,14 @@ class AgentRuntime:
                 "workspace '.' is not inside any allowed root "
                 f"{self.cfg.allowed_workspace_roots}")
 
-        ws = Path(workspace).expanduser().resolve()
+        # The workspace and the roots are canonicalised the same way, so
+        # that the short form of a path and the long form of it are one
+        # place. On Windows they are two spellings of one directory, and
+        # comparing them as strings says a workspace is outside the root
+        # it is in.
+        ws = canonical_workspace(workspace)
         for root in self.cfg.allowed_workspace_roots:
-            rp = Path(root).expanduser().resolve()
+            rp = canonical_workspace(root)
             try:
                 ws.relative_to(rp)
                 if ws.exists() and ws.is_dir():
@@ -877,7 +870,7 @@ class AgentRuntime:
             if sess is None:
                 del self.session_labels[label]
                 return None
-            if workspace and not _same_workspace(sess.workspace, workspace):
+            if workspace and not same_workspace(sess.workspace, workspace):
                 raise ValueError(
                     f"session label {label!r} already belongs to workspace "
                     f"{sess.workspace}")
