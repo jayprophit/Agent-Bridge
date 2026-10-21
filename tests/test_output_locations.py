@@ -38,27 +38,34 @@ class AreaTests(unittest.TestCase):
                          Path("E:/OpenCode-Data/logs/run1/out.json"))
 
 
+# The Desktop of the account that is running. The guard protects
+# THAT Desktop, so the tests sample THAT one, and a test that only
+# passes on one account's machine is a test that measures the
+# machine.
+DESKTOP = Path(os.path.expanduser("~")) / "Desktop"
+
+
 class GuardTests(unittest.TestCase):
     def test_desktop_detected(self):
-        self.assertTrue(is_desktop_path(r"C:\Users\jpowe\Desktop\out.json"))
-        self.assertTrue(is_desktop_path("C:/Users/jpowe/Desktop"))
+        self.assertTrue(is_desktop_path(str(DESKTOP / "out.json")))
+        self.assertTrue(is_desktop_path(str(DESKTOP)))
         self.assertFalse(is_desktop_path("E:/OpenCode-Data/logs/out.json"))
 
     def test_desktop_project_dir_still_desktop(self):
         # Canonical repo dirs live on Desktop; the guard flags any Desktop
         # path, so callers must pass explicit owner approval for those.
-        self.assertTrue(is_desktop_path(r"C:\Users\jpowe\Desktop\Agent-Bridge\bridge.py"))
+        self.assertTrue(is_desktop_path(str(DESKTOP / "Agent-Bridge" / "bridge.py")))
 
     def test_guard_blocks_by_default(self):
         os.environ.pop("OWNER_EXPLICIT_DESKTOP_REQUEST", None)
         with self.assertRaises(ValueError):
-            assert_not_desktop(r"C:\Users\jpowe\Desktop\out.json")
+            assert_not_desktop(str(DESKTOP / "out.json"))
 
     def test_guard_allows_explicit_owner_request(self):
         os.environ["OWNER_EXPLICIT_DESKTOP_REQUEST"] = "TRUE"
         try:
-            p = assert_not_desktop(r"C:\Users\jpowe\Desktop\Start-Aetherius-IDE.ps1")
-            self.assertEqual(p, Path(r"C:\Users\jpowe\Desktop\Start-Aetherius-IDE.ps1"))
+            p = assert_not_desktop(str(DESKTOP / "Start-Aetherius-IDE.ps1"))
+            self.assertEqual(p, Path(str(DESKTOP / "Start-Aetherius-IDE.ps1")))
         finally:
             del os.environ["OWNER_EXPLICIT_DESKTOP_REQUEST"]
 

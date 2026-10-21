@@ -59,20 +59,42 @@ def resolve(workstream: str, *subpath: str, root: str = "",
 def _desktop_roots() -> tuple:
     """The Desktop roots for the account that is running.
 
-    The Desktop is a per-user known folder, and it can be in two
-    places: the profile's own Desktop, and the OneDrive-redirected
-    one. Both are derived from the account, and neither of them is
-    anybody else's path.
+    The Desktop is a per-user known folder, and on Windows it can be
+    redirected, so the authoritative answer is the shell's own record
+    of it. The profile's own Desktop and the OneDrive-redirected one
+    are the fallbacks, and both are derived from the account.
 
     A hard-coded fallback for one named account was here, in lower
     case, and the hygiene check that looks for personal paths was
     case-sensitive, so it was invisible to it. The guard is now
-    stronger rather than weaker: it protects the OneDrive Desktop,
-    which the hard-coded path never did.
+    stronger rather than weaker: it protects the account that is
+    really running, it protects the redirected Desktop, and it protects
+    the OneDrive Desktop too.
     """
-    home = os.path.expanduser("~").replace("\\", "/").lower()
-    return (home + "/desktop", home + "/onedrive/desktop")
+    roots = []
+    try:
+        import winreg
 
+        key = winreg.OpenKey(
+            winreg.HKEY_CURRENT_USER,
+            r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders")
+        value, _ = winreg.QueryValueEx(key, "Desktop")
+        winreg.CloseKey(key)
+        if value:
+            roots.append(str(Path(os.path.expandvars(value))))
+    except Exception:  # noqa: BLE001 - no registry, or no shell folders
+        pass
+    home = os.path.expanduser("~").replace("\\", "/").lower()
+    roots.append(home + "/desktop")
+    roots.append(home + "/onedrive/desktop")
+    seen = set()
+    unique = []
+    for root in roots:
+        normalised = str(root).replace("\\", "/").rstrip("/").lower()
+        if normalised and normalised not in seen:
+            seen.add(normalised)
+            unique.append(normalised)
+    return tuple(unique)
 
 def is_desktop_path(path: str | Path) -> bool:
     """True if path sits on the Windows Desktop (any user)."""
