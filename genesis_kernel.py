@@ -213,9 +213,21 @@ class GenesisKernel:
     # -- the verbs --------------------------------------------------------
 
     def boot(self, model_route: str = "") -> KernelResult:
-        """Boot the organism, or confirm it is already booted."""
-        args = ["--model-route", model_route] if model_route else []
-        return self._run("--boot", *args)
+        """Boot the organism, or confirm it is already booted.
+
+        The host says "booted" with a version when the organism is new,
+        and "already booted" with a state but no version when it is not.
+        So the boot is followed by a status, which is the one call that
+        always reports the identity, the version, the state and the two
+        digests. Without it the summary can name an organism and leave
+        its version blank, which reads like missing data rather than like
+        an organism that was already there.
+        """
+        result = self._run("--boot", *(["--model-route", model_route]
+                                        if model_route else []))
+        if result.ok:
+            self.status()
+        return result
 
     def event(self, topic: str, payload: str) -> KernelResult:
         """Record one event against the organism."""

@@ -266,6 +266,37 @@ class TestTheRealKernel(unittest.TestCase):
         self.assertNotEqual(self.kernel.version, before)
         self.assertEqual(result.fields["state"], "ready")
 
+    def test_the_summary_reports_the_version_when_the_organism_was_already_there(self):
+        """The host says "already booted" with a state but no version.
+
+        So a summary built from the boot alone names the organism and
+        leaves its version blank, which reads like missing data rather
+        than like an organism that was already there. The boot is
+        followed by a status, which is the one call that always reports
+        the identity, the version, the state and the two digests.
+        """
+        root = Path(tempfile.mkdtemp(prefix="v10_genboot_"))
+        try:
+            first = GenesisKernel(_REAL_HOST, root / "state")
+            first.boot("route-a")
+            self.assertTrue(first.summary()["version"],
+                            "the version is reported after the first boot")
+            self.assertTrue(first.summary()["state"])
+
+            # A second kernel over the same state: the organism is
+            # already there, and the boot says so without a version.
+            second = GenesisKernel(_REAL_HOST, root / "state")
+            second.boot("route-b")
+            summary = second.summary()
+            self.assertTrue(summary["version"],
+                            "the version is reported even when the organism "
+                            "was already booted")
+            self.assertTrue(summary["state"])
+            self.assertEqual(summary["identity"], first.summary()["identity"])
+        finally:
+            import shutil
+            shutil.rmtree(root, ignore_errors=True)
+
     def test_the_state_survives_a_restart(self):
         """The organism is durable, which is the whole point of it."""
         self.kernel.boot()
