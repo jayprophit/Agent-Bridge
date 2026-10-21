@@ -228,6 +228,20 @@ class TestSupervisedLifecycle(unittest.TestCase):
             task.cleanup()
 
 
+
+def _model_runtime_has(model: str) -> bool:
+    """Whether the local model runtime is up and holds that model."""
+    import urllib.request
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:11434/api/tags",
+                                    timeout=10) as response:
+            payload = json.loads(response.read().decode("utf-8", "replace"))
+    except Exception:  # noqa: BLE001
+        return False
+    names = {m.get("name", "") for m in (payload.get("models") or [])}
+    return any(name == model or name.startswith(model + ":") for name in names)
+
+
 class TestModelBackendWorker(unittest.TestCase):
     """Delegation to a real external model (Ollama) through the same
     canonical runtime: same lease, same heartbeat discipline, same
@@ -305,6 +319,13 @@ class TestModelBackendWorker(unittest.TestCase):
         ]
 
     def test_model_worker_answers_are_independently_verified(self):
+        # The test asks a real model to answer, so it needs a real model
+        # runtime with that model in it. A machine without one cannot
+        # measure it, and the failure would say nothing about the
+        # supervised worker.
+        if not _model_runtime_has(self.MODEL):
+            self.skipTest(
+                f"the model runtime does not have {self.MODEL!r} here")
         task = SupervisedTask(self.root, "t-model")
         task.assign_model_query(self._questions(), self.MODEL)
         try:

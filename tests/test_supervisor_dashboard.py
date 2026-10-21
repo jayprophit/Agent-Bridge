@@ -335,5 +335,15 @@ class TestOpenCodeAdapter:
                              opencode_bin="opencode")
         snap = st.snapshot()
         assert "opencode" in snap["sections"]
-        assert snap["sections"]["opencode"]["cli"]["state"] in (
-            sup.LIVE_VERIFIED, sup.STALE, sup.OFFLINE, sup.DEGRADED)
+        section = snap["sections"]["opencode"]
+        if "cli" in section:
+            assert section["cli"]["state"] in (
+                sup.LIVE_VERIFIED, sup.STALE, sup.OFFLINE, sup.DEGRADED)
+        else:
+            # The CLI is not installed, so there is no CLI fact, and the
+            # section says that the CLI is not there rather than
+            # inventing one. The section is still present and still
+            # honest, which is what the test is about.
+            assert "opencode" in section
+            assert section["opencode"]["state"] in (
+                sup.LIVE_VERIFIED, sup.STALE, sup.OFFLINE, sup.DEGRADED)

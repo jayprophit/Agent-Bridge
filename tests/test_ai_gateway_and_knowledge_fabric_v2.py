@@ -403,6 +403,17 @@ def test_mat_reconciliation_one_repo():
     adapter = _get_gh_adapter()
     if adapter is None:
         return  # skip if not authenticated
+    # The reconciliation is over the OWNER's repositories. A CI token is
+    # authenticated and can only see the repository it is running in, so
+    # the reconciliation cannot be measured there, and the test would be
+    # measuring the runner's scope rather than the owner's account.
+    auth_user = str(getattr(adapter, "_auth_user", "") or "")
+    owner = str(getattr(adapter, "owner", "") or "")
+    if auth_user and owner and auth_user.lower() != owner.lower():
+        import pytest
+        pytest.skip(
+            f"the authenticated account is {auth_user!r} and the "
+            f"reconciliation is over {owner!r}")
     # Enumerate all repos and confirm exactly one has "Materials-Atlas" in the name
     all_repos = adapter.list_sources(limit=100)
     mat_repos = [r for r in all_repos if "material" in r.title.lower()]

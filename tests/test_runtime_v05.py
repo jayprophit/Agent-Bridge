@@ -239,6 +239,24 @@ class TestHumanGate(unittest.TestCase):
             shutil.rmtree(tmp, ignore_errors=True)
 
 
+
+def _model_runtime_reachable() -> bool:
+    """Whether the local model runtime answers.
+
+    The self-check reports the model runtime as FAIL when it cannot be
+    reached, which is true and is not a defect of the Bridge. A test
+    that cannot tell an unreachable dependency from a broken one is a
+    test that measures the machine.
+    """
+    import urllib.request
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:11434/api/tags",
+                                    timeout=5) as response:
+            return response.status == 200
+    except Exception:  # noqa: BLE001
+        return False
+
+
 class TestInventoryHistoryDiag(unittest.TestCase):
     def test_inventory_shape(self):
         tmp = Path(tempfile.mkdtemp(prefix="v05_inv_"))
@@ -286,8 +304,20 @@ class TestInventoryHistoryDiag(unittest.TestCase):
             for name in ("config", "storage", "allowed_roots", "ollama",
                          "models", "event_system", "sandbox", "persistence"):
                 self.assertIn(name, checks)
-            self.assertNotIn("FAIL", set(checks.values()),
-                             f"self-check failed: {checks}")
+            # The model runtime is a local dependency, and a machine
+            # without one cannot pass the ollama check. That is a true
+            # statement about the machine and not a defect, so the
+            # ollama check is allowed to fail when the runtime cannot be
+            # reached. Every other check must pass: the configuration,
+            # the storage, the allowed roots, the event system, the
+            # sandbox and the persistence are all properties of the
+            # Bridge itself.
+            failures = {name for name, status in checks.items()
+                        if status == "FAIL"}
+            reachable = _model_runtime_reachable()
+            if not reachable:
+                failures.discard("ollama")
+            self.assertFalse(failures, f"self-check failed: {checks}")
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 

@@ -144,9 +144,16 @@ class TestAuditHonesty(unittest.TestCase):
         self.assertEqual(data["summary"]["orphaned_sources"], [])
 
     def test_json_exports_no_longer_unsupported(self):
-        data = json.loads(Path(
-            r"E:\OpenCode-Data\Knowledge\AI-CONVERSATION-INGESTION-AUDIT.json"
-        ).read_text(encoding="utf-8"))
+        # The audit export lives in the owner's local data directory and
+        # is not in the repository, so this test can only be measured on
+        # the machine that produced it. It is skipped with a reason
+        # elsewhere rather than failing for a reason that has nothing to
+        # do with the code under test.
+        path = Path(
+            r"E:\OpenCode-Data\Knowledge\AI-CONVERSATION-INGESTION-AUDIT.json")
+        if not path.exists():
+            self.skipTest(f"the owner's local audit export is not here: {path}")
+        data = json.loads(path.read_text(encoding="utf-8"))
         conv = [r for r in data["records"]
                 if r["filename"] == "conversations.json"]
         self.assertEqual(len(conv), 2)
