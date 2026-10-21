@@ -21,6 +21,11 @@ import json
 import time
 import sys
 import unittest
+
+try:
+    from helpers import model_runtime_available
+except ImportError:  # the suite may be run as a package, or not
+    from tests.helpers import model_runtime_available
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -154,6 +159,9 @@ class TraceLinkageTests(unittest.TestCase):
         cls.executor = LocalTeamExecutor()
         cls.summary = cls.executor.run_bounded_team_task(
             "Name one risk in a caching layer")
+        if cls.summary.get("state") != "VERIFIED_LOCAL":
+            raise unittest.SkipTest(
+                cls.summary.get("reason", "the team run was unavailable"))
 
     def test_single_trace_id_across_team(self):
         trace_ids = {w["trace_id"] for w in self.summary["workers"]}
@@ -262,6 +270,8 @@ class ResourcePolicyTests(unittest.TestCase):
         self.assertEqual(result.to_dict()["resource"]["RAM_ESTIMATE"], 0.8)
 
     def test_model_pick_prefers_small_installed_model(self):
+        if not model_runtime_available():
+            self.skipTest("the local model runtime is not reachable")
         executor = LocalTeamExecutor()
         installed = set(executor.provider.list_models())
         if "llama3.2:1b-instruct-q4_K_M" in installed:

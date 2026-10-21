@@ -109,15 +109,16 @@ class GenesisLiveRotationTests(unittest.TestCase):
         try:
             rt = LocalGenesisRuntime(tmp / "genesis.json")
             rt.identify("g-live")
-            first = rt.rotate_model("granite3.3:2b")
-            self.assertTrue(first["ok"], first)
             # A rotation to a model that is not there is refused, and
-            # that is the product working. So the test needs the model
+            # that is the product working. So the test needs the models
             # it rotates to, and skips where the machine does not have
-            # it.
+            # them. The check is before the first rotation, because the
+            # first rotation refuses for the same reason.
             for needed in ("granite3.3:2b", "qwen3:0.6b"):
                 if not _model_runtime_has(needed):
                     self.skipTest(f"{needed} is not on this machine")
+            first = rt.rotate_model("granite3.3:2b")
+            self.assertTrue(first["ok"], first)
             second = rt.rotate_model("qwen3:0.6b")
             self.assertTrue(second["ok"], second)
             self.assertEqual(rt.identity.genesis_id, "g-live")

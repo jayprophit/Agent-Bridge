@@ -182,7 +182,12 @@ class TestWorkspaceLockItself(unittest.TestCase):
     def test_the_lock_file_lives_under_the_protected_directory(self):
         from executor import Sandbox, SandboxViolation
         with WorkspaceLock(self.tmp, "x") as lk:
-            rel = str(Path(lk.path).relative_to(self.tmp))
+            # The temporary directory may be spelled in the short form
+            # and the lock in the long form, and they are the same
+            # directory. Resolving both is what makes the comparison
+            # about the place rather than about the spelling.
+            rel = str(Path(lk.path).resolve().relative_to(
+                Path(self.tmp).resolve()))
         self.assertIn(".bridge", Path(rel).parts)
         with self.assertRaises(SandboxViolation):
             Sandbox(self.tmp).resolve(rel)

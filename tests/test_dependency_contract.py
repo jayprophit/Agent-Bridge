@@ -246,9 +246,20 @@ class DependencyContractTests(unittest.TestCase):
         self.assertIsNotNone(spec, "psutil must be declared under the telemetry extra")
         pinned = re.search(r"==\s*([0-9][^;\s]*)", spec)
         self.assertIsNotNone(pinned, f"psutil must be exactly pinned, got {spec!r}")
-        self.assertIn(f'psutil=={pinned.group(1)}', CI.read_text(encoding="utf-8"),
-                      "the psutil version installed by CI must equal the version "
-                      "declared in pyproject")
+        # The CI installs from the lockfile, so the lockfile is where the
+        # version the runner gets is pinned. The check is that the pin the
+        # runner uses is the pin the project declares, whether that is
+        # written out in the workflow or recorded in the lock.
+        ci_text = CI.read_text(encoding="utf-8")
+        lock_text = (REPO / "requirements-lock.txt").read_text(encoding="utf-8")
+        in_workflow = f'psutil=={pinned.group(1)}' in ci_text
+        in_lock = f'psutil=={pinned.group(1)}' in lock_text
+        installs_the_lock = "requirements-lock.txt" in ci_text
+        self.assertTrue(
+            in_workflow or (in_lock and installs_the_lock),
+            "the psutil version CI installs must equal the version declared "
+            "in pyproject, either written out in the workflow or pinned in "
+            "the lockfile the workflow installs")
 
     def test_declared_test_command_discovers_the_suite(self):
         """The documented command must run the tests, not just exit 0."""
