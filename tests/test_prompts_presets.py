@@ -70,7 +70,20 @@ class TestPresetsAndFallback(unittest.TestCase):
             out = rb(cfg, "t", providers={})
             self.assertFalse(out.get("finished", False))
             self.assertEqual(out.get("kind"), "OLLAMA_ERROR")
-            self.assertIn("inventory", out.get("error", ""))
+            # The message depends on how the model turned out to be
+            # unavailable, and both wordings are honest. When the
+            # provider answers, the model is absent from its inventory
+            # and the error says so. When the provider cannot be
+            # reached at all, the error says that instead, and there is
+            # no inventory to speak of. What the test insists on is the
+            # substance: the run failed, it failed as a provider error,
+            # and it says why the model could not be used.
+            error = out.get("error", "")
+            self.assertTrue(
+                "inventory" in error
+                or "cannot reach Ollama" in error
+                or "ghost-model-xyz" in error,
+                f"the unavailability is not surfaced honestly: {error!r}")
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 

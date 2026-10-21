@@ -46,6 +46,12 @@ class CodexPolicyHardeningTests(unittest.TestCase):
         self.tmp = Path(tempfile.mkdtemp(prefix="ab_codex_policy_"))
         self.ws = self.tmp / "ws"
         self.ws.mkdir()
+        # The product resolves the workspace path on both sides of a policy
+            # decision, so the test does too. On a machine whose path has a
+            # short name the two spellings differ, the grant does not match and
+            # the test fails for a reason that has nothing to do with the code
+            # under test.
+        self.ws = self.ws.resolve()
         reset_policy_engine()
 
     def tearDown(self):

@@ -239,7 +239,11 @@ class TestWorkspaceCanonicalization(unittest.TestCase):
         """E. Valid nested workspace inside allowed root is accepted."""
         rt = AgentRuntime(RuntimeConfig(allowed_workspace_roots=[str(self.ide_workspace)]))
         s = rt.create_session(str(self.nested_workspace), mode="build")
-        self.assertEqual(str(s.workspace), str(self.nested_workspace))
+        # The runtime resolves the workspace it was given, so the test
+        # compares against the resolved path. On a machine whose path
+        # has a short name the two spellings differ.
+        self.assertEqual(str(s.workspace),
+                         str(self.nested_workspace.resolve()))
 
     def test_preflight_rejects_before_planner(self):
         """Preflight validation happens BEFORE planner/model invocation."""

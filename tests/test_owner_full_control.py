@@ -36,6 +36,12 @@ def _ws():
     tmp = Path(tempfile.mkdtemp(prefix="ofc_"))
     ws = tmp / "proj"
     ws.mkdir()
+    # The product resolves the workspace path on both sides of a policy
+    # decision, so the test does too. On a machine whose path has a
+    # short name the two spellings differ, the grant does not match and
+    # the test fails for a reason that has nothing to do with the code
+    # under test.
+    ws = ws.resolve()
     return tmp, ws
 
 
