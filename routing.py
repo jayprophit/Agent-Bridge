@@ -31,6 +31,19 @@ class RoleRouter:
     def model_for(self, role: str) -> str:
         return self.mapping.get(role, "") or self.default_model
 
+    def declared_candidates(self, role: str) -> list[str]:
+        """The models the role map declares for this role, in order.
+
+        These are the models the operator has declared may serve the
+        role, most wanted first. The declaration is what makes a
+        substitution legitimate: a model that is not declared for the
+        role is the operator's specific choice and is never quietly
+        replaced by another.
+        """
+        from models.model_roles import ROLE_CANDIDATES
+
+        return list(ROLE_CANDIDATES.get(role, []))
+
     def candidates_for(self, role: str) -> list[str]:
         """The models this role may use, in the order they are wanted.
 

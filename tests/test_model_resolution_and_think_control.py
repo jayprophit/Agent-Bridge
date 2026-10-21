@@ -97,6 +97,32 @@ class RoleCandidateTests(unittest.TestCase):
         self.assertEqual(candidates[1],
                          MINIMUM_MODEL_COVERAGE["primary_coder"])
 
+    def test_a_model_outside_the_declaration_is_never_substituted(self):
+        """An unnamed model is the operator's specific choice.
+
+        The role map declares which models may serve a role, in order.
+        A model that is not on that list was named for a reason, and the
+        Bridge does not quietly run something else in its place: it
+        surfaces that the model is not there.
+        """
+        from models.model_roles import ROLE_CANDIDATES
+
+        router = RoleRouter("ghost-model-xyz")
+        for role in ("planner", "coder", "reviewer", "general"):
+            self.assertNotIn("ghost-model-xyz",
+                             ROLE_CANDIDATES.get(role, []), role)
+            self.assertNotIn("ghost-model-xyz",
+                             router.declared_candidates(role), role)
+
+    def test_a_declared_model_may_be_substituted_by_a_declared_one(self):
+        from models.model_roles import MINIMUM_MODEL_COVERAGE
+
+        declared = MINIMUM_MODEL_COVERAGE["primary_coder"]
+        router = RoleRouter(declared)
+        self.assertIn(declared, router.declared_candidates("coder"))
+        self.assertIn(MINIMUM_MODEL_COVERAGE["fast_coder"],
+                      router.declared_candidates("coder"))
+
 
 class ThinkControlTests(unittest.TestCase):
     def test_a_model_that_can_think_is_asked_to_answer(self):

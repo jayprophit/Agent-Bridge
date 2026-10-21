@@ -517,15 +517,25 @@ def run_bridge(cfg: BridgeConfig, task: str, provider: Any | None = None,
                 # provider does not have, and the substitution is
                 # recorded in the run's evidence so the model that
                 # really did the work is the one that is reported.
+                #
+                # But the substitution is only ever among the DECLARED
+                # candidates, and only when the model being replaced is
+                # itself one of them. A model the operator named that is
+                # not in the role's declaration is the operator's
+                # specific choice, and the Bridge does not quietly run
+                # something else in its place: it surfaces the
+                # unavailability, which is what it has always done.
+                declared = router.declared_candidates(role)
                 substitute = ""
-                for candidate in router.candidates_for(role):
-                    if candidate == model:
-                        continue
-                    if candidate in available or any(
-                            candidate in m or m in candidate
-                            for m in available):
-                        substitute = candidate
-                        break
+                if model in declared:
+                    for candidate in declared:
+                        if candidate == model:
+                            continue
+                        if candidate in available or any(
+                                candidate in m or m in candidate
+                                for m in available):
+                            substitute = candidate
+                            break
                 if not substitute:
                     raise ProviderError(
                         f"model {model!r} not in provider inventory")
