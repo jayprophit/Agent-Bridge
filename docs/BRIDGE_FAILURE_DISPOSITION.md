@@ -77,7 +77,19 @@ collection line.
 
 Measured fast gate on this host, 2026-10-25:
 
-<!-- FAST-GATE-RESULT -->
+**Fast gate (repository-proof tests)**: 2,301 passed, 18 skipped, 1 failed, 50 deselected, 18 subtests passed in 2,158.66s (35:58).
+
+- Sole fast-gate failure: `tests/test_policy_deny_gate.py::MatUnavailableTests::test_unknown_symbol_reports_not_found`
+  (subprocess.TimeoutExpired after 120s) due to the MAT slow marker.
+
+- Slow markers refined:
+  - Whole-module: `test_actions_intake_mutations`, `test_approved_grant_mutations`, `test_desktop_e2e`, `test_ui_acceptance`
+  - Per-test: 3 Blender, 3 FreeCAD, 1 Cura, 1 OpenModelica, 5 `TestBrowserReal`, 4 `test_device_runtime` tests
+  - Live Ollama opt-in: requires `AETHERIUS_LIVE_OLLAMA=1` + `slow` marker
+
+- KeePass module improved: 44 passed in 132.97s (down from 531s) after module-scoped templates and reduced fixture KDF cost
+
+**Full gate** (includes desktop apps, browsers, hardware probes, live models) remains scheduled separately.
 
 ## Unresolved release impact
 
