@@ -13,6 +13,16 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pytest
+
+# Each mutation copies the repository to a scratch tree (skipping the large
+# archives) and then runs a pytest process inside the copy. One mutation is
+# tens of seconds of disk and process work, and there are many of them, so the
+# whole module is minutes rather than seconds. It is a real proof that the
+# mechanism fails when broken, not a broken test, so it is marked slow and
+# excluded from the fast gate (`-m "not slow"`).
+pytestmark = pytest.mark.slow
+
 REPO = Path(__file__).resolve().parent.parent
 TARGETS = ["tests/test_external_approvals.py"]
 

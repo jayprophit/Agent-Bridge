@@ -19,7 +19,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pytest
+
 import openmodelica_adapter
+
+# Only the compile-and-simulate proof launches OpenModelica. Discovery and the
+# refusal paths are fast and stay in the fast gate.
 from openmodelica_adapter import discover, run_mos
 
 DECAY_MO = """model Decay
@@ -77,6 +82,7 @@ class ExecutionTests(unittest.TestCase):
         path.write_text(content, encoding="utf-8")
         return path
 
+    @pytest.mark.slow
     def test_decay_model_simulates_to_expected_physics(self):
         self._write("Decay.mo", DECAY_MO)
         script = self._write("run.mos", RUN_MOS)

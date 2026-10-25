@@ -13,8 +13,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pytest
+
 import freecad_adapter
 from freecad_adapter import discover, run_script
+
+# Only the tests that launch the real FreeCAD are slow. Discovery and the
+# refusal paths are fast and stay in the fast gate.
 
 
 class DiscoveryTests(unittest.TestCase):
@@ -73,6 +78,7 @@ class ExecutionTests(unittest.TestCase):
         path.write_text(content.replace("{workdir}", self.tmp.as_posix()), encoding="utf-8")
         return path
 
+    @pytest.mark.slow
     def test_bracket_is_created_saved_reopened_and_verified(self):
         create = run_script(self.exe, self._write("bracket.py", BRACKET_SCRIPT), self.tmp, timeout_s=300.0)
         self.assertTrue(create.ok, create.stderr_tail)
@@ -105,12 +111,14 @@ class ExecutionTests(unittest.TestCase):
         self.assertFalse(result.ok)
         self.assertIn("missing script", result.stderr_tail)
 
+    @pytest.mark.slow
     def test_timeout_is_reported_not_hung(self):
         sleeper = self._write("sleep.py", "import time\ntime.sleep(60)\nprint('woke')\n")
         result = run_script(self.exe, sleeper, self.tmp, timeout_s=5.0)
         self.assertFalse(result.ok)
         self.assertTrue(result.timed_out)
 
+    @pytest.mark.slow
     def test_failing_script_error_is_captured_not_hidden(self):
         # FreeCADCmd exits 0 even when the script raises, so the adapter must
         # surface the error text: exit codes alone cannot prove anything here.

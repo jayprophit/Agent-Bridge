@@ -1,5 +1,7 @@
 import unittest
 
+import pytest
+
 try:
     from helpers import (model_runtime_available, model_runtime_has,
                          package_installed)
@@ -14,6 +16,13 @@ from runtimes import LocalRuntimeDiscovery, RuntimeDescriptor
 
 
 class DeviceRuntimeTests(unittest.TestCase):
+    # These four tests enumerate the real machine through PowerShell/WMI
+    # (Get-PnpDevice, Get-PhysicalDisk and friends). Each probe can take tens
+    # of seconds and a forced refresh repeats all of them; measured above the
+    # 45 second per-file budget on 2026-10-25. They are environment proofs,
+    # not repository gates, so they carry the slow marker and the fast gate
+    # keeps the pure-logic tests below.
+    @pytest.mark.slow
     def test_device_profile_imports_and_aggregates_hardware(self):
         profile = DeviceProfiler().profile_with_hardware(HardwareProfiler(), True)
         self.assertTrue(profile.device_id)
@@ -84,6 +93,7 @@ class DeviceRuntimeTests(unittest.TestCase):
                     result = discovery.discover()[0]
         self.assertEqual(result.status, "ADAPTER_REQUIRED")
 
+    @pytest.mark.slow
     def test_device_profile_idempotence(self):
         """Test that repeated profiling produces consistent results without duplicate capabilities."""
         profiler = DeviceProfiler()
@@ -109,6 +119,7 @@ class DeviceRuntimeTests(unittest.TestCase):
         self.assertEqual(profile1.memory.total_mb, profile2.memory.total_mb)
         self.assertEqual(profile1.gpu.vram_mb, profile2.gpu.vram_mb)
 
+    @pytest.mark.slow
     def test_cpu_field_correctness(self):
         """Test that CPU field uses 'model' not 'processor' and has correct types."""
         profiler = DeviceProfiler()
@@ -130,6 +141,7 @@ class DeviceRuntimeTests(unittest.TestCase):
         self.assertGreaterEqual(cpu.logical_cores, cpu.physical_cores)
         self.assertIn(cpu.vendor, ("Intel", "AMD", "ARM", "Apple", ""))
 
+    @pytest.mark.slow
     def test_device_class_and_runtime_role(self):
         """Test that device_class and runtime_role are determined from evidence."""
         profiler = DeviceProfiler()

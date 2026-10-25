@@ -25,6 +25,8 @@ import unittest
 import urllib.request
 from pathlib import Path
 
+import pytest
+
 from worker_runtime import SupervisedTask, WorkerError, run_supervised
 
 
@@ -326,6 +328,7 @@ class TestModelBackendWorker(unittest.TestCase):
              "expect": "Paris", "match": "contains"},
         ]
 
+    @pytest.mark.slow
     def test_model_worker_answers_are_independently_verified(self):
         # The test asks a real model to answer, so it needs a real model
         # runtime with that model in it. A machine without one cannot
@@ -403,6 +406,7 @@ print("SAVED x=%.1f" % shape.BoundBox.XLength)
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_freecad_task_is_delegated_verified_and_completed(self):
         import freecad_adapter
         found = freecad_adapter.discover()
@@ -463,6 +467,7 @@ class TestCuraTaskThroughRuntime(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_cura_slice_is_delegated_verified_and_completed(self):
         import cura_adapter
         found = cura_adapter.discover()
@@ -521,6 +526,7 @@ print("SIMDONE x2=" + String(val(x, 2.0)) + "\\n");
     def tearDown(self):
         shutil.rmtree(self.root, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_openmodelica_sim_is_delegated_verified_and_completed(self):
         import math
         import openmodelica_adapter

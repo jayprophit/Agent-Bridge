@@ -14,6 +14,13 @@ import unittest
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
+import pytest
+
+# Reference UI acceptance drives a real headless browser over loopback and
+# takes screenshots. The browser launch is the cost, and the test needs a
+# browser at all, so it is marked slow and excluded from the fast gate.
+pytestmark = pytest.mark.slow
+
 UI_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ui")
 
 

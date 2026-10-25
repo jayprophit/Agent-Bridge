@@ -15,6 +15,15 @@ import unittest
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
+import pytest
+
+# This test serves the production IDE bundle, starts a live Agent Bridge
+# service and drives a real headless browser against both. It is an
+# integration proof, not a unit test, and it is skipped only when the bundle
+# or browser is absent; on this host it launches Chromium and runs for
+# minutes. Marked slow so the fast gate stays a repository gate.
+pytestmark = pytest.mark.slow
+
 IDE_DIST = r"C:\Users\jpowe\Desktop\IDE-Workspace\workspace\app\dist"
 
 

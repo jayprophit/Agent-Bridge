@@ -15,6 +15,8 @@ import subprocess
 import unittest
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 import sys
@@ -105,7 +107,16 @@ class PolicyDenyGateTests(unittest.TestCase):
         self.assertFalse(res["allowed"])
 
 
+@pytest.mark.slow
 class MatUnavailableTests(unittest.TestCase):
+    """The unknown-symbol proof scans the whole external MAT corpus.
+
+    Measured 2026-10-25: 1,714 record YAML files (54 MB) took 198.3 s to
+    parse, so the original 120 s timeout failed on data volume, not on a
+    hang. It is a cross-repository data-scale proof, not a Bridge gate, so
+    it carries `slow`; the timeout is raised to 300 s to leave headroom.
+    """
+
     def test_unknown_symbol_reports_not_found(self):
         if shutil.which("node") is None:
             self.skipTest("node unavailable")
@@ -115,7 +126,7 @@ class MatUnavailableTests(unittest.TestCase):
         query = subprocess.run(
             ["node", "scripts/mat-query-service.mjs",
              "--symbol", "Xx", "--property", "ionization.first"],
-            capture_output=True, text=True, timeout=120, cwd=str(mat))
+            capture_output=True, text=True, timeout=300, cwd=str(mat))
         self.assertEqual(query.returncode, 0, query.stderr[:300])
         response = json.loads(query.stdout)
         self.assertFalse(response["found"])

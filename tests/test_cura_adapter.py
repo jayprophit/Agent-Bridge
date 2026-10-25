@@ -14,8 +14,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pytest
+
 import cura_adapter
 from cura_adapter import discover, slice_stl, verify_gcode
+
+# Only the end-to-end slice launches CuraEngine. Discovery and the refusal
+# paths are fast and stay in the fast gate.
 
 
 class DiscoveryTests(unittest.TestCase):
@@ -73,6 +78,7 @@ class ExecutionTests(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
+    @pytest.mark.slow
     def test_box_is_sliced_and_gcode_verifies(self):
         stl = self.tmp / "box.stl"
         stl.write_text(_box_stl(), encoding="utf-8")

@@ -23,7 +23,10 @@ depending on a live runtime's timing.
 
 from __future__ import annotations
 
+import os
 import unittest
+
+import pytest
 
 from compute.ollama_provider_v2 import (
     DEFAULT_LEASE_POLICY,
@@ -527,13 +530,19 @@ class HygieneTests(unittest.TestCase):
 # Bounded live proof (§19) — real runtime, skips cleanly when absent
 # --------------------------------------------------------------------------
 def _live() -> bool:
+    if os.environ.get("AETHERIUS_LIVE_OLLAMA") != "1":
+        return False
     try:
         return OllamaProviderV2(timeout=3.0).is_available()
     except Exception:
         return False
 
 
-@unittest.skipUnless(_live(), "Ollama runtime not reachable")
+@pytest.mark.slow
+@unittest.skipUnless(
+    _live(),
+    "live Ollama inference is opt-in (set AETHERIUS_LIVE_OLLAMA=1) and the runtime must be reachable",
+)
 class LiveLifecycleTests(unittest.TestCase):
     """Proves the lease behaviour against the real runtime, not a fake.
 

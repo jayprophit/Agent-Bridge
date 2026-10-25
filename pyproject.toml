@@ -29,20 +29,33 @@ protocol_version = "0.4"
 [tool.pytest.ini_options]
 # Markers for this suite.
 #
-# `slow` exists because one test class - the mutation proof in
-# tests/test_actions_intake_mutations.py - is legitimately long rather than
-# broken. It copies the repository 23 times and runs 6 test files per copy
-# (~85s each), so it takes roughly 35-40 minutes on this host.
+# `slow` marks verification that is real but cannot be a repository gate: it
+# runs for minutes, or it depends on this workstation's installed applications
+# and devices. The fast path is what a change must pass before it is offered;
+# the slow path is scheduled and recorded separately.
 #
-# Before this section existed the class was unmarked, so an ordinary
-# `pytest tests` appeared to hang: output stopped at ~3% for tens of minutes
-# with idle CPU. It was never deadlocked - it was inside that test. Marking it
-# makes the cost visible instead of looking like a fault.
+# The original case was the mutation proof in
+# tests/test_actions_intake_mutations.py: it copies the repository 23 times and
+# runs 6 test files per copy (~85s each), so it takes roughly 35-40 minutes on
+# this host. Before the marker existed, an ordinary `pytest tests` appeared to
+# hang at ~3% with idle CPU; it was inside that test, not deadlocked.
 #
-# Fast path (seconds to a couple of minutes, what to use while iterating):
+# On 2026-10-25 the same disposition was applied to every module that launches
+# a desktop application (Blender, FreeCAD, CuraEngine, OpenModelica), a real
+# browser (browser_cdp, desktop E2E, UI acceptance), a hardware probe through
+# PowerShell/WMI (device_runtime's forced refreshes), or a live Ollama
+# inference. Those are environment proofs; they stay runnable and are excluded
+# from the fast gate.
+#
+# Fast path (the repository gate):
 #     python -m pytest tests -m "not slow"
-# Full gate (includes mutation proof, ~40 min):
+# Full gate (includes external applications and the mutation proof):
 #     python -m pytest tests
+# Live model inference is separately opt-in:
+#     $env:AETHERIUS_LIVE_OLLAMA = "1"; python -m pytest tests -m slow
+# The live classes in test_local_team_execution.py and
+# test_model_lifecycle_leases.py require that variable as well as the marker:
+# without it they skip before any weights are loaded.
 markers = [
-    "slow: long-running verification (mutation proof); deselect with -m 'not slow'",
+    "slow: long-running or external-application verification; deselect with -m 'not slow'",
 ]

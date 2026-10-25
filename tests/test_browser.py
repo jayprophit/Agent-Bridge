@@ -7,8 +7,13 @@ import unittest
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+import pytest
+
 import browser_cdp
 from browser_cdp import BrowserSession, vision_provider
+
+# The real-browser class launches Chromium and a local HTTP server; the
+# vision-honesty class below is pure logic and stays in the fast gate.
 
 
 class Fixture:
@@ -59,6 +64,7 @@ class Fixture:
         self.srv.server_close()
 
 
+@pytest.mark.slow
 class TestBrowserReal(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

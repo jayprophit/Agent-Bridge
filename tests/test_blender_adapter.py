@@ -14,7 +14,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pytest
+
 from blender_adapter import discover, run_script
+
+# Only the tests that launch the real Blender are slow. Discovery and the
+# refusal paths are fast and stay in the fast gate: they are the tests that
+# prove the adapter cannot be pointed outside its workspace.
 
 SCENE_SCRIPT = '''import bpy, json
 for name in ("Cube", "Cylinder", "Plane", "Camera", "Light"):
@@ -94,6 +100,7 @@ class ExecutionTests(unittest.TestCase):
         path.write_text(content.replace("{workdir}", self.tmp.as_posix()), encoding="utf-8")
         return path
 
+    @pytest.mark.slow
     def test_scene_is_created_saved_reopened_and_verified(self):
         create = run_script(self.exe, self._write("scene.py", SCENE_SCRIPT), self.tmp, timeout_s=300.0)
         self.assertTrue((self.tmp / "scene.blend").exists(), create.note)
@@ -124,6 +131,7 @@ class ExecutionTests(unittest.TestCase):
         self.assertFalse(result.ok)
         self.assertIn("missing script", result.note)
 
+    @pytest.mark.slow
     def test_timeout_kills_the_application(self):
         sleeper = self._write("sleep.py",
                               "import time\ntime.sleep(120)\n"
@@ -134,6 +142,7 @@ class ExecutionTests(unittest.TestCase):
         self.assertTrue(result.killed)
         self.assertFalse((self.tmp / "WOKE.txt").exists())
 
+    @pytest.mark.slow
     def test_invalid_script_leaves_no_artifact(self):
         # The script raises before saving. Blender still exits 0, so the only
         # honest assertion is on the world: no native artifact was produced.

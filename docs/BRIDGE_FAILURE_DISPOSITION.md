@@ -38,6 +38,47 @@ backend-gated — but must not be silently dropped from the release
 report. Release scope decision (owner) determines whether a
 models-present lane is release-critical.
 
+## 2026-10-25: external proofs split from the repository gate
+
+The 2026-09-25 baseline above counted 21 failures. The suite has since grown
+to 2,370 tests. The 2026-10-25 pass addressed a different problem: the path
+called "fast" still launched desktop applications, a real browser, hardware
+probes and a live model runtime, so it measured this workstation rather than
+the repository.
+
+Disposition, with no test deleted, xfailed or weakened:
+
+- **Whole module `slow`**: `test_actions_intake_mutations`,
+  `test_approved_grant_mutations`, `test_desktop_e2e`, `test_ui_acceptance`.
+  The first is the 35-40 minute mutation proof; the other three launch desktop
+  applications or a real browser.
+- **Per-test `slow`**: 3 Blender, 3 FreeCAD, 1 Cura, 1 OpenModelica, 5
+  `TestBrowserReal` and 4 forced-refresh `test_device_runtime` tests. These
+  prove an installed application or device; they are scheduled proofs.
+- **Live Ollama is opt-in**: the live classes in
+  `test_local_team_execution.py`, `test_model_lifecycle_leases.py` and
+  `test_conversation_and_ollama_v2.py` require
+  `AETHERIUS_LIVE_OLLAMA=1` as well as a reachable runtime. Without the
+  variable they skip before any weights are loaded. On 2026-10-25
+  `test_integration_step_ran` ran three real 3B inferences and held the gate at
+  45% for more than eight minutes; `py-spy` showed the provider still polling
+  `/api/ps` from its release path. That is a models-present proof, not a
+  repository gate.
+- **Kept fast on purpose**: refusal and safety tests that need no external
+  process, including the keepass bridge tests (they use throwaway databases in
+  the OS temp directory). `test_collision_oracle` was unmarked after measuring
+  15.39 s for the module, below the 45 s budget.
+
+`python -m pytest tests -m "not slow"` is the repository gate.
+`python -m pytest tests` is the scheduled full proof; it additionally needs the
+desktop applications, browsers and devices named above. Deselection is
+reported, never silent: the fast run states the deselected count in its
+collection line.
+
+Measured fast gate on this host, 2026-10-25:
+
+<!-- FAST-GATE-RESULT -->
+
 ## Unresolved release impact
 
 Until the file-behaviour class is fixed/scoped AND the Ollama class

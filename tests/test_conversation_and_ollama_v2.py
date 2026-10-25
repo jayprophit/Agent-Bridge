@@ -15,6 +15,7 @@ Two things these tests protect beyond basic correctness:
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -511,6 +512,10 @@ class OllamaUnsupportedCapabilityTests(unittest.TestCase):
             provider.embed("llama3.2:1b-instruct-q4_K_M", "text")
 
 
+@unittest.skipUnless(
+    os.environ.get("AETHERIUS_LIVE_OLLAMA") == "1",
+    "live Ollama inference is opt-in; set AETHERIUS_LIVE_OLLAMA=1 to run it",
+)
 class OllamaLiveInferenceTests(unittest.TestCase):
     """§30 — a bounded live proof, using the smallest model only."""
 

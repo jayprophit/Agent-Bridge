@@ -18,9 +18,12 @@ Two properties are asserted that could easily regress:
 from __future__ import annotations
 
 import json
+import os
 import time
 import sys
 import unittest
+
+import pytest
 
 try:
     from helpers import model_runtime_available
@@ -42,10 +45,27 @@ from compute.ollama_provider_v2 import OllamaProviderV2
 
 
 def _live() -> bool:
-    return OllamaProviderV2().is_available()
+    """Live Ollama inference is opt-in, like every other external proof.
+
+    On 2026-10-25 the three classes below ran three real 3B inferences each
+    and held the fast gate at 45% for more than eight minutes; the provider's
+    release path was still polling the runtime when the run was sampled. That
+    is a scheduled proof, not a repository gate, so the environment variable
+    is required as well as a reachable runtime.
+    """
+    if os.environ.get("AETHERIUS_LIVE_OLLAMA") != "1":
+        return False
+    try:
+        return OllamaProviderV2(timeout=3.0).is_available()
+    except Exception:
+        return False
 
 
-@unittest.skipUnless(_live(), "Ollama runtime not reachable")
+@pytest.mark.slow
+@unittest.skipUnless(
+    _live(),
+    "live Ollama inference is opt-in (set AETHERIUS_LIVE_OLLAMA=1) and the runtime must be reachable",
+)
 class RealLocalTeamTests(unittest.TestCase):
     """§10 — a real internal local team, no external AI application."""
 
@@ -151,6 +171,11 @@ class RealLocalTeamTests(unittest.TestCase):
         self.assertEqual(self.executor.team.execution_mode.value, "TEAM_LOCAL")
 
 
+@pytest.mark.slow
+@unittest.skipUnless(
+    _live(),
+    "live Ollama inference is opt-in (set AETHERIUS_LIVE_OLLAMA=1) and the runtime must be reachable",
+)
 class TraceLinkageTests(unittest.TestCase):
     """§14 — one trace_id threads request -> workers -> handoff."""
 
@@ -188,11 +213,10 @@ class TraceLinkageTests(unittest.TestCase):
 class ContextScopingTests(unittest.TestCase):
     """§19 — each worker gets ONLY its role's context."""
 
-    @classmethod
-    def setUpClass(cls):
-        cls.executor = LocalTeamExecutor()
-        cls.summary = cls.executor.run_bounded_team_task(
-            "Name one logging improvement")
+    # The live team run that used to happen in setUpClass was never read by a
+    # test here: every test below either asserts structure or replaces the
+    # provider with a fake. It cost a real multi-inference team run for no
+    # assertion, so it was removed rather than marked slow.
 
     def test_scoped_context_markers_are_role_specific(self):
         """The coder must never receive the reviewer's context marker."""
@@ -279,7 +303,11 @@ class ResourcePolicyTests(unittest.TestCase):
                              "llama3.2:1b-instruct-q4_K_M")
 
 
-@unittest.skipUnless(_live(), "Ollama runtime not reachable")
+@pytest.mark.slow
+@unittest.skipUnless(
+    _live(),
+    "live Ollama inference is opt-in (set AETHERIUS_LIVE_OLLAMA=1) and the runtime must be reachable",
+)
 class ParallelBranchTests(unittest.TestCase):
     """§11 — two independent branches, then integration."""
 
@@ -302,7 +330,11 @@ class ParallelBranchTests(unittest.TestCase):
                          "worker-integrate-1")
 
 
-@unittest.skipUnless(_live(), "Ollama runtime not reachable")
+@pytest.mark.slow
+@unittest.skipUnless(
+    _live(),
+    "live Ollama inference is opt-in (set AETHERIUS_LIVE_OLLAMA=1) and the runtime must be reachable",
+)
 class SoloVsTeamTests(unittest.TestCase):
     """§13 — measured comparison; does NOT assume team mode is superior."""
 

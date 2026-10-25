@@ -55,29 +55,52 @@ def needs_interpreter(interpreter):
         pytest.skip("no Python interpreter with pykeepass available")
 
 
-@pytest.fixture
-def blank_db(interpreter, needs_interpreter, tmp_path):
-    """Create a throwaway .kdbx in tmp with a known dummy master password."""
-    db = tmp_path / "test_vault.kdbx"
+@pytest.fixture(scope="module")
+def blank_db_template(interpreter, needs_interpreter, tmp_path_factory):
+    """Create one throwaway .kdbx per module, then copy it per test.
+
+    Creating a KeePass database runs the full KDF and took 10-27 s per
+    fixture on this host (2026-10-25). The tests only need a fresh file,
+    not a fresh KDF run: every test still receives its own copy, so writes
+    in one test cannot reach another.
+    """
+    db = tmp_path_factory.mktemp("keepass") / "template_vault.kdbx"
     script = (
         "import sys, pykeepass\n"
         f"kp = pykeepass.create_database({str(db)!r}, password={TEST_MASTER!r})\n"
+        "# This is a throwaway test vault. The shipped blank database uses\n"
+        "# Argon2 with I=14, M=64 MB, which costs 10-50 s per open on this\n"
+        "# host. Lower the work factor for the fixture only: the file format,\n"
+        "# cipher and every bridge code path stay identical.\n"
+        "kdf = kp.kdbx.header.value.dynamic_header.kdf_parameters.data.dict\n"
+        "if 'I' in kdf: kdf['I'].value = 1\n"
+        "if 'M' in kdf: kdf['M'].value = 8 * 1024 * 1024\n"
         "kp.save()\n"
         "print('created')\n"
     )
     proc = subprocess.run([interpreter, "-c", script],
-                          capture_output=True, text=True, timeout=60)
+                          capture_output=True, text=True, timeout=120)
     assert proc.returncode == 0, f"could not create test kdbx: {proc.stderr}"
     assert db.is_file()
     return str(db)
 
 
 @pytest.fixture
-def seeded_db(blank_db, interpreter):
-    """Throwaway .kdbx containing one dummy Aetherius credential entry."""
+def blank_db(blank_db_template, tmp_path):
+    """A fresh copy of the blank template for this test."""
+    db = tmp_path / "test_vault.kdbx"
+    shutil.copyfile(blank_db_template, db)
+    return str(db)
+
+
+@pytest.fixture(scope="module")
+def seeded_db_template(blank_db_template, interpreter, tmp_path_factory):
+    """Create one seeded template per module, then copy it per test."""
+    db = tmp_path_factory.mktemp("keepass-seeded") / "template_seeded.kdbx"
+    shutil.copyfile(blank_db_template, db)
     script = (
         "import pykeepass\n"
-        f"kp = pykeepass.PyKeePass({blank_db!r}, password={TEST_MASTER!r})\n"
+        f"kp = pykeepass.PyKeePass({str(db)!r}, password={TEST_MASTER!r})\n"
         "g = kp.find_groups(name='Aetherius', first=True) or kp.root_group\n"
         "kp.add_entry(g, title='AETHERIUS-TEST-CRED', username='test_user',\n"
         f"             password={TEST_SECRET!r}, url='https://test.invalid',\n"
@@ -85,9 +108,17 @@ def seeded_db(blank_db, interpreter):
         "kp.save()\n"
     )
     proc = subprocess.run([interpreter, "-c", script],
-                          capture_output=True, text=True, timeout=60)
+                          capture_output=True, text=True, timeout=120)
     assert proc.returncode == 0, proc.stderr
-    return blank_db
+    return str(db)
+
+
+@pytest.fixture
+def seeded_db(seeded_db_template, tmp_path):
+    """A fresh copy of the seeded template for this test."""
+    db = tmp_path / "seeded_vault.kdbx"
+    shutil.copyfile(seeded_db_template, db)
+    return str(db)
 
 
 # =====================================================================
