@@ -89,6 +89,22 @@ Measured fast gate on this host, 2026-10-25:
 
 - KeePass module improved: 44 passed in 132.97s (down from 531s) after module-scoped templates and reduced fixture KDF cost
 
+### Mutation-proof progress (2026-10-27)
+
+The mutation proof now prints a start line for each mutation and a completion
+line with the per-mutation and elapsed seconds:
+
+```text
+[mutation-proof] 23 mutations; progress follows
+[mutation-proof] 1/23 start: intake bypasses protocol.validate_action
+[mutation-proof] 1/23 done in 86.4s (elapsed 86.4s)
+```
+
+The documented full gate runs with `-s` (`python -m pytest tests -s`) so those
+lines are not captured by pytest. The slow marker remains, so the default fast
+gate does not run the proof. This closes the "looks hung" ambiguity: a watcher
+sees which mutation is running and when it finished.
+
 **Full gate** (includes desktop apps, browsers, hardware probes, live models) remains scheduled separately.
 
 ## Unresolved release impact

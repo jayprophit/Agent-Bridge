@@ -58,4 +58,4 @@ jobs:
         with:
           python-version: "3.13"
       - run: pip install -r requirements-lock.txt
-      - run: python -m pytest tests -q --no-header -p no:cacheprovider
+      - run: python -m pytest tests -s -q --no-header -p no:cacheprovider

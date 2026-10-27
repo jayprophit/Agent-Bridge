@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -268,7 +269,16 @@ class MutationSensitivity(unittest.TestCase):
 
     def test_every_mutation_is_caught(self):
         failures: list[str] = []
-        for label, rel, old, new, expect in MUTATIONS:
+        total = len(MUTATIONS)
+        started = time.monotonic()
+        # The full gate runs with `-s` so these lines are visible while the
+        # proof works. Without `-s`, pytest captures them until the test ends.
+        print(f"[mutation-proof] {total} mutations; progress follows",
+              flush=True)
+        for index, (label, rel, old, new, expect) in enumerate(MUTATIONS, 1):
+            mutation_started = time.monotonic()
+            print(f"[mutation-proof] {index}/{total} start: {label}",
+                  flush=True)
             with self.subTest(mutation=label):
                 scratch = Path(tempfile.mkdtemp(prefix="mut_"))
                 try:
@@ -283,14 +293,19 @@ class MutationSensitivity(unittest.TestCase):
                     out = proc.stdout + proc.stderr
                     if proc.returncode == 0:
                         failures.append(f"{label}: SUITE STILL GREEN")
-                        continue
-                    for name in expect:
-                        if name not in out:
-                            failures.append(
-                                f"{label}: failed, but {name} was not the "
-                                f"failing test")
+                    else:
+                        for name in expect:
+                            if name not in out:
+                                failures.append(
+                                    f"{label}: failed, but {name} was not the "
+                                    f"failing test")
                 finally:
                     shutil.rmtree(scratch, ignore_errors=True)
+            print(
+                f"[mutation-proof] {index}/{total} done in "
+                f"{time.monotonic() - mutation_started:.1f}s "
+                f"(elapsed {time.monotonic() - started:.1f}s)",
+                flush=True)
         self.assertEqual(failures, [], "mutation proof incomplete:\n" +
                          "\n".join(failures))
 

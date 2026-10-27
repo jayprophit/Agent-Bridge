@@ -74,19 +74,24 @@ dependencies:
 
 status:
   state: PARTIAL
-  last_verified: "2026-10-20"
+  last_verified: "2026-10-27"
   summary: >-
     The fast verification path (pytest with the slow marker deselected) is
-    the supported gate; the full suite includes a mutation proof that copies
-    the repository 23 times and takes roughly 35-40 minutes on this host.
-    The repository also carries a large amount of one-off analysis scripts
-    at its root that are not part of the runtime and are not covered by the
-    test suite.
+    the supported gate and it now completes cleanly: 2,297 passed, 18
+    skipped, 55 deselected and 18 subtests passed in 1,114.05 s on this
+    host. The full suite still includes a mutation proof that copies the
+    repository 23 times and takes roughly 35-40 minutes, and the proof now
+    prints per-mutation progress instead of looking hung. The repository
+    also carries a large amount of one-off analysis scripts at its root that
+    are not part of the runtime and are not covered by the test suite, which
+    is why the state stays PARTIAL.
   evidence:
     - "pyproject.toml [tool.agent-bridge] test_command = python -m unittest discover -s tests -p test_*.py"
-    - "pyproject.toml [tool.pytest.ini_options] markers: slow = long-running verification (mutation proof); deselect with -m 'not slow'"
-    - "git status --porcelain -> clean working tree on branch main"
-    - "2026-10-20: python -m pytest tests -m 'not slow' -q did not terminate within a 15 minute window on this host"
+    - "pyproject.toml [tool.pytest.ini_options] markers: slow = long-running verification; the fast gate deselects it"
+    - "2026-10-27: python -m pytest tests -m 'not slow' -q -> 2,297 passed, 18 skipped, 55 deselected, 18 subtests passed, 47 warnings in 1,114.05 s (18:34), exit 0"
+    - "2026-10-27: python -m pytest tests/test_actions_intake_mutations.py -s -q printed '[mutation-proof] 23 mutations; progress follows', '1/23 start: intake bypasses protocol.validate_action', '1/23 done in 152.3s' and '2/23 start: intake stops refusing patterns and escapes'; the check was capped at 260 s on purpose, so it did not complete the whole proof"
+    - "2026-10-25: MAT unknown-symbol proof measured 198.3 s over 1,714 YAML files (54 MB); it is slow-marked with a 300 s timeout"
+    - "GitHub Actions ci run 40211806596 on 57304d0 is green (2026-10-25)"
 
 known_issues:
   - id: AB-TST-001
@@ -117,6 +122,11 @@ known_issues:
       - Fast gate (2026-10-25): 2,301 passed, 18 skipped, 1 failed, 50 deselected, 18 subtests passed in 2,158.66s (35:58)
       - The sole fast-gate failure is `tests/test_policy_deny_gate.py::MatUnavailableTests::test_unknown_symbol_reports_not_found`
         (subprocess.TimeoutExpired after 120s) due to the MAT slow marker.
+      
+      The mutation proof now prints `[mutation-proof] i/23 start: <label>` and a
+      completion line with per-mutation and elapsed seconds. The documented full
+      gate runs with `-s` (`python -m pytest tests -s`) so those lines are visible
+      while the proof works; the slow marker keeps it out of the fast gate.
       
       Live Ollama inference is opt-in via `AETHERIUS_LIVE_OLLAMA=1` and the `slow` marker.
       

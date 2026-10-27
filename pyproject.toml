@@ -49,8 +49,9 @@ protocol_version = "0.4"
 #
 # Fast path (the repository gate):
 #     python -m pytest tests -m "not slow"
-# Full gate (includes external applications and the mutation proof):
-#     python -m pytest tests
+# Full gate (includes external applications and the mutation proof). `-s`
+# keeps the mutation proof's per-mutation progress visible:
+#     python -m pytest tests -s
 # Live model inference is separately opt-in:
 #     $env:AETHERIUS_LIVE_OLLAMA = "1"; python -m pytest tests -m slow
 # The live classes in test_local_team_execution.py and
